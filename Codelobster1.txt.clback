@@ -1,0 +1,17 @@
+tmpJmlFlight++;
+			  		$(over).appendTo("#result");
+			  		$.ajax({
+	                    url: "http://localhost/travelo/Lion/get_farec",
+	                    type: "post",
+	                    data: {
+	                    	key : codekursi
+	                    },
+	                    success: function(d) {
+							$('#overlay').remove();
+							
+	                    },
+						 error: function (request, status, error) {
+							$('#overlay').remove();
+							showAlert('pesan','danger',request.responseText);
+						}
+	                });
