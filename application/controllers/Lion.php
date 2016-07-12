@@ -92,8 +92,12 @@ class Lion extends CI_Controller {
 			//print_r("");die();
 			
 			if( ( empty($array) || $array->code==404 || $array->code==204) ){
-				$code = 404;
-				$hasil = 'tidak ada penerbangan';
+				if(empty($array)){
+					$code = 400;
+				} else{
+					$code = $array->code;
+				}
+				$hasil = 'terdapat kesalahan sistem';
 			} else{
 				foreach ($array->results->data as $key => $val){
 					$hasil[$val->id_perjalanan] = array ('airline_icon'=>$val->detail[0]->airline_icon,
@@ -207,13 +211,13 @@ class Lion extends CI_Controller {
 			$code = 400;
 		}else{
 			
-			$json = $this->curl->simple_post("$this->url/book", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>80000));
+			$json = $this->curl->simple_post("$this->url/book", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
 			//$json = $this->jsonbooking();
 			
 			$array = json_decode ($json);
 			
 			if( ( empty($array) || $array->code==404 || $array->code==204) ){
-				$code = 404;
+				$code = $array->code;
 				$hasil = 'terjadi error saat input';
 			} else{
 				$hasil = $array->results->booking_code;
@@ -232,7 +236,7 @@ class Lion extends CI_Controller {
 		$array = json_decode($json);
 		//print_r($array);die();
 		$data = array('content'=>'lion/booking_detail',
-					  'data'=>$array->results
+					  'data'=>$array->results,
 					);
 		
 		$this->load->view("index",$data);

@@ -126,6 +126,7 @@
 						},
                     success: function(d) {
 						$('#overlay').remove();
+						window.location = base_url()+"Lion/booking_detail/"+$('#code_booking').val()
                     },
 					 error: function (request, status, error) {
 						$('#overlay').remove();

@@ -255,6 +255,7 @@
                     success: function(d) {
 						$('#overlay').remove();
 						json_tabel(d);
+						toastpesan(d.responseText);
                     },
 					 error: function (request, status, error) {
 						$('#overlay').remove();

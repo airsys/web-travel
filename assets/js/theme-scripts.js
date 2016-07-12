@@ -989,7 +989,7 @@ function addCommas(nStr)
 }
 
 function base_url(){
-	return 'http://192.168.1.14/travelo/';
+	return 'http://192.168.1.13/travelo2/web-travel/';
 }
 
 var over = '<div id="overlay">' +
