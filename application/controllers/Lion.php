@@ -10,7 +10,7 @@ class Lion extends CI_Controller {
 		$this->load->library('form_validation');
 		$this->curl->http_header('token', '4e3c1905241d447a9dc23512b8067811');
 		$this->curl->option('TIMEOUT', 70000);
-		$this->url = 'http://54.169.218.195:8989/lion';		
+		$this->url = 'http://52.36.25.143:8989/lion';		
 	 }
 	 
 	 function search(){		
