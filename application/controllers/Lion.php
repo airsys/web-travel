@@ -8,9 +8,10 @@ class Lion extends CI_Controller {
 	        parent::__construct();
 	    $this->load->library('curl');		
 		$this->load->library('form_validation');
-		$this->curl->http_header('token', '4e3c1905241d447a9dc23512b8067811');
+    $this->config->load('api');
+		$this->curl->http_header('token', $this->config->item('api-token'));
 		$this->curl->option('TIMEOUT', 70000);
-		$this->url = 'http://52.36.25.143:8989/lion';		
+		$this->url = $this->config->item('api-url') .'lion';
 	 }
 	 
 	 function search(){		
