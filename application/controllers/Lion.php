@@ -11,7 +11,7 @@ class Lion extends CI_Controller {
     $this->config->load('api');
 		$this->curl->http_header('token', $this->config->item('api-token'));
 		$this->curl->option('TIMEOUT', 70000);
-		$this->url = $this->config->item('api-url') .'lion';
+		$this->url = $this->config->item('api-url') . 'lion';
 	 }
 	 
 	 function search(){		
