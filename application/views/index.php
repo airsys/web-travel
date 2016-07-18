@@ -55,8 +55,8 @@
     <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery-migrate-1.2.1.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.placeholder.js"></script>
     <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery-ui.1.10.4.min.js"></script>
-    
-    
+    <script var baseurl ="<?php echo base_url() ?>"></script>
+
 </head>
 <body>
     
