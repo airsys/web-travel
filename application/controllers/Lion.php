@@ -28,7 +28,7 @@ class Lion extends CI_Controller {
 			$json = $this->curl->simple_get("$this->url/search?from=$data[from]&to=$data[to]&date=$data[date]&adult=$data[adult]&child=$data[child]&infant=$data[infant]");
 			//$json = $this->jsondata();		
 			$array = json_decode ($json);
-			//print_r($array);die();
+			//print_r("$this->url/search?from=$data[from]&to=$data[to]&date=$data[date]&adult=$data[adult]&child=$data[child]&infant=$data[infant]");
 			
 			if( ( empty($array) || $array->code==404 || $array->code==204) ){
 				$code = 404;
@@ -133,6 +133,7 @@ class Lion extends CI_Controller {
 		
 		$json = $this->curl->simple_get("$this->url/get_price?flight_key=$data[key]");
 		//$json = $this->jsondata();
+		//echo "$this->url/get_price?flight_key=$data[key]";die();
 		
 		$array = json_decode ($json);
 		$hasil = array();
@@ -142,9 +143,12 @@ class Lion extends CI_Controller {
 			$hasil =  validation_errors();
 			$code = 400;
 		}else{
-			if( ( empty($array) || $array->code==404) ){
+			if( ( empty($array) || $array->code==404 || $array->code==204) ){
 				$code = 404;
-				$hasil = 'tidak ada penerbangan';
+				$hasil = 'seat not available';
+				if(empty($array)){
+					$code = 404;
+				}
 			} else{
 				$hasil = array('fare'=>$array->results->fare, 
 								'tax'=>$array->results->tax, 
