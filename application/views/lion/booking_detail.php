@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="description">
                                     <i class="icon soap-icon-longarrow-right"></i>
-                                    <span>View Hotels</span>
+                                    <span></span>
                                 </div>
                             </div>
                     </div>
@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="description">
                                     <i class="icon soap-icon-longarrow-right"></i>
-                                    <span>View Hotels</span>
+                                    <span></span>
                                 </div>
                             </div>
                     </div>
