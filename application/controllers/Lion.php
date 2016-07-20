@@ -129,16 +129,20 @@ class Lion extends CI_Controller {
 	
 	function get_fare(){		
 		$data = $this->input->post();
-		$this->form_validation->set_rules('key', 'KEY', 'required');
+		$key = '';
+		//$this->form_validation->set_rules('key[]', 'KEY[]', 'required');
 		
-		$json = $this->curl->simple_get("$this->url/get_price?flight_key=$data[key]");
+		for($i = 1; $i <= count($data['key'])-1; $i++){
+			$key .= '|'.$data['key'][$i];
+		}
+		$json = $this->curl->simple_get("$this->url/get_price?flight_key=$key");
 		//$json = $this->jsondata();
 		//echo "$this->url/get_price?flight_key=$data[key]";die();
 		
 		$array = json_decode ($json);
 		$hasil = array();
 		$code = 200; //$this->form_validation->run() 
-		if ($this->form_validation->run()== FALSE)
+		if (TRUE== FALSE)
 		{
 			$hasil =  validation_errors();
 			$code = 400;

@@ -324,19 +324,22 @@
 		}
 		
 		  function getfare(kursi){
-		  	var codekursi = '';
+		  	var codekursi = [];
 		  	var flightcount = 0;
 		  	var urutan = $(kursi).attr('data-kursi').split('_'); //1 urutan, 2 segmen, 3 flightcount, 4 seat
 		  	$('input:radio:not(.urutan'+urutan[1]+')').removeProp('checked');
 		  	for (i = 1; i <= urutan[3]; i++) {
 		  		if ($('input[name=berangkat_'+i+''+urutan[1]+']:checked').length > 0) { 
-		  			codekursi = $('input[name=berangkat_'+i+''+urutan[1]+']:checked').val()+'|'+codekursi;
+		  			//console.log('segmen');
+		  			codekursi[i] = $('input[name=berangkat_'+i+''+urutan[1]+']:checked').val();
 		  			$('#urutan'+urutan[1]).find('input[name="seat['+urutan[2]+']"]').val(urutan[4]);
 		  			$('#urutan'+urutan[1]).find('input[name="key['+urutan[2]+']"]').val($('input[name=berangkat_'+i+''+urutan[1]+']:checked').val());
 		  			flightcount ++;
+		  			//console.log(i+'*'+$('input[name=berangkat_'+i+''+urutan[1]+']:checked').val());
 		  		}
 			}
 			if(flightcount==urutan[3]){
+				
 				$(over).appendTo("#result");
 		  		$.ajax({
                     url:  base_url()+"Lion/get_fare",
@@ -353,7 +356,7 @@
 						$('#overlay').remove();
 						toastpesan(request.responseText);
 					}
-                });
+                })
 			}
 		  }
 		  
