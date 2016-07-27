@@ -330,7 +330,7 @@
 		  	$('input:radio:not(.urutan'+urutan[1]+')').removeProp('checked');
 		  	for (i = 1; i <= urutan[3]; i++) {
 		  		if ($('input[name=berangkat_'+i+''+urutan[1]+']:checked').length > 0) { 
-		  			//console.log('segmen');
+		  			//console.log('segmen' );
 		  			codekursi[i] = $('input[name=berangkat_'+i+''+urutan[1]+']:checked').val();
 		  			$('#urutan'+urutan[1]).find('input[name="seat['+urutan[2]+']"]').val(urutan[4]);
 		  			$('#urutan'+urutan[1]).find('input[name="key['+urutan[2]+']"]').val($('input[name=berangkat_'+i+''+urutan[1]+']:checked').val());

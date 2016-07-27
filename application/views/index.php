@@ -4,12 +4,12 @@
 <!--[if gt IE 9]><!-->  <html> <!--<![endif]-->
 <head>
     <!-- Page Title -->
-    <title>Travelo | Responsive HTML5 Travel Template</title>
+    <title>INDSITI | Tiket Murah</title>
     
     <!-- Meta Tags -->
     <meta charset="utf-8">
     <meta name="keywords" content="HTML5 Template" />
-    <meta name="description" content="Travelo | Responsive HTML5 Travel Template">
+    <meta name="description" content="INDSITI | Tiket Murah">
     <meta name="author" content="SoapTheme">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,8 +55,8 @@
     <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery-migrate-1.2.1.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.placeholder.js"></script>
     <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery-ui.1.10.4.min.js"></script>
-    
-    
+    <script type="text/javascript">var baseurl ="<?php echo base_url() ?>"</script>
+
 </head>
 <body>
     
