@@ -131,7 +131,7 @@ class Lion extends CI_Controller {
             ->set_output($hasil);
 	}
 	
-	function get_fare(){		
+	function get_fare(){	
 		$data = $this->input->post();
 		$key = '';
 		//$this->form_validation->set_rules('key[]', 'KEY[]', 'required');
@@ -140,7 +140,6 @@ class Lion extends CI_Controller {
 			$key .= '|'.$data['key'][$i];
 		}
 		$json = $this->curl->simple_get("$this->url/get_price?flight_key=$key");
-		//$json = $this->jsondata();
 		//echo "$this->url/get_price?flight_key=$data[key]";die();
 		
 		$array = json_decode ($json);
