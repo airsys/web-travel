@@ -1,161 +1,62 @@
-<?php 
-	//print_r($data);
-?>
-<div class="search-box-wrapper">
-    <div class="search-box container">
-        <ul class="search-tabs clearfix">
-            <li class="active"><a href="#flights-tab" data-toggle="tab">FLIGHTS</a></li>
-        </ul>
-        <div class="visible-mobile">
-            <ul id="mobile-search-tabs" class="search-tabs clearfix">
-                <li class="active"><a href="#flights-tab">FLIGHTS</a></li>
-            </ul>
-        </div>
-        
-        <div class="search-tab-content" id='cari'>
-            <div class="tab-pane fade active in" id="flights-tab">
-            	 <form id='form' class="contact-form" action="" method="post">
-                    <div class="row form-group">
-                        <div class="col-md-3">
-                            <label>Code Booking</label>
-                            <input required type="text" value="<?php echo $data->booking_code; ?>" name="code_booking" id="code_booking" class="input-text full-width">
-                        </div>
-						<div class="col-md-3">
-							<label>.</label>
-							<button type="submit" class="btn">SEND</button>
-						</div>
-                    </div>	                            
-                </form>
+ <div class="row">
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-yellow">
+        <div class="inner">
+          <h3><?php echo $data->booking_code; ?></h3>
 
-            </div>
+          <p>Code Booking</p>
         </div>
+        <div class="icon">
+          <i class="ion ion-ios-box"></i>
+        </div>
+        <a href="#" class="small-box-footer">Code Booking <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
     </div>
-</div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-red">
+        <div class="inner">
+          <h3 style="font-size: 20px;"><?php echo date("d-m-Y", $data->time_limit); ?><br><?php echo date("H:i", $data->time_limit); ?></h3>
+          <p>Payment Time Limit</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-android-calendar"></i>
+        </div>
+        <a href="#" class="small-box-footer">Payment Time Limit <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-aqua">
+        <div class="inner">
+          <h3><?php echo $data->payment_status; ?></h3>
 
-<div class="container sections">
-    <div class="blog-infinite">
-		<div class="post">
-			<div class="post-content-wrapper">
-				<div class="details" id="dashboard">
-				<div class="row block">
-					<div class="col-sm-6 col-md-3">
-                            <div class="fact blue">
-                                <div class="numbers counters-box">
-                                    <dl>
-                                        <dt id="codeboking"><?php echo $data->booking_code; ?></dt>
-                                        <dd>Code Booking</dd>
-                                    </dl>
-                                    <i class="icon soap-icon-card"></i>
-                                </div>
-                                <div class="description">
-                                    <i class="icon soap-icon-longarrow-right"></i>
-                                    <span></span>
-                                </div>
-                            </div>
-                    </div>
-					<div class="col-sm-6 col-md-3">
-                            <div class="fact red">
-                                <div class="numbers counters-box">
-                                    <dl>
-                                    	<?php 
-                                    		
-                                    	?>
-                                        <dt><?php echo date("d-m-Y", $data->time_limit); ?><br><?php echo date("H:i", $data->time_limit); ?></dt>
-                                        <dd>Payment Time Limit</dd>
-                                    </dl>
-                                    <i class="icon soap-icon-calendar"></i>
-                                </div>
-                                <div class="description">
-                                    <i class="icon soap-icon-longarrow-right"></i>
-                                    <span>Status payment: <?php echo $data->payment_status; ?></span>
-                                </div>
-                            </div>
-                    </div>
-					<div class="col-sm-6 col-md-3">
-                            <div class="fact green">
-                                <div class="numbers counters-box">
-                                    <dl>
-                                        <dt>Rp. <?php echo number_format($data->NTA); ?></dt>
-                                        <dd>NTA</dd>
-                                    </dl>
-                                    <i class="icon soap-icon-features"></i>
-                                </div>
-                                <div class="description">
-                                    <i class="icon soap-icon-longarrow-right"></i>
-                                    <span></span>
-                                </div>
-                            </div>
-                    </div>
-					<div class="col-sm-6 col-md-3">
-                            <div class="fact yellow">
-                                <div class="numbers counters-box">
-                                    <dl>
-                                        <dt><?php echo $data->area_depart; ?> - <?php echo $data->area_arrive; ?></dt>
-                                        <dd>A:<?php echo $data->adult; ?> | C:<?php echo $data->child; ?> | I:<?php echo $data->infant; ?></dd>
-                                    </dl>
-                                    <i class="icon soap-icon-plane"></i>
-                                </div>
-                                <div class="description">
-                                    <i class="icon soap-icon-friends"></i>
-                                    <span>.</span>
-                                </div>
-                            </div>
-                    </div>
-				</div>
+          <p>Status payment</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-android-cart"></i>
+        </div>
+        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-green">
+        <div class="inner">
+          <h3 style="font-size: 29px;">Rp <?php echo number_format($data->NTA); ?></h3>
 
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<script type="text/javascript">
-		
-    tjq(document).ready(function($) {		
-		var over = '<div id="overlay">' +
-        '<img id="loading" src="http://sstravelhouse.com/blog/wp-content/uploads/2015/05/airoplane.gif"/>' +
-        '</div>';
-		 $("#form").on("submit", function(event) {
-				$(over).appendTo("#cari");
-                event.preventDefault(); 
-                $.ajax({
-                    url: base_url()+"Lion/booking_detail",
-                    type: "post",
-                    data: {
-						code : $('#code_booking').val()
-						},
-                    success: function(d) {
-						$('#overlay').remove();
-						window.location = base_url()+"Lion/booking_detail/"+$('#code_booking').val()
-                    },
-					 error: function (request, status, error) {
-						$('#overlay').remove();
-						toastpesan(request.responseText);
-					}
-                });
-				
-          });
-		  
-		function toastpesan(pesan){
-			toastr.options = {
-			  "closeButton": true,
-			  "debug": false,
-			  "newestOnTop": false,
-			  "progressBar": false,
-			  "positionClass": "toast-bottom-center",
-			  "preventDuplicates": false,
-			  "onclick": null,
-			  "showDuration": "300",
-			  "hideDuration": "1000",
-			  "timeOut": "5000",
-			  "extendedTimeOut": "1000",
-			  "showEasing": "swing",
-			  "hideEasing": "linear",
-			  "showMethod": "fadeIn",
-			  "hideMethod": "fadeOut"
-			}
-			toastr["info"](pesan);
-		}
-    });
-	
-</script>
+          <p style="font-size: 21px;">N T A</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-bag"></i>
+        </div>
+        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+  </div>
+  <!-- /.row -->

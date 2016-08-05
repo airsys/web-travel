@@ -1,161 +1,175 @@
-<div class="search-box-wrapper">
-    <div class="search-box container">
-        <ul class="search-tabs clearfix">
-            <li class="active"><a href="#flights-tab" data-toggle="tab">FLIGHTS</a></li>
-        </ul>
-        <div class="visible-mobile">
-            <ul id="mobile-search-tabs" class="search-tabs clearfix">
-                <li class="active"><a href="#flights-tab">FLIGHTS</a></li>
-            </ul>
-        </div>
-        
-        <div class="search-tab-content" id='cari'>
-            <div class="tab-pane fade active in" id="flights-tab">
-            	 <form class="contact-form" action="" id="form" method="post">
-                    <h3>Contact Person</h3>
-                    <div class="row form-group">
-                        <div class="col-xs-2">
-                            <label>Title</label>
-                            <select required name='contact_title' id="contact_title" class="full-width">
-								<option value='Mr'>Mr</option>
-								<option value='Mrs'>Mrs</option>
-								<option value='Ms'>Ms</option>
-							</select>
-                        </div>
-                        <div class="col-xs-4">
-                            <label>Name</label>
-                            <input required type="text" name="contact_name" id="contact_name" class="input-text full-width">
-                        </div>
-                        <div class="col-xs-3">
-                            <label>contact phone</label>
-                            <input required type="text" name="contact_phone" id="contact_phone" class="input-text full-width">
-                        </div>
-                        <div class="col-xs-3">
-                            <label>contact phone other</label>
-                            <input type="text" name="contact_phone_other" id="contact_phone_other" class="input-text full-width">
-                        </div>
-                    </div>
-                    <hr>
-                    <h3>Passenger</h3>
-                    
-                    <?php //ADULT
-                    for($i = 1; $i <= $data['adult'] ; $i++){ ?>
-						<div class="row form-group">
-	                        <div class="col-xs-2">
-	                            <label>adult title <?php echo $i; ?></label>
-	                            <select required name='adult_title_<?php echo $i; ?>' id="adult_title_<?php echo $i; ?>" class="full-width">
-									<option value='Mr'>Mr</option>
-									<option value='Mrs'>Mrs</option>
-									<option value='Ms'>Ms</option>
-								</select>
-	                        </div>
-	                        <div class="col-xs-4">
-	                            <label>adult name <?php echo $i; ?></label>
-	                            <input required type="text" name="adult_name_<?php echo $i; ?>" id="adult_name_<?php echo $i; ?>" class="input-text full-width">
-	                        </div>
-	                        <div class="col-xs-3">
-	                            <label>adult special request <?php echo $i; ?></label>
-	                            <input type="text" name="adult_special_request_<?php echo $i; ?>" id="adult_special_request_<?php echo $i; ?>" class="input-text full-width">
-	                        </div>
-	                    </div>	
-					<?php } ?>
-                    
-                    <?php //CHILD
-                    for($i = 1; $i <= $data['child'] ; $i++){ ?>
-                    <div class="row form-group">
-                        <div class="col-xs-2">
-                            <label>child title <?php echo $i; ?></label>
-                            <select required name='child_title_<?php echo $i; ?>' id="child_title_<?php echo $i; ?>" class="full-width">
-								<option value='Mstr'>Mstr</option>
-								<option value='Miss'>Miss</option>
-							</select>
-                        </div>
-                        <div class="col-xs-4">
-                            <label>child name <?php echo $i; ?></label>
-                            <input required type="text" name="child_name_<?php echo $i; ?>" id="child_name_<?php echo $i; ?>" class="input-text full-width">
-                        </div>
-                        <div class="col-xs-3">
-                            <label>child special request <?php echo $i; ?></label>
-                            <input type="text" name="child_special_request_<?php echo $i; ?>" id="child_special_request_<?php echo $i; ?>" class="input-text full-width">
-                        </div>
-                    </div>
-                    <?php } ?>
-                    
-                    <?php //INFANT
-                    for($i = 1; $i <= $data['infant'] ; $i++){ ?>
-                    <div class="row form-group">
-                        <div class="col-xs-2">
-                            <label>infant title <?php echo $i; ?></label>
-                            <select required name='infant_title_<?php echo $i; ?>' id="infant_title_<?php echo $i; ?>" class="full-width">
-								<option value='Mstr'>Mstr</option>
-								<option value='Miss'>Miss</option>
-							</select>
-                        </div>
-                        <div class="col-xs-4">
-                            <label>infant name <?php echo $i; ?></label>
-                            <input required type="text" name="infant_name_<?php echo $i; ?>" id="infant_name_<?php echo $i; ?>" class="input-text full-width">
-                        </div>
-                        <div class="col-xs-3">
-                            <label>infant birth date <?php echo $i; ?></label>
-                            <input required type="text" name="infant_birth_date_<?php echo $i; ?>" id="infant_birth_date_<?php echo $i; ?>" class="date-picker input-text full-width">
-                        </div>
-                        <div class="col-xs-3">
-                            <label>child special request <?php echo $i; ?></label>
-                            <input type="text" name="infant_special_request_<?php echo $i; ?>" id="infant_special_request_<?php echo $i; ?>" class="input-text full-width">
-                        </div>
-                    </div>
-                    <?php } ?>
-                    <hr>
-                    
-                    <input type="hidden" name="flight_key" value="<?php echo $data['key']; ?>" />
-                    <button type="submit" class="btn-large full-width">SEND</button>
-            </form>
-
-            </div>
-        </div>
+<div class="box" id="booking-form">
+  <div class="box-header with-border">
+    <h3 class="box-title">Booking Form</h3>
+    <div class="box-tools pull-right">
+      <button class="btn btn-box-tool" data-toggle="tooltip" data-widget="collapse" title="Collapse" type="button"><i class="fa fa-minus"></i>
+      </button>
+      <button class="btn btn-box-tool" data-toggle="tooltip" data-widget="remove" title="Remove" type="button"><i class="fa fa-times"></i>
+      </button>
     </div>
+  </div>
+  <form id="form" method="post" action="">
+    <div class="box-body">
+      <h3>Contact Person</h3>
+      <div class="row">
+        <div class="col-md-2 col-sm-3 col-xs-3">
+          <div class="form-group">
+            <label>Title</label>
+            <select required id='contact_title' name='contact_title' class="form-control">
+              <option value="Mr">Mr</option>
+              <option value="Mrs">Mrs</option>
+              <option value="Ms">Ms</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-5 col-sm-9 col-xs-9">
+          <div class="form-group">
+            <label>Name</label>
+            <input required type='text' id='contact_name' name='contact_name' class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>CONTACT PHONE</label>
+            <input required type='text' id='contact_phone' name='contact_phone' class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>CONTACT PHONE OTHER</label>
+            <input type='text' id='contact_phone_other' name='contact_phone_other' class="form-control" />
+          </div>
+        </div>
+      </div>
+      <hr>
+      <h3>Passenger</h3>
+      <!-- >Adult</!-->
+      <?php for($i = 1; $i <= $data['adult'] ; $i++){ ?>
+      <div class="row">
+        <div class="col-md-2 col-sm-3 col-xs-3">
+          <div class="form-group">
+            <label>Adult Title <?php echo $i; ?></label>
+            <select required id='adult_title_<?php echo $i; ?>' name='adult_title_<?php echo $i; ?>' class="form-control">
+              <option value="Mr">Mr</option>
+              <option value="Mrs">Mrs</option>
+              <option value="Ms">Ms</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-5 col-sm-9 col-xs-9">
+          <div class="form-group">
+            <label>Adult Name <?php echo $i; ?></label>
+            <input required type='text' id='adult_name_<?php echo $i; ?>' name='adult_name_<?php echo $i; ?>' class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Adult Special Request <?php echo $i; ?></label>
+            <input type='text' id='adult_special_request_<?php echo $i; ?>' name='adult_special_request_<?php echo $i; ?>' class="form-control" />
+          </div>
+        </div>
+      </div>
+      <?php } ?>
+      <!-- >Chlid</!-->
+      <?php for($i = 1; $i <= $data['child'] ; $i++){ ?>
+      <div class="row">
+        <div class="col-md-2 col-sm-3 col-xs-3">
+          <div class="form-group">
+            <label>Child Title <?php echo $i; ?></label>
+            <select required id='chlid_title_<?php echo $i; ?>' name='chlid_title_<?php echo $i; ?>' class="form-control">
+              <option value="Mstr">Mstr</option>
+              <option value="Miss">Miss</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-5 col-sm-9 col-xs-9">
+          <div class="form-group">
+            <label>Child Name <?php echo $i; ?></label>
+            <input required type='text' id='chlid_name_<?php echo $i; ?>' name='chlid_name_<?php echo $i; ?>' class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Child Special Request <?php echo $i; ?></label>
+            <input type='text' id='chlid_special_request_<?php echo $i; ?>' name='chlid_special_request_<?php echo $i; ?>' class="form-control" />
+          </div>
+        </div>
+      </div>
+      <?php } ?>
+      <!-- >Infant</!-->
+      <?php for($i = 1; $i <= $data['infant'] ; $i++){ ?>
+      <div class="row">
+        <div class="col-md-2 col-sm-3 col-xs-3">
+          <div class="form-group">
+            <label>Infant Title <?php echo $i; ?></label>
+            <select required id='infant_title_<?php echo $i; ?>' name='infant_title_<?php echo $i; ?>' class="form-control">
+              <option value="Mstr">Mstr</option>
+              <option value="Miss">Miss</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-5 col-sm-9 col-xs-9">
+          <div class="form-group">
+            <label>Infant Name <?php echo $i; ?></label>
+            <input required type='text' id='infant_name_<?php echo $i; ?>' name='infant_name_<?php echo $i; ?>' class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Infant Birth Date <?php echo $i; ?></label>
+            <div class="input-group">
+              <div class="input-group date">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input required id='infant_birth_date_<?php echo $i; ?>' name='infant_birth_date_<?php echo $i; ?>' type="text" class="datepicker form-control pull-right">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Infant Special Request <?php echo $i; ?></label>
+            <input type='text' id='infant_special_request_<?php echo $i; ?>' name='infant_special_request_<?php echo $i; ?>' class="form-control" />
+          </div>
+        </div>
+      </div>
+      <?php } ?>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer">
+      <input type="hidden" name="flight_key" value="<?php echo $data['key']; ?>" />
+      <button class="btn btn-flat btn-success btn-lg pull-right"><i class="fa fa-paper-plane"></i> | BOOKING</button>
+    </div>
+  </form>
+  <!-- /.box-footer-->
 </div>
+<!-- /.box -->
 
 <script>
-tjq(document).ready(function($) {
-	function toastpesan(pesan){
-			toastr.options = {
-			  "closeButton": true,
-			  "debug": false,
-			  "newestOnTop": false,
-			  "progressBar": false,
-			  "positionClass": "toast-bottom-center",
-			  "preventDuplicates": false,
-			  "onclick": null,
-			  "showDuration": "300",
-			  "hideDuration": "1000",
-			  "timeOut": "5000",
-			  "extendedTimeOut": "1000",
-			  "showEasing": "swing",
-			  "hideEasing": "linear",
-			  "showMethod": "fadeIn",
-			  "hideMethod": "fadeOut"
-			}
-			toastr["info"](pesan);
-		}
-	
-	$("#form").on("submit", function(event) {
-		$(over).appendTo("#cari");
+$(document).ready(function(){
+    $('.datepicker').datepicker({
+      autoclose: true,
+	  format: 'dd-mm-yyyy', 
+	   todayHighlight: true,
+    });
+    
+    $("#form").on("submit", function(event) {
+        $(over).appendTo("#booking-form");
         event.preventDefault(); 
         $.ajax({
-            url:  base_url()+"Lion/booking_save",
+            url:  base_url()+"lion/booking_save",
             type: "post",
             data: $(this).serialize(),
             success: function(d) {
-				$('#overlay').remove();
-				window.location = base_url()+"Lion/booking_detail/"+d;
+            	//window.location = base_url()+"Lion/booking_detail/"+d;
+                $('#overlay').remove();
             },
-			 error: function (request, status, error) {
-				$('#overlay').remove();
-				toastpesan(request.responseText);
-			}
+             error: function (request, status, error) {
+                $('#overlay').remove();
+            }
         });
-		
+        
   });
 });
 </script>
