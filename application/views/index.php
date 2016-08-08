@@ -351,6 +351,8 @@
 	<script src="<?php echo base_url(); ?>/assets/plugins/datepicker/bootstrap-datepicker.js"></script>
 	<!-- Select2 -->
 	<script src="<?php echo base_url(); ?>/assets/plugins/select2/select2.full.min.js"></script>
+	<!-- BaseUrl -->
+	<script type="text/javascript">var base_url ="<?php echo base_url() ?>"</script>
 </body>
 
 </html>

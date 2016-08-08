@@ -5222,6 +5222,10 @@ class Lion extends CI_Controller {
 }
 		';
 	}
+
+	function jsonbookingdetail(){
+		
+	}
 }
 
 

@@ -149,7 +149,7 @@ $(document).ready(function(){
     }); 
     $(".bandara").select2();
     var bandara = [] ;
-    $.get( base_url()+'assets/ajax/iata_bandara.json', function(data) {
+    $.get( base_url+'assets/ajax/iata_bandara.json', function(data) {
         $.each(data, function(i, item) {
             bandara [item.code_route]= item.city + ' ' + item.name_airport ;
             $(".bandara").append($('<option>', {value: item.code_route, text: item.code_route +' - '+ item.city + ' ' + item.name_airport}));
@@ -168,7 +168,7 @@ $(document).ready(function(){
         event.preventDefault(); 
         $(".result").empty();
         $.ajax({
-            url:  base_url()+"Lion/search",
+            url:  base_url+"Lion/search",
             type: "post",
             data: $(this).serialize(),
             success: function(d) {
@@ -211,8 +211,8 @@ $(document).ready(function(){
                                     '<div class="row">'+
                                         '<div class="col-md-12">'+
                                             '<div class="col-md-10 col-sm-10 col-xs-12">'+
-                                                '<div class ="pull-right container-loading_'+j+'" ><label> Loading ...<\/label><\/div>'+ 
-                                                '<div class="pull-right container-fare_'+j+'">Rp <span id="fare_'+j+'"><\/span>(fare)+Rp <span id="tax_'+j+'"><\/span>(tax) <label>TOTAL = Rp <span id="total_'+j+'"><\/span><\/label><\/div>'+
+                                                '<div class ="pull-right container-loading_'+j+'" ><label> &nbsp; Loading ...<\/label><\/div>'+ 
+                                                '<div class="pull-right container-fare_'+j+'">Rp <span id="fare_'+j+'"><\/span>(fare)+Rp <span id="tax_'+j+'"><\/span>(tax) <label>TOTAL = Rp <span id="total_'+j+'"> <\/span><\/label><\/div>'+
                                             '<\/div>'+                           
                                         '<button flight_key="" type="button" class="btn-booking button-booking_'+j+' disabled col-md-2 col-sm-2 col-xs-12 btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>'+
                                         '<\/div>'+
@@ -266,7 +266,7 @@ $(document).ready(function(){
                         $(over).appendTo(".result");
                         $(".container-loading_"+data[0]).show();
                         $.ajax({
-                            url:  base_url()+"Lion/get_fare",
+                            url:  base_url+"Lion/get_fare",
                             type: "post",
                             data: {
                                 key : flight_key
@@ -298,7 +298,6 @@ $(document).ready(function(){
         
         function booking(){
         	$('#booking').submit()
-            //window.location = base_url()+"Lion/booking?"+$('#booking').serialize();
         }
     }
     

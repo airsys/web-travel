@@ -162,7 +162,7 @@ $(document).ready(function(){
             type: "post",
             data: $(this).serialize(),
             success: function(d) {
-            	//window.location = base_url()+"Lion/booking_detail/"+d;
+            	window.location = base_url()+"Lion/booking_detail/"+d;
                 $('#overlay').remove();
             },
              error: function (request, status, error) {
