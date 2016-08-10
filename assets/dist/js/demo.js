@@ -342,8 +342,7 @@
 function base_url(){
 	return 'http://localhost/travelo2/web-travel/';
 }
-var over = '<div id="overlay">' +
-            '<img id="loading" src="http://www.swellalerts.com/img/plane_loading.gif"/>' +
+var over = '<div id="overlay" class="">' +
             '</div>';
 //add comas
 function addCommas(nStr)
@@ -357,4 +356,12 @@ function addCommas(nStr)
 	  x1 = x1.replace(rgx, '$1' + ',' + '$2');
 	 }
 	 return x1 + x2;
+}
+
+//show alert()
+function showalert(message,alerttype) {
+    $('#alert').append('<div id="alertdiv" class="alert alert-' +  alerttype + '"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>');
+    setTimeout(function() {
+      $("#alertdiv").remove();
+    }, 6000);
 }

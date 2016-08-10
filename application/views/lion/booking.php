@@ -1,4 +1,5 @@
 <div class="box" id="booking-form">
+  <div id="alert"></div>
   <div class="box-header with-border">
     <h3 class="box-title">Booking Form</h3>
     <div class="box-tools pull-right">
@@ -158,11 +159,15 @@ $(document).ready(function(){
         $(over).appendTo("#booking-form");
         event.preventDefault(); 
         $.ajax({
-            url:  base_url()+"lion/booking_save",
+            url:  base_url+"lion/booking_save",
             type: "post",
             data: $(this).serialize(),
-            success: function(d) {
-            	window.location = base_url()+"Lion/booking_detail/"+d;
+            success: function(d, textStatus, xhr) {
+            	if(d !== undefined && d !== null && d !== "" && xhr.status==200){
+					window.location = base_url+"Lion/booking_detail/"+d;
+				} else{
+					showalert(d,'warning')
+				}         	
                 $('#overlay').remove();
             },
              error: function (request, status, error) {

@@ -1,9 +1,6 @@
 <div class="box" id="cari">
 	<div class="box-header with-border">
 		<h3 class="box-title">Cari</h3>
-		<div class="box-tools pull-right">
-			<button class="btn btn-box-tool" data-toggle="tooltip" data-widget="collapse" title="Collapse" type="button"><i class="fa fa-minus"></i></button>
-		</div>
 	</div>
 	<form id="form" method="post" name="form">
 		<div class="box-body">
@@ -128,7 +125,7 @@
 </div><!-- /.box -->
 <div class="box box-primary center-block" style="width: 100%">
 	<div class="box-header with-border">
-		<h3 class="box-title">Jadwal</h3>
+		<h3 class="box-title"></h3>
 	</div><!-- /.box-header -->
 	<div class="box-body">
 		<div id="alert"></div>
@@ -192,7 +189,7 @@ $(document).ready(function(){
                     if(seat[value[x]]!==undefined){
                         $($('#kelas_'+j+'_'+i))
                           .append($('<option value="'+seat[value[x]].flight_key+'">')
-                          .text(value[x]+' - '+seat[value[x]].available));
+                          .text('class '+value[x]+' - '+seat[value[x]].available));
                     }
                 }
         }); 
@@ -211,7 +208,7 @@ $(document).ready(function(){
                                     '<div class="row">'+
                                         '<div class="col-md-12">'+
                                             '<div class="col-md-10 col-sm-10 col-xs-12">'+
-                                                '<div class ="pull-right container-loading_'+j+'" ><label> &nbsp; Loading ...<\/label><\/div>'+ 
+                                                '<div class ="pull-right container-loading_'+j+'" ><i class="fa fa-refresh fa-spin"></i> Loading<\/div>'+ 
                                                 '<div class="pull-right container-fare_'+j+'">Rp <span id="fare_'+j+'"><\/span>(fare)+Rp <span id="tax_'+j+'"><\/span>(tax) <label>TOTAL = Rp <span id="total_'+j+'"> <\/span><\/label><\/div>'+
                                             '<\/div>'+                           
                                         '<button flight_key="" type="button" class="btn-booking button-booking_'+j+' disabled col-md-2 col-sm-2 col-xs-12 btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>'+
@@ -230,13 +227,12 @@ $(document).ready(function(){
                 }
                 tampilan2 = '<div class="panel-body '+color+'">'+
                                 '<div class="col-md-6 text-center">'+
-                                    '<h4><span id="depart_'+j+'_'+i+'"><\/span> | <span id="timedepart_'+j+'_'+i+'"><\/span> <br>to<br> <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h4>'+
+                                    '<h4><span id="depart_'+j+'_'+i+'"><\/span> | <span id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h4>'+
                                 '<\/div>'+
                                 '<div class="col-md-3 col-xs-6">'+ 
-                                    '<label><img id="image_'+j+'_'+i+'" src="" height="42" alt="Cinque" /><br><span id="flightid_'+j+'_'+i+'"><\/span><\/label> '+                
+                                    '<label><img id="image_'+j+'_'+i+'" src="" height="36" alt="" />&nbsp;<span id="flightid_'+j+'_'+i+'"><\/span><\/label> '+                
                                 '<\/div>'+
                                 '<div class="col-md-2 col-xs-6"> '+
-                                    '<label>Class<\/label>'+
                                     '<select data="'+j+'_'+i+'_'+data.flight_count+'" id="kelas_'+j+'_'+i+'" class="kelas form-control" style="width: 100%;">'+
                                         '<option value="">Pilih kelas<\/option>'+
                                     '<\/select>'+            
@@ -263,7 +259,7 @@ $(document).ready(function(){
                     flight_key[x] = $('#kelas_'+data[0]+'_'+x).val();
                     flightcount++;
                     if(flightcount == data[2]){
-                        $(over).appendTo(".result");
+                        $(over).appendTo("#group"+data[0]);
                         $(".container-loading_"+data[0]).show();
                         $.ajax({
                             url:  base_url+"Lion/get_fare",
@@ -284,6 +280,7 @@ $(document).ready(function(){
                              error: function (request, status, error) {
                                 $('#overlay').remove();
                                 showalert(error,'warning');
+                                $(".container-loading_"+data[0]).hide();
                             }
                         });
                     }
@@ -301,12 +298,6 @@ $(document).ready(function(){
         }
     }
     
-    function showalert(message,alerttype) {
-	    $('#alert').append('<div id="alertdiv" class="alert alert-' +  alerttype + '"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>');
-	    setTimeout(function() {
-	      $("#alertdiv").remove();
-	    }, 6000);
-	}
     
 });
 </script>

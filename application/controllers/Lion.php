@@ -230,13 +230,12 @@ class Lion extends CI_Controller {
 			
 			$array = json_decode ($json);
 			
-			if( ( empty($array) || $array->code==404 || $array->code==204) ){
-				$code = $array->code;
-				$hasil = 'terjadi error saat input';
-			} else{
+			if( ( ! empty($array) && $array->code==200) ){
 				$hasil = $array->results->booking_code;
+			} else{
+				$hasil = $array->results;
 			}
-			
+			$code = $array->code;
 		}
 		return $this->output
 	            ->set_content_type('text/html')
@@ -245,11 +244,12 @@ class Lion extends CI_Controller {
 	}
 	
 	function booking_detail($code=00){
-		$json = $this->_boking_detail($code);
-		$array = json_decode($json);
+		$bandara = $this->_bandara();
+		$array = $this->_boking_detail($code);
 		$data = array('content'=>'lion/booking_detail',
 					  'title'=>'Booking Details',
-					  'data'=>$array->results,
+					  'data'=>$array,
+					  'bandara'=>$bandara,
 					);
 		
 		$this->load->view("index",$data);
@@ -259,7 +259,19 @@ class Lion extends CI_Controller {
 		$plorp  = substr(strrchr($this->url,'/'), 1);
 		$this->url = substr($this->url, 0, - strlen($plorp));
 		$json = $this->curl->simple_get($this->url."manage/book/$code");
-		return "$json";
+		$json = json_decode($json);
+		if(empty($json->error))	return $json->results;
+			else return NULL;
+	}
+	
+	private function _bandara(){
+		$str = file_get_contents(base_url().'assets/ajax/iata_bandara.json');
+		$bandara = json_decode($str,TRUE);
+		$return = array();
+		foreach($bandara as $val){
+			$return[$val['code_route']] = $val;
+		}
+		return $return;
 	}
 	
 	function index(){

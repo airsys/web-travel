@@ -508,6 +508,7 @@ if ( ! function_exists('set_status_header'))
 			$stati = array(
 				100	=> 'Continue',
 				101	=> 'Switching Protocols',
+				103	=> 'Checkpoint',
 
 				200	=> 'OK',
 				201	=> 'Created',
