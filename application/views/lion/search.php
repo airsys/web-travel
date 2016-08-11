@@ -115,7 +115,7 @@
 			<button class="btn btn-flat btn-success btn-lg pull-right"><i class="fa fa-search"></i> | SEARCH</button>
 		</div>
 	</form>
-	<form id="booking" action="<?php echo base_url()?>lion/booking" method="post">
+	<form id="booking" action="<?php echo base_url()?>airlines/booking" method="post">
 		<input id='h_from' name='from' type="hidden" value=''> 
 		<input id='h_to' name='to' type="hidden" value=''> 
 		<input id='h_date' name='date' type="hidden" value=''> 
@@ -168,7 +168,7 @@ $(document).ready(function(){
         event.preventDefault(); 
         $(".result").empty();
         $.ajax({
-            url:  base_url+"Lion/search",
+            url:  base_url+"airlines/search",
             type: "post",
             data: $(this).serialize(),
             success: function(d) {
@@ -265,7 +265,7 @@ $(document).ready(function(){
                         $(over).appendTo("#group"+data[0]);
                         $(".container-loading_"+data[0]).show();
                         $.ajax({
-                            url:  base_url+"Lion/get_fare",
+                            url:  base_url+"airlines/get_fare",
                             type: "post",
                             data: {
                                 key : flight_key

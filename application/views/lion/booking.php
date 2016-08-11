@@ -159,12 +159,12 @@ $(document).ready(function(){
         $(over).appendTo("#booking-form");
         event.preventDefault(); 
         $.ajax({
-            url:  base_url+"lion/booking_save",
+            url:  base_url+"airlines/booking_save",
             type: "post",
             data: $(this).serialize(),
             success: function(d, textStatus, xhr) {
             	if(d !== undefined && d !== null && d !== "" && xhr.status==200){
-					window.location = base_url+"Lion/booking_detail/"+d;
+					window.location = base_url+"airlines/booking_detail/"+d;
 				} else{
 					showalert(d,'warning')
 				}         	

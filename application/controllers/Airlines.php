@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Lion extends CI_Controller {
+class Airlines extends CI_Controller {
 	private $url ;
 	 function __construct() {
 	        parent::__construct();

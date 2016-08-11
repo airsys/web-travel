@@ -182,7 +182,7 @@
     	href = window.location.href;
 		$("#booking_code").val(href.substr(href.lastIndexOf('/') + 1));
     	$("#cek").on("click", function(event) {
-    		window.location = base_url+"Lion/booking_detail/"+$("#booking_code").val();
+    		window.location = base_url+"airlines/booking_detail/"+$("#booking_code").val();
     	});
     	
     </script>
