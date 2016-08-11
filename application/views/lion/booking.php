@@ -11,38 +11,6 @@
   </div>
   <form id="form" method="post" action="">
     <div class="box-body">
-      <h3>Contact Person</h3>
-      <div class="row">
-        <div class="col-md-2 col-sm-3 col-xs-3">
-          <div class="form-group">
-            <label>Title</label>
-            <select required id='contact_title' name='contact_title' class="form-control">
-              <option value="Mr">Mr</option>
-              <option value="Mrs">Mrs</option>
-              <option value="Ms">Ms</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-5 col-sm-9 col-xs-9">
-          <div class="form-group">
-            <label>Name</label>
-            <input required type='text' id='contact_name' name='contact_name' class="form-control" />
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>CONTACT PHONE</label>
-            <input required type='text' id='contact_phone' name='contact_phone' class="form-control" />
-          </div>
-        </div>
-        <div class="col-md-2 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>CONTACT PHONE OTHER</label>
-            <input type='text' id='contact_phone_other' name='contact_phone_other' class="form-control" />
-          </div>
-        </div>
-      </div>
-      <hr>
       <h3>Passenger</h3>
       <!-- >Adult</!-->
       <?php for($i = 1; $i <= $data['adult'] ; $i++){ ?>
@@ -136,6 +104,38 @@
         </div>
       </div>
       <?php } ?>
+      <hr />
+      <h3>Contact Person</h3>
+      <div class="row">
+        <div class="col-md-2 col-sm-3 col-xs-3">
+          <div class="form-group">
+            <label>Title</label>
+            <select required id='contact_title' name='contact_title' class="form-control">
+              <option value="Mr">Mr</option>
+              <option value="Mrs">Mrs</option>
+              <option value="Ms">Ms</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-5 col-sm-9 col-xs-9">
+          <div class="form-group">
+            <label>Name</label>
+            <input required type='text' id='contact_name' name='contact_name' class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>CONTACT PHONE</label>
+            <input required type='text' id='contact_phone' name='contact_phone' class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>CONTACT PHONE OTHER</label>
+            <input type='text' id='contact_phone_other' name='contact_phone_other' class="form-control" />
+          </div>
+        </div>
+      </div>
     </div>
     <!-- /.box-body -->
     <div class="box-footer">

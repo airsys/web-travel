@@ -359,8 +359,8 @@ function addCommas(nStr)
 }
 
 //show alert()
-function showalert(message,alerttype) {
-    $('#alert').append('<div id="alertdiv" class="alert alert-' +  alerttype + '"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>');
+function showalert(message,alerttype,id='#alert') {
+    $(id).append('<div id="alertdiv" class="alert alert-' +  alerttype + '"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>');
     setTimeout(function() {
       $("#alertdiv").remove();
     }, 6000);

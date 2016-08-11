@@ -42,22 +42,52 @@
 	</style>
 </head>
 
-<body class="skin-blue sidebar-collapse sidebar-mini fixed">
+<body class="hold-transition skin-black layout-top-nav">
 	<!-- Site wrapper -->
 	<div class="wrapper">
 		<header class="main-header">
-			<!-- Logo -->
-			<a href="<?php echo base_url(); ?>/assets/index2.html" class="logo">
-				<!-- mini logo for sidebar mini 50x50 pixels --><span class="logo-mini"><b>IN</b>TI</span>
-				<!-- logo for regular state and mobile devices --><span class="logo-lg"><b>IND</b>SITI</span> </a>
-			<!-- Header Navbar: style can be found in header.less -->
 			<nav class="navbar navbar-static-top">
-				<!-- Sidebar toggle button-->
-				<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
-				<div class="navbar-custom-menu">
-					
-				</div>
-			</nav>
+		      <div class="container">
+		        <div class="navbar-header">
+		          <a href="../../index2.html" class="navbar-brand"><b>IND</b>SITI</a>
+		          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+		            <i class="fa fa-bars"></i>
+		          </button>
+		        </div>
+
+		        <!-- Collect the nav links, forms, and other content for toggling -->
+		        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+		          <ul class="nav navbar-nav">
+		            <li class="active"><a href="<?php echo base_url() ?>">Search Ticket <span class="sr-only">(current)</span></a></li>
+		            <li class=""><a href="<?php echo base_url().'lion/booking_detail' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
+		          </ul>
+		        </div>
+		        <!-- /.navbar-collapse -->
+		        <!-- Navbar Right Menu -->
+		        <div class="navbar-custom-menu">
+		          <ul class="nav navbar-nav">
+		            <!-- User Account Menu -->
+		            <li id="login-header" class="show-modal dropdown user user-menu">
+		              <!-- Menu Toggle Button -->
+		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+		                <span class="hidden-xs">
+		                	<?php 
+		                		if($this->ion_auth->logged_in()){
+									echo "<span id='logout-btn-header'>Logout</span>";
+								}else {
+									echo "<span id='login-btn-header'>Login</span>";
+								}
+		                	?>
+		                </span>
+		              </a>
+		            </li>
+		          </ul>
+		        </div>
+		        <!-- /.navbar-custom-menu -->
+		      </div>
+		      <!-- /.container-fluid -->
+		    </nav>
 		</header>
 		<!-- =============================================== ASIDE -->
 		<!-- Left side column. contains the sidebar -->
@@ -79,12 +109,81 @@
 		</div>
 		<!-- /.content-wrapper -->
 		<footer class="main-footer">
-			<div class="pull-right hidden-xs"> <b>Version Pra Alpha</b> 0.0.1 </div> <strong>Copyright &copy; 2016 <a href="http://indsiti.com">INDSITI Studio</a>.</strong> All rights reserved. </footer>
-		
-		<!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
-		<div class="control-sidebar-bg"></div>
+	    </footer>
 	</div>
+	
+	<?php if($this->ion_auth->logged_in()==0){ ?>
+	<!-- Modal -->
+	<div id="modal-content" class="modal fade modal-info" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog modal-sm" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <p class="modal-title" id="myModalLabel">Sign in to start your session</p>
+	      </div>
+	          <!-- form start -->
+          <form id="form-login" role="form">
+		      <div class="modal-body">
+	              <div class="box-body">
+	              	<div id="login-warning"></div>
+	                <div class="form-group">
+	                  <label for="InputEmail1">Email address</label>
+	                  <input name="identity" type="email" class="form-control" id="InputEmail1" placeholder="Enter email">
+	                </div>
+	                <div class="form-group">
+	                  <label for="InputPassword1">Password</label>
+	                  <input name="password" type="password" class="form-control" id="InputPassword1" placeholder="Password">
+	                </div>
+	                <div class="checkbox">
+	                  <label>
+	                    <input type="checkbox" name="remember" value="1"> Remember me
+	                  </label>
+	                </div>
+	              </div>
+	              <!-- /.box-body -->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button id="login" type="button" class="btn btn-success">Sign in</button>
+		      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+	<script>
+		$('.show-modal').on('click', function() {
+		    callmodal();
+		});	
+		function callmodal(){
+			if(login==0) $('#modal-content').modal('show');
+		}
+		$('#login').on('click', function() {
+		    $.ajax({
+                url:  base_url+"auth/login_ajax",
+                type: "post",
+                data: $("#form-login").serialize(),
+                success: function(d,textStatus, xhr) {
+                   if(xhr.status==200 && d.data==1){
+				   	 login = 1;
+				   	 $('#login-btn-header').text('Logout');
+				   	 showalert(d.message,'success','#login-warning');
+				   	 setTimeout(function() {
+					     $('#modal-content').modal('hide');
+					 }, 5000);
+				   }
+                },
+                 error: function (request, status, error) {
+                    showalert(error,'danger','#login-warning');
+                }
+            });
+		});			
+	</script>
+	<?php } else {?>
+		<script>
+			login = 1;
+		</script>
+	<?php } ?>
+	
 	<!-- ./wrapper -->
 	<!-- SlimScroll -->
 	<script src="<?php echo base_url(); ?>/assets/plugins/slimScroll/jquery.slimscroll.min.js"></script>
@@ -102,7 +201,23 @@
 	<!-- Select2 -->
 	<script src="<?php echo base_url(); ?>/assets/plugins/select2/select2.full.min.js"></script>
 	<!-- BaseUrl -->
-	<script type="text/javascript">var base_url ="<?php echo base_url() ?>"</script>
+	<script type="text/javascript">
+		$('#login-header').on('click', function() {
+			if(login==1){
+				$.get( base_url+'auth/logout', function(data) {
+			         location.reload();
+			    });
+			    login =0;
+			}
+			
+		});
+		var base_url ="<?php echo base_url() ?>";
+		<?php if($this->ion_auth->logged_in()==0){ 
+			echo "var login = 0;";
+		} else {
+			echo "var login = 1;";
+		}?>
+	</script>
 </body>
 
 </html>

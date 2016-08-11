@@ -7,12 +7,14 @@
 			<div class="col-md-3">
 				<div class="form-group">
 					<label>LEAVING FROM</label> <select class="form-control bandara" id='from' name='from' style="width: 100%;">
+							<option value=""></option>
 						</select>
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="form-group">
 					<label>GOING TO</label> <select class="form-control bandara" id='to' name='to' style="width: 100%;">
+							<option value=""></option>
 						</select>
 				</div>
 			</div>
@@ -123,6 +125,7 @@
 		<input id='h_flight_key' name='key' type="hidden" value=''>
 	</form><!-- /.box-footer-->
 </div><!-- /.box -->
+
 <div class="box box-primary center-block" style="width: 100%">
 	<div class="box-header with-border">
 		<h3 class="box-title"></h3>
@@ -290,7 +293,7 @@ $(document).ready(function(){
         
         $('.btn-booking').on('click', function(){
             $("#h_flight_key").val($(this).attr('flight_key'));
-            if($("#h_flight_key").val()!='') booking();
+			if(login != 1) callmodal(); else if($("#h_flight_key").val()!='') booking();
         });
         
         function booking(){
