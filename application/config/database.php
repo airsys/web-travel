@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'indsiti',
+	'hostname' => 'indsiti-db.ccfc1i0odmvm.ap-southeast-1.rds.amazonaws.com',
+	'username' => 'indisitimaster',
+	'password' => 'p4r4ngtr1t1s',
+	'database' => 'web-travel',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
