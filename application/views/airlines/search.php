@@ -126,7 +126,7 @@
 	</form><!-- /.box-footer-->
 </div><!-- /.box -->
 
-<div class="box box-primary center-block" style="width: 100%">
+<div id="result-content" class="box box-primary center-block" style="width: 100%">
 	<div class="box-header with-border">
 		<h3 class="box-title"></h3>
 	</div><!-- /.box-header -->
@@ -153,9 +153,11 @@ $(document).ready(function(){
         $.each(data, function(i, item) {
             bandara [item.code_route]= item.city + ' ' + item.name_airport ;
             $(".bandara").append($('<option>', {value: item.code_route, text: item.code_route +' - '+ item.city + ' ' + item.name_airport}));
-        })
+        });
+    	$('#from').select2('open');
     });
     
+  $("#result-content").hide();
   $("#form").on("submit", function(event) {
         $("#h_from").val($("#from").val());
         $("#h_to").val($("#to").val());
@@ -164,6 +166,7 @@ $(document).ready(function(){
         $("#h_child").val($("#child").val());
         $("#h_infant").val($("#infant").val());
         
+        $("#result-content").show();
         $(over).appendTo("#cari");
         event.preventDefault(); 
         $(".result").empty();
@@ -193,7 +196,11 @@ $(document).ready(function(){
                         $($('#kelas_'+j+'_'+i))
                           .append($('<option value="'+seat[value[x]].flight_key+'">')
                           .text('class '+value[x]+' - '+seat[value[x]].available));
-                    }
+                    } else{
+                    	$($('#kelas_'+j+'_'+i))
+                          .append($('<option disabled value="">')
+                          .text('class '+value[x]+' - 0'));
+					}
                 }
         }); 
     }
@@ -205,7 +212,7 @@ $(document).ready(function(){
         $.each(json, function() {
             j++;
             data = this;
-            var tampilan = '<div class="panel-group">'+
+            var tampilan = '<div id="group-panel'+j+'" class="panel-group">'+
                                 '<div class="panel panel-info">'+
                                     '<div id="group'+j+'"><\/div>'+
                                     '<div class="row">'+
@@ -214,7 +221,7 @@ $(document).ready(function(){
                                                 '<div class ="pull-right container-loading_'+j+'" ><i class="fa fa-refresh fa-spin"></i> Loading<\/div>'+ 
                                                 '<div class="pull-right container-fare_'+j+'">Rp <span id="fare_'+j+'"><\/span>(fare)+Rp <span id="tax_'+j+'"><\/span>(tax) <label>TOTAL = Rp <span id="total_'+j+'"> <\/span><\/label><\/div>'+
                                             '<\/div>'+                           
-                                        '<button flight_key="" type="button" class="btn-booking button-booking_'+j+' disabled col-md-2 col-sm-2 col-xs-12 btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>'+
+                                        '<button flight_key="" type="button" disabled class="btn-booking button-booking_'+j+' disabled col-md-2 col-sm-2 col-xs-12 btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>'+
                                         '<\/div>'+
                                     '<\/div>'+
                                 '<\/div>'+                           
@@ -262,7 +269,7 @@ $(document).ready(function(){
                     flight_key[x] = $('#kelas_'+data[0]+'_'+x).val();
                     flightcount++;
                     if(flightcount == data[2]){
-                        $(over).appendTo("#group"+data[0]);
+                    	disable("#group-panel"+data[0]);
                         $(".container-loading_"+data[0]).show();
                         $.ajax({
                             url:  base_url+"airlines/get_fare",
@@ -271,17 +278,18 @@ $(document).ready(function(){
                                 key : flight_key
                             },
                             success: function(d) {
-                                $('#overlay').remove();
+                                disable("#group-panel"+data[0],false);
                                 $('#fare_'+data[0]).text(addCommas(d.fare));
                                 $('#tax_'+data[0]).text(addCommas(d.tax));
                                 $('#total_'+data[0]).text(addCommas(d.fare+d.tax));
                                 $(".container-fare_"+data[0]).show();
                                 $(".container-loading_"+data[0]).hide();
                                 $(".button-booking_"+data[0]).removeClass("disabled");
+                                $(".button-booking_"+data[0]).prop('disabled',false);
                                 $(".button-booking_"+data[0]).attr("flight_key", d.flight_key);
                             },
                              error: function (request, status, error) {
-                                $('#overlay').remove();
+                                disable("#group-panel"+data[0],false);
                                 showalert(error,'warning');
                                 $(".container-loading_"+data[0]).hide();
                             }
@@ -299,8 +307,26 @@ $(document).ready(function(){
         function booking(){
         	$('#booking').submit()
         }
+        
+        function disable(elemen,dis=true){
+        	$(elemen).css("cursor", "wait");
+			$(elemen).find('input, textarea, button, select, img, label').prop('disabled',true);
+        	$("input").prop('disabled', true);
+        	if(dis==false){
+				$(elemen).css("cursor", "auto");
+				$(elemen).find('input, textarea, button, select, img, label').prop('disabled',false);
+			}
+        }
     }
-    
+    $('#from').on('change', function(){
+    	$('#to').select2('open');
+    });
+    $('#to').on('change', function(){
+    	$("#datepicker").datepicker("show");
+    });
+    $('#datepicker').on('change', function(){
+    	$("#adult").focus();
+    });
     
 });
 </script>

@@ -59,7 +59,7 @@
 		        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
 		          <ul class="nav navbar-nav">
 		            <li class="active"><a href="<?php echo base_url() ?>">Search Ticket <span class="sr-only">(current)</span></a></li>
-		            <li class=""><a href="<?php echo base_url().'lion/booking_detail' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
+		            <li class=""><a href="<?php echo base_url().'airlines/booking_detail' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
 		          </ul>
 		        </div>
 		        <!-- /.navbar-collapse -->

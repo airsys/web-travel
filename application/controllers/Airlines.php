@@ -204,7 +204,7 @@ class Airlines extends CI_Controller {
 		}
 		//$hasil['segmen'] = sizeof($data['flightid']);
 		//print_r($hasil);die();
-		$data = array('content'=>'lion/booking', 
+		$data = array('content'=>'airlines/booking', 
 					  'title'=>'Booking', 
 					  'data'=>$hasil
 					  );
@@ -246,7 +246,7 @@ class Airlines extends CI_Controller {
 	function booking_detail($code=00){
 		$bandara = $this->_bandara();
 		$array = $this->_boking_detail($code);
-		$data = array('content'=>'lion/booking_detail',
+		$data = array('content'=>'airlines/booking_detail',
 					  'title'=>'Booking Details',
 					  'data'=>$array,
 					  'bandara'=>$bandara,
@@ -276,14 +276,14 @@ class Airlines extends CI_Controller {
 	
 	function index(){
 		$data = array(
-					'content'=>'lion/search',
-					'title'=>'Ticket Search',
+					'content'=>'airlines/search',
+					'title'=>'',
 		
 				);
 		$this->load->view("index",$data);
 	}
 	function search_bestprice(){
-		$data = array('content'=>'lion/search_bestprice');
+		$data = array('content'=>'airlines/search_bestprice');
 		$this->load->view("index",$data);
 	}
 	
