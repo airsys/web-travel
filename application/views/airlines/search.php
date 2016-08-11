@@ -135,9 +135,7 @@
 		<div class="result"></div>
 	</div>
 </div><!-- /.box-body -->
-<div class="box-footer">
-	
-</div>
+
 <script>
 $(document).ready(function(){
     //Date picker
@@ -270,6 +268,10 @@ $(document).ready(function(){
                     flightcount++;
                     if(flightcount == data[2]){
                     	disable("#group-panel"+data[0]);
+                    	$(".button-booking_"+data[0]).removeClass("btn-success");
+                    	$(".button-booking_"+data[0]).addClass("btn-warning");
+                    	$(".button-booking_"+data[0]).children("i").removeClass('fa-book');
+                    	$(".button-booking_"+data[0]).children("i").addClass('fa-refresh fa-spin');
                         $(".container-loading_"+data[0]).show();
                         $.ajax({
                             url:  base_url+"airlines/get_fare",
@@ -285,11 +287,19 @@ $(document).ready(function(){
                                 $(".container-fare_"+data[0]).show();
                                 $(".container-loading_"+data[0]).hide();
                                 $(".button-booking_"+data[0]).removeClass("disabled");
+                                $(".button-booking_"+data[0]).removeClass("btn-warning");
+                                $(".button-booking_"+data[0]).addClass("btn-success");
+		                    	$(".button-booking_"+data[0]).children("i").removeClass('fa-refresh fa-spin');
+		                    	$(".button-booking_"+data[0]).children("i").addClass('fa-book');
                                 $(".button-booking_"+data[0]).prop('disabled',false);
                                 $(".button-booking_"+data[0]).attr("flight_key", d.flight_key);
                             },
                              error: function (request, status, error) {
                                 disable("#group-panel"+data[0],false);
+                                $(".button-booking_"+data[0]).addClass("btn-success");                                
+                                $(".button-booking_"+data[0]).removeClass("btn-warning");
+                                $(".button-booking_"+data[0]).children("i").removeClass('fa-refresh fa-spin');
+		                    	$(".button-booking_"+data[0]).children("i").addClass('fa-book');
                                 showalert(error,'warning');
                                 $(".container-loading_"+data[0]).hide();
                             }
@@ -311,7 +321,6 @@ $(document).ready(function(){
         function disable(elemen,dis=true){
         	$(elemen).css("cursor", "wait");
 			$(elemen).find('input, textarea, button, select, img, label').prop('disabled',true);
-        	$("input").prop('disabled', true);
         	if(dis==false){
 				$(elemen).css("cursor", "auto");
 				$(elemen).find('input, textarea, button, select, img, label').prop('disabled',false);
