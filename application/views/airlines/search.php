@@ -112,7 +112,7 @@
 			</div>
 		</div><!-- /.box-body -->
 		<div class="box-footer">
-			<button class="btn btn-flat btn-success btn-lg pull-right"><i class="fa fa-search"></i> | SEARCH</button>
+			<button id='btn-search' class="btn btn-flat btn-success btn-lg pull-right"><i class="fa fa-search"></i> | SEARCH</button>
 		</div>
 	</form>
 	<form id="booking" action="<?php echo base_url()?>airlines/booking" method="post">
@@ -164,6 +164,11 @@ $(document).ready(function(){
         $("#h_child").val($("#child").val());
         $("#h_infant").val($("#infant").val());
         
+        $("#btn-search").removeClass('btn-success');
+        $("#btn-search").addClass('btn-warning');
+        $("#btn-search").children("i").removeClass('fa-search');
+        $("#btn-search").children("i").addClass('fa-refresh fa-spin');
+        
         $("#result-content").show();
         $(over).appendTo("#cari");
         event.preventDefault(); 
@@ -175,9 +180,17 @@ $(document).ready(function(){
             success: function(d) {
                 $('#overlay').remove();
                 json_tabel(d);
+                $("#btn-search").removeClass('btn-warning');
+		        $("#btn-search").addClass('btn-success');
+		        $("#btn-search").children("i").addClass('fa-search');
+		        $("#btn-search").children("i").removeClass('fa-refresh fa-spin');
             },
              error: function (request, status, error) {
                 $('#overlay').remove();
+                $("#btn-search").removeClass('btn-warning');
+		        $("#btn-search").addClass('btn-success');
+		        $("#btn-search").children("i").addClass('fa-search');
+		        $("#btn-search").children("i").removeClass('fa-refresh fa-spin');
                 showalert(request.responseText,'warning');
             }
         });
