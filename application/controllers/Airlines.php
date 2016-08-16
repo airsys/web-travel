@@ -7,7 +7,7 @@ class Airlines extends CI_Controller {
 	 function __construct() {
 	        parent::__construct();
 	    $this->load->library('curl');		
-		$this->load->library('form_validation');
+		$this->load->library(array('form_validation'));
     	$this->config->load('api');
 		$this->curl->http_header('token', $this->config->item('api-token'));
 		$this->curl->option('TIMEOUT', 70000);
@@ -140,7 +140,7 @@ class Airlines extends CI_Controller {
 		}
 		$key = substr($key, 1);
 		$json = $this->curl->simple_get("$this->url/get_price?flight_key=$key");
-		//echo "$this->url/get_price?flight_key=$data[key]";die();
+		//$json = $this->getfare();
 		
 		$array = json_decode ($json);
 		$hasil = array();
@@ -212,10 +212,17 @@ class Airlines extends CI_Controller {
 	}
 	
 	function booking_save(){
-		$data = $this->input->post();	
+		$data = $this->input->post();
+		unset($data['identity']);
+		unset($data['password']);
+		unset($data['identity']);
 		$this->form_validation->set_rules('contact_title', 'contact title', 'required');
 		$this->form_validation->set_rules('contact_name', 'contact name', 'required');
 		$this->form_validation->set_rules('contact_phone', 'contact phone', 'required');
+		if (!$this->ion_auth->logged_in()){
+			$this->form_validation->set_rules('identity', 'email', 'required|valid_email');
+			$this->form_validation->set_rules('password', 'password', 'required');
+		}
 		
 		$hasil = '';
 		$code = 200; //$this->form_validation->run() 
@@ -224,18 +231,27 @@ class Airlines extends CI_Controller {
 			$hasil =  validation_errors();
 			$code = 400;
 		}else{
-			//print_r($data);die();
-			$json = $this->curl->simple_post("$this->url/book", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
-			//$json = $this->jsonbooking();
-			
-			$array = json_decode ($json);
-			
-			if( ( ! empty($array) && $array->code==200) ){
-				$hasil = $array->results->booking_code;
-			} else{
-				$hasil = $array->results;
+			if (!$this->ion_auth->logged_in()){
+				$remember = (bool) $this->input->post('remember');
+				$this->ion_auth->login($this->input->post('identity'), $this->input->post('password'),$remember);
+				
 			}
-			$code = $array->code;
+			if ($this->ion_auth->logged_in()){
+				$json = $this->curl->simple_post("$this->url/book", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
+				//$json = $this->jsonbooking();
+				
+				$array = json_decode ($json);
+				
+				if( ( ! empty($array) && $array->code==200) ){
+					$hasil = $array->results->booking_code;
+				} else{
+					$hasil = $array->results;
+				}
+				$code = $array->code;
+			} else{
+				$code = 400;
+				$hasil = $this->ion_auth->errors();
+			}
 		}
 		return $this->output
 	            ->set_content_type('text/html')
@@ -285,6 +301,12 @@ class Airlines extends CI_Controller {
 	function search_bestprice(){
 		$data = array('content'=>'airlines/search_bestprice');
 		$this->load->view("index",$data);
+	}
+	
+	
+	function coba(){
+		$auth = new Auth();
+		$auth->login();
 	}
 	
 	function jsongetform(){
@@ -5233,6 +5255,16 @@ class Airlines extends CI_Controller {
   }
 }
 		';
+	}
+	
+	function getfare(){
+		return '{"code": 200,
+"results": {
+"fare": 407000,
+"total_price": 447000,
+"tax": 40000
+}
+}';
 	}
 
 	function jsonbookingdetail(){

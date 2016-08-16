@@ -49,7 +49,7 @@
 			<nav class="navbar navbar-static-top">
 		      <div class="container">
 		        <div class="navbar-header">
-		          <a href="../../index2.html" class="navbar-brand"><b>IND</b>SITI</a>
+		          <a href="#" class="navbar-brand"><b>IND</b>SITI</a>
 		          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
 		            <i class="fa fa-bars"></i>
 		          </button>
@@ -60,6 +60,7 @@
 		          <ul class="nav navbar-nav">
 		            <li class="active"><a href="<?php echo base_url() ?>">Search Ticket <span class="sr-only">(current)</span></a></li>
 		            <li class=""><a href="<?php echo base_url().'airlines/booking_detail' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
+		            <li class=""><a href="<?php echo base_url().'auth2/register' ?>">Register <span class="sr-only">(current)</span></a></li>
 		          </ul>
 		        </div>
 		        <!-- /.navbar-collapse -->
@@ -67,20 +68,30 @@
 		        <div class="navbar-custom-menu">
 		          <ul class="nav navbar-nav">
 		            <!-- User Account Menu -->
-		            <li id="login-header" class="show-modal dropdown user user-menu">
+		            <li class="dropdown user user-menu">
 		              <!-- Menu Toggle Button -->
 		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		                <!-- The user image in the navbar-->
+		                <img src="<?php echo base_url() ?>assets/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
 		                <!-- hidden-xs hides the username on small devices so only the image appears. -->
 		                <span class="hidden-xs">
-		                	<?php 
-		                		if($this->ion_auth->logged_in()){
-									echo "<span id='logout-btn-header'>Logout</span>";
-								}else {
-									echo "<span id='login-btn-header'>Login</span>";
-								}
-		                	?>
+		                	
 		                </span>
 		              </a>
+		              <ul class="dropdown-menu">
+		                <!-- Menu Footer-->
+		                <li class="user-footer">
+		                  <div class="pull-right">
+		                    	<?php 
+		                		if($this->ion_auth->logged_in()){
+									echo "<a href='#' class='btn btn-primary btn-flat' id='login-header'>Logout</a>";
+								}else {
+									echo "<a href='#' class='show-modal btn btn-success btn-flat' id='login-header'>Login</a>";
+								}
+		                	?>
+		                  </div>
+		                </li>
+		              </ul>
 		            </li>
 		          </ul>
 		        </div>
@@ -95,13 +106,6 @@
 		<!-- =============================================== -->
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
-			<!-- Content Header (Page header) -->
-			<section class="content-header">
-				<h1>
-			        <?php echo $title ?>
-			        <small></small>
-			    </h1>
-			</section>
 			<!-- Main content -->
 			<section class="content">
 				<?php $this->load->view($content); ?> </section>
@@ -143,6 +147,7 @@
 	              <!-- /.box-body -->
 		      </div>
 		      <div class="modal-footer">
+		      	<a href="<?php echo base_url().'auth/register'; ?>" type="button" class="btn btn-danger" >Or register here</a>
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		        <button id="login" type="button" class="btn btn-success">Sign in</button>
 		      </div>
@@ -159,13 +164,13 @@
 		}
 		$('#login').on('click', function() {
 		    $.ajax({
-                url:  base_url+"auth/login_ajax",
+                url:  base_url+"auth2/login_ajax",
                 type: "post",
                 data: $("#form-login").serialize(),
                 success: function(d,textStatus, xhr) {
                    if(xhr.status==200 && d.data==1){
 				   	 login = 1;
-				   	 $('#login-btn-header').text('Logout');
+				   	 $('#login-header').text('Logout');
 				   	 showalert(d.message,'success','#login-warning');
 				   	 setTimeout(function() {
 					     $('#modal-content').modal('hide');
@@ -173,7 +178,8 @@
 				   }
                 },
                  error: function (request, status, error) {
-                    showalert(error,'danger','#login-warning');
+                 	  var err = eval("(" + request.responseText + ")");
+                      showalert(err.message,'danger','#login-warning');
                 }
             });
 		});			

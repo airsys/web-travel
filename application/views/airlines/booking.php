@@ -3,13 +3,73 @@
   <div class="box-header with-border">
     <h3 class="box-title">Booking Form</h3>
     <div class="box-tools pull-right">
-      <button class="btn btn-box-tool" data-toggle="tooltip" data-widget="collapse" title="Collapse" type="button"><i class="fa fa-minus"></i>
-      </button>
-      <button class="btn btn-box-tool" data-toggle="tooltip" data-widget="remove" title="Remove" type="button"><i class="fa fa-times"></i>
-      </button>
     </div>
   </div>
-  <form id="form" method="post" action="">
+   <style>
+    .example-modal .modal {
+      position: relative;
+      top: auto;
+      bottom: auto;
+      right: auto;
+      left: auto;
+      display: block;
+      z-index: 1;
+    }
+
+    .example-modal .modal {
+      background: transparent !important;
+    }
+  </style>
+  <div>
+  <form id="form" method="post" role="form" action="">
+  <?php if (!$this->ion_auth->logged_in()){ ?>
+  <div class="example-modal">
+    <div class="modal modal-primary">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <p class="modal-title">Sign in to start your session</p>
+          </div>
+		      <div class="modal-body">
+	              <div class="box-body">
+	              	<div id="login-warning"></div>
+	              	<div class="col-md-6">
+	                <div class="form-group">
+	                  <label for="InputEmail1">Email address</label>
+	                  <input name="identity" required type="email" class="form-control" id="InputEmail1" placeholder="Enter email">
+	                </div>              
+	                </div>
+	                <div class="col-md-6">
+	                <div class="form-group">
+	                  <label for="InputPassword1">Password</label>
+	                  <input name="password" required type="password" class="form-control" id="InputPassword1" placeholder="Password">
+	                </div>
+	                </div>
+	                <div class="col-md-6">
+	                <div class="checkbox">
+	                  <label>
+	                    <input type="checkbox" name="remember" value="1"> Remember me
+	                  </label>
+	                </div>
+	              	</div>
+	              </div>
+	              <!-- /.box-body -->
+		      </div>
+		      <div class="modal-footer">
+		      	
+		      </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+  </div>
+  <!-- /.example-modal -->
+  <?php } ?>
+  
     <div class="box-body">
       <h3>Passenger</h3>
       <!-- >Adult</!-->
@@ -140,9 +200,10 @@
     <!-- /.box-body -->
     <div class="box-footer">
       <input type="hidden" name="flight_key" value="<?php echo $data['key']; ?>" />
-      <button class="btn btn-flat btn-success btn-lg pull-right"><i class="fa fa-paper-plane"></i> | BOOKING</button>
+      <button id="btn-booking" class="btn btn-flat btn-success btn-lg pull-right"><i class="fa fa-paper-plane"></i> | BOOKING</button>
     </div>
   </form>
+  </div>
   <!-- /.box-footer-->
 </div>
 <!-- /.box -->
@@ -156,6 +217,11 @@ $(document).ready(function(){
     });
     
     $("#form").on("submit", function(event) {
+    	$("#btn-booking").removeClass('btn-success');
+        $("#btn-booking").addClass('btn-warning');
+        $("#btn-booking").children("i").removeClass('fa-paper-plane');
+        $("#btn-booking").children("i").addClass('fa-refresh fa-spin');
+        
         $(over).appendTo("#booking-form");
         event.preventDefault(); 
         $.ajax({
@@ -172,6 +238,11 @@ $(document).ready(function(){
             },
              error: function (request, status, error) {
                 $('#overlay').remove();
+                showalert(request.responseText,'warning');
+                $("#btn-booking").addClass('btn-success');
+		        $("#btn-booking").removeClass('btn-warning');
+		        $("#btn-booking").children("i").addClass('fa-paper-plane');
+		        $("#btn-booking").children("i").removeClass('fa-refresh fa-spin');
             }
         });
         

@@ -169,7 +169,6 @@ $(document).ready(function(){
         $("#btn-search").children("i").removeClass('fa-search');
         $("#btn-search").children("i").addClass('fa-refresh fa-spin');
         
-        $("#result-content").show();
         $(over).appendTo("#cari");
         event.preventDefault(); 
         $(".result").empty();
@@ -192,7 +191,10 @@ $(document).ready(function(){
 		        $("#btn-search").children("i").addClass('fa-search');
 		        $("#btn-search").children("i").removeClass('fa-refresh fa-spin');
                 showalert(request.responseText,'warning');
-            }
+            },
+             complete: function() {
+        		$("#result-content").show();
+             }
         });
         
   });
@@ -324,7 +326,7 @@ $(document).ready(function(){
         
         $('.btn-booking').on('click', function(){
             $("#h_flight_key").val($(this).attr('flight_key'));
-			if(login != 1) callmodal(); else if($("#h_flight_key").val()!='') booking();
+			booking();
         });
         
         function booking(){
