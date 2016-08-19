@@ -11,7 +11,7 @@ class Airlines extends CI_Controller {
     	$this->config->load('api');
 		$this->curl->http_header('token', $this->config->item('api-token'));
 		$this->curl->option('TIMEOUT', 70000);
-
+		$this->load->model('m_airlines');
 		//$this->url = 'http://52.36.25.143:8989/lion';	
 		$this->url = $this->config->item('api-url') . 'lion';
 
@@ -213,15 +213,32 @@ class Airlines extends CI_Controller {
 	
 	function booking_save(){
 		$data = $this->input->post();
+		$tables = $this->config->item('tables','ion_auth');
 		unset($data['identity']);
 		unset($data['password']);
 		unset($data['identity']);
+		
+		unset($data['full_name']);
+		unset($data['email']);
+		unset($data['phone']);
+		unset($data['password']);
+		unset($data['password_confirm']);
+		
+		unset($data['position']);
+		
 		$this->form_validation->set_rules('contact_title', 'contact title', 'required');
 		$this->form_validation->set_rules('contact_name', 'contact name', 'required');
 		$this->form_validation->set_rules('contact_phone', 'contact phone', 'required');
-		if (!$this->ion_auth->logged_in()){
+		if (!$this->ion_auth->logged_in() && $this->input->post('position')=='lo'){
 			$this->form_validation->set_rules('identity', 'email', 'required|valid_email');
 			$this->form_validation->set_rules('password', 'password', 'required');
+		}
+		if (!$this->ion_auth->logged_in() && $this->input->post('position')=='re'){
+			$this->form_validation->set_rules('full_name', 'full_name', 'required');
+			$this->form_validation->set_rules('email', 'email', 'required|valid_email|is_unique[' . $tables['users'] . '.email]');
+			$this->form_validation->set_rules('phone', 'phone', 'required|trim|numeric');
+			$this->form_validation->set_rules('password_register', 'password', 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+			$this->form_validation->set_rules('password_confirm', 'password_confirm', 'required');
 		}
 		
 		$hasil = '';
@@ -231,19 +248,39 @@ class Airlines extends CI_Controller {
 			$hasil =  validation_errors();
 			$code = 400;
 		}else{
-			if (!$this->ion_auth->logged_in()){
+			if (!$this->ion_auth->logged_in() && $this->input->post('position')=='lo'){
 				$remember = (bool) $this->input->post('remember');
 				$this->ion_auth->login($this->input->post('identity'), $this->input->post('password'),$remember);
 				
+			}
+			if (!$this->ion_auth->logged_in() && $this->input->post('position')=='re'){
+				$identity_column = $this->config->item('identity','ion_auth');
+				$email    = strtolower($this->input->post('email'));
+		        $identity = ($identity_column==='email') ? $email : $this->input->post('identity');
+		        $password = $this->input->post('password_register');
+
+		        $additional_data = array(
+		            'full_name' => $this->input->post('full_name'),
+		            'phone'      => $this->input->post('phone'),
+		        );
+		        $this->ion_auth->register($identity, $password, $email, $additional_data);
+		        $this->ion_auth->login($identity, $password, TRUE);
 			}
 			if ($this->ion_auth->logged_in()){
 				$json = $this->curl->simple_post("$this->url/book", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
 				//$json = $this->jsonbooking();
 				
 				$array = json_decode ($json);
-				
+				//print_r($array);die();
 				if( ( ! empty($array) && $array->code==200) ){
 					$hasil = $array->results->booking_code;
+					$data = array(
+				        'id_user' => $this->session->userdata('user_id'),
+				        'identity' => $this->session->userdata('identity'),
+				        'booking_code' => $array->results->booking_code,
+					);
+					$this->m_airlines->booking_save($data);
+					
 				} else{
 					$hasil = $array->results;
 				}
@@ -260,6 +297,7 @@ class Airlines extends CI_Controller {
 	}
 	
 	function booking_detail($code=00){
+		//print_r($_SESSION);
 		$bandara = $this->_bandara();
 		$array = $this->_boking_detail($code);
 		$data = array('content'=>'airlines/booking_detail',
@@ -267,7 +305,13 @@ class Airlines extends CI_Controller {
 					  'data'=>$array,
 					  'bandara'=>$bandara,
 					);
-		
+		if($array != NULL){
+			$data_update = array(
+		        'id_flight' => $array->id,
+		        'booking_time' => $array->booking_time
+			);		
+			$this->m_airlines->booking_update($data_update, $this->session->userdata('user_id'),$code);
+		}		
 		$this->load->view("index",$data);
 	}
 	

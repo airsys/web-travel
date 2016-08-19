@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/iCheck/all.css" >
+<script src="<?php echo base_url(); ?>assets/plugins/iCheck/icheck.min.js"></script>
+
 <div class="box" id="booking-form">
   <div id="alert"></div>
   <div class="box-header with-border">
@@ -5,69 +8,93 @@
     <div class="box-tools pull-right">
     </div>
   </div>
-   <style>
-    .example-modal .modal {
-      position: relative;
-      top: auto;
-      bottom: auto;
-      right: auto;
-      left: auto;
-      display: block;
-      z-index: 1;
-    }
-
-    .example-modal .modal {
-      background: transparent !important;
-    }
-  </style>
   <div>
   <form id="form" method="post" role="form" action="">
-  <?php if (!$this->ion_auth->logged_in()){ ?>
-  <div class="example-modal">
-    <div class="modal modal-primary">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span></button>
-            <p class="modal-title">Sign in to start your session</p>
-          </div>
-		      <div class="modal-body">
-	              <div class="box-body">
-	              	<div id="login-warning"></div>
-	              	<div class="col-md-6">
-	                <div class="form-group">
-	                  <label for="InputEmail1">Email address</label>
-	                  <input name="identity" required type="email" class="form-control" id="InputEmail1" placeholder="Enter email">
-	                </div>              
-	                </div>
-	                <div class="col-md-6">
-	                <div class="form-group">
-	                  <label for="InputPassword1">Password</label>
-	                  <input name="password" required type="password" class="form-control" id="InputPassword1" placeholder="Password">
-	                </div>
-	                </div>
-	                <div class="col-md-6">
-	                <div class="checkbox">
-	                  <label>
-	                    <input type="checkbox" name="remember" value="1"> Remember me
-	                  </label>
-	                </div>
-	              	</div>
-	              </div>
-	              <!-- /.box-body -->
-		      </div>
-		      <div class="modal-footer">
-		      	
-		      </div>
-        </div>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
+  <?php if (!$this->ion_auth->logged_in()){ ?> 
+  <div class="box-body">
+  	<div id="login-warning"></div>
   </div>
-  <!-- /.example-modal -->
+  <div id="form-login" style="background-color:#f3f3f3" class="box-body">
+  	<div class="col-md-4">
+    <div class="form-group">
+      <label for="InputEmail1">Email address</label>
+      <input name="identity" required type="email" class="form-control" id="InputEmail1" placeholder="Enter email">
+    </div>              
+    </div>
+    <div class="col-md-4">
+    <div class="form-group">
+      <label for="InputPassword1">Password</label>
+      <input name="password" required type="password" class="form-control" id="InputPassword1" placeholder="Password">
+    </div>
+    </div>
+    <div class="col-md-4">
+    <div class="form-group">  
+	    <label for="remember"></label><br>
+	      <label>
+	       <input type="checkbox"  class="flat-red"> Remember me
+	      </label>
+    </div>
+  	</div>
+  </div>
+  <!-- /.box-body -->
+  
+  <div style="background-color:#f3f3f3" id="form-register" class="box-body">
+  	<div class="col-md-6">
+	  	<div class="form-group">
+	      <label for="full_name" class="col-sm-2 control-label">Full Name</label>
+	      <div class="col-sm-10">
+	        <input type="text" required class="form-control" value="" name="full_name" id="first_name" placeholder="Full Name">
+	      </div>
+	    </div>
+    </div>
+    <div class="col-md-6">
+	    <div class="form-group">
+	      <label for="email" class="col-sm-2 control-label">Email</label>
+	      <div class="col-sm-10">
+	        <input type="text" required class="form-control" value="" name="email" id="email" placeholder="email">
+	      </div>
+	    </div>
+    </div>
+    <div class="col-md-6">
+	    <div class="form-group">
+	      <label for="phone" class="col-sm-2 control-label">Phone</label>
+	      <div class="col-sm-10">
+	        <input type="text" required class="form-control" value="" name="phone" id="phone" placeholder="phone">
+	      </div>
+	    </div>
+    </div>
+    <div class="col-md-6">
+	    <div class="form-group">
+	      <label for="password" class="col-sm-2 control-label">Password</label>
+	      <div class="col-sm-10">
+	        <input type="password"  required class="form-control" name="password_register" id="company" placeholder="Password">
+	      </div>
+	    </div>
+    </div>
+    <div class="col-md-6">
+	    <div class="form-group">
+	      <label for="password_confirm" class="col-sm-2 control-label">Password Confirm</label>
+	      <div class="col-sm-10">
+	        <input type="password" required  class="form-control" name="password_confirm" id="password_confirm" placeholder="password confirm">
+	      </div>
+	    </div>
+    </div>
+  </div>
+  
+  <div class="box-body">
+  	<div class="col-md-4">
+	  <div class="form-group">
+	    <label>
+	      <input type="radio" value="lo" name="position" id="position" class="flat-red" checked>
+	      Login &nbsp;&nbsp;&nbsp;
+	    </label>
+	    <label>
+	      <input type="radio" value="re" name="position" id="position" class="flat-red" >
+	      Register
+	    </label>
+	  </div>
+	</div>
+  </div>
   <?php } ?>
   
     <div class="box-body">
@@ -215,6 +242,39 @@ $(document).ready(function(){
 	  format: 'dd-mm-yyyy', 
 	   todayHighlight: true,
     });
+    
+     //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass: 'iradio_minimal-blue'
+    });
+    //Red color scheme for iCheck
+    $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+      checkboxClass: 'icheckbox_minimal-red',
+      radioClass: 'iradio_minimal-red'
+    });
+    //Flat red color scheme for iCheck
+    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+      checkboxClass: 'icheckbox_flat-green',
+      radioClass: 'iradio_flat-green'
+    });
+    
+    $('#form-login').show();
+	$('#form-register').hide();
+    
+    $('input[type=radio][name=position]').on('ifToggled', function(event){
+    	if(this.value=='lo'){
+    		$('#form-login').show();
+			$('#form-register').hide();
+			$('#form-register').find('input[type=text],input[type=password]').prop('required',false);
+			$('#form-login').find('input[type=text],input[type=password]').prop('required',true);
+		}else{
+			$('#form-login').hide();
+			$('#form-register').show();
+			$('#form-register').find('input[type=text],input[type=password]').prop('required',true);
+			$('#form-login').find('input[type=text],input[type=password]').prop('required',false);
+		}
+	});
     
     $("#form").on("submit", function(event) {
     	$("#btn-booking").removeClass('btn-success');

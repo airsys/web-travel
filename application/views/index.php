@@ -60,7 +60,6 @@
 		          <ul class="nav navbar-nav">
 		            <li class="active"><a href="<?php echo base_url() ?>">Search Ticket <span class="sr-only">(current)</span></a></li>
 		            <li class=""><a href="<?php echo base_url().'airlines/booking_detail' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
-		            <li class=""><a href="<?php echo base_url().'auth2/register' ?>">Register <span class="sr-only">(current)</span></a></li>
 		          </ul>
 		        </div>
 		        <!-- /.navbar-collapse -->
@@ -81,6 +80,13 @@
 		              <ul class="dropdown-menu">
 		                <!-- Menu Footer-->
 		                <li class="user-footer">
+		                  <div class="pull-left">
+		                  	<?php 
+		                		if(!$this->ion_auth->logged_in()){
+									echo "<a href='".base_url()."'auth2/register' class='pull-left show-modal btn btn-danger btn-flat' id='login-header'>Register</a>";
+								}
+		                	?>
+		                  </div>
 		                  <div class="pull-right">
 		                    	<?php 
 		                		if($this->ion_auth->logged_in()){

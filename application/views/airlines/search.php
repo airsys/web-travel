@@ -284,9 +284,7 @@ $(document).ready(function(){
                     if(flightcount == data[2]){
                     	disable("#group-panel"+data[0]);
                     	$(".button-booking_"+data[0]).removeClass("btn-success");
-                    	$(".button-booking_"+data[0]).addClass("btn-warning");
-                    	$(".button-booking_"+data[0]).children("i").removeClass('fa-book');
-                    	$(".button-booking_"+data[0]).children("i").addClass('fa-refresh fa-spin');
+                    	$(".button-booking_"+data[0]).addClass("btn-default");
                         $(".container-loading_"+data[0]).show();
                         $.ajax({
                             url:  base_url+"airlines/get_fare",
@@ -302,19 +300,15 @@ $(document).ready(function(){
                                 $(".container-fare_"+data[0]).show();
                                 $(".container-loading_"+data[0]).hide();
                                 $(".button-booking_"+data[0]).removeClass("disabled");
-                                $(".button-booking_"+data[0]).removeClass("btn-warning");
+                                $(".button-booking_"+data[0]).removeClass("btn-default");
                                 $(".button-booking_"+data[0]).addClass("btn-success");
-		                    	$(".button-booking_"+data[0]).children("i").removeClass('fa-refresh fa-spin');
-		                    	$(".button-booking_"+data[0]).children("i").addClass('fa-book');
                                 $(".button-booking_"+data[0]).prop('disabled',false);
                                 $(".button-booking_"+data[0]).attr("flight_key", d.flight_key);
                             },
                              error: function (request, status, error) {
                                 disable("#group-panel"+data[0],false);
                                 $(".button-booking_"+data[0]).addClass("btn-success");                                
-                                $(".button-booking_"+data[0]).removeClass("btn-warning");
-                                $(".button-booking_"+data[0]).children("i").removeClass('fa-refresh fa-spin');
-		                    	$(".button-booking_"+data[0]).children("i").addClass('fa-book');
+                                $(".button-booking_"+data[0]).removeClass("btn-default");
                                 showalert(error,'warning');
                                 $(".container-loading_"+data[0]).hide();
                             }

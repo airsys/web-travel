@@ -58,8 +58,7 @@ class Auth2 extends CI_Controller {
 	        $this->data['identity_column'] = $identity_column;
 	        
 	        // validate form input
-		    $this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
-		    $this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required');
+		    $this->form_validation->set_rules('full_name', $this->lang->line('create_user_validation_fname_label'), 'required');
 		    if($identity_column!=='email')
 		    {
 		        $this->form_validation->set_rules('identity',$this->lang->line('create_user_validation_identity_label'),'required|is_unique['.$tables['users'].'.'.$identity_column.']');
@@ -81,8 +80,7 @@ class Auth2 extends CI_Controller {
 		        $password = $this->input->post('password');
 
 		        $additional_data = array(
-		            'first_name' => $this->input->post('first_name'),
-		            'last_name'  => $this->input->post('last_name'),
+		            'full_name' => $this->input->post('full_name'),
 		            'phone'      => $this->input->post('phone'),
 		        );
 		    }

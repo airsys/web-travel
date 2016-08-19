@@ -12,15 +12,9 @@
     	<div class="alert alert-warning col-md-12"><a class="close" data-dismiss="alert">x</a><span><?php echo $message; ?></span></div>
     <?php } ?>
         <div class="form-group">
-          <label for="first_name" class="col-sm-2 control-label">First Name</label>
+          <label for="first_name" class="col-sm-2 control-label">Full Name</label>
           <div class="col-sm-4">
-            <input type="text" required class="form-control" value="<?php echo ($data_post != NULL) ? $data_post['first_name'] : ""; ?>" name="first_name" id="first_name" placeholder="First Name">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="last_name" class="col-sm-2 control-label">Last Name</label>
-          <div class="col-sm-4">
-            <input type="text" required class="form-control" value="<?php echo ($data_post != NULL) ? $data_post['last_name'] : ""; ?>" name="last_name" id="last_name" placeholder="Last Name">
+            <input type="text" required class="form-control" value="<?php echo ($data_post != NULL) ? $data_post['full_name'] : ""; ?>" name="full_name" id="first_name" placeholder="Full Name">
           </div>
         </div>
         <div class="form-group">
