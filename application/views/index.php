@@ -140,7 +140,7 @@
 	        <p class="modal-title" id="myModalLabel">Sign in to start your session</p>
 	      </div>
 	          <!-- form start -->
-          <form id="form-login" role="form">
+          <form id="form-login-header" role="form">
 		      <div class="modal-body">
 	              <div class="box-body">
 	              	<div id="login-warning"></div>
@@ -180,7 +180,7 @@
 		    $.ajax({
                 url:  base_url+"auth2/login_ajax",
                 type: "post",
-                data: $("#form-login").serialize(),
+                data: $("#form-login-header").serialize(),
                 success: function(d,textStatus, xhr) {
                    if(xhr.status==200 && d.data==1){
 				   	 login = 1;

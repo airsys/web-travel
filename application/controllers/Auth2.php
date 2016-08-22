@@ -109,5 +109,23 @@ class Auth2 extends CI_Controller {
 				);
 		$this->load->view("index",$data_view);
 	}
+	
+	function profile(){
+		$id = $this->session->userdata('id');
+		if (!$this->ion_auth->logged_in() || !($this->ion_auth->user()->row()->id == $id))
+		{
+			redirect('auth2/register/', 'refresh');
+		}
+		
+		$user = $this->ion_auth->user($id)->row();
+		$groups=$this->ion_auth->groups()->result_array();
+		$currentGroups = $this->ion_auth->get_users_groups($id)->result();
+		// validate form input
+		$this->form_validation->set_rules('full_name', $this->lang->line('edit_user_validation_fname_label'), 'required');
+		$this->form_validation->set_rules('phone', $this->lang->line('edit_user_validation_phone_label'), 'required');
+		
+		
+
+	}
 
 }

@@ -184,7 +184,7 @@
     	booking_code = href.substr(href.lastIndexOf('/') + 1);
     	if(booking_code !='retrieve')$("#booking_code").val(booking_code);
     	$("#cek").on("click", function(event) {
-    		window.location = base_url+"airlines/booking_detail/"+$("#booking_code").val();
+    		window.location = base_url+"airlines/retrieve/"+$("#booking_code").val();
     	});
     	
     </script>

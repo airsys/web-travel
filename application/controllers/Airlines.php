@@ -308,10 +308,21 @@ class Airlines extends CI_Controller {
 					  'data'=>$array,
 					  'bandara'=>$bandara,
 					);
-		if($array != NULL){
+		if($array != NULL && $this->ion_auth->logged_in()){
 			$data_update = array(
 		        'id_flight' => $array->id,
-		        'booking_time' => $array->booking_time
+		        'booking_time' => $array->booking_time,
+		        'time_limit'=> $array->time_limit,
+				'base_fare'=> $array->base_fare,
+				'NTA'=> $array->NTA,
+				'name'=> $array->name,
+				'phone'=> $array->phone,
+				'area_depart'=> $array->area_depart,
+				'area_arrive'=> $array->area_arrive,
+				'payment_status'=> $array->payment_status,
+				'airline'=> $array->airline,
+				'flight_list'=> $array->flight_list,				
+				'passenger_list'=> $array->passenger_list,				
 			);		
 			$this->m_airlines->booking_update($data_update, $this->session->userdata('user_id'),$code);
 		}		
