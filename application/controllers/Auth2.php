@@ -52,6 +52,7 @@ class Auth2 extends CI_Controller {
 	public function register(){
 		$data_post = NULL;
 		$message = '';
+		if($this->ion_auth->logged_in()) redirect('auth2/profile', 'refresh');
 		if($this->input->post()){
 			$data_post = $this->input->post();
 			$tables = $this->config->item('tables','ion_auth');
@@ -88,10 +89,8 @@ class Auth2 extends CI_Controller {
 		    if ($this->form_validation->run() == true && 
 		    	$this->ion_auth->register($identity, $password, $email, $additional_data))
 		    {
-		        // check to see if we are creating the user
-		        // redirect them back to the admin page
-		        $this->session->set_flashdata('message', $this->ion_auth->messages());
 		        $message =  $this->ion_auth->messages();
+		        $this->ion_auth->login($identity, $password,FALSE);        
 		    }
 		    else
 		    {
@@ -111,8 +110,10 @@ class Auth2 extends CI_Controller {
 	}
 	
 	function profile(){
+		$user = NULL;
+		$message = '';
 		$id = $this->session->userdata('id');
-		if (!$this->ion_auth->logged_in() || !($this->ion_auth->user()->row()->id == $id))
+		if (!$this->ion_auth->logged_in())
 		{
 			redirect('auth2/register/', 'refresh');
 		}
@@ -124,7 +125,45 @@ class Auth2 extends CI_Controller {
 		$this->form_validation->set_rules('full_name', $this->lang->line('edit_user_validation_fname_label'), 'required');
 		$this->form_validation->set_rules('phone', $this->lang->line('edit_user_validation_phone_label'), 'required');
 		
+		if (isset($_POST) && !empty($_POST))
+		{
+			// update the password if it was posted
+			if ($this->input->post('password'))
+			{
+				$this->form_validation->set_rules('password', $this->lang->line('edit_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+				$this->form_validation->set_rules('password_confirm', $this->lang->line('edit_user_validation_password_confirm_label'), 'required');
+			}
+			if ($this->form_validation->run() === TRUE)
+			{
+				$data = array(
+					'full_name' => $this->input->post('full_name'),
+					'phone'      => $this->input->post('phone'),
+				);
+
+				// update the password if it was posted
+				if ($this->input->post('password'))
+				{
+					$data['password'] = $this->input->post('password');
+				}
+				// check to see if we are updating the user
+			   if($this->ion_auth->update($user->id, $data))
+			    {
+			    	$message = $this->ion_auth->messages();
+			    }else{
+					$message = $this->ion_auth->errors();
+				}
+			}
+			
+		}
 		
+		$user = $this->ion_auth->user($id)->row();
+		
+		$data_view = array(
+					'content'=>'auth/profile',
+					'data_post'=> $user,
+					'message'=> $message,		
+				);
+		$this->load->view("index",$data_view);
 
 	}
 

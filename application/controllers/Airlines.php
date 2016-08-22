@@ -351,8 +351,7 @@ class Airlines extends CI_Controller {
 	function index(){
 		$data = array(
 					'content'=>'airlines/search',
-					'title'=>'',
-		
+					'title'=>'',		
 				);
 		$this->load->view("index",$data);
 	}

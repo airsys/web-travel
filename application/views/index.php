@@ -58,8 +58,10 @@
 		        <!-- Collect the nav links, forms, and other content for toggling -->
 		        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
 		          <ul class="nav navbar-nav">
-		            <li class="active"><a href="<?php echo base_url() ?>">Search Ticket <span class="sr-only">(current)</span></a></li>
-		            <li class=""><a href="<?php echo base_url().'airlines/retrieve' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
+		            <li class="menu-bar"><a href="<?php echo base_url() ?>">Search Ticket <span class="sr-only">(current)</span></a></li>
+		            <?php if($this->ion_auth->logged_in()){ ?>
+		            <li class="menu-bar"><a href="<?php echo base_url().'airlines/retrieve' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
+		         	<?php } ?>
 		          </ul>
 		        </div>
 		        <!-- /.navbar-collapse -->
@@ -226,6 +228,10 @@
 	<script src="<?php echo base_url(); ?>/assets/plugins/select2/select2.full.min.js"></script>
 	<!-- BaseUrl -->
 	<script type="text/javascript">
+		$('.menu-bar').find('a').each(function() {
+			if($(this).attr('href')==window.location.href) $(this).parent("li").addClass('active');
+		});
+		
 		$('#login-header').on('click', function() {
 			if(login==1){
 				$.get( base_url+'auth/logout', function(data) {
