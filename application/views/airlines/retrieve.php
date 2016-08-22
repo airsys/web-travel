@@ -179,8 +179,10 @@
     
     <script>
     	var href = '';
+    	var booking_code ='';
     	href = window.location.href;
-		$("#booking_code").val(href.substr(href.lastIndexOf('/') + 1));
+    	booking_code = href.substr(href.lastIndexOf('/') + 1);
+    	if(booking_code !='retrieve')$("#booking_code").val(booking_code);
     	$("#cek").on("click", function(event) {
     		window.location = base_url+"airlines/booking_detail/"+$("#booking_code").val();
     	});

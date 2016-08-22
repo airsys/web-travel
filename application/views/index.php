@@ -59,7 +59,7 @@
 		        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
 		          <ul class="nav navbar-nav">
 		            <li class="active"><a href="<?php echo base_url() ?>">Search Ticket <span class="sr-only">(current)</span></a></li>
-		            <li class=""><a href="<?php echo base_url().'airlines/booking_detail' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
+		            <li class=""><a href="<?php echo base_url().'airlines/retrieve' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
 		          </ul>
 		        </div>
 		        <!-- /.navbar-collapse -->
@@ -71,7 +71,13 @@
 		              <!-- Menu Toggle Button -->
 		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 		                <!-- The user image in the navbar-->
-		                <img src="<?php echo base_url() ?>assets/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+		                <?php 
+		                	if(!$this->ion_auth->logged_in()){
+		                		echo "<div id='user-header'><i class='fa fa-lock fa-lg'></i>&nbsp;<span>Login</span></div>";
+		                	} else{
+								echo "<div id='user-header'><i class='fa fa-user fa-lg'></i>&nbsp;<span>".$this->session->userdata('identity')."</span></div>";
+							}
+						?>
 		                <!-- hidden-xs hides the username on small devices so only the image appears. -->
 		                <span class="hidden-xs">
 		                	
@@ -83,14 +89,16 @@
 		                  <div class="pull-left">
 		                  	<?php 
 		                		if(!$this->ion_auth->logged_in()){
-									echo "<a href='".base_url()."'auth2/register' class='pull-left show-modal btn btn-danger btn-flat' id='login-header'>Register</a>";
+									echo "<a href='#' class='pull-left btn btn-danger btn-flat' id='register-header'>Register</a>";
+								}else{
+									echo "<a href='#' class='pull-left btn btn-primary btn-flat' id='register-header'>Profile</a>";
 								}
 		                	?>
 		                  </div>
 		                  <div class="pull-right">
 		                    	<?php 
 		                		if($this->ion_auth->logged_in()){
-									echo "<a href='#' class='btn btn-primary btn-flat' id='login-header'>Logout</a>";
+									echo "<a href='#' class='btn btn-warning btn-flat' id='login-header'>Logout</a>";
 								}else {
 									echo "<a href='#' class='show-modal btn btn-success btn-flat' id='login-header'>Login</a>";
 								}
@@ -153,7 +161,7 @@
 	              <!-- /.box-body -->
 		      </div>
 		      <div class="modal-footer">
-		      	<a href="<?php echo base_url().'auth/register'; ?>" type="button" class="btn btn-danger" >Or register here</a>
+		      	<a href="<?php echo base_url().'auth2/register'; ?>" type="button" class="btn btn-danger" >Or register here</a>
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		        <button id="login" type="button" class="btn btn-success">Sign in</button>
 		      </div>
@@ -176,11 +184,15 @@
                 success: function(d,textStatus, xhr) {
                    if(xhr.status==200 && d.data==1){
 				   	 login = 1;
-				   	 $('#login-header').text('Logout');
+				   	$('#login-header').text('Logout');
+				   	$('#register-header').text('Profile');
+				   	$("#user-header").children("span").text(d.user);
+				   	$("#user-header").children("i").removeClass('fa-lock');
+	    			$("#user-header").children("i").addClass('fa-user');
 				   	 showalert(d.message,'success','#login-warning');
 				   	 setTimeout(function() {
 					     $('#modal-content').modal('hide');
-					 }, 5000);
+					 }, 3000);
 				   }
                 },
                  error: function (request, status, error) {
@@ -188,7 +200,7 @@
                       showalert(err.message,'danger','#login-warning');
                 }
             });
-		});			
+		});	
 	</script>
 	<?php } else {?>
 		<script>
@@ -220,15 +232,21 @@
 			         location.reload();
 			    });
 			    login =0;
-			}
-			
+			}			
 		});
-		var base_url ="<?php echo base_url() ?>";
-		<?php if($this->ion_auth->logged_in()==0){ 
-			echo "var login = 0;";
-		} else {
-			echo "var login = 1;";
-		}?>
+		$('#register-header').on('click', function() {
+			if(login==1){
+				window.location = base_url+"auth2/profile/";
+			}else{
+				window.location = base_url+"auth2/register/";
+			}	
+		});	
+	var base_url ="<?php echo base_url() ?>";
+	<?php if($this->ion_auth->logged_in()==0){ 
+		echo "var login = 0;";
+	} else {
+		echo "var login = 1;";
+	}?>
 	</script>
 </body>
 

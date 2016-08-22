@@ -12,7 +12,7 @@ class Airlines extends CI_Controller {
 		$this->curl->http_header('token', $this->config->item('api-token'));
 		$this->curl->option('TIMEOUT', 70000);
 		$this->load->model('m_airlines');
-		//$this->url = 'http://52.36.25.143:8989/lion';	
+		$this->url = 'http://52.36.25.143:8989/lion';	
 		$this->url = $this->config->item('api-url') . 'lion';
 
 	 }
@@ -296,11 +296,14 @@ class Airlines extends CI_Controller {
 	            ->set_output($hasil);
 	}
 	
-	function booking_detail($code=00){
+	function retrieve($code='00'){
 		//print_r($_SESSION);
 		$bandara = $this->_bandara();
-		$array = $this->_boking_detail($code);
-		$data = array('content'=>'airlines/booking_detail',
+		$array = NULL;
+		if($code != '00'){
+			$array = $this->_boking_detail($code);
+		}
+		$data = array('content'=>'airlines/retrieve',
 					  'title'=>'Booking Details',
 					  'data'=>$array,
 					  'bandara'=>$bandara,

@@ -1,7 +1,7 @@
 <h1><?php echo lang('login_heading');?></h1>
 <p><?php echo lang('login_subheading');?></p>
 <?php 
-	print_r($_SESSION); 
+	//print_r($_SESSION); 
 	echo "<br>";
 	echo $this->ion_auth->logged_in();
 ?>

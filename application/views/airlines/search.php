@@ -234,7 +234,7 @@ $(document).ready(function(){
                                                 '<div class ="pull-right container-loading_'+j+'" ><i class="fa fa-refresh fa-spin"></i> Loading<\/div>'+ 
                                                 '<div class="pull-right container-fare_'+j+'">Rp <span id="fare_'+j+'"><\/span>(fare)+Rp <span id="tax_'+j+'"><\/span>(tax) <label>TOTAL = Rp <span id="total_'+j+'"> <\/span><\/label><\/div>'+
                                             '<\/div>'+                           
-                                        '<button flight_key="" type="button" disabled class="btn-booking button-booking_'+j+' disabled col-md-2 col-sm-2 col-xs-12 btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>'+
+                                        '<button flight_key="" type="button" disabled class="btn-booking button-booking_'+j+' disabled col-md-2 col-sm-2 col-xs-12 btn btn-flat btn-default btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>'+
                                         '<\/div>'+
                                     '<\/div>'+
                                 '<\/div>'+                           
@@ -283,8 +283,6 @@ $(document).ready(function(){
                     flightcount++;
                     if(flightcount == data[2]){
                     	disable("#group-panel"+data[0]);
-                    	$(".button-booking_"+data[0]).removeClass("btn-success");
-                    	$(".button-booking_"+data[0]).addClass("btn-default");
                         $(".container-loading_"+data[0]).show();
                         $.ajax({
                             url:  base_url+"airlines/get_fare",

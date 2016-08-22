@@ -30,11 +30,12 @@ class Auth2 extends CI_Controller {
 				$code = 200;
 				$hasil['message'] = $this->ion_auth->messages();
 				$hasil['data']=1;
+				$hasil['user']=$this->session->userdata('identity');
 			}
 			else
 			{
 				// if the login was un-successful
-				$hasil['message'] = $this->ion_auth->messages();
+				$hasil['message'] = $this->ion_auth->errors();
 				$hasil['data']=0;
 			}
 		}else{

@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/iCheck/all.css" >
+<link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/iCheck/all.css" />
 <script src="<?php echo base_url(); ?>assets/plugins/iCheck/icheck.min.js"></script>
 
 <div class="box" id="booking-form">
@@ -39,7 +39,8 @@
   <!-- /.box-body -->
   
   <div style="background-color:#f3f3f3" id="form-register" class="box-body">
-  	<div class="col-md-6">
+  	<div class="row">
+  	<div class="col-md-4">
 	  	<div class="form-group">
 	      <label for="full_name" class="col-sm-2 control-label">Full Name</label>
 	      <div class="col-sm-10">
@@ -47,7 +48,7 @@
 	      </div>
 	    </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
 	    <div class="form-group">
 	      <label for="email" class="col-sm-2 control-label">Email</label>
 	      <div class="col-sm-10">
@@ -55,7 +56,7 @@
 	      </div>
 	    </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
 	    <div class="form-group">
 	      <label for="phone" class="col-sm-2 control-label">Phone</label>
 	      <div class="col-sm-10">
@@ -63,7 +64,9 @@
 	      </div>
 	    </div>
     </div>
-    <div class="col-md-6">
+    </div>
+    <div class="row">
+    <div class="col-md-4">
 	    <div class="form-group">
 	      <label for="password" class="col-sm-2 control-label">Password</label>
 	      <div class="col-sm-10">
@@ -71,13 +74,14 @@
 	      </div>
 	    </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
 	    <div class="form-group">
 	      <label for="password_confirm" class="col-sm-2 control-label">Password Confirm</label>
 	      <div class="col-sm-10">
 	        <input type="password" required  class="form-control" name="password_confirm" id="password_confirm" placeholder="password confirm">
 	      </div>
 	    </div>
+    </div>
     </div>
   </div>
   
@@ -290,7 +294,7 @@ $(document).ready(function(){
             data: $(this).serialize(),
             success: function(d, textStatus, xhr) {
             	if(d !== undefined && d !== null && d !== "" && xhr.status==200){
-					window.location = base_url+"airlines/booking_detail/"+d;
+					window.location = base_url+"airlines/retrieve/"+d;
 				} else{
 					showalert(d,'warning')
 				}         	
