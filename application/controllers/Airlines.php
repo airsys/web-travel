@@ -323,10 +323,28 @@ class Airlines extends CI_Controller {
 				'airline'=> $array->airline,
 				'flight_list'=> $array->flight_list,				
 				'passenger_list'=> $array->passenger_list,				
+				'child'=> $array->child,				
+				'infant'=> $array->infant,				
+				'adult'=> $array->adult,				
 			);		
 			$this->m_airlines->booking_update($data_update, $this->session->userdata('user_id'),$code);
 		}		
 		$this->load->view("index",$data);
+	}
+	
+	function retrieve_list(){
+		$data_table = $this->m_airlines->retrieve_list();
+		$data = array('content'=>'airlines/retrieve_list',
+					  'data'=>$data_table,
+			);
+		$this->load->view("index",$data);			
+	}
+	
+	function retrieve_list_table(){
+		$data_table = $this->m_airlines->retrieve_list();
+		$data = array('data'=>$data_table);
+		$this->output->set_content_type('text/html')
+					 ->set_output($this->load->view("airlines/retrieve_list_table",$data,TRUE));
 	}
 	
 	private function _boking_detail($code){

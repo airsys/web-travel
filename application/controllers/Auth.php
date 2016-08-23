@@ -59,7 +59,8 @@ class Auth extends CI_Controller {
 			// check for "remember me"
 			$remember = (bool) $this->input->post('remember');
 
-			if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember))
+			if ($this->ion_auth->login($this->input->post('identity'), 
+				$this->input->post('password'), $remember))
 			{
 				//if the login is successful
 				//redirect them back to the home page
@@ -443,7 +444,71 @@ class Auth extends CI_Controller {
 			redirect('auth', 'refresh');
 		}
 	}
+	
+	// register
+	public function register(){
+		$data_post = NULL;
+		$message = '';
+		if($this->input->post()){
+			$data_post = $this->input->post();
+			$tables = $this->config->item('tables','ion_auth');
+	        $identity_column = $this->config->item('identity','ion_auth');
+	        $this->data['identity_column'] = $identity_column;
+	        
+	        // validate form input
+		    $this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
+		    $this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required');
+		    if($identity_column!=='email')
+		    {
+		        $this->form_validation->set_rules('identity',$this->lang->line('create_user_validation_identity_label'),'required|is_unique['.$tables['users'].'.'.$identity_column.']');
+		        $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email');
+		    }
+		    else
+		    {
+		        $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique[' . $tables['users'] . '.email]');
+		    }
+		    $this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'trim|numeric');
+		    $this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'trim');
+		    $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+		    $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 
+		    if ($this->form_validation->run() == true)
+		    {
+		        $email    = strtolower($this->input->post('email'));
+		        $identity = ($identity_column==='email') ? $email : $this->input->post('identity');
+		        $password = $this->input->post('password');
+
+		        $additional_data = array(
+		            'first_name' => $this->input->post('first_name'),
+		            'last_name'  => $this->input->post('last_name'),
+		            'phone'      => $this->input->post('phone'),
+		        );
+		    }
+		    if ($this->form_validation->run() == true && 
+		    	$this->ion_auth->register($identity, $password, $email, $additional_data))
+		    {
+		        // check to see if we are creating the user
+		        // redirect them back to the admin page
+		        $this->session->set_flashdata('message', $this->ion_auth->messages());
+		        $message =  $this->ion_auth->messages();
+		    }
+		    else
+		    {
+		        // display the create user form
+		        // set the flash data error message if there is one
+		        $message = (validation_errors() ? validation_errors() : 
+		        						  ($this->ion_auth->errors() ? $this->ion_auth->errors() : 
+		        						  $this->session->flashdata('message')));
+		    }
+		}		
+		$data_view = array(
+					'content'=>'auth/register',
+					'data_post'=> $data_post,
+					'message'=> $message,
+				);
+		$this->load->view("index",$data_view);
+	}
+	
 	// create a new user
 	public function create_user()
     {

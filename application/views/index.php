@@ -61,6 +61,7 @@
 		            <li class="menu-bar"><a href="<?php echo base_url() ?>">Search Ticket <span class="sr-only">(current)</span></a></li>
 		            <?php if($this->ion_auth->logged_in()){ ?>
 		            <li class="menu-bar"><a href="<?php echo base_url().'airlines/retrieve' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
+		            <li class="menu-bar"><a href="<?php echo base_url().'airlines/retrieve_list' ?>">Retrieve List <span class="sr-only">(current)</span></a></li>
 		         	<?php } ?>
 		          </ul>
 		        </div>

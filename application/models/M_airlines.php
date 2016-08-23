@@ -18,8 +18,8 @@ class M_airlines extends CI_Model
 	function booking_update($data, $id_user, $booking_code){
 		$data_update = array(
 	        'id_flight' => $data['id_flight'],
-	        'booking_time' => $data['booking_time'],
-	        'time_limit'=> $data['time_limit'],
+	        'booking_time' => date("Y-m-d H:i:s", $data['booking_time']),
+	        'time_limit'=> date("Y-m-d H:i:s", $data['time_limit']),
 			'base_fare'=> $data['base_fare'],
 			'NTA'=> $data['NTA'],
 			'name'=> $data['name'],
@@ -28,6 +28,9 @@ class M_airlines extends CI_Model
 			'area_arrive'=> $data['area_arrive'],
 			'payment_status'=> $data['payment_status'],
 			'airline'=> $data['airline'],
+			'infant'=> $data['infant'],
+			'child'=> $data['child'],
+			'adult'=> $data['adult'],
 		);
 		$this->db->where('id_user', $id_user)
 				 ->where('booking_code', $booking_code);
@@ -35,6 +38,12 @@ class M_airlines extends CI_Model
 		
 		$this->_insert_passenger_list($data['passenger_list'],$data['id_flight']);
 		$this->_insert_flight_list($data['flight_list'],$data['id_flight']);
+	}
+	
+	function retrieve_list(){
+		$this->db->select('*')
+			   	 ->where('id_user', $this->session->userdata('user_id'));
+		return $this->db->get('booking_save')->result();
 	}
 	
 	private function _insert_passenger_list($data, $id_flight){
