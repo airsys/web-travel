@@ -44,7 +44,7 @@
 	  	<div class="form-group">
 	      <label for="full_name" class="col-sm-2 control-label">Full Name</label>
 	      <div class="col-sm-10">
-	        <input type="text" required class="form-control" value="" name="full_name" id="first_name" placeholder="Full Name">
+	        <input type="text" class="form-control" value="" name="full_name" id="first_name" placeholder="Full Name">
 	      </div>
 	    </div>
     </div>
@@ -52,7 +52,7 @@
 	    <div class="form-group">
 	      <label for="email" class="col-sm-2 control-label">Email</label>
 	      <div class="col-sm-10">
-	        <input type="text" required class="form-control" value="" name="email" id="email" placeholder="email">
+	        <input type="text" class="form-control" value="" name="email" id="email" placeholder="email">
 	      </div>
 	    </div>
     </div>
@@ -60,7 +60,7 @@
 	    <div class="form-group">
 	      <label for="phone" class="col-sm-2 control-label">Phone</label>
 	      <div class="col-sm-10">
-	        <input type="text" required class="form-control" value="" name="phone" id="phone" placeholder="phone">
+	        <input type="text" class="form-control" value="" name="phone" id="phone" placeholder="phone">
 	      </div>
 	    </div>
     </div>
@@ -70,7 +70,7 @@
 	    <div class="form-group">
 	      <label for="password" class="col-sm-2 control-label">Password</label>
 	      <div class="col-sm-10">
-	        <input type="password"  required class="form-control" name="password_register" id="company" placeholder="Password">
+	        <input type="password" class="form-control" name="password_register" id="company" placeholder="Password">
 	      </div>
 	    </div>
     </div>
@@ -78,7 +78,7 @@
 	    <div class="form-group">
 	      <label for="password_confirm" class="col-sm-2 control-label">Password Confirm</label>
 	      <div class="col-sm-10">
-	        <input type="password" required  class="form-control" name="password_confirm" id="password_confirm" placeholder="password confirm">
+	        <input type="password" class="form-control" name="password_confirm" id="password_confirm" placeholder="password confirm">
 	      </div>
 	    </div>
     </div>
