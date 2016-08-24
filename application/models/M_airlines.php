@@ -40,9 +40,16 @@ class M_airlines extends CI_Model
 		$this->_insert_flight_list($data['flight_list'],$data['id_flight']);
 	}
 	
-	function retrieve_list(){
+	function retrieve_list($data_or=NULL){
+		if($data_or!=NULL){
+			foreach ($data_or as $val){
+				$this->db->like($val['key'], $val['val']);
+			}
+		}
 		$this->db->select('*')
-			   	 ->where('id_user', $this->session->userdata('user_id'));
+			   	 ->where('id_user', $this->session->userdata('user_id'))
+			   	 ->order_by('booking_time','desc')
+			   	 ->limit(5);
 		return $this->db->get('booking_save')->result();
 	}
 	

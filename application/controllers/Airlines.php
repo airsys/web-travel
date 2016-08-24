@@ -300,14 +300,37 @@ class Airlines extends CI_Controller {
 		//print_r($_SESSION);
 		$bandara = $this->_bandara();
 		$array = NULL;
-		if($code != '00'){
+		$data_table = NULL;
+		if($code != '00' && !$this->input->get()){
 			$array = $this->_boking_detail($code);
-		}
-		$data = array('content'=>'airlines/retrieve',
-					  'title'=>'Booking Details',
-					  'data'=>$array,
+			$data = array('content'=>'airlines/retrieve',
+					  'data_detail'=>$array,
+					  'data_table'=>NULL,
 					  'bandara'=>$bandara,
 					);
+		}elseif(!$this->input->get()){
+			$data_table = $this->m_airlines->retrieve_list();
+			$data = array('content'=>'airlines/retrieve',
+					  'data_table'=>$data_table,
+					  'data_detail'=>NULL,
+					);
+		}else{
+			$data_or = [];
+			$string = explode(",",$this->input->get('q'));
+			for($i = 0; $i < count($string)-1; $i++){
+				$string2 = explode(":",$string[$i]);
+				if(preg_replace('/\s+/', '', $string2[0])=='bookingcode'){
+					$data_or[$i]=array('val'=>$string2[1], 'key'=>'booking_code');
+				}
+				//echo "$string2[0]-$string2[1]<br>";
+			}
+			$data_table = $this->m_airlines->retrieve_list($data_or);
+			$data = array('content'=>'airlines/retrieve',
+					  'data_table'=>$data_table,
+					  'data_detail'=>NULL,
+					);
+		}
+		
 		if($array != NULL && $this->ion_auth->logged_in()){
 			$data_update = array(
 		        'id_flight' => $array->id,
@@ -330,21 +353,6 @@ class Airlines extends CI_Controller {
 			$this->m_airlines->booking_update($data_update, $this->session->userdata('user_id'),$code);
 		}		
 		$this->load->view("index",$data);
-	}
-	
-	function retrieve_list(){
-		$data_table = $this->m_airlines->retrieve_list();
-		$data = array('content'=>'airlines/retrieve_list',
-					  'data'=>$data_table,
-			);
-		$this->load->view("index",$data);			
-	}
-	
-	function retrieve_list_table(){
-		$data_table = $this->m_airlines->retrieve_list();
-		$data = array('data'=>$data_table);
-		$this->output->set_content_type('text/html')
-					 ->set_output($this->load->view("airlines/retrieve_list_table",$data,TRUE));
 	}
 	
 	private function _boking_detail($code){
