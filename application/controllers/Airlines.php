@@ -317,11 +317,22 @@ class Airlines extends CI_Controller {
 		}else{
 			$data_or = [];
 			$string = explode(",",$this->input->get('q'));
-			for($i = 0; $i < count($string)-1; $i++){
+			for($i = 0; $i < count($string); $i++){
 				$string2 = explode(":",$string[$i]);
-				if(preg_replace('/\s+/', '', $string2[0])=='bookingcode'){
+				if(!empty($string2[1]) && !empty($string2[0])){
+					if(preg_replace('/\s+/', '', $string2[0])=='bookingcode'){
 					$data_or[$i]=array('val'=>$string2[1], 'key'=>'booking_code');
+					}
+					if(preg_replace('/\s+/', '', $string2[0])=='contactname'){
+						$data_or[$i]=array('val'=>$string2[1], 'key'=>'name');
+					}
+					if(preg_replace('/\s+/', '', $string2[0])=='datebooking'){
+						$data_or[$i]=array('val'=>date("Y-m-d", strtotime($string2[1])), 'key'=>'booking_time');
+					}
+				}else{
+					$data_or[$i]=array('val'=>$string2[0], 'key'=>'booking_code');
 				}
+				
 				//echo "$string2[0]-$string2[1]<br>";
 			}
 			$data_table = $this->m_airlines->retrieve_list($data_or);

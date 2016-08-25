@@ -14,7 +14,7 @@
 	<!-- Ionicons -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 	<!-- bootstrap datepicker -->
-	<link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/datepicker/datepicker3.css">
+	<link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/jQueryUI/jquery-ui.css">
 	<!-- Select2 -->
 	<link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/select2/select2.min.css">
 	<!-- Theme style -->
@@ -222,8 +222,8 @@
 	<!-- InputMask -->
 	<script src="<?php echo base_url(); ?>/assets/plugins/input-mask/jquery.inputmask.js"></script>
 	<script src="<?php echo base_url(); ?>/assets/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-	<!-- bootstrap datepicker -->
-	<script src="<?php echo base_url(); ?>/assets/plugins/datepicker/bootstrap-datepicker.js"></script>
+	<!-- JqueryUI -->
+	<script src="<?php echo base_url(); ?>assets/plugins/jQueryUI/jquery-ui.min.js"></script>
 	<!-- Select2 -->
 	<script src="<?php echo base_url(); ?>/assets/plugins/select2/select2.full.min.js"></script>
 	<!-- BaseUrl -->

@@ -140,11 +140,11 @@
 $(document).ready(function(){
     //Date picker
     $('#datepicker').datepicker({
-      autoclose: true,
-      format: 'dd-mm-yyyy', 
-       startDate: '0d',
-       todayHighlight: true,
-    }); 
+       showOtherMonths: true,
+       selectOtherMonths: true,
+       dateFormat: 'dd-mm-yy', 
+       minDate: 0,
+    });
     $(".bandara").select2();
     var bandara = [] ;
     $.get( base_url+'assets/ajax/iata_bandara.json', function(data) {

@@ -1,4 +1,8 @@
 <script src="<?php echo base_url(); ?>assets/plugins/jQueryUI/jquery-ui.min.js"></script>
+<!-- Jquery Tag Editor -->
+<link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/jquery.tag-editor/jquery.tag-editor.css" />
+<script src="<?php echo base_url(); ?>assets/plugins/jquery.tag-editor/jquery.tag-editor.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/plugins/jquery.tag-editor/jquery.caret.min.js"></script>
 <style>
 	.ui-autocomplete {
     position: absolute;
@@ -17,7 +21,7 @@
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 .ui-autocomplete > li {
-  padding: 3px 20px;
+  padding: 3px 10px;
 }
 .ui-autocomplete > li.ui-state-focus {
   background-color: #DDD;
@@ -32,14 +36,15 @@
       <h3 class="box-title">Search</h3>
     </div>
     <div class="box-body">
-    	<div class="col-md-11 col-sm-6 col-xs-6">
+    	<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="form-group">
-				<input id="booking_code" class="form-control input-lg" type="text" placeholder="Search anything: booking code, date booking, date departure">
+				<input id="booking_code" class="form-control" type="text" placeholder="Search anything: booking code, date booking, date departure">
 			</div>
+			<input type="hidden" id="dp" />
 		</div>
-		<div class="col-md-1 col-sm-6 col-xs-6">
+		<div class="col-md-1 col-sm-12 col-xs-12">
 			<div class="form-group">
-				<a href="#" id="cek" class="btn btn-info btn-flat btn-lg">CEK</a>
+				<a href="#" id="cek" class="btn btn-info btn-flat">CEK</a>
 			</div>
 		</div>
     </div>
@@ -252,78 +257,58 @@
     
     <script>
     //	$(document).ready(function(){
-		    function split( val ) {
-		      return val.split( /, / ); // /,\s*/
-		    }
-		    function extractLast( term ) {
-		      return split( term ).pop();
-		    }
-				    
-			$("#booking_code").on( "keydown", function( event ) {
-				sourced = ['booking code:','date arrived:','date depature:','date booking:'];
-		        if ( event.keyCode === $.ui.keyCode.TAB &&
-		            $( this ).autocomplete( "instance" ).menu.active ) {
-		          	event.preventDefault();
-		        }
-		    }).autocomplete({
-		        minLength: 0,
-		        source: function( request, response ) {
-		          // delegate back to autocomplete, but extract the last term
-		          response( $.ui.autocomplete.filter(
-		            sourced , extractLast( request.term ) ) );
-		        },
-		        focus: function() {
-		          // prevent value inserted on focus
-		          $(this).data("autocomplete").search($(this).val());
-		          return true;
-		        },
-		        select: function( event, ui ) {
-		          var terms = split( this.value );
-		          // remove the current input
-		          terms.pop();
-		          // add the selected item
-		          terms.push( ui.item.value );
-		          // add placeholder to get the comma-and-space at the end
-		          terms.push( "" );
-		          this.value = terms.join( ", " );
-		          var length = $(this).val().length-2;
-		          $(this).selectRange(length);
-		          return false;
-		        }
-		    });
-		
-		$.fn.selectRange = function(start) {
-		    return this.each(function() {
-		        if (this.setSelectionRange) {
-		            this.focus();
-		            this.setSelectionRange(start, start);
-		        } else if (this.createTextRange) {
-		            var range = this.createTextRange();
-		            range.collapse(true);
-		            range.moveEnd('character', start);
-		            range.moveStart('character', start);
-		            range.select();
-		        }
-		    });
-		};
+		    
+			var href = '';
+	    	var booking_code ='';
+	    	href = window.location.href;
+	    	if(href.indexOf("q=")===-1){
+				booking_code = href.substr(href.lastIndexOf('/') + 1);
+	    		if(booking_code !='retrieve')$("#booking_code").val(booking_code.replace('#',''));
+			}else {
+				booking_code = href.substr(href.lastIndexOf('=') + 1);
+				$("#booking_code").val(decodeURI(booking_code.replace('#','')));
+			}  
+			
+			$('#booking_code').tagEditor(
+				{
+				  	autocomplete:{ 
+	  					'source': ['booking code:','contact name:','date booking:'],
+	  					select: function( event, ui ) {
+	  						if(ui.item.value.indexOf('date') !== -1){
+								$('#dp').datepicker({
+					        		changeMonth: true,
+					        		changeYear: true,
+					        		showOn: 'both',
+									dateFormat: 'dd-mm-yy',
+									onSelect: function(date) {										
+										 var tags = $('#booking_code').tagEditor('getTags')[0].tags;					 
+					    				 $('#booking_code').tagEditor('addTag',ui.item.value+date);
+					    				 $('#booking_code').tagEditor('removeTag', tags[tags.length-1]);
+					    				 $(this).datepicker("destroy");
+									}
+								});
+		  						$('#dp').datepicker('show');
 
-    	
-    	var href = '';
-    	var booking_code ='';
-    	href = window.location.href;
-    	if(href.indexOf("q=")===-1){
-			booking_code = href.substr(href.lastIndexOf('/') + 1);
-    		if(booking_code !='retrieve')$("#booking_code").val(booking_code);
-		}else {
-			booking_code = href.substr(href.lastIndexOf('=') + 1);
-			$("#booking_code").val(decodeURI(booking_code));
-		}    	
+							}				  						
+					  	}
+				  	},
+				  	removeDuplicates:false,
+				  	clickDelete: true,
+				  	placeholder: 'Search anything: booking code, date booking, date departure',
+				  	forceLowercase:false,
+				  	onChange: function(field, editor, tags, tag, val) {
+						$(document).keypress(function(event){
+						  	$('#dp').datepicker('hide');
+						  	$('#dp').datepicker("destroy");
+						});
+				    },
+				}
+			);
+  	
     	$("#cek").on("click", function(event) {
-    		if($("#booking_code").val().indexOf(",")===-1)
+    		if($("#booking_code").val().search(/:|,/)===-1)
     			window.location = base_url+"airlines/retrieve/"+$("#booking_code").val();
     		else window.location = base_url+"airlines/retrieve?q="+$("#booking_code").val();
     	});
-    	
-    //	});
     	
     </script>
