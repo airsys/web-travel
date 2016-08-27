@@ -131,7 +131,7 @@ class Airlines extends CI_Controller {
             ->set_output($hasil);
 	}
 	
-	function get_fare(){	
+	function get_fare(){
 		$data = $this->input->post();
 		$key = '';
 		//$this->form_validation->set_rules('key[]', 'KEY[]', 'required');
@@ -172,7 +172,7 @@ class Airlines extends CI_Controller {
 		
 	}
 	
-	function get_form(){		
+	function get_form(){	
 		$hasil = $this->jsongetform();		
 		return $this->output
             ->set_content_type('application/json')
@@ -319,7 +319,7 @@ class Airlines extends CI_Controller {
 			$string = explode(",",$this->input->get('q'));
 			for($i = 0; $i < count($string); $i++){
 				$string2 = explode(":",$string[$i]);
-				if(!empty($string2[1]) && !empty($string2[0])){
+				if(!empty($string2[1]) && !empty($string2[0] && $string2[1]!='')){
 					if(preg_replace('/\s+/', '', $string2[0])=='bookingcode'){
 					$data_or[$i]=array('val'=>$string2[1], 'key'=>'booking_code');
 					}
@@ -329,7 +329,7 @@ class Airlines extends CI_Controller {
 					if(preg_replace('/\s+/', '', $string2[0])=='datebooking'){
 						$data_or[$i]=array('val'=>date("Y-m-d", strtotime($string2[1])), 'key'=>'booking_time');
 					}
-				}else{
+				}elseif($string2[1]!=''){
 					$data_or[$i]=array('val'=>$string2[0], 'key'=>'booking_code');
 				}
 				

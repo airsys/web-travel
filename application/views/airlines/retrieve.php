@@ -1,4 +1,3 @@
-<script src="<?php echo base_url(); ?>assets/plugins/jQueryUI/jquery-ui.min.js"></script>
 <!-- Jquery Tag Editor -->
 <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/jquery.tag-editor/jquery.tag-editor.css" />
 <script src="<?php echo base_url(); ?>assets/plugins/jquery.tag-editor/jquery.tag-editor.min.js"></script>
@@ -256,8 +255,8 @@
     <?php } ?>
     
     <script>
-    //	$(document).ready(function(){
-		    
+    	$(document).ready(function(){
+    		$("#booking_code").val('booking code:,contact name:,date booking:');
 			var href = '';
 	    	var booking_code ='';
 	    	href = window.location.href;
@@ -280,17 +279,16 @@
 					        		changeYear: true,
 					        		showOn: 'both',
 									dateFormat: 'dd-mm-yy',
-									onSelect: function(date) {										
+									onSelect: function(date) {								
 										 var tags = $('#booking_code').tagEditor('getTags')[0].tags;					 
 					    				 $('#booking_code').tagEditor('addTag',ui.item.value+date);
 					    				 $('#booking_code').tagEditor('removeTag', tags[tags.length-1]);
 					    				 $(this).datepicker("destroy");
-									}
+									},
 								});
 		  						$('#dp').datepicker('show');
-
 							}				  						
-					  	}
+					  	},
 				  	},
 				  	removeDuplicates:false,
 				  	clickDelete: true,
@@ -304,11 +302,11 @@
 				    },
 				}
 			);
-  	
+			
     	$("#cek").on("click", function(event) {
     		if($("#booking_code").val().search(/:|,/)===-1)
     			window.location = base_url+"airlines/retrieve/"+$("#booking_code").val();
     		else window.location = base_url+"airlines/retrieve?q="+$("#booking_code").val();
     	});
-    	
+    });
     </script>
