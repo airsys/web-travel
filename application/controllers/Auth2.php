@@ -156,12 +156,10 @@ class Auth2 extends CI_Controller {
 			
 		}
 		
-		$user = $this->ion_auth->user($id)->row();
-		
 		$data_view = array(
 					'content'=>'auth/profile',
 					'data_post'=> $user,
-					'message'=> $message,		
+					'message'=> $message,	
 				);
 		$this->load->view("index",$data_view);
 
