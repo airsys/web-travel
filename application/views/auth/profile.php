@@ -1,7 +1,4 @@
-<?php 
-	$user_id = $this->session->userdata('user_id');
-	$bank = listDataCustom('payment_bank','id','rek_number,bank,account_name',"where id_user= $user_id");
-?>
+<?php //print_r($data_post['first_name']); ?>
 <!-- Horizontal Form -->
   <div class="box box-info">
     <div class="box-header with-border">
@@ -62,24 +59,28 @@
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="tab_2">
-               <table class="table table-hover table-striped">
-			  	<thead>
-			    <tr>
-			      <th class="text-center">Bank</th>
-			      <th class="text-center">No. Rek</th>
-			      <th class="text-center">Name</th>
-			    </tr>
-			    </thead>
-			    <tbody>
-			     <?php foreach ($bank as $val){ ?>
-			      <tr>
-				      <td class="text-center"><?php echo $val->bank ?></td>
-				      <td class="text-center"><?php echo $val->rek_number ?></td>
-				      <td class="text-center"><?php echo $val->account_name ?></td>
-			      </tr>
-			     <?php } ?>
-			    </tbody>
-			    </table>       
+               <div style="background-color: #f4f4f4" class="row">
+	                <div class="col-md-6">
+		              <div class="form-group">
+		                <label>No. Rekening</label>
+		                <input type="text" name="rek_number" class="form-control" />
+		              </div>
+		              <!-- /.form-group -->
+	                </div>
+	            	<div class="col-md-2">
+		              <div class="form-group">
+		                <label>No. Rekening</label>
+		                <select class="form-control" style="width: 100%;">
+		                  <option>BRI</option>
+		                  <option>BCA</option>
+		                  <option>MANDIRI</option>
+		                  <option>BNI</option>
+		                </select>
+		              </div>
+		              <!-- /.form-group -->
+		            </div>
+	            </div>
+	            
 	          </div>
               <!-- /.tab-pane -->
             </div>

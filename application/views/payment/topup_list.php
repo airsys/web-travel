@@ -27,7 +27,7 @@
 		    <?php
 			foreach($data_table as $value){ ?>
 		    <tr>
-		      <td class='pull-right'><?php echo "nominal : ".number_format($value->nominal)."<br> unique &nbsp;&nbsp;: <span class='pull-right'>".$value->unique."</span> <br> TOTAL &nbsp;&nbsp;: ".number_format($value->unique+$value->nominal); ?></td>
+		      <td class='pull-right'><?php echo "nominal : ".number_format($value->nominal)."<br> unique &nbsp;&nbsp;&nbsp;: <span class='pull-right'>".$value->unique."</span> <br> TOTAL &nbsp;&nbsp;&nbsp;&nbsp;: ".number_format($value->unique+$value->nominal); ?></td>
 		      <td class="text-center">
   				 <?php echo $bank[$value->id_bank]->bank."-".$bank[$value->id_bank]->rek_number."-".$bank[$value->id_bank]->account_name."<br> to <br>".
   				       $bank[$value->id_bank_to]->bank."-".$bank[$value->id_bank_to]->rek_number."-".$bank[$value->id_bank_to]->account_name ?>

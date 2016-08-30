@@ -7,6 +7,7 @@ class Payment extends CI_Controller {
 	     parent::__construct();
 	     $this->load->library(array('form_validation'));	     
 		 $this->load->model('m_payment');
+		 $this->load->helper('dropdown');
 	 }
 	 
 	 function topup(){
