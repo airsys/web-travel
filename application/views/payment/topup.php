@@ -2,7 +2,7 @@
 <!-- Horizontal Form -->
   <div class="box box-info">
     <div class="box-header with-border">
-      <h3 class="box-title">Profile User</h3>
+      <h3 class="box-title">Topup</h3>
     </div>
     <!-- /.box-header -->
     <!-- form start -->

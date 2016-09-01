@@ -56,4 +56,20 @@ class M_payment extends CI_Model
 		$this->subquery->end_subquery('s.time_status');
 		return $this->db->get()->result();
 	}
+	
+	function topup_list_detail($id_topup){
+		$data = [];
+		$this->db->select(" t.id, t.id_user, t.nominal, t.`unique`, t.id_bank, t.id_bank_to")
+				 ->from("payment_topup t")
+				 ->where("t.id",$id_topup)
+				 ->where('id_user',$this->session->userdata('user_id'));
+		$data['topup']= $this->db->get()->result();
+		$this->db->select("status,time_status")
+				 ->from("payment_status_topup")
+				 ->where("id_topup",$id_topup)
+				 ->order_by('time_status', 'desc');
+		$data['status']=$this->db->get()->result();
+		return $data;
+	}
+	
 }
