@@ -31,8 +31,6 @@ class Payment extends CI_Controller {
 	 function topup_change_status($status=''){
 	 	$status_array = array('confirm','reject');	 	
 	 	if (in_array($status, $status_array)){
-			if($status=='reject')$status='reject';
-		 	if($status=='confirm')$status='confirm';
 		 	if ($this->m_payment->topup_change_status($status)){
 				$hasil['message'] = 'status Changed';
 				$hasil['data']=1;

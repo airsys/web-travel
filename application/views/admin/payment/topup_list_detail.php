@@ -67,10 +67,10 @@
       <!-- /.box-body -->
       <div class="box-footer">
       	<div id="warning"></div>
-      	<div class="col-sm-12 col-md-6">      		
+      	<div class="col-sm-6 col-md-6">      		
           <div class="">
-            <div class="col-sm-4 col-md-4">
-              <div class="input-group">
+            <div class="col-sm-4 col-md-4 col-xs-6">
+              <div class="input-group pull-right">
                 <select id="status" class="form-control">
 	      			<option value="confirm">confirm</option>
 	      			<option value="reject">reject</option>
@@ -79,7 +79,7 @@
               <!-- /input-group -->
             </div>
             <!-- /.col-lg-6 -->
-            <div class="col-sm-4 col-md-4">
+            <div class="col-sm-4 col-md-4 col-xs-4">
               <div class="input-group">
                 <button id="reject" type="button" class="btn btn-danger">Change Status</button>
               </div>

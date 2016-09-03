@@ -29,6 +29,7 @@ class M_payment extends CI_Model
 				"id_bank_to"=>$this->input->post('id_bank_to'),
 				"created"=>$date->getTimestamp(),
 				"id_bank"=>$id_bank,
+				"code"=>'DD',
 		);
 		$this->db->insert('payment_topup',$data);
 		$this->_set_status_topup($this->db->insert_id(),'pending');
