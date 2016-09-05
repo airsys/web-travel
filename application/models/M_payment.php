@@ -44,6 +44,7 @@ class M_payment extends CI_Model
 				"id_topup"=>$id_topup,
 		);
 		$this->db->insert('payment_status_topup',$data);
+		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
 	}
 	
 	function topup_list(){
@@ -71,6 +72,10 @@ class M_payment extends CI_Model
 				 ->order_by('time_status', 'desc');
 		$data['status']=$this->db->get()->result();
 		return $data;
+	}
+	
+	function topup_change_status($status=''){
+		return $this->_set_status_topup($this->input->post('id'),$status);
 	}
 	
 }

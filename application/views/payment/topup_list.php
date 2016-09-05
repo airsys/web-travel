@@ -34,7 +34,7 @@
 		      </td>
 		      <td class="text-center">
 		      	 <?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span><br>"; ?>
-		      	 <?php echo "<a href='topup_list/$value->id'>view<br>Detail</a>"; ?>
+		      	 <?php echo "<a href='".base_url()."payment/topup_list/$value->id'>view<br>Detail</a>"; ?>
 		      </td>
 		    </tr>
 		    <?php } ?>

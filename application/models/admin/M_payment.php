@@ -41,6 +41,22 @@ class M_payment extends CI_Model
 				"id_topup"=>$id_topup,
 		);
 		$this->db->insert('payment_status_topup',$data);
+		$this->_change_saldo($id_topup,$status);
+		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
+	}
+	
+	private function _change_saldo($id_topup,$status){
+		$get_saldo=0;
+		$get_saldo = $this->db->where("id",$id_topup)->get("payment_topup")->row();
+		if($status=='confirm'){
+			$jml_saldo = $get_saldo->unique+$get_saldo->nominal+$get_saldo->saldo;
+				
+		}else{
+			$jml_saldo = $get_saldo->saldo;
+		}
+		$data_update=array('saldo'=>$jml_saldo);	
+		$this->db->where('id',$id_topup);
+		$this->db->update('payment_topup',$data_update);
 		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
 	}
 	

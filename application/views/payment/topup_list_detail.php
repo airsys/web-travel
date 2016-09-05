@@ -1,4 +1,3 @@
-<?php //print_r($data_post['first_name']); ?>
 <!-- Horizontal Form -->
   <div class="box box-info">
     <div class="box-header with-border">
@@ -67,8 +66,31 @@
       </div>
       <!-- /.box-body -->
       <div class="box-footer">
-      	<div class="col-sm-6">
-	        <a href="topup_list" type="submit" class="btn btn-info pull-right">Back</a>
+      	<div class="col-sm-6 col-md-6">
+      		<?php if($data_status[0]->status =='pending'){ ?>
+      		<div id="warning"></div>
+      		<div class="">
+            <div class="col-sm-4 col-md-4 col-xs-6">
+              <div class="input-group pull-right">
+                <select id="status" class="form-control">
+	      			<option value="submit">submit</option>
+	      			<option value="cancel">cancel</option>
+	      		</select>
+              </div>
+              <!-- /input-group -->
+            </div>
+            <!-- /.col-lg-6 -->
+            <div class="col-sm-4 col-md-4 col-xs-4">
+              <div class="input-group">
+                <button id="reject" type="button" class="btn btn-danger">Change Status</button>
+              </div>
+              <!-- /input-group -->
+            </div>
+            <!-- /.col-lg-6 -->
+          </div>
+          <?php } ?>
+	        <a href="<?php echo base_url().'payment/topup_list'; ?>" class="btn btn-info pull-right">Back</a>
+	        <input id="id" type="hidden" value="<?php echo $data_topup->id; ?>" />
       	</div>
       </div>
       <!-- /.box-footer -->
@@ -76,5 +98,30 @@
   </div>
   <!-- /.box -->
   <script>
-  
+  	$(function () {
+		$('#reject').click(function() {
+			if(confirm("Are you sure you want to "+$('#status').val()+" this?")){
+			$.ajax({
+		        url:  base_url+"payment/topup_change_status/"+$('#status').val(),
+		        type: "post",
+		        data: {
+		        	'id': $('#id').val(),
+		        },
+		        success: function(d,textStatus, xhr) {
+		           if(xhr.status==200 && d.data==1){
+				   	 showalert(d.message,'success','#warning');
+				   	 window.location = base_url+"payment/topup_list/";
+				   }
+		        },
+		         error: function (request, status, error) {
+		         	 var err = eval("(" + request.responseText + ")");
+		             showalert(err.message,'danger','#warning');
+		        }
+		    });
+		}
+		else{
+		    return false;
+		}
+		});
+	});
   </script>

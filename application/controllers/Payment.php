@@ -75,4 +75,28 @@ class Payment extends CI_Controller {
 		}
 	 	$this->load->view("index",$data);
 	 }
+	 
+	 function topup_change_status($status=''){
+	 	$status_array = array('cancel','submit');	 	
+	 	if (in_array($status, $status_array)){
+		 	if ($this->m_payment->topup_change_status($status)){
+				$hasil['message'] = 'status Changed';
+				$hasil['data']=1;
+				$code = 200;
+			}else{
+				$hasil['message'] = 'status Not Changed';
+				$hasil['data']=0;
+				$code = 400;
+			}
+		}else{
+			$hasil['message'] = 'Status not found';
+			$hasil['data']=0;
+			$code = 400;
+		}
+	 	
+	 	return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($code)
+            ->set_output(json_encode($hasil));
+	 }
 }

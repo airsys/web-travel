@@ -67,7 +67,8 @@
       <!-- /.box-body -->
       <div class="box-footer">
       	<div id="warning"></div>
-      	<div class="col-sm-6 col-md-6">      		
+      	<div class="col-sm-6 col-md-6">
+      	 <?php if($data_status[0]->status =='submit'){ ?> 		
           <div class="">
             <div class="col-sm-4 col-md-4 col-xs-6">
               <div class="input-group pull-right">
@@ -87,7 +88,7 @@
             </div>
             <!-- /.col-lg-6 -->
           </div>
-          <!-- /.row -->
+          <?php } ?>
 	        <a href="./" type="submit" class="btn btn-info pull-right" style="margin-right: 5px;">Back</a>
       		<input id="id" type="hidden" value="<?php echo $data_topup->id; ?>" />
       	</div>
