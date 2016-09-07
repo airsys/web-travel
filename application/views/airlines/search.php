@@ -1,6 +1,6 @@
 <div class="box" id="cari">
 	<div class="box-header with-border">
-		<h3 class="box-title">Cari</h3>
+		<h3 class="box-title"></h3>
 	</div>
 	<form id="form" method="post" name="form">
 		<div class="box-body">
@@ -200,7 +200,7 @@ $(document).ready(function(){
   });
 
     function KelasGenerate(j,i,seat){
-        var array_kelas = {'promo':['T','V','X','R','O','U'],'ekonomi':['Y','A','G','W','S','B','H','K','L','M','N','Q'],'bisnis':['C','J','D','I','Z']};
+    	var array_kelas = {'promo':['U','O','R','X','V','T'],'ekonomi':['Q','N','M','L','K','H','B','S','W','G','A','Y'],'bisnis':['Z','I','D','J','C']};
         $.each( array_kelas, function( key, value ) {
            var group = $('<optgroup label="' + key + '" />');
                 group.appendTo($('#kelas_'+j+'_'+i));

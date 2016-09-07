@@ -49,7 +49,7 @@ class Payment extends CI_Controller {
 					  'unique'=>$unique,
 					  'message'=>$message,
 					  'bank'=>listDataCustom('payment_bank','id','rek_number,bank,account_name','where type=0'),
-					  'bank_account'=>listDataCustom('payment_bank','id','rek_number,bank,account_name',"where id_user= ".$this->session->userdata('user_id')),
+					  'bank_account'=>listDataCustom('payment_bank','id','rek_number,bank,account_name',"where enable=1 and id_user= ".$this->session->userdata('user_id')),
 					);
 		$this->load->view("index",$data);
 				
@@ -125,13 +125,19 @@ class Payment extends CI_Controller {
             ->set_output(json_encode($hasil));
 	 }
 	 
-	 function coba(){
-	 	$get_saldo = $this->db->where("id_user",100)
-	 				 ->order_by('id','desc')
-	 				 ->limit(0,1)
-	 				 ->get("payment_topup")->row();
-	 	if(empty($get_saldo->saldo)){
-			echo 0;
-		}else echo $get_saldo->saldo;
-	 }
+	 function change_status_bank(){
+	 	$hasil['message'] = 'any error';
+		$hasil['data']=0;
+		$code = 400;
+		if($this->m_payment->change_status_bank()){
+			$hasil['message'] = 'status changed';
+			$hasil['data']=1;
+			$code = 200;
+		}
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($code)
+            ->set_output(json_encode($hasil));
+	}
+
 }

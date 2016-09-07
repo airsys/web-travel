@@ -94,4 +94,13 @@ class M_payment extends CI_Model
 		return $this->_get_saldo();
 	}
 	
+	function change_status_bank(){
+		$data = ($this->input->post('status')=='false') ? 0 : 1;
+		$this->db->where('id', $this->input->post('id_bank'))
+				 ->where('id_user',$this->session->userdata('user_id'));
+		$this->db->update('payment_bank', array('enable'=>$data));
+		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
+	}
+
+	
 }

@@ -296,7 +296,6 @@ class Airlines extends CI_Controller {
 	}
 	
 	function retrieve($code='00'){
-		//print_r($_SESSION);
 		$bandara = $this->_bandara();
 		$array = NULL;
 		$data_table = NULL;
@@ -304,6 +303,7 @@ class Airlines extends CI_Controller {
 			$array = $this->_boking_detail($code);
 			$data = array('content'=>'airlines/retrieve',
 					  'data_detail'=>$array,
+					  'status'=>$this->m_airlines->get_status_booking($code),
 					  'data_table'=>NULL,
 					  'bandara'=>$bandara,
 					);
@@ -331,8 +331,6 @@ class Airlines extends CI_Controller {
 				}elseif($string2[1]!=''){
 					$data_or[$i]=array('val'=>$string2[0], 'key'=>'booking_code');
 				}
-				
-				//echo "$string2[0]-$string2[1]<br>";
 			}
 			$data_table = $this->m_airlines->retrieve_list($data_or);
 			$data = array('content'=>'airlines/retrieve',
@@ -341,6 +339,7 @@ class Airlines extends CI_Controller {
 					);
 		}
 		
+		/* update booking */
 		if($array != NULL && $this->ion_auth->logged_in()){
 			$data_update = array(
 		        'id_flight' => $array->id,

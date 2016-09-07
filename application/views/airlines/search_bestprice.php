@@ -1,6 +1,6 @@
 <div class="box" id="cari">
 	<div class="box-header with-border">
-		<h3 class="box-title">Cari</h3>
+		<h3 class="box-title"></h3>
 	</div>
 	<form id="form" method="post" name="form">
 		<div class="box-body">

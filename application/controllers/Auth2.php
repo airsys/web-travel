@@ -157,16 +157,17 @@ class Auth2 extends CI_Controller {
 		}
 		
 		$user = $this->ion_auth->user($id)->row();
-		
+		$this->load->helper('dropdown');
 		$data_view = array(
 					'content'=>'auth/profile',
 					'data_post'=> $user,
+					'bank'=> listDataCustom('payment_bank','id','bank,account_name,rek_number,enable',"where id_user = '".$this->session->userdata('user_id')."'"),
 					'message'=> $message,		
 				);
 		$this->load->view("index",$data_view);
 
 	}
-
+	
 	// log the user out
 	public function logout()
 	{

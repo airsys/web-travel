@@ -1,4 +1,5 @@
-<?php //print_r($data_post['first_name']); ?>
+<link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/iCheck/all.css" />
+<script src="<?php echo base_url() ?>assets/plugins/iCheck/icheck.min.js"></script>
 <!-- Horizontal Form -->
   <div class="box box-info">
     <div class="box-header with-border">
@@ -7,7 +8,8 @@
     <!-- /.box-header -->
     <!-- form start -->
     <form class="form-horizontal" action="" method="post">
-      <div class="box-body">      	
+      <div class="box-body">
+      <div id="warning"></div>	
     <?php if($message != '') { ?>
     	<div class="alert alert-warning col-md-12"><a class="close" data-dismiss="alert">x</a><span><?php echo $message; ?></span></div>
     <?php } ?>
@@ -59,27 +61,32 @@
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="tab_2">
-               <div style="background-color: #f4f4f4" class="row">
-	                <div class="col-md-6">
-		              <div class="form-group">
-		                <label>No. Rekening</label>
-		                <input type="text" name="rek_number" class="form-control" />
-		              </div>
-		              <!-- /.form-group -->
-	                </div>
-	            	<div class="col-md-2">
-		              <div class="form-group">
-		                <label>No. Rekening</label>
-		                <select class="form-control" style="width: 100%;">
-		                  <option>BRI</option>
-		                  <option>BCA</option>
-		                  <option>MANDIRI</option>
-		                  <option>BNI</option>
-		                </select>
-		              </div>
-		              <!-- /.form-group -->
-		            </div>
-	            </div>
+               <div class="row">
+	           	  <div class="table-responsive no-padding col-md-6">
+					  <table class="table table-hover table-striped">
+					  	<thead>
+						    <tr>
+						      <th class="text-center">Account Name</th>
+						      <th class="text-center">Bank</th>
+						      <th class="text-center">Rek. Number</th>
+						      <th class="text-center">Action</th>
+						    </tr>
+					    </thead>
+					    	<?php foreach($bank as $key=>$val){ ?>
+					    	<tr class="text-center">
+					    		<td><?php echo $val->account_name ?></td>
+					    		<td><?php echo $val->bank ?></td>
+					    		<td><?php echo $val->rek_number ?></td>
+					    		<td>
+					    			<label>
+					    			  <input class="flat-red" type="checkbox" data-toggle="<?php echo $key ?>" <?php echo ($val->enable) ? "checked" : "" ?> /> Enable 
+					    			</label>
+					    		</td>
+					    	</tr>
+					    	<?php } ?>		    
+					  </table>
+				  </div>     
+	           </div>
 	            
 	          </div>
               <!-- /.tab-pane -->
@@ -105,7 +112,12 @@
   </div>
   <!-- /.box -->
   <script>
-  	$( document ).ready(function() {  
+  	$( document ).ready(function() {	    
+	    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+	      checkboxClass: 'icheckbox_flat-green',
+	      radioClass: 'iradio_flat-green'
+	    });
+	    
   		var edit = 0;
   		$("#edit").on("click", function(event) {
   			edit++;
@@ -118,5 +130,25 @@
 				$("#edit").val('Edit');
 			}
   		});
+  		  		
+  		$('.flat-red').on('ifChanged', function(event){
+  			$.ajax({
+			        url:  base_url+"payment/change_status_bank/",
+			        type: "post",
+			        data: {
+			        	'id_bank': $(this).attr('data-toggle'),
+			        	'status': $(this).iCheck('update')[0].checked,
+			        },
+			        success: function(d,textStatus, xhr) {
+			           if(xhr.status==200 && d.data==1){
+					   	 showalert(d.message,'success','#warning');
+					   }
+			        },
+			         error: function (request, status, error) {
+			         	 var err = eval("(" + request.responseText + ")");
+			             showalert(err.message,'danger','#warning');
+			        }
+			    });
+		  });
 	});
   </script>

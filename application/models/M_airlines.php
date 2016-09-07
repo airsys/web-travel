@@ -4,6 +4,7 @@ class M_airlines extends CI_Model
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->library('subquery');
 	}
 	
 	function booking_save($data){
@@ -13,6 +14,22 @@ class M_airlines extends CI_Model
 	        'booking_code' => $data['booking_code'],
 		);
 		$this->db->insert('booking_save', $data);
+	}
+	
+	private function _set_status_booking($id_flight,$status){
+		$this->db->where('id_flight',$id_flight);
+		$this->db->where('status',$status);
+		$this->db->from('booking_status');
+		if($this->db->count_all_results()<1){
+			$date = date_create();
+			$data=array(
+					"status"=>$status,
+					"time_status"=>$date->getTimestamp(),
+					"id_flight"=>$id_flight,
+			);
+			$this->db->insert('booking_status',$data);
+		}
+		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
 	}
 	
 	function booking_update($data, $id_user, $booking_code){
@@ -37,7 +54,8 @@ class M_airlines extends CI_Model
 		$this->db->update('booking_save', $data_update);
 		
 		$this->_insert_passenger_list($data['passenger_list'],$data['id_flight']);
-		$this->_insert_flight_list($data['flight_list'],$data['id_flight']);
+		$this->_insert_flight_list($data['flight_list'],$data['id_flight']);		
+		$this->_set_status_booking($data['id_flight'],'booking');
 	}
 	
 	function retrieve_list($data_or=NULL, $id_flight=NULL){
@@ -47,13 +65,30 @@ class M_airlines extends CI_Model
 			}
 		}
 		if($id_flight!=NULL){
-			$this->db->where('id_flight',$id_flight);
+			$this->db->where('b.id_flight',$id_flight);
 		}
-		$this->db->select('*')
-			   	 ->where('id_user', $this->session->userdata('user_id'))
-			   	 ->order_by('booking_time','desc')
-			   	 ->limit(5);
-		return $this->db->get('booking_save')->result();
+		$this->db->select(" b.*, `status`,time_status")
+				 ->from("booking_save b, booking_status s")
+				 ->where("b.id_flight = s.id_flight")
+				 ->where('id_user',$this->session->userdata('user_id'))
+				 ->order_by('s.time_status','desc');
+		$sub = $this->subquery->start_subquery('where');
+		$sub->select_max('time_status')->from('booking_status')->where('id_flight = b.id_flight');
+		$this->subquery->end_subquery('s.time_status');
+		return $this->db->get()->result();
+	}
+	
+	function get_status_booking($booking_code){
+		$this->db->select(" `status`,time_status")
+				 ->from("booking_save b, booking_status s")
+				 ->where("b.id_flight = s.id_flight")
+				 ->where("booking_code",$booking_code)
+				 ->where('id_user',$this->session->userdata('user_id'))
+				 ->order_by('s.time_status','desc');
+		$sub = $this->subquery->start_subquery('where');
+		$sub->select_max('booking_time')->from('booking_save')->where('booking_code',$booking_code);
+		$this->subquery->end_subquery('booking_time');
+		return $this->db->get()->result();
 	}
 	
 	private function _insert_passenger_list($data, $id_flight){

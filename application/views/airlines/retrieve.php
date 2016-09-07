@@ -1,3 +1,11 @@
+<?php 
+ 	$color = array(
+ 				'booking'=>'#636c70',
+ 				'issued'=>'#00bd30',
+ 				'cancel'=>'#d3ce0a',
+ 				'timeup'=>'#e7bd41',
+ 			);
+?>
 <!-- Jquery Tag Editor -->
 <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/jquery.tag-editor/jquery.tag-editor.css" />
 <script src="<?php echo base_url(); ?>assets/plugins/jquery.tag-editor/jquery.tag-editor.min.js"></script>
@@ -65,10 +73,11 @@
 				      <th>Booking Code</th>
 				      <th>Tujuan</th>
 				      <th>Contact</th>
-				      <th>booking_time</th>
-				      <th>payment_status</th>
-				      <th>base_fare</th>
+				      <th>Booking time</th>
+				      <th>payment status</th>
+				      <th>Base fare</th>
 				      <th>Passanger</th>
+				      <th>Status booking</th>
 				    </tr>
 				    <?php
 				    $i=0;
@@ -84,6 +93,7 @@
 				      	<?php echo "A: $value->adult | C: $value->child | I: $value->infant" ?>
 				      	
 				      </td>
+				      <td><?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>" ?></td>
 				    </tr>
 				    <?php } ?>
 				    
@@ -232,6 +242,22 @@
                 <th>NTA:</th>
                 <td>Rp <?php echo number_format($data_detail->NTA); ?></td>
               </tr>
+            </table>
+          </div>
+        </div>
+        <!-- /.col -->
+        
+        <div class="col-xs-12 col-md-6">
+          <p class="lead">Booking status:</p>
+
+          <div class="table-responsive">
+            <table class="table">
+            <?php foreach($status as $val){ ?>
+              <tr>
+                <th style="width:20%"><?php echo "<span class='label' style='background-color:".$color[$val->status]."; font-size:0.9em'>".$val->status."</span>" ?></th>
+                <td><?php echo date("d-m-Y H:i:s",$val->time_status); ?></td>
+              </tr>
+              <?php } ?>
             </table>
           </div>
         </div>
