@@ -240,11 +240,12 @@
       <!-- /.row -->
 
       <!-- this row will not appear when printing -->
+      <div id="warning"></div>
       <div class="row no-print">
         <div class="col-xs-12">
           <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-          <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment
-          </button>
+          <button id="issued" type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment </button>
+          <input type="hidden" id="id" value="<?php echo $data_detail->id ?>"/>
           <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
             <i class="fa fa-download"></i> Generate PDF
           </button>
@@ -307,6 +308,31 @@
     		if($("#booking_code").val().search(/:|,/)===-1)
     			window.location = base_url+"airlines/retrieve/"+$("#booking_code").val();
     		else window.location = base_url+"airlines/retrieve?q="+$("#booking_code").val();
+    	});
+    	
+    	$("#issued").on("click", function(event) {
+    		if(confirm("Are you sure want to make issued?")){
+	  		$.ajax({
+	            url:  base_url+"payment/issued",
+	            type: "post",
+	            data: {
+	            	'id': $('#id').val(),
+	            },
+	            success: function(d,textStatus, xhr) {
+	               if(xhr.status==200 && d.data==1){
+				   	 showalert(d.message,'success','#warning');
+				   	// window.location = base_url+"payment/topup_list/";
+				   }
+	            },
+	             error: function (request, status, error) {
+	             	 var err = eval("(" + request.responseText + ")");
+	                 showalert(err.message,'danger','#warning');
+	            }
+	        });
+	    }
+	    else{
+	        return false;
+	    }
     	});
     });
     </script>

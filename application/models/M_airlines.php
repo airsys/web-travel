@@ -40,11 +40,14 @@ class M_airlines extends CI_Model
 		$this->_insert_flight_list($data['flight_list'],$data['id_flight']);
 	}
 	
-	function retrieve_list($data_or=NULL){
+	function retrieve_list($data_or=NULL, $id_flight=NULL){
 		if($data_or!=NULL){
 			foreach ($data_or as $val){
 				$this->db->like($val['key'], $val['val']);
 			}
+		}
+		if($id_flight!=NULL){
+			$this->db->where('id_flight',$id_flight);
 		}
 		$this->db->select('*')
 			   	 ->where('id_user', $this->session->userdata('user_id'))

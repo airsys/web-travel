@@ -99,4 +99,39 @@ class Payment extends CI_Controller {
             ->set_status_header($code)
             ->set_output(json_encode($hasil));
 	 }
+	 
+	 function issued(){
+	 	$this->load->model('m_airlines');
+	 	$id_flight = $this->input->post('id');
+	 	$base_fare = $this->m_airlines->retrieve_list(NULL,$id_flight);
+	 	if(empty($base_fare[0]->base_fare)){
+			$hasil['message'] = 'id or user not found';
+			$hasil['data']=0;
+			$code = 400;
+		}elseif(saldo()>$base_fare[0]->base_fare){
+			$hasil['message'] = 'saldo mencukupi - '.$base_fare[0]->base_fare;
+			$hasil['data']=1;
+			$code = 200;
+		}
+		else{
+			$hasil['message'] = 'saldo TIDAK cukup - '.$base_fare[0]->base_fare;
+			$hasil['data']=0;
+			$code = 400;
+		}
+	 	
+	 	return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($code)
+            ->set_output(json_encode($hasil));
+	 }
+	 
+	 function coba(){
+	 	$get_saldo = $this->db->where("id_user",100)
+	 				 ->order_by('id','desc')
+	 				 ->limit(0,1)
+	 				 ->get("payment_topup")->row();
+	 	if(empty($get_saldo->saldo)){
+			echo 0;
+		}else echo $get_saldo->saldo;
+	 }
 }

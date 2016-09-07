@@ -72,17 +72,14 @@
       		<div class="">
             <div class="col-sm-4 col-md-4 col-xs-6">
               <div class="input-group pull-right">
-                <select id="status" class="form-control">
-	      			<option value="submit">submit</option>
-	      			<option value="cancel">cancel</option>
-	      		</select>
+                <button id="cancel" type="button" class="btn btn-danger">Cancel</button>
               </div>
               <!-- /input-group -->
             </div>
             <!-- /.col-lg-6 -->
             <div class="col-sm-4 col-md-4 col-xs-4">
               <div class="input-group">
-                <button id="reject" type="button" class="btn btn-danger">Change Status</button>
+                <button id="submit" type="button" class="btn btn-success">Submit</button>
               </div>
               <!-- /input-group -->
             </div>
@@ -99,29 +96,36 @@
   <!-- /.box -->
   <script>
   	$(function () {
-		$('#reject').click(function() {
-			if(confirm("Are you sure you want to "+$('#status').val()+" this?")){
-			$.ajax({
-		        url:  base_url+"payment/topup_change_status/"+$('#status').val(),
-		        type: "post",
-		        data: {
-		        	'id': $('#id').val(),
-		        },
-		        success: function(d,textStatus, xhr) {
-		           if(xhr.status==200 && d.data==1){
-				   	 showalert(d.message,'success','#warning');
-				   	 window.location = base_url+"payment/topup_list/";
-				   }
-		        },
-		         error: function (request, status, error) {
-		         	 var err = eval("(" + request.responseText + ")");
-		             showalert(err.message,'danger','#warning');
-		        }
-		    });
-		}
-		else{
-		    return false;
-		}
+		$('#submit').click(function() {
+			change('submit');
 		});
+		$('#cancel').click(function() {
+			change('cancel');
+		});
+		
+		function change(status=''){
+			if(confirm("Are you sure want to "+status+" this?")){
+				$.ajax({
+			        url:  base_url+"payment/topup_change_status/"+status,
+			        type: "post",
+			        data: {
+			        	'id': $('#id').val(),
+			        },
+			        success: function(d,textStatus, xhr) {
+			           if(xhr.status==200 && d.data==1){
+					   	 showalert(d.message,'success','#warning');
+					   	 window.location = base_url+"payment/topup_list/";
+					   }
+			        },
+			         error: function (request, status, error) {
+			         	 var err = eval("(" + request.responseText + ")");
+			             showalert(err.message,'danger','#warning');
+			        }
+			    });
+			}
+			else{
+			    return false;
+			}
+		}
 	});
   </script>

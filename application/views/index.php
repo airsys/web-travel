@@ -93,6 +93,21 @@
 		                </span>
 		              </a>
 		              <ul class="dropdown-menu">
+		              <?php 
+		                if($this->ion_auth->logged_in()){ ?>
+			              <!-- Menu Body -->
+			              <li class="user-body">
+			                <div class="row">
+			                  <div class="col-xs-8 text-center">
+			                    <a href="#">Saldo: Rp <?php echo number_format(saldo()); ?></a>
+			                  </div>
+			                  <div class="col-xs-4 text-center">
+			                    <a href="#"></a>
+			                  </div>
+			                </div>
+			                <!-- /.row -->
+			              </li>
+		               <?php } ?>
 		                <!-- Menu Footer-->
 		                <li class="user-footer">
 		                  <div class="pull-left">

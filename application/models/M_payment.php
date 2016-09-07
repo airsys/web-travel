@@ -22,6 +22,7 @@ class M_payment extends CI_Model
 	
 	function insert_topup($id_bank){
 		$date = date_create();
+		$saldo = $this->_get_saldo();
 		$data=array(
 				"id_user"=>$this->session->userdata('user_id'),
 				"nominal"=>$this->input->post('nominal'),
@@ -30,6 +31,7 @@ class M_payment extends CI_Model
 				"created"=>$date->getTimestamp(),
 				"id_bank"=>$id_bank,
 				"code"=>'DD',
+				"saldo"=>$saldo,
 		);
 		$this->db->insert('payment_topup',$data);
 		$this->_set_status_topup($this->db->insert_id(),'pending');
@@ -45,6 +47,16 @@ class M_payment extends CI_Model
 		);
 		$this->db->insert('payment_status_topup',$data);
 		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
+	}
+	
+	private function _get_saldo(){
+		$get_saldo = $this->db->where("id_user",$this->session->userdata('user_id'))
+	 				 ->order_by('id','desc')
+	 				 ->limit(0,1)
+	 				 ->get("payment_topup")->row();
+	 	if(empty($get_saldo->saldo)){
+			return 0;
+		}else return $get_saldo->saldo;
 	}
 	
 	function topup_list(){
@@ -76,6 +88,10 @@ class M_payment extends CI_Model
 	
 	function topup_change_status($status=''){
 		return $this->_set_status_topup($this->input->post('id'),$status);
+	}
+	
+	function get_saldo(){
+		return $this->_get_saldo();
 	}
 	
 }

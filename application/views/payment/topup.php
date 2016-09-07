@@ -91,8 +91,8 @@
   </div>
   <!-- /.box -->
   <script>
-  	$( document ).ready(function() {	    
-  		$('#bank_account').on('change', function() {  			
+  	$( document ).ready(function() {    
+  		$('#bank_account').on('change', function() {			
   			var rek_data = $('#bank_account :selected').text().split('-');
   			if($(this).val()!=0){
 				$('#rek_number').prop('readonly',true);
@@ -104,7 +104,6 @@
 				$('#account_name').val(rek_data[2]);
 				$('#account_name').prop('required',false);
 				$('#account_name').prop('readonly',true);
-				
 			}else{
 				$('#rek_number').prop('required',true);
 				$('#rek_number').prop('readonly',false);
@@ -117,6 +116,8 @@
 				$('#account_name').prop('readonly',false);
 			}
   		});
+  		$('#nominal').val(1000000);
+  		$('#must').val(addCommas(parseInt($('#nominal').val())+parseInt($('#unique').val())));
   		$('#nominal').on('keyup', function() {
   			$('#must').val(addCommas(parseInt($(this).val())+parseInt($('#unique').val())));
   		});

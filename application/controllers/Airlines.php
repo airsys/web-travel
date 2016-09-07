@@ -14,7 +14,6 @@ class Airlines extends CI_Controller {
 		$this->load->model('m_airlines');
 		$this->url = 'http://52.36.25.143:8989/lion';	
 		$this->url = $this->config->item('api-url') . 'lion';
-
 	 }
 	 
 	 function search(){		
@@ -398,10 +397,6 @@ class Airlines extends CI_Controller {
 	}
 	
 	
-	function coba(){
-		$auth = new Auth();
-		$auth->login();
-	}
 	
 	function jsongetform(){
 		return '{
