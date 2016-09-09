@@ -8,35 +8,44 @@
  				'timeup'=>'#e7bd41',
  			);
 ?>
-<div class="box box-primary center-block" style="width: 100%">
+<div class="box box-primary" style="width: 100%">
     <div class="box-header with-border">
       <h3 class="box-title">Topup List</h3>
     </div>
     <!-- /.box-header -->
     
   <div class="box-body">
-  	<div class="table-responsive no-padding col-md-8">
+  	<div id="warning"></div>
+  	<div class="table-responsive no-padding">
 	  <table class="table table-hover table-striped">
 	  	<thead>
 	    <tr>
 	      <th class="text-center">Name</th>
 	      <th class="text-center">Nominal</th>
-	      <th class="text-center">Bank</th>
+	      <th class="text-center">Unique</th>
+	      <th class="text-center">Total</th>
+	      <th class="text-center">From</th>
+	      <th class="text-center">To</th>
 	      <th class="text-center">Status</th>
+	      <th class="text-center">Action</th>
 	    </tr>
 	    </thead>
 	    <?php
 		foreach($data_table as $value){ ?>
 	    <tr>
 	      <td class="text-center"><?php echo ucwords($value->full_name) ?></td>
-	      <td class='pull-right'><?php echo "nominal : ".number_format($value->nominal)."<br> unique &nbsp;&nbsp;&nbsp;: <span class='pull-right'>".$value->unique."</span> <br> TOTAL &nbsp;&nbsp;&nbsp;&nbsp;: ".number_format($value->unique+$value->nominal); ?></td>
+	      <td class='text-center'><?php echo number_format($value->nominal) ?></td>
+	      <td class='text-center'><?php echo $value->unique ?></td>
+	      <td class='text-center'><?php echo number_format($value->unique+$value->nominal); ?></td>   
+	      <td class="text-center"><?php echo $bank[$value->id_bank]->bank."-".$bank[$value->id_bank]->rek_number."-".$bank[$value->id_bank]->account_name; ?></td>
+	      <td class="text-center"><?php echo $bank[$value->id_bank_to]->bank."-".$bank[$value->id_bank_to]->rek_number."-".$bank[$value->id_bank_to]->account_name; ?></td>
 	      <td class="text-center">
-			 <?php echo $bank[$value->id_bank]->bank."-".$bank[$value->id_bank]->rek_number."-".$bank[$value->id_bank]->account_name."<br> to <br>".
-			       $bank[$value->id_bank_to]->bank."-".$bank[$value->id_bank_to]->rek_number."-".$bank[$value->id_bank_to]->account_name ?>
+	      	 <?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>"; ?>
 	      </td>
 	      <td class="text-center">
-	      	 <?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span><br>"; ?>
-	      	 <?php echo "<a href='$value->id'>view<br>Detail</a>"; ?>
+	      	<a href="<?php echo base_url().'payment/topup_list/'.$value->id; ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a>
+	      	<button data-toggle="<?php echo $value->id; ?>" type="button" class="reject btn btn-danger btn-sm"><li class="fa fa-close"></li></button>
+	      	<button data-toggle="<?php echo $value->id; ?>" type="button" class="confirm btn btn-primary btn-sm"><li class="fa fa-check"></li></button>
 	      </td>
 	    </tr>
 	    <?php } ?>
@@ -47,3 +56,39 @@
   <div class="box-footer">
   </div>
 </div>
+
+<script>
+  $(function () {
+  	$('.reject').click(function() {
+  		change('reject','Anda yakin ingin me-Reject ?', $(this).attr('data-toggle'))
+  	});
+  	$('.confirm').click(function() {
+  		change('confirm','Pastikan jumlah yang ditransfer sudah sesuai dengan TOTAL !',$(this).attr('data-toggle'))
+  	});
+  	
+  	function change(status='', pesan='', id){
+		if(confirm(pesan)){
+			$.ajax({
+		        url:  base_url+"payment/topup_change_status/"+status,
+		        type: "post",
+		        data: {
+		        	'id': id,
+		        },
+		        success: function(d,textStatus, xhr) {
+		           if(xhr.status==200 && d.data==1){
+				   	 showalert(d.message,'success','#warning');
+				   	 window.location = base_url+"payment/topup_list/";
+				   }
+		        },
+		         error: function (request, status, error) {
+		         	 var err = eval("(" + request.responseText + ")");
+		             showalert(err.message,'danger','#warning');
+		        }
+		    });
+		}
+		else{
+		    return false;
+		}
+	}
+  });
+  </script>

@@ -13,16 +13,28 @@
     <?php } ?>
     	<div class="col-md-12">
 			<div class="form-group">
-	          <label for="email" class="col-sm-2 control-label">Bank Account</label>
+	          <label for="email" class="col-sm-2 control-label">Input Method</label>
 	          <div class="col-sm-4">
-	            <select name="bank_account" id="bank_account" class="form-control" >
+	            <select name="payment_tipe" id="payment_tipe" class="form-control" >
 	            	<option value="0">input manual</option>
+	            	<option value="1">from bank account</option>
+	            </select>
+	          </div>
+	        </div>
+	        <div id="saved-bank">
+	        <div class="form-group">
+	          <label for="first_name" class="col-sm-2 control-label">Bank Account</label>
+	          <div class="col-sm-4">
+	            <select id="bank_account" name="bank_account" class="form-control" >
+	            	<option value="0">Select bank</option>
 	            	<?php foreach($bank_account as $val){
 	            		echo "<option value=$val->id>$val->bank-$val->rek_number-$val->account_name</option>";	
 	            	 } ?>
 	            </select>
 	          </div>
 	        </div>
+	        </div>
+	        <div id="manual">
 	        <div class="form-group">
 	          <label for="first_name" class="col-sm-2 control-label">No. Rekening</label>
 	          <div class="col-sm-4">
@@ -45,6 +57,7 @@
 	          <div class="col-sm-4">
 	            <input type="text" required class="form-control" value="" name="account_name" id="account_name" placeholder="account name">
 	          </div>
+	        </div>
 	        </div>
 	        <hr />
 	        <div class="form-group">
@@ -91,29 +104,44 @@
   </div>
   <!-- /.box -->
   <script>
-  	$( document ).ready(function() {    
-  		$('#bank_account').on('change', function() {			
-  			var rek_data = $('#bank_account :selected').text().split('-');
-  			if($(this).val()!=0){
+  	$( document ).ready(function() {
+  		$('#saved-bank').hide();
+		$('#manual').show();
+  		$('#payment_tipe').on('change', function() {			
+  			//var rek_data = $('#payment_tipe :selected').text().split('-');
+  			if($("#payment_tipe").val()!=0){
 				$('#rek_number').prop('readonly',true);
 				$('#rek_number').prop('required',false);
-				$('#rek_number').val(rek_data[1]);
-				$('#bank').val(rek_data[0]);
+				
 				$('#bank').prop('required',false);
 				$('#bank').prop('disabled',true);
-				$('#account_name').val(rek_data[2]);
+				
 				$('#account_name').prop('required',false);
 				$('#account_name').prop('readonly',true);
+				
+				$('#saved-bank').show();
+				$('#manual').hide();
+				
+				$('#bank_account').val('');
+				$('#bank_account').prop('required',true);				
+								
 			}else{
 				$('#rek_number').prop('required',true);
 				$('#rek_number').prop('readonly',false);
-				$('#rek_number').val('');
-				$('#bank').val('');
+				
 				$('#bank').prop('required',true);
-				$('#bank').prop('disabled',false);				
-				$('#account_name').val('');
+				$('#bank').prop('disabled',false);
+				
 				$('#account_name').prop('required',true);
 				$('#account_name').prop('readonly',false);
+				
+				$('#saved-bank').hide();
+				$('#manual').show();
+				
+				$('#rek_number').val('');
+				$('#bank').val('');
+				$('#account_name').val('');
+				$('#bank_account').prop('required',false);
 			}
   		});
   		$('#nominal').val(1000000);

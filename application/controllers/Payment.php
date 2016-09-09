@@ -22,7 +22,7 @@ class Payment extends CI_Controller {
 			$this->form_validation->set_rules('nominal', 'nominal', 'required|is_natural_no_zero');
 			$this->form_validation->set_rules('unique', 'unique number', 'required|is_natural_no_zero');
 			$this->form_validation->set_rules('id_bank_to', 'transfer to', 'required|is_natural');
-			if($this->input->post('bank_account')==0){
+			if($this->input->post('payment_tipe')==0){
 				$this->form_validation->set_rules('rek_number', 'rekening number', 'required');
 				$this->form_validation->set_rules('bank', 'bank', 'required');
 				$this->form_validation->set_rules('account_name', 'account name', 'required');
@@ -30,7 +30,7 @@ class Payment extends CI_Controller {
 			if ($this->form_validation->run()  == FALSE){
 				$message =  validation_errors();
 			}else{
-				if($this->input->post('bank_account')==0){
+				if($this->input->post('payment_tipe')==0){
 					$id_bank = $this->m_payment->insert_bank();
 				}else{
 					$id_bank = $this->input->post('bank_account');
@@ -114,11 +114,10 @@ class Payment extends CI_Controller {
 			$code = 200;
 		}
 		else{
-			$hasil['message'] = 'saldo TIDAK cukup - '.$base_fare[0]->base_fare;
+			$hasil['message'] = 'saldo TIDAK cukup - silahkan melakukan topup terlebih dahulu <br> <a href="'.base_url().'payment/topup" type="button" class="btn btn-success" >TOPUP</a>'.$base_fare[0]->base_fare;
 			$hasil['data']=0;
 			$code = 400;
 		}
-	 	
 	 	return $this->output
             ->set_content_type('application/json')
             ->set_status_header($code)

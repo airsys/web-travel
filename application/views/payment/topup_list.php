@@ -14,32 +14,76 @@
 		<h3 class="box-title">Topup List</h3>
 	</div><!-- /.box-header -->
 	<div class="box-body">
-		<div id="alert"></div>
-		<div class="table-responsive no-padding col-md-6">
+		<div id="warning"></div>
+		<div class="table-responsive no-padding col-md-8">
 		  <table class="table table-hover table-striped">
 		  	<thead>
 		    <tr>
 		      <th class="text-center">Nominal</th>
-		      <th class="text-center">Bank</th>
+		      <th class="text-center">Unique</th>
+		      <th class="text-center">Total</th>
+		      <th class="text-center">From</th>
+		      <th class="text-center">To</th>
 		      <th class="text-center">Status</th>
+		      <th class="text-center">Action</th>
 		    </tr>
 		    </thead>
 		    <?php
 			foreach($data_table as $value){ ?>
 		    <tr>
-		      <td class='pull-right'><?php echo "nominal : ".number_format($value->nominal)."<br> unique &nbsp;&nbsp;&nbsp;: <span class='pull-right'>".$value->unique."</span> <br> TOTAL &nbsp;&nbsp;&nbsp;&nbsp;: ".number_format($value->unique+$value->nominal); ?></td>
+		      <td class='text-center'><?php echo number_format($value->nominal) ?></td>
+		      <td class='text-center'><?php echo $value->unique ?></td>
+		      <td class='text-center'><?php echo number_format($value->unique+$value->nominal); ?></td>   
+		      <td class="text-center"><?php echo $bank[$value->id_bank]->bank."-".$bank[$value->id_bank]->rek_number."-".$bank[$value->id_bank]->account_name; ?></td>
+		      <td class="text-center"><?php echo $bank[$value->id_bank_to]->bank."-".$bank[$value->id_bank_to]->rek_number."-".$bank[$value->id_bank_to]->account_name; ?></td>
 		      <td class="text-center">
-  				 <?php echo $bank[$value->id_bank]->bank."-".$bank[$value->id_bank]->rek_number."-".$bank[$value->id_bank]->account_name."<br> to <br>".
-  				       $bank[$value->id_bank_to]->bank."-".$bank[$value->id_bank_to]->rek_number."-".$bank[$value->id_bank_to]->account_name ?>
+		      	 <?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>"; ?>
 		      </td>
 		      <td class="text-center">
-		      	 <?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span><br>"; ?>
-		      	 <?php echo "<a href='".base_url()."payment/topup_list/$value->id'>view<br>Detail</a>"; ?>
+		      	<a href="<?php echo base_url().'payment/topup_list/'.$value->id; ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a>
+		      	<button id="cancel" data-toggle="<?php echo $value->id ?>" type="button" class="btn btn-danger btn-sm"><li class="fa fa-close"></li></button>
+		      	<button id="submit" data-toggle="<?php echo $value->id ?>" type="button" class="btn btn-primary btn-sm"><li class="fa fa-paper-plane"></li></button>
 		      </td>
 		    </tr>
-		    <?php } ?>
-		    
+		    <?php } ?>		    
 		  </table>
 		</div>
 	</div>
 </div><!-- /.box-body -->
+
+<script>
+$(function () {
+	$('#submit').click(function() {
+		change('submit','Pastikan jumlah yang anda transfer sesuai Total (Nominal+Unique)',$(this).attr('data-toggle'));
+	});
+	$('#cancel').click(function() {
+		change('cancel','Anda yakin ingin membatalkan transaksi',$(this).attr('data-toggle'));
+	});
+	
+	function change(status='',pesan='',id){
+		if(confirm(pesan)){
+			$.ajax({
+		        url:  base_url+"payment/topup_change_status/"+status,
+		        type: "post",
+		        data: {
+		        	'id': id,
+		        },
+		        success: function(d,textStatus, xhr) {
+		           if(xhr.status==200 && d.data==1){
+				   	 showalert(d.message,'success','#warning');
+				   	 window.location = base_url+"payment/topup_list/";
+				   }
+		        },
+		         error: function (request, status, error) {
+		         	 var err = eval("(" + request.responseText + ")");
+		             showalert(err.message,'danger','#warning');
+		             window.location = base_url+"payment/topup_list/";
+		        }
+		    });
+		}
+		else{
+		    return false;
+		}
+	}
+});
+</script>

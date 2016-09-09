@@ -64,6 +64,7 @@ class M_payment extends CI_Model
 				 ->from("payment_topup t, payment_status_topup s")
 				 ->where("s.id_topup = t.id")
 				 ->where('id_user',$this->session->userdata('user_id'))
+				 ->where("status='pending'")
 				 ->order_by('s.time_status','desc');
 		$sub = $this->subquery->start_subquery('where');
 		$sub->select_max('time_status')->from('payment_status_topup')->where('id_topup = t.id');

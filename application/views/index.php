@@ -185,9 +185,8 @@
 	              <!-- /.box-body -->
 		      </div>
 		      <div class="modal-footer">
-		      	<a href="<?php echo base_url().'auth2/register'; ?>" type="button" class="btn btn-danger" >Or register here</a>
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		        <button id="login" type="button" class="btn btn-success">Sign in</button>
+		      	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button id="login" type="submit" class="btn btn-success">Sign in</button>
 		      </div>
 	      </form>
 	    </div>
@@ -200,7 +199,8 @@
 		function callmodal(){
 			if(login==0) $('#modal-content').modal('show');
 		}
-		$('#login').on('click', function() {
+		$('#form-login-header').on('submit', function() {
+			event.preventDefault();
 		    $.ajax({
                 url:  base_url+"auth2/login_ajax",
                 type: "post",
@@ -214,9 +214,10 @@
 				   	$("#user-header").children("i").removeClass('fa-lock');
 	    			$("#user-header").children("i").addClass('fa-user');
 				   	 showalert(d.message,'success','#login-warning');
+				   	 window.location = base_url;
 				   	 setTimeout(function() {
 					     $('#modal-content').modal('hide');
-					 }, 3000);
+					 }, 2000);
 				   }
                 },
                  error: function (request, status, error) {

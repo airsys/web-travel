@@ -1,6 +1,5 @@
 <div class="box" id="cari">
 	<div class="box-header with-border">
-		<h3 class="box-title"></h3>
 	</div>
 	<form id="form" method="post" name="form">
 		<div class="box-body">
@@ -18,7 +17,7 @@
 						</select>
 				</div>
 			</div>
-			<div class="col-md-2 col-sm-6 col-xs-12">
+			<div class="col-md-2 col-sm-6 col-xs-12" style="padding-right: 0;margin-right: 0;">
 				<div class="form-group">
 					<label>DEPARTING ON</label>
 					<div class="input-group">
@@ -30,7 +29,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-4 col-sm-6 col-xs-12">
+			<div class="col-md-2 col-sm-6 col-xs-12" style="padding: 0;margin: 0;">
 				<div class="col-md-4 col-sm-4 col-xs-4">
 					<label>ADULT</label>
 					<div class="input-group">
@@ -110,9 +109,14 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-md-2 col-sm-4 col-xs-4">
+				<div class="input-group" style="margin-top: 17px;">
+				<button id='btn-search' class="btn btn-flat btn-success btn-lg"><i class="fa fa-search"></i> | SEARCH</button>
+				</div>
+			</div>
 		</div><!-- /.box-body -->
 		<div class="box-footer">
-			<button id='btn-search' class="btn btn-flat btn-success btn-lg pull-right"><i class="fa fa-search"></i> | SEARCH</button>
+			
 		</div>
 	</form>
 	<form id="booking" action="<?php echo base_url()?>airlines/booking" method="post">

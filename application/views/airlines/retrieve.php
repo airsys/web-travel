@@ -43,13 +43,13 @@
       <h3 class="box-title">Search</h3>
     </div>
     <div class="box-body">
-    	<div class="col-md-12 col-sm-12 col-xs-12">
+    	<div class="col-md-8 col-sm-8 col-xs-8">
 			<div class="form-group">
 				<input id="booking_code" class="form-control" type="text" placeholder="Search anything: booking code, date booking, date departure">
 			</div>
 			<input type="hidden" id="dp" />
 		</div>
-		<div class="col-md-1 col-sm-12 col-xs-12">
+		<div class="col-md-1 col-sm-2 col-xs-2">
 			<div class="form-group">
 				<a href="#" id="cek" class="btn btn-info btn-flat">CEK</a>
 			</div>
@@ -74,26 +74,30 @@
 				      <th>Tujuan</th>
 				      <th>Contact</th>
 				      <th>Booking time</th>
-				      <th>payment status</th>
-				      <th>Base fare</th>
+				      <th>Payment limit</th>
+				      <th>Fare</th>
+				      <th>NTA</th>
 				      <th>Passanger</th>
 				      <th>Status booking</th>
+				      <th>Detail</th>
 				    </tr>
 				    <?php
 				    $i=0;
 					foreach($data_table as $value){ $i++;?>
 				    <tr>
-				      <td><?php echo $value->airline."<br><a href='".base_url()."airlines/retrieve/".$value->booking_code."'>".$value->booking_code." </a>" ?></td>
+				      <td><?php echo $value->airline." - ".$value->booking_code ?></td>
 				      <td><?php echo $value->area_depart."-".$value->area_arrive ?></td>
-				      <td><?php echo $value->name."<br>".$value->phone ?></td>
+				      <td><?php echo $value->name ?></td>
 				      <td><?php echo $value->booking_time ?></td>
-				      <td><?php echo $value->payment_status."<br>limit: ".$value->time_limit ?></td>
-				      <td><?php echo number_format($value->base_fare)."<br>NTA: ".number_format($value->NTA) ?></td>
+				      <td><?php echo $value->time_limit ?></td>
+				      <td><?php echo number_format($value->base_fare) ?></td>
+				      <td><?php echo number_format($value->NTA) ?></td>
 				      <td>
 				      	<?php echo "A: $value->adult | C: $value->child | I: $value->infant" ?>
 				      	
 				      </td>
 				      <td><?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>" ?></td>
+				      <td><a href="<?php echo base_url()."airlines/retrieve/".$value->booking_code ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
 				    </tr>
 				    <?php } ?>
 				    
@@ -149,20 +153,20 @@
       <!-- /.row -->
 
       <!-- Table row -->
-      <h3>Itenary List</h3>
+      <h3>Itinerary List</h3>
       <div class="row">
         <div class="col-xs-12 table-responsive">
           <table class="table table-striped">
             <thead>
             <tr>
               <th>#</th>
-              <th>flight_id</th>
-              <th>area_depart</th>
-              <th>date_depart</th>
-              <th>time_depart</th>
-              <th>area_arrive</th>
-              <th>date_arrive</th>
-              <th>time_arrive</th>
+              <th>flight id</th>
+              <th>area depart</th>
+              <th>date depart</th>
+              <th>time depart</th>
+              <th>area arrive</th>
+              <th>date arrive</th>
+              <th>time arrive</th>
             </tr>
             </thead>
             <tbody>
@@ -225,8 +229,7 @@
       <div class="row">
         <!-- accepted payments column -->
         <div class="col-xs-12 col-md-6 pull-right">
-          <p class="lead">Payment Time Limit <b><?php echo date("d-m-Y", $data_detail->time_limit); ?> | <?php echo date("H:i", $data_detail->time_limit); ?></b><br>
-          Payment Status <b><?php echo $data_detail->payment_status; ?></b></p>
+          <p class="lead">Payment Time Limit <b><?php echo date("d-m-Y", $data_detail->time_limit); ?> | <?php echo date("H:i", $data_detail->time_limit); ?></b><br></p>
 
           <div class="table-responsive">
             <table class="table">
@@ -283,7 +286,6 @@
     
     <script>
     	$(document).ready(function(){
-    		$("#booking_code").val('booking code:,contact name:,date booking:');
 			var href = '';
 	    	var booking_code ='';
 	    	href = window.location.href;
@@ -352,7 +354,7 @@
 	            },
 	             error: function (request, status, error) {
 	             	 var err = eval("(" + request.responseText + ")");
-	                 showalert(err.message,'danger','#warning');
+	                 showalert(err.message,'danger','#warning',6000000);
 	            }
 	        });
 	    }
