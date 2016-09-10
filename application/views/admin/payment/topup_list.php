@@ -26,6 +26,7 @@
 	      <th class="text-center">Total</th>
 	      <th class="text-center">From</th>
 	      <th class="text-center">To</th>
+	      <th class="text-center">Date</th>
 	      <th class="text-center">Status</th>
 	      <th class="text-center">Action</th>
 	    </tr>
@@ -39,13 +40,14 @@
 	      <td class='text-center'><?php echo number_format($value->unique+$value->nominal); ?></td>   
 	      <td class="text-center"><?php echo $bank[$value->id_bank]->bank."-".$bank[$value->id_bank]->rek_number."-".$bank[$value->id_bank]->account_name; ?></td>
 	      <td class="text-center"><?php echo $bank[$value->id_bank_to]->bank."-".$bank[$value->id_bank_to]->rek_number."-".$bank[$value->id_bank_to]->account_name; ?></td>
+	      <td class="text-center"><?php echo date("d-m-Y H:i:s", $value->time_status) ?></td>
 	      <td class="text-center">
 	      	 <?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>"; ?>
 	      </td>
 	      <td class="text-center">
-	      	<a href="<?php echo base_url().'payment/topup_list/'.$value->id; ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a>
-	      	<button data-toggle="<?php echo $value->id; ?>" type="button" class="reject btn btn-danger btn-sm"><li class="fa fa-close"></li></button>
-	      	<button data-toggle="<?php echo $value->id; ?>" type="button" class="confirm btn btn-primary btn-sm"><li class="fa fa-check"></li></button>
+	      	<a href="<?php echo base_url().'admin/payment/topup_list/'.$value->id; ?>" title="view detail" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a>
+	      	<button data-toggle="<?php echo $value->id; ?>" type="button" title="reject" class="reject btn btn-danger btn-sm"><li class="fa fa-close"></li></button>
+	      	<button data-toggle="<?php echo $value->id; ?>" type="button" title="confirm" class="confirm btn btn-primary btn-sm"><li class="fa fa-check"></li></button>
 	      </td>
 	    </tr>
 	    <?php } ?>
