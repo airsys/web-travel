@@ -257,8 +257,8 @@
 		
 		$('#login-header').on('click', function() {
 			if(login==1){
-				$.get( base_url+'auth/logout', function(data) {
-			         location.reload();
+				$.get( base_url+'auth2/logout', function(data) {
+			         window.location = base_url+"airlines/search";
 			    });
 			    login =0;
 			}			
