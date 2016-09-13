@@ -124,19 +124,4 @@ class Payment extends CI_Controller {
             ->set_output(json_encode($hasil));
 	 }
 	 
-	 function change_status_bank(){
-	 	$hasil['message'] = 'any error';
-		$hasil['data']=0;
-		$code = 400;
-		if($this->m_payment->change_status_bank()){
-			$hasil['message'] = 'status changed';
-			$hasil['data']=1;
-			$code = 200;
-		}
-		return $this->output
-            ->set_content_type('application/json')
-            ->set_status_header($code)
-            ->set_output(json_encode($hasil));
-	}
-
 }

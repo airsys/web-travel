@@ -54,12 +54,12 @@
 		        </div>
 		        <div class="form-group">
 		          <label for="password_confirm" class="col-sm-2 control-label"></label>
-				  <div class="col-sm-4"">
+				  <div class="col-sm-4">
 				    
 				  </div>
 				</div>
               </div>
-              <!-- /.tab-pane -->
+              <!-- tab-pane -->
               <div class="tab-pane" id="tab_2">
                <div class="row">
 	           	  <div class="table-responsive no-padding col-md-6">
@@ -78,11 +78,12 @@
 					    		<td><?php echo $val->bank ?></td>
 					    		<td><?php echo $val->rek_number ?></td>
 					    		<td>
-					    			<label>
-					    			  <input class="flat-red" type="checkbox" data-toggle="<?php echo $key ?>" <?php echo ($val->enable) ? "checked" : "" ?> /> Enable 
+					    			<label class="disable">
+					    			  <input class="flat-red" disabled type="checkbox" data-toggle="<?php echo $key ?>" <?php echo ($val->enable) ? "checked" : "" ?> /> Enable 
 					    			</label>
 					    		</td>
 					    	</tr>
+					    	<input type="hidden" id="status_<?php echo $key ?>" name="status[<?php echo $key ?>]" value="<?php echo $val->enable; ?>" />
 					    	<?php } ?>		    
 					  </table>
 				  </div>     
@@ -112,43 +113,35 @@
   </div>
   <!-- /.box -->
   <script>
-  	$( document ).ready(function() {	    
+  	$( document ).ready(function() {    
 	    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
 	      checkboxClass: 'icheckbox_flat-green',
-	      radioClass: 'iradio_flat-green'
 	    });
 	    
   		var edit = 0;
   		$("#edit").on("click", function(event) {
   			edit++;
   			if(edit%2!=0){
-				$(".form-horizontal").find('select,input[type=text],input[type=password],button').prop('disabled',false);
+				$(".form-horizontal").find('input[type=checkbox],select,input[type=text],input[type=password],button').prop('disabled',false);
+				$(".icheckbox_flat-green").removeClass('disabled');
 				$("#edit").val('Cancel');
 			}			     
 			else{
-				$(".form-horizontal").find('select,input[type=text],input[type=password],button').prop('disabled',true); 
+				$(".form-horizontal").find('input[type=checkbox],select,input[type=text],input[type=password],button').prop('disabled',true); 
+				$(".icheckbox_flat-green").addClass('disabled');
 				$("#edit").val('Edit');
 			}
   		});
   		  		
   		$('.flat-red').on('ifChanged', function(event){
-  			$.ajax({
-			        url:  base_url+"payment/change_status_bank/",
-			        type: "post",
-			        data: {
-			        	'id_bank': $(this).attr('data-toggle'),
-			        	'status': $(this).iCheck('update')[0].checked,
-			        },
-			        success: function(d,textStatus, xhr) {
-			           if(xhr.status==200 && d.data==1){
-					   	 showalert(d.message,'success','#warning');
-					   }
-			        },
-			         error: function (request, status, error) {
-			         	 var err = eval("(" + request.responseText + ")");
-			             showalert(err.message,'danger','#warning');
-			        }
-			    });
+  			var data = 0;
+  			if($(this).iCheck('update')[0].checked==false){
+				data = 0
+			} else{
+				data = 1
+			}
+  			$('#status_'+$(this).attr('data-toggle')).val(data);
+  			alert($('#status_'+$(this).attr('data-toggle')).val());
 		  });
 	});
   </script>

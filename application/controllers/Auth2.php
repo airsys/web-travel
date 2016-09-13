@@ -110,6 +110,7 @@ class Auth2 extends CI_Controller {
 	}
 	
 	function profile(){
+		
 		$user = NULL;
 		$message = '';
 		$id = $this->session->userdata('id');
@@ -154,6 +155,11 @@ class Auth2 extends CI_Controller {
 				}
 			}
 			
+			//change user bank status
+			$this->load->model('m_payment');
+			foreach($this->input->post('status') as $key=>$val){
+				$this->m_payment->change_status_bank($key,$val);
+			}
 		}
 		
 		$user = $this->ion_auth->user($id)->row();

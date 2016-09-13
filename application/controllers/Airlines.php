@@ -301,6 +301,29 @@ class Airlines extends CI_Controller {
 		$data_table = NULL;
 		if($code != '00' && !$this->input->get()){
 			$array = $this->_boking_detail($code);
+			/* update booking */
+			if($array != NULL && $this->ion_auth->logged_in()){
+				$data_update = array(
+			        'id_flight' => $array->id,
+			        'booking_time' => $array->booking_time,
+			        'time_limit'=> $array->time_limit,
+					'base_fare'=> $array->base_fare,
+					'NTA'=> $array->NTA,
+					'name'=> $array->name,
+					'phone'=> $array->phone,
+					'area_depart'=> $array->area_depart,
+					'area_arrive'=> $array->area_arrive,
+					'payment_status'=> $array->payment_status,
+					'airline'=> $array->airline,
+					'flight_list'=> $array->flight_list,				
+					'passenger_list'=> $array->passenger_list,				
+					'child'=> $array->child,				
+					'infant'=> $array->infant,				
+					'adult'=> $array->adult,				
+				);		
+				$this->m_airlines->booking_update($data_update, $this->session->userdata('user_id'),$code);
+			 }
+			
 			$data = array('content'=>'airlines/retrieve',
 					  'data_detail'=>$array,
 					  'status'=>$this->m_airlines->get_status_booking($code),
@@ -338,29 +361,7 @@ class Airlines extends CI_Controller {
 					  'data_detail'=>NULL,
 					);
 		}
-		
-		/* update booking */
-		if($array != NULL && $this->ion_auth->logged_in()){
-			$data_update = array(
-		        'id_flight' => $array->id,
-		        'booking_time' => $array->booking_time,
-		        'time_limit'=> $array->time_limit,
-				'base_fare'=> $array->base_fare,
-				'NTA'=> $array->NTA,
-				'name'=> $array->name,
-				'phone'=> $array->phone,
-				'area_depart'=> $array->area_depart,
-				'area_arrive'=> $array->area_arrive,
-				'payment_status'=> $array->payment_status,
-				'airline'=> $array->airline,
-				'flight_list'=> $array->flight_list,				
-				'passenger_list'=> $array->passenger_list,				
-				'child'=> $array->child,				
-				'infant'=> $array->infant,				
-				'adult'=> $array->adult,				
-			);		
-			$this->m_airlines->booking_update($data_update, $this->session->userdata('user_id'),$code);
-		}		
+				
 		$this->load->view("index",$data);
 	}
 	
