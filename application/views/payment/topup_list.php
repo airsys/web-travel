@@ -15,7 +15,7 @@
 	</div><!-- /.box-header -->
 	<div class="box-body">
 		<div id="warning"></div>
-		<div class="table-responsive no-padding col-md-8">
+		<div class="table-responsive no-padding col-md-10">
 		  <table class="table table-hover table-striped">
 		  	<thead>
 		    <tr>
@@ -24,6 +24,7 @@
 		      <th class="text-center">Total</th>
 		      <th class="text-center">From</th>
 		      <th class="text-center">To</th>
+		      <th class="text-center">Date</th>
 		      <th class="text-center">Status</th>
 		      <th class="text-center">Action</th>
 		    </tr>
@@ -36,13 +37,14 @@
 		      <td class='text-center'><?php echo number_format($value->unique+$value->nominal); ?></td>   
 		      <td class="text-center"><?php echo $bank[$value->id_bank]->bank."-".$bank[$value->id_bank]->rek_number."-".$bank[$value->id_bank]->account_name; ?></td>
 		      <td class="text-center"><?php echo $bank[$value->id_bank_to]->bank."-".$bank[$value->id_bank_to]->rek_number."-".$bank[$value->id_bank_to]->account_name; ?></td>
+		      <td class='text-center'><?php echo date("d-m-Y H:i:s",$value->time_status) ?></td>
 		      <td class="text-center">
 		      	 <?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>"; ?>
 		      </td>
 		      <td class="text-center">
-		      	<a href="<?php echo base_url().'payment/topup_list/'.$value->id; ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a>
-		      	<button id="cancel" data-toggle="<?php echo $value->id ?>" type="button" class="btn btn-danger btn-sm"><li class="fa fa-close"></li></button>
-		      	<button id="submit" data-toggle="<?php echo $value->id ?>" type="button" class="btn btn-primary btn-sm"><li class="fa fa-paper-plane"></li></button>
+		      	<a href="<?php echo base_url().'payment/topup_list/'.$value->id; ?>" title="view detail" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a>
+		      	<button title="cancel" data-toggle="<?php echo $value->id ?>" type="button" class="cancel btn btn-danger btn-sm"><li class="fa fa-close"></li></button>
+		      	<button title="submit" data-toggle="<?php echo $value->id ?>" type="button" class="submit btn btn-primary btn-sm"><li class="fa fa-paper-plane"></li></button>
 		      </td>
 		    </tr>
 		    <?php } ?>		    
@@ -53,12 +55,17 @@
 
 <script>
 $(function () {
-	$('#submit').click(function() {
+	$('.submit').click(function() {
 		change('submit','Pastikan jumlah yang anda transfer sesuai Total (Nominal+Unique)',$(this).attr('data-toggle'));
 	});
-	$('#cancel').click(function() {
+	$('.cancel').click(function() {
 		change('cancel','Anda yakin ingin membatalkan transaksi',$(this).attr('data-toggle'));
 	});
+	
+	<?php if($data_table==NULL){?>
+		showalert('Tidak ada topup berstatus PENDING','success','#warning',600000);
+		$('.table').hide();
+	<?php }?>
 	
 	function change(status='',pesan='',id){
 		if(confirm(pesan)){

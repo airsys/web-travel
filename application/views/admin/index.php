@@ -129,7 +129,7 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-  	<div class="container">
+  	<div class="">
     <!-- Main content -->
     <section class="content">
     	<?php $this->load->view('admin/'.$content); ?>  
