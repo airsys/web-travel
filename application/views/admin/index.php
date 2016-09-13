@@ -63,11 +63,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class=""><a href="<?php echo base_url().'admin/payment/topup_list' ?>">Topup <span class="sr-only">(current)</span></a></li>
+            <li class=""><a href="<?php echo base_url().'payment/topup' ?>">Topup <span class="sr-only">(current)</span></a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Setting <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="<?php echo base_url().'admin/setting/bank' ?>">Admin Bank</a></li>
+                <li><a href="#">Admin Bank</a></li>
               </ul>
             </li>
           </ul>
@@ -84,6 +84,15 @@
                 <span class="hidden-xs"><?php echo $this->session->userdata('identity') ?></span>
               </a>
               <ul class="dropdown-menu">
+                <!-- The user image in the menu -->
+                <li class="user-header">
+                  <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                  <p>
+                    Alexander Pierce - Web Developer
+                    <small>Member since Nov. 2012</small>
+                  </p>
+                </li>
                 <!-- Menu Body -->
                 <li class="user-body">
                   <div class="row">
@@ -102,10 +111,10 @@
                 <!-- Menu Footer-->
                 <li class="user-footer">
                   <div class="pull-left">
-                    
+                    <a href="#" class="btn btn-default btn-flat">Profile</a>
                   </div>
                   <div class="pull-right">
-                    <a href="<?php echo base_url().'admin/auth/logout' ?>" class="btn btn-danger btn-flat">Sign out</a>
+                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
                   </div>
                 </li>
               </ul>

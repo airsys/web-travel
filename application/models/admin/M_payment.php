@@ -8,7 +8,7 @@ class M_payment extends CI_Model
 	}
 	
 	function topup_list(){
-		$this->db->select(" t.id, t.id_user, u.full_name, t.nominal, t.`unique`, t.id_bank, t.id_bank_to,time_status, s.`status`")
+		$this->db->select(" t.id, t.id_user, u.full_name, t.nominal, t.`unique`, t.id_bank, t.id_bank_to, s.`status`")
 				 ->from("payment_topup t, payment_status_topup s, users u")
 				 ->where("s.id_topup = t.id")
 				 ->where("u.id = t.id_user")
