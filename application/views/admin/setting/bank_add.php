@@ -36,7 +36,7 @@
   </div>
   <div class="box-footer">
   	<div class="form-group col-md-6">
-  		<button type="submit" class="btn btn-default">Cancel</button>
+  		<a href="<?php echo base_url().'admin/setting/bank' ?>" class="btn btn-default">Cancel</a>
   		<button type="submit" class="btn btn-success pull-right">SAVE</button>
   	</div>
   </div>

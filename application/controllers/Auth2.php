@@ -154,12 +154,6 @@ class Auth2 extends CI_Controller {
 					$message = $this->ion_auth->errors();
 				}
 			}
-			
-			//change user bank status
-			$this->load->model('m_payment');
-			foreach($this->input->post('status') as $key=>$val){
-				$this->m_payment->change_status_bank($key,$val);
-			}
 		}
 		
 		$user = $this->ion_auth->user($id)->row();
@@ -171,7 +165,23 @@ class Auth2 extends CI_Controller {
 					'message'=> $message,		
 				);
 		$this->load->view("index",$data_view);
-
+	}
+	
+	function bank_detail($id){
+		if(isset($_POST) && !empty($_POST)){
+			$this->load->model('m_payment');
+			$this->m_payment->change_status_bank($this->input->post('id'),$this->input->post('status'));
+			redirect('auth2/profile/','refresh');
+		} else{
+			$this->load->helper('dropdown');
+			$data_view = array(
+						'content'=>'auth/bank_detail',
+						'bank'=> listDataCustom('payment_bank','id','bank,account_name,rek_number,enable',"where id_user = '".$this->session->userdata('user_id')."' and id = $id"),
+						'id'=>$id,
+			);
+			$this->load->view("index",$data_view);	
+		}
+		
 	}
 	
 	// log the user out

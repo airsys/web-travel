@@ -28,18 +28,18 @@ class Setting extends CI_Controller {
 		$this->load->view("admin/index",$data_view);	
 	}
 	
-	function change_status_bank(){
-		$hasil['message'] = 'any error';
-		$hasil['data']=0;
-		$code = 400;
-		if($this->m_setting->change_status_bank()){
-			$hasil['message'] = 'status changed';
-			$hasil['data']=1;
-			$code = 200;
+	function bank_detail($id){
+		if(isset($_POST) && !empty($_POST)){
+			$this->load->model('m_payment');
+			$this->m_setting->change_status_bank();
+			redirect('admin/setting/bank/','refresh');
+		} else{
+			$data_view = array(
+						'content'=>'setting/bank_detail',
+						'bank'=> listDataCustom('payment_bank','id','bank,account_name,rek_number,enable',"where type = 0 and id = $id"),
+						'id'=>$id,
+			);
+			$this->load->view("admin/index",$data_view);	
 		}
-		return $this->output
-            ->set_content_type('application/json')
-            ->set_status_header($code)
-            ->set_output(json_encode($hasil));
 	}
 }

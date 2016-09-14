@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/iCheck/all.css" />
-<script src="<?php echo base_url() ?>assets/plugins/iCheck/icheck.min.js"></script>
 <!-- Horizontal Form -->
   <div class="box box-info">
     <div class="box-header with-border">
@@ -7,7 +5,6 @@
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    <form class="form-horizontal" action="" method="post">
       <div class="box-body">
       <div id="warning"></div>	
     <?php if($message != '') { ?>
@@ -22,6 +19,7 @@
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="tab_1">
+              	<form class="form-horizontal" action="" method="post">
 				<div class="form-group">
 		          <label for="email" class="col-sm-2 control-label">Email</label>
 		          <div class="col-sm-4">
@@ -55,9 +53,13 @@
 		        <div class="form-group">
 		          <label for="password_confirm" class="col-sm-2 control-label"></label>
 				  <div class="col-sm-4">
-				    
+				    <div class="pull-right">
+		      			<input type="button" class="btn btn-default" id='edit' value='Edit'>
+		      			<button type="submit" disabled class="btn btn-info">Save</button>
+		      		</div>	
 				  </div>
-				</div>
+				</div>      	
+                </form>
               </div>
               <!-- tab-pane -->
               <div class="tab-pane" id="tab_2">
@@ -69,6 +71,7 @@
 						      <th class="text-center">Account Name</th>
 						      <th class="text-center">Bank</th>
 						      <th class="text-center">Rek. Number</th>
+						      <th class="text-center">Status</th>
 						      <th class="text-center">Action</th>
 						    </tr>
 					    </thead>
@@ -77,18 +80,14 @@
 					    		<td><?php echo $val->account_name ?></td>
 					    		<td><?php echo $val->bank ?></td>
 					    		<td><?php echo $val->rek_number ?></td>
-					    		<td>
-					    			<label class="disable">
-					    			  <input class="flat-red" disabled type="checkbox" data-toggle="<?php echo $key ?>" <?php echo ($val->enable) ? "checked" : "" ?> /> Enable 
-					    			</label>
+					    		<td><?php echo ($val->enable==1 ? "ENABLE" : "DISABLE"); ?>
 					    		</td>
+					    		<td><a href="<?php echo base_url()."auth2/bank_detail/".$key ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
 					    	</tr>
-					    	<input type="hidden" id="status_<?php echo $key ?>" name="status[<?php echo $key ?>]" value="<?php echo $val->enable; ?>" />
 					    	<?php } ?>		    
 					  </table>
 				  </div>     
-	           </div>
-	            
+	           </div>	            
 	          </div>
               <!-- /.tab-pane -->
             </div>
@@ -100,48 +99,24 @@
       </div>
       <!-- /.box-body -->
       <div class="box-footer">
-      	<div class="col-sm-6">
-      		<div class="pull-right">
-      			<input type="button" class="btn btn-default" id='edit' value='Edit'>
-      			<button type="submit" disabled class="btn btn-info">Save</button>
-      		</div>
-	        
-      	</div>
+      	
       </div>
       <!-- /.box-footer -->
-    </form>
   </div>
   <!-- /.box -->
   <script>
-  	$( document ).ready(function() {    
-	    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-	      checkboxClass: 'icheckbox_flat-green',
-	    });
-	    
+  	$( document ).ready(function() { 
   		var edit = 0;
   		$("#edit").on("click", function(event) {
   			edit++;
   			if(edit%2!=0){
 				$(".form-horizontal").find('input[type=checkbox],select,input[type=text],input[type=password],button').prop('disabled',false);
-				$(".icheckbox_flat-green").removeClass('disabled');
 				$("#edit").val('Cancel');
 			}			     
 			else{
 				$(".form-horizontal").find('input[type=checkbox],select,input[type=text],input[type=password],button').prop('disabled',true); 
-				$(".icheckbox_flat-green").addClass('disabled');
 				$("#edit").val('Edit');
 			}
   		});
-  		  		
-  		$('.flat-red').on('ifChanged', function(event){
-  			var data = 0;
-  			if($(this).iCheck('update')[0].checked==false){
-				data = 0
-			} else{
-				data = 1
-			}
-  			$('#status_'+$(this).attr('data-toggle')).val(data);
-  			alert($('#status_'+$(this).attr('data-toggle')).val());
-		  });
 	});
   </script>

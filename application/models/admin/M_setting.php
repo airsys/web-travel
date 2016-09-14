@@ -8,8 +8,8 @@ class M_setting extends CI_Model
 	
 	/* BANK */
 	function change_status_bank(){
-		$data = ($this->input->post('status')=='false') ? 0 : 1;
-		$this->db->where('id', $this->input->post('id_bank'));
+		$data = ($this->input->post('status')==0) ? 0 : 1;
+		$this->db->where('id', $this->input->post('id'));
 		$this->db->update('payment_bank', array('enable'=>$data));
 		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
 	}
