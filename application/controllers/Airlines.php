@@ -308,6 +308,7 @@ class Airlines extends CI_Controller {
 			        'booking_time' => $array->booking_time,
 			        'time_limit'=> $array->time_limit,
 					'base_fare'=> $array->base_fare,
+					'tax'=> $array->tax,
 					'NTA'=> $array->NTA,
 					'name'=> $array->name,
 					'phone'=> $array->phone,

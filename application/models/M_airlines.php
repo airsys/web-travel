@@ -38,6 +38,7 @@ class M_airlines extends CI_Model
 	        'booking_time' => date("Y-m-d H:i:s", $data['booking_time']),
 	        'time_limit'=> date("Y-m-d H:i:s", $data['time_limit']),
 			'base_fare'=> $data['base_fare'],
+			'tax'=> $data['tax'],
 			'NTA'=> $data['NTA'],
 			'name'=> $data['name'],
 			'phone'=> $data['phone'],

@@ -91,6 +91,10 @@ class M_payment extends CI_Model
 		return $this->_set_status_topup($this->input->post('id'),$status);
 	}
 	
+	function topup_confirmation(){
+		
+	}
+	
 	function get_saldo(){
 		return $this->_get_saldo();
 	}

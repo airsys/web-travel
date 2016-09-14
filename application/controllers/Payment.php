@@ -100,6 +100,10 @@ class Payment extends CI_Controller {
             ->set_output(json_encode($hasil));
 	 }
 	 
+	 function topup_confirmation($id='00'){
+	 	
+	 }
+	 
 	 function issued(){
 	 	$this->load->model('m_airlines');
 	 	$id_flight = $this->input->post('id');

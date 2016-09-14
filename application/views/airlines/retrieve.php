@@ -90,7 +90,7 @@
 				      <td><?php echo $value->name ?></td>
 				      <td><?php echo $value->booking_time ?></td>
 				      <td><?php echo $value->time_limit ?></td>
-				      <td><?php echo number_format($value->base_fare) ?></td>
+				      <td><?php echo number_format($value->base_fare+$value->tax) ?></td>
 				      <td><?php echo number_format($value->NTA) ?></td>
 				      <td>
 				      	<?php echo "A: $value->adult | C: $value->child | I: $value->infant" ?>
@@ -234,16 +234,16 @@
           <div class="table-responsive">
             <table class="table">
               <tr>
-                <th style="width:50%">base fare:</th>
-                <td>Rp <?php echo number_format($data_detail->base_fare); ?></td>
-              </tr>
-              <tr>
-                <th>Bonus:</th>
-                <td>Rp <?php echo number_format($data_detail->base_fare-$data_detail->NTA); ?></td>
+                <th style="width:50%">Fare:</th>
+                <td>Rp <?php echo number_format($data_detail->base_fare+$data_detail->tax); ?></td>
               </tr>
               <tr>
                 <th>NTA:</th>
                 <td>Rp <?php echo number_format($data_detail->NTA); ?></td>
+              </tr>
+              <tr>
+                <th>Bonus:</th>
+                <td>Rp <?php echo number_format($data_detail->base_fare+$data_detail->tax-$data_detail->NTA); ?></td>
               </tr>
             </table>
           </div>
