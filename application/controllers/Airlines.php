@@ -296,6 +296,9 @@ class Airlines extends CI_Controller {
 	}
 	
 	function retrieve($code='00'){
+		if(!$this->ion_auth->logged_in()){
+			redirect('airlines','refresh');
+		}
 		$bandara = $this->_bandara();
 		$array = NULL;
 		$data_table = NULL;
