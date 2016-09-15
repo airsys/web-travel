@@ -32,6 +32,10 @@ class M_airlines extends CI_Model
 		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
 	}
 	
+	function set_status_booking($id,$status){
+		return $this->_set_status_booking($id,$status);
+	}
+	
 	function booking_update($data, $id_user, $booking_code){
 		$data_update = array(
 	        'id_flight' => $data['id_flight'],

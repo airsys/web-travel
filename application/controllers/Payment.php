@@ -107,18 +107,24 @@ class Payment extends CI_Controller {
 	 function issued(){
 	 	$this->load->model('m_airlines');
 	 	$id_flight = $this->input->post('id');
-	 	$base_fare = $this->m_airlines->retrieve_list(NULL,$id_flight);
-	 	if(empty($base_fare[0]->base_fare)){
+	 	$NTA = $this->m_airlines->retrieve_list(NULL,$id_flight);
+	 	$hasil['message'] = 'id or user not found';
+		$hasil['data']=0;
+		$code = 400;
+	 	if(empty($NTA[0]->NTA)){
 			$hasil['message'] = 'id or user not found';
 			$hasil['data']=0;
 			$code = 400;
-		}elseif(saldo()>$base_fare[0]->base_fare){
-			$hasil['message'] = 'saldo mencukupi - '.$base_fare[0]->base_fare;
-			$hasil['data']=1;
-			$code = 200;
+		}elseif(saldo()>$NTA[0]->NTA){
+			if($this->m_payment->issued($id_flight,$NTA[0]->NTA)){
+				$hasil['message'] = 'Berhasil issued';
+				$hasil['data']=1;
+				$code = 200;
+				$this->session->set_flashdata('message','Berhasil Issued');
+			}
 		}
 		else{
-			$hasil['message'] = 'saldo TIDAK cukup - silahkan melakukan topup terlebih dahulu <br> <a href="'.base_url().'payment/topup" type="button" class="btn btn-success" >TOPUP</a>'.$base_fare[0]->base_fare;
+			$hasil['message'] = 'saldo TIDAK cukup - silahkan melakukan topup terlebih dahulu <br> <a href="'.base_url().'payment/topup" type="button" class="btn btn-success" >TOPUP</a>';
 			$hasil['data']=0;
 			$code = 400;
 		}

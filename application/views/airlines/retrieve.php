@@ -242,7 +242,7 @@
                 <td>Rp <?php echo number_format($data_detail->NTA); ?></td>
               </tr>
               <tr>
-                <th>Bonus:</th>
+                <th>Profit:</th>
                 <td>Rp <?php echo number_format($data_detail->base_fare+$data_detail->tax-$data_detail->NTA); ?></td>
               </tr>
             </table>
@@ -270,6 +270,7 @@
 
       <!-- this row will not appear when printing -->
       <div id="warning"></div>
+      <?php if($this->session->flashdata('message')!=NULL) echo "<div id='warning' class='alert alert-success'>".$this->session->flashdata('message')."</div>"; ?>
       <div class="row no-print">
         <div class="col-xs-12">
           <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
@@ -347,7 +348,8 @@
 	            },
 	            success: function(d,textStatus, xhr) {
 	               if(xhr.status==200 && d.data==1){
-				   	 showalert(d.message,'success','#warning');
+				   	 showalert(d.message,'success','#warning',6000000);
+				   	 location.reload();
 				   }
 	            },
 	             error: function (request, status, error) {

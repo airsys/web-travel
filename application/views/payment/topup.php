@@ -26,7 +26,6 @@
 	          <label for="first_name" class="col-sm-2 control-label">Bank Account</label>
 	          <div class="col-sm-4">
 	            <select id="bank_account" name="bank_account" class="form-control" >
-	            	<option value="0">Select bank</option>
 	            	<?php foreach($bank_account as $val){
 	            		echo "<option value=$val->id>$val->bank-$val->rek_number-$val->account_name</option>";	
 	            	 } ?>
