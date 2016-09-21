@@ -106,7 +106,7 @@ class Payment extends CI_Controller {
 	 function issued(){
 	 	$this->load->model('m_booking');
 	 	$id_booking = $this->input->post('id');
-	 	$NTA = $this->m_booking->retrieve_list(NULL,$id_booking);
+	 	$NTA = $this->m_booking->retrieve_list(NULL,array('b.id'=>$id_booking));
 	 	$hasil['message'] = 'id or user not found';
 		$hasil['data']=0;
 		$code = 400;

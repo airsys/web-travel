@@ -69,14 +69,16 @@ class M_booking extends CI_Model
 		return $id_booking;
 	}
 	
-	function retrieve_list($data_or=NULL, $id_booking=NULL){
+	function retrieve_list($data_or=NULL, $data_where=NULL){
 		if($data_or!=NULL){
 			foreach ($data_or as $val){
 				$this->db->like($val['key'], $val['val'],FALSE);
 			}
 		}
-		if($id_booking!=NULL){
-			$this->db->where('b.id',$id_booking);
+		if($data_where!=NULL){
+			foreach ($data_where as $key=> $val2){
+				$this->db->where($key, $val2,FALSE);
+			}
 		}
 		$this->db->select(" b.*, `status`,time status")
 				 ->from("booking AS b, booking status AS s")
