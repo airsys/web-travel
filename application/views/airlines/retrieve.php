@@ -85,19 +85,19 @@
 				    $i=0;
 					foreach($data_table as $value){ $i++;?>
 				    <tr>
-				      <td><?php echo $value->airline." - ".$value->booking_code ?></td>
-				      <td><?php echo $value->area_depart."-".$value->area_arrive ?></td>
+				      <td><?php echo $value->airline." - ".$value->{'booking code'} ?></td>
+				      <td><?php echo $value->{'area depart'}."-".$value->{'area arrive'} ?></td>
 				      <td><?php echo $value->name ?></td>
-				      <td><?php echo $value->booking_time ?></td>
-				      <td><?php echo $value->time_limit ?></td>
-				      <td><?php echo number_format($value->base_fare+$value->tax) ?></td>
+				      <td><?php echo date("d-m-Y H:i:s",$value->{'booking time'}) ?></td>
+				      <td><?php echo date("d-m-Y H:i:s",$value->{'time limit'}) ?></td>
+				      <td><?php echo number_format($value->{'base fare'}+$value->tax) ?></td>
 				      <td><?php echo number_format($value->NTA) ?></td>
 				      <td>
 				      	<?php echo "A: $value->adult | C: $value->child | I: $value->infant" ?>
 				      	
 				      </td>
 				      <td><?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>" ?></td>
-				      <td><a href="<?php echo base_url()."airlines/retrieve/".$value->booking_code ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
+				      <td><a href="<?php echo base_url()."airlines/retrieve/".$value->{'booking code'} ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
 				    </tr>
 				    <?php } ?>
 				    
@@ -165,7 +165,7 @@
               <th>Date Depart</th>
               <th>Time Depart</th>
               <th>Area Arrive</th>
-              <th>Aate Arrive</th>
+              <th>Area Arrive</th>
               <th>Time Arrive</th>
             </tr>
             </thead>
@@ -258,7 +258,7 @@
             <?php foreach($status as $val){ ?>
               <tr>
                 <th style="width:20%"><?php echo "<span class='label' style='background-color:".$color[$val->status]."; font-size:0.9em'>".$val->status."</span>" ?></th>
-                <td><?php echo date("d-m-Y H:i:s",$val->time_status); ?></td>
+                <td><?php echo date("d-m-Y H:i:s",$val->{'time status'}); ?></td>
               </tr>
               <?php } ?>
             </table>

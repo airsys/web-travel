@@ -2,11 +2,12 @@
 if(!defined('BASEPATH')) exit('No direct script access allowed');
  
  
-  function listDataOption($tabel, $key, $display, $val, $condition='') {
+  function listDataOption($tabel, $key, $display, $val='', $condition='') {
       $items = array();
       $string = "";
       $CI =& get_instance();  
-      $query=$CI->db->query("Select $key, $display FROM $tabel $condition");  
+      
+      $query=$CI->db->query("Select `$key`, `$display` FROM `$tabel` $condition");  
       if ($query->num_rows() > 0) {
           foreach($query->result() as $data) {
               $items[$data->$key] = $data->$display; 
@@ -26,15 +27,15 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
 		  $CI->db->order_by($value,$orderBy);
 	  } */
 	  //$query = $CI->db->select("$name,$value")->from($table)->get();
-	  
-	  $query=$CI->db->query("Select $key, $value FROM $tabel $condition");
+	  $select2 = preg_replace("','", "`, `", $value);
+	  $query=$CI->db->query("Select `$key`, `$select2` FROM `$tabel` $condition");
         //echo "Select $key, $value FROM $tabel $condition";
        // $query->result();
         //print_r($query);die();
        // echo '<pre>';
 	  if ($query->num_rows() > 0) {
-		  foreach($query->result() as $data) {
-			  $items[$data->$key] = $data->$value;
+		  foreach($query->result_array() as $data) {
+			  $items[$data[$key]] = $data[$value];
              // echo $key."--".$value;
               //print_r($data->kdinstansi);
 		  }
@@ -46,11 +47,12 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
  function listDataCustom($tabel,$key,$select,$condition="") {
 	  $items = array();
 	  $CI =& get_instance();
+	  $select2 = preg_replace("','", "`, `", $select);
 	  
-	  $query=$CI->db->query("Select $key,$select FROM $tabel $condition");
+	  $query=$CI->db->query("Select `$key`,`$select2` FROM `$tabel` $condition");
 	  if ($query->num_rows() > 0) {
-		  foreach($query->result() as $data) {
-			  $items[$data->$key] = $data;
+		  foreach($query->result_array() as $data) {
+			  $items[$data[$key]] = $data;
 		  }
 		  $query->free_result();
 		  return $items;

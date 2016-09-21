@@ -27,7 +27,7 @@
 	          <div class="col-sm-4">
 	            <select id="bank_account" name="bank_account" class="form-control" >
 	            	<?php foreach($bank_account as $val){
-	            		echo "<option value=$val->id>$val->bank-$val->rek_number-$val->account_name</option>";	
+	            		echo "<option value=".$val['id'].">".$val['bank']."-".$val['rek number']."-".$val['account name']."</option>";	
 	            	 } ?>
 	            </select>
 	          </div>
@@ -44,10 +44,12 @@
 	          <label for="bank" class="col-sm-2 control-label">Bank Name</label>
 	          <div class="col-sm-4">
 	            <select required name="bank" id="bank" class="form-control" >
-	            	<option value="BRI">BRI</option>
-	            	<option value="BCA">BCA</option>
-	            	<option value="MANDIRI">MANDIRI</option>
-	            	<option value="BNI">BNI</option>
+	            	<?php 
+	            		$bank_master = listData('master bank','name','name');
+	            		foreach ($bank_master as $bank_m){
+							echo "<option value='$bank_m'>$bank_m</option>";
+						}
+	            	?>
 	            </select>
 	          </div>
 	        </div>
@@ -64,7 +66,7 @@
 	          <div class="col-sm-4">
 	            <select required name="id_bank_to" id="id_bank_to" class="form-control" >
 	            	<?php foreach($bank as $val){
-	            		echo "<option value=$val->id>$val->bank - $val->rek_number - $val->account_name</option>";	
+	            	    echo "<option value=".$val['id'].">".$val['bank']."-".$val['rek number']."-".$val['account name']."</option>";
 	            	 } ?>
 	            </select>
 	          </div>

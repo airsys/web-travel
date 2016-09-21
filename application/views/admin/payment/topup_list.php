@@ -34,13 +34,13 @@
 	    <?php
 		foreach($data_table as $value){ ?>
 	    <tr>
-	      <td class="text-center"><?php echo ucwords($value->full_name) ?></td>
+	      <td class="text-center"><?php echo ucwords($value->company) ?></td>
 	      <td class='text-center'><?php echo number_format($value->nominal) ?></td>
 	      <td class='text-center'><?php echo $value->unique ?></td>
 	      <td class='text-center'><?php echo number_format($value->unique+$value->nominal); ?></td>   
-	      <td class="text-center"><?php echo $bank[$value->id_bank]->bank."-".$bank[$value->id_bank]->rek_number."-".$bank[$value->id_bank]->account_name; ?></td>
-	      <td class="text-center"><?php echo $bank[$value->id_bank_to]->bank."-".$bank[$value->id_bank_to]->rek_number."-".$bank[$value->id_bank_to]->account_name; ?></td>
-	      <td class="text-center"><?php echo date("d-m-Y H:i:s", $value->time_status) ?></td>
+	      <td class="text-center"><?php echo $bank[$value->{'bank from'}]['bank']."-".$bank[$value->{'bank from'}]['rek number']."-".$bank[$value->{'bank from'}]['account name']; ?></td>
+	      <td class="text-center"><?php echo $bank[$value->{'bank to'}]['bank']."-".$bank[$value->{'bank to'}]['rek number']."-".$bank[$value->{'bank to'}]['account name']; ?></td>
+	      <td class="text-center"><?php echo date("d-m-Y H:i:s", $value->{'time status'}) ?></td>
 	      <td class="text-center">
 	      	 <?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>"; ?>
 	      </td>

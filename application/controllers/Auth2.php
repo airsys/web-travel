@@ -52,7 +52,6 @@ class Auth2 extends CI_Controller {
 	public function register(){
 		$data_post = NULL;
 		$message = '';
-		if($this->ion_auth->logged_in()) redirect('auth2/profile', 'refresh');
 		if($this->input->post()){
 			$data_post = $this->input->post();
 			$tables = $this->config->item('tables','ion_auth');
@@ -71,7 +70,7 @@ class Auth2 extends CI_Controller {
 		        $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique[' . $tables['users'] . '.email]');
 		    }
 		    $this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'trim|numeric');
-		    $this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'trim');
+		    $this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'trim|required');
 		    $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
 		    $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 
@@ -82,7 +81,7 @@ class Auth2 extends CI_Controller {
 		        $password = $this->input->post('password');
 
 		        $additional_data = array(
-		            'full_name' => $this->input->post('full_name'),
+		            'full name' => $this->input->post('full_name'),
 		            'phone'      => $this->input->post('phone'),
 		        );
 		    }
@@ -100,7 +99,8 @@ class Auth2 extends CI_Controller {
 		        						  ($this->ion_auth->errors() ? $this->ion_auth->errors() : 
 		        						  $this->session->flashdata('message')));
 		    }
-		}		
+		}
+		if($this->ion_auth->logged_in()) redirect('auth2/profile', 'refresh');	
 		$data_view = array(
 					'content'=>'auth/register',
 					'data_post'=> $data_post,
@@ -137,7 +137,7 @@ class Auth2 extends CI_Controller {
 			if ($this->form_validation->run() === TRUE)
 			{
 				$data = array(
-					'full_name' => $this->input->post('full_name'),
+					'full name' => $this->input->post('full_name'),
 					'phone'      => $this->input->post('phone'),
 				);
 
@@ -156,12 +156,13 @@ class Auth2 extends CI_Controller {
 			}
 		}
 		
-		$user = $this->ion_auth->user($id)->row();
+		$user = $this->ion_auth->user($id)->row_array();
 		$this->load->helper('dropdown');
 		$data_view = array(
 					'content'=>'auth/profile',
 					'data_post'=> $user,
-					'bank'=> listDataCustom('payment_bank','id','bank,account_name,rek_number,enable',"where id_user = '".$this->session->userdata('user_id')."'"),
+					'company'=> listData('auth company','id','brand',"where `id` = '".$this->session->userdata('company')."'"),
+					'bank'=> listDataCustom('acc bank','id','bank,account name,rek number,enable',"where `company` = '".$this->session->userdata('user_id')."'"),
 					'message'=> $message,		
 				);
 		$this->load->view("index",$data_view);
@@ -194,6 +195,6 @@ class Auth2 extends CI_Controller {
 
 		// redirect them to the login page
 		$this->session->set_flashdata('message', $this->ion_auth->messages());
-		redirect('airlines/search', 'refresh');
+		redirect('airlines/', 'refresh');
 	}
 }

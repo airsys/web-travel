@@ -1837,7 +1837,8 @@ abstract class CI_DB_driver {
 		// literal strings. -- Narf
 		if (strcspn($item, "()'") !== strlen($item))
 		{
-			return $item;
+			$return = preg_replace("'` `'", ' ', $item);
+			return $return;
 		}
 
 		// Convert tabs or multiple spaces into single spaces
@@ -1854,9 +1855,7 @@ abstract class CI_DB_driver {
 		}
 		elseif ($offset = strrpos($item, ' '))
 		{
-			$alias = ($protect_identifiers)
-				? ' '.$this->escape_identifiers(substr($item, $offset + 1))
-				: substr($item, $offset);
+			$alias = ($protect_identifiers)? ' '.$this->escape_identifiers(substr($item, $offset + 1)): substr($item, $offset);
 			$item = substr($item, 0, $offset);
 		}
 		else
@@ -1891,8 +1890,8 @@ abstract class CI_DB_driver {
 
 					$item = implode('.', $parts);
 				}
-
-				return $item.$alias;
+				$return = preg_replace("'` `'", ' ', $item.$alias);
+				return $return;
 			}
 
 			// Is there a table prefix defined in the config file? If not, no need to do anything
@@ -1944,8 +1943,9 @@ abstract class CI_DB_driver {
 			{
 				$item = $this->escape_identifiers($item);
 			}
-
-			return $item.$alias;
+			
+			$return = preg_replace("'` `'", ' ', $item.$alias);
+			return $return;
 		}
 
 		// Is there a table prefix? If not, no need to insert it
@@ -1967,8 +1967,9 @@ abstract class CI_DB_driver {
 		{
 			$item = $this->escape_identifiers($item);
 		}
-
-		return $item.$alias;
+		
+		$return = preg_replace("'` `'", ' ', $item.$alias);
+		return $return;
 	}
 
 	// --------------------------------------------------------------------

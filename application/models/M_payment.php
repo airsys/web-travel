@@ -10,30 +10,27 @@ class M_payment extends CI_Model
 	function insert_bank(){
 		$rek_number = preg_replace('/[^0-9]/', "", $this->input->post('rek_number'));
 		$data=array(
-				"id_user"=>$this->session->userdata('user_id'),
-				"rek_number"=> $rek_number,
+				"company"=>$this->session->userdata('company'),
+				"rek number"=> $rek_number,
 				"bank"=>$this->input->post('bank'),
-				"account_name"=>$this->input->post('account_name'),
-				"type"=>1,
+				"account name"=>$this->input->post('account_name'),
+				"admin"=>1,
 		);
-		$this->db->insert('payment_bank',$data);
+		$this->db->insert('acc bank',$data);
 		return ($this->db->affected_rows()>0) ? $this->db->insert_id() : FALSE;
 	}
 	
 	function insert_topup($id_bank){
 		$date = date_create();
-		$saldo = $this->_get_saldo();
 		$data=array(
-				"id_user"=>$this->session->userdata('user_id'),
+				"company"=>$this->session->userdata('company'),
 				"nominal"=>$this->input->post('nominal'),
 				"unique"=>$this->input->post('unique'),
-				"id_bank_to"=>$this->input->post('id_bank_to'),
+				"bank to"=>$this->input->post('id_bank_to'),
 				"created"=>$date->getTimestamp(),
-				"id_bank"=>$id_bank,
-				"code"=>'DD',
-				"saldo"=>$saldo,
+				"bank from"=>$id_bank,
 		);
-		$this->db->insert('payment_topup',$data);
+		$this->db->insert('acc topup',$data);
 		$this->_set_status_topup($this->db->insert_id(),'pending');
 		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
 	}
@@ -42,47 +39,47 @@ class M_payment extends CI_Model
 		$date = date_create();
 		$data=array(
 				"status"=>$status,
-				"time_status"=>$date->getTimestamp(),
-				"id_topup"=>$id_topup,
+				"time status"=>$date->getTimestamp(),
+				"id topup"=>$id_topup,
 		);
-		$this->db->insert('payment_status_topup',$data);
+		$this->db->insert('acc topup status',$data);
 		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
 	}
 	
 	private function _get_saldo(){
-		$get_saldo = $this->db->where("id_user",$this->session->userdata('user_id'))
+		$get_saldo = $this->db->where("company",$this->session->userdata('company'))
 	 				 ->order_by('id','desc')
 	 				 ->limit(0,1)
-	 				 ->get("payment_topup")->row();
+	 				 ->get("acc topup")->row();
 	 	if(empty($get_saldo->saldo)){
 			return 0;
 		}else return $get_saldo->saldo;
 	}
 	
 	function topup_list(){
-		$this->db->select(" t.id, t.id_user, t.nominal, t.`unique`, t.id_bank, t.id_bank_to,s.time_status, s.`status`")
-				 ->from("payment_topup t, payment_status_topup s")
-				 ->where("s.id_topup = t.id")
-				 ->where('id_user',$this->session->userdata('user_id'))
+		$this->db->select(" t.id, t.company, t.nominal, t.`unique`, t.`bank from`, t.bank to,s.time status, s.`status`")
+				 ->from("acc topup AS t, acc topup status AS s")
+				 ->where("s.id topup = t.id")
+				 ->where('company',$this->session->userdata('company'))
 				 ->where("status='pending'")
-				 ->order_by('s.time_status','desc');
+				 ->order_by('s.time status','desc');
 		$sub = $this->subquery->start_subquery('where');
-		$sub->select_max('time_status')->from('payment_status_topup')->where('id_topup = t.id');
-		$this->subquery->end_subquery('s.time_status');
-		return $this->db->get()->result();
+		$sub->select_max('time status')->from('acc topup status')->where('id topup = t.id');
+		$this->subquery->end_subquery('s.time status');
+		return $this->db->get()->result_array();
 	}
 	
 	function topup_list_detail($id_topup){
 		$data = [];
-		$this->db->select(" t.id, t.id_user, t.nominal, t.`unique`, t.id_bank, t.id_bank_to")
-				 ->from("payment_topup t")
+		$this->db->select(" t.id, t.company, t.nominal, t.`unique`, t.bank from, t.bank to")
+				 ->from("acc topup AS t")
 				 ->where("t.id",$id_topup)
-				 ->where('id_user',$this->session->userdata('user_id'));
+				 ->where('t.company',$this->session->userdata('company'));
 		$data['topup']= $this->db->get()->result();
-		$this->db->select("status,time_status")
-				 ->from("payment_status_topup")
-				 ->where("id_topup",$id_topup)
-				 ->order_by('time_status', 'desc');
+		$this->db->select("status,time status")
+				 ->from("acc topup status")
+				 ->where("`id topup`",$id_topup)
+				 ->order_by('time status', 'desc');
 		$data['status']=$this->db->get()->result();
 		return $data;
 	}

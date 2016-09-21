@@ -20,7 +20,7 @@
       <label for="bank" class="col-sm-2 control-label">Bank Name</label>
       <div class="col-sm-4">
         <select required name="bank" id="bank" class="form-control" >
-        	<?php echo listDataOption('setting_bank','name','name'); ?>
+        	<?php echo listDataOption('master bank','name','name'); ?>
         </select>
       </div>
     </div>

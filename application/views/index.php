@@ -68,6 +68,13 @@
 		                <li><a href="<?php echo base_url().'payment/topup_list' ?>">List Topup</a></li>
 		              </ul>
 		            </li>
+		            <li class="dropdown">
+		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Report <span class="caret"></span></a>
+		              <ul class="dropdown-menu" role="menu">
+		                <li><a href="<?php echo base_url().'payment/topup' ?>">Sales</a></li>
+		                <li><a href="<?php echo base_url().'payment/topup_list' ?>">Finance</a></li>
+		              </ul>
+		            </li>
 		         	<?php } ?>
 		          </ul>
 		        </div>

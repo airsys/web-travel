@@ -11,7 +11,7 @@ class Airlines extends CI_Controller {
     	$this->config->load('api');
 		$this->curl->http_header('token', $this->config->item('api-token'));
 		$this->curl->option('TIMEOUT', 70000);
-		$this->load->model('m_airlines');
+		$this->load->model('m_booking');
 		$this->url = 'http://52.36.25.143:8989/lion';	
 		$this->url = $this->config->item('api-url') . 'lion';
 	 }
@@ -259,7 +259,7 @@ class Airlines extends CI_Controller {
 		        $password = $this->input->post('password_register');
 
 		        $additional_data = array(
-		            'full_name' => $this->input->post('full_name'),
+		            'full name' => $this->input->post('full_name'),
 		            'phone'      => $this->input->post('phone'),
 		        );
 		        $this->ion_auth->register($identity, $password, $email, $additional_data);
@@ -274,11 +274,11 @@ class Airlines extends CI_Controller {
 				if( ( ! empty($array) && $array->code==200) ){
 					$hasil = $array->results->booking_code;
 					$data = array(
-				        'id_user' => $this->session->userdata('user_id'),
+				        'company' => $this->session->userdata('company'),
 				        'identity' => $this->session->userdata('identity'),
-				        'booking_code' => $array->results->booking_code,
+				        'booking code' => $array->results->booking_code,
 					);
-					$this->m_airlines->booking_save($data);
+					$this->m_booking->booking_save($data);
 					
 				} else{
 					$hasil = $array->results;
@@ -307,35 +307,35 @@ class Airlines extends CI_Controller {
 			/* update booking */
 			if($array != NULL && $this->ion_auth->logged_in()){
 				$data_update = array(
-			        'id_flight' => $array->id,
-			        'booking_time' => $array->booking_time,
-			        'time_limit'=> $array->time_limit,
-					'base_fare'=> $array->base_fare,
+			        'id flight' => $array->id,
+			        'booking time' => $array->booking_time,
+			        'time limit'=> $array->time_limit,
+					'base fare'=> $array->base_fare,
 					'tax'=> $array->tax,
 					'NTA'=> $array->NTA,
 					'name'=> $array->name,
 					'phone'=> $array->phone,
-					'area_depart'=> $array->area_depart,
-					'area_arrive'=> $array->area_arrive,
-					'payment_status'=> $array->payment_status,
+					'area depart'=> $array->area_depart,
+					'area arrive'=> $array->area_arrive,
+					'payment status'=> $array->payment_status,
 					'airline'=> $array->airline,
-					'flight_list'=> $array->flight_list,				
-					'passenger_list'=> $array->passenger_list,				
+					'flight list'=> $array->flight_list,				
+					'passenger list'=> $array->passenger_list,				
 					'child'=> $array->child,				
 					'infant'=> $array->infant,				
 					'adult'=> $array->adult,				
 				);		
-				$this->m_airlines->booking_update($data_update, $this->session->userdata('user_id'),$code);
+				$this->m_booking->booking_update($data_update,$code);
 			 }
 			
 			$data = array('content'=>'airlines/retrieve',
 					  'data_detail'=>$array,
-					  'status'=>$this->m_airlines->get_status_booking($code),
+					  'status'=>$this->m_booking->get_status_booking($code),
 					  'data_table'=>NULL,
 					  'bandara'=>$bandara,
 					);
 		}elseif(!$this->input->get()){
-			$data_table = $this->m_airlines->retrieve_list();
+			$data_table = $this->m_booking->retrieve_list();
 			$data = array('content'=>'airlines/retrieve',
 					  'data_table'=>$data_table,
 					  'data_detail'=>NULL,
@@ -347,19 +347,19 @@ class Airlines extends CI_Controller {
 				$string2 = explode(":",$string[$i]);
 				if(!empty($string2[1]) && !empty($string2[0] && $string2[1]!='')){
 					if(preg_replace('/\s+/', '', $string2[0])=='bookingcode'){
-					$data_or[$i]=array('val'=>$string2[1], 'key'=>'booking_code');
+					$data_or[$i]=array('val'=>$string2[1], 'key'=>'booking code');
 					}
 					if(preg_replace('/\s+/', '', $string2[0])=='contactname'){
 						$data_or[$i]=array('val'=>$string2[1], 'key'=>'name');
 					}
 					if(preg_replace('/\s+/', '', $string2[0])=='datebooking'){
-						$data_or[$i]=array('val'=>date("Y-m-d", strtotime($string2[1])), 'key'=>'booking_time');
+						$data_or[$i]=array('val'=>date("Y-m-d", strtotime($string2[1])), 'key'=>'FROM_UNIXTIME(`b`.`booking time`,"%Y-%m-%d")');
 					}
 				}elseif($string2[1]!=''){
-					$data_or[$i]=array('val'=>$string2[0], 'key'=>'booking_code');
+					$data_or[$i]=array('val'=>$string2[0], 'key'=>'booking code');
 				}
 			}
-			$data_table = $this->m_airlines->retrieve_list($data_or);
+			$data_table = $this->m_booking->retrieve_list($data_or);
 			$data = array('content'=>'airlines/retrieve',
 					  'data_table'=>$data_table,
 					  'data_detail'=>NULL,
@@ -400,6 +400,10 @@ class Airlines extends CI_Controller {
 		$this->load->view("index",$data);
 	}
 	
+	function coba(){
+		$d['ini nama']='nama';
+		print_r($d);
+	}
 	
 	
 	function jsongetform(){

@@ -8,28 +8,28 @@ class M_payment extends CI_Model
 	}
 	
 	function topup_list(){
-		$this->db->select(" t.id, t.id_user, u.full_name, t.nominal, t.`unique`, t.id_bank, t.id_bank_to, s.time_status, s.`status`")
-				 ->from("payment_topup t, payment_status_topup s, users u")
-				 ->where("s.id_topup = t.id")
-				 ->where("u.id = t.id_user")
+		$this->db->select(" t.id, t.company, u.company, t.nominal, t.`unique`, t.bank from, t.bank to, s.time status, s.`status`")
+				 ->from("acc topup as t, acc topup status as s, auth users as u")
+				 ->where("s.id topup = t.id")
+				 ->where("u.company = t.company")
 				 ->where("s.status",'submit')
-				 ->order_by('s.time_status','desc');
+				 ->order_by('s.time status','desc');
 		$sub = $this->subquery->start_subquery('where');
-		$sub->select_max('time_status')->from('payment_status_topup')->where('id_topup = t.id');
-		$this->subquery->end_subquery('s.time_status');
+		$sub->select_max('time status')->from('acc topup status')->where('`id topup` = t.id');
+		$this->subquery->end_subquery('s.time status');
 		return $this->db->get()->result();
 	}
 	
    function topup_list_detail($id_topup){
 		$data = [];
-		$this->db->select(" t.id, t.id_user, t.nominal, t.`unique`, t.id_bank, t.id_bank_to")
-				 ->from("payment_topup t")
+		$this->db->select(" t.id, t.company, t.nominal, t.`unique`, t.bank from, t.bank to")
+				 ->from("acc topup as t")
 				 ->where("t.id",$id_topup);
 		$data['topup']= $this->db->get()->result();
-		$this->db->select("status,time_status")
-				 ->from("payment_status_topup")
-				 ->where("id_topup",$id_topup)
-				 ->order_by('time_status', 'desc');
+		$this->db->select("status,time status")
+				 ->from("acc topup status")
+				 ->where("id topup",$id_topup)
+				 ->order_by('time status', 'desc');
 		$data['status']=$this->db->get()->result();
 		return $data;
 	}
@@ -38,23 +38,36 @@ class M_payment extends CI_Model
 		$date = date_create();
 		$data=array(
 				"status"=>$status,
-				"time_status"=>$date->getTimestamp(),
-				"id_topup"=>$id_topup,
+				"time status"=>$date->getTimestamp(),
+				"id topup"=>$id_topup,
 		);
-		$this->db->insert('payment_status_topup',$data);
-		$this->_change_saldo($id_topup,$status);
+		$this->db->insert('acc topup status',$data);
+		if($status=='confirm'){
+			$get_nominal = $this->db->where("id",$id_topup)->get("acc topup")->row();
+			$this->_change_saldo($id_topup,$get_nominal->nominal,$get_nominal->company,'CT');
+		}
+		//$this->_change_saldo($id_topup,$status);
 		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
 	}
 	
-	private function _change_saldo($id_topup,$status){
-		$get_saldo=0;
-		$get_saldo = $this->db->where("id",$id_topup)->get("payment_topup")->row();
-		if($status=='confirm'){
-			$jml_saldo = $get_saldo->unique+$get_saldo->nominal+$get_saldo->saldo;
-			$data_update=array('saldo'=>$jml_saldo);	
-			$this->db->where('id',$id_topup);
-			$this->db->update('payment_topup',$data_update);		
+	private function _change_saldo($id_payfor,$nominal,$company,$code){
+		$balance=0;
+		$date = date_create();
+		$get_balance = $this->db->where("company",$company)
+					   ->order_by('created','desc')
+					   ->limit(0,1)->get("acc balance")->row();
+		if($get_balance!==NULL){
+			$balance = $get_balance->balance;
 		}
+		$data = array(
+			'code'=>$code,
+			'company'=>$company,
+			'nominal'=>$nominal,
+			'balance'=>$balance+$nominal,
+			'pay for'=>$id_payfor,
+			'created'=>$date->getTimestamp(),
+		);
+		$this->db->insert('acc balance',$data);
 	}
 	
 	function topup_change_status($status=''){

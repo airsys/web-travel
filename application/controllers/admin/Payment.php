@@ -15,14 +15,14 @@ class Payment extends CI_Controller {
 			$data_select = $data_select = $this->m_payment->topup_list();
 		 	$data = array('content'=>'payment/topup_list',
 		 				  'data_table'=>$data_select,
-		 				  'bank'=>listDataCustom('payment_bank','id','rek_number,bank,account_name'),
+		 				  'bank'=>listDataCustom('acc bank','id','rek number,bank,account name'),
 		 			);
 		}elseif($id_topup!=NULL){	
 			$data_select = $this->m_payment->topup_list_detail($id_topup);
 		 	$data = array('content'=>'payment/topup_list_detail',
 		 				  'data_topup'=>$data_select['topup'][0],
 		 				  'data_status'=>$data_select['status'],
-		 				  'bank'=>listDataCustom('payment_bank','id','rek_number,bank,account_name'),
+		 				  'bank'=>listDataCustom('acc bank','id','rek number,bank,account name'),
 		 			);
 		}
 		$this->load->view("admin/index",$data);

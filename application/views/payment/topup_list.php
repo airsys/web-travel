@@ -32,19 +32,19 @@
 		    <?php
 			foreach($data_table as $value){ ?>
 		    <tr>
-		      <td class='text-center'><?php echo number_format($value->nominal) ?></td>
-		      <td class='text-center'><?php echo $value->unique ?></td>
-		      <td class='text-center'><?php echo number_format($value->unique+$value->nominal); ?></td>   
-		      <td class="text-center"><?php echo $bank[$value->id_bank]->bank."-".$bank[$value->id_bank]->rek_number."-".$bank[$value->id_bank]->account_name; ?></td>
-		      <td class="text-center"><?php echo $bank[$value->id_bank_to]->bank."-".$bank[$value->id_bank_to]->rek_number."-".$bank[$value->id_bank_to]->account_name; ?></td>
-		      <td class='text-center'><?php echo date("d-m-Y H:i:s",$value->time_status) ?></td>
+		      <td class='text-center'><?php echo number_format($value['nominal']) ?></td>
+		      <td class='text-center'><?php echo $value['unique'] ?></td>
+		      <td class='text-center'><?php echo number_format($value['unique']+$value['nominal']); ?></td>   
+		      <td class="text-center"><?php echo $bank[$value['bank from']]['bank']."-".$bank[$value['bank from']]['rek number']."-".$bank[$value['bank from']]['account name']; ?></td>
+		      <td class="text-center"><?php echo $bank[$value['bank to']]['bank']."-".$bank[$value['bank to']]['rek number']."-".$bank[$value['bank to']]['account name']; ?></td>
+		      <td class='text-center'><?php echo date("d-m-Y H:i:s",$value['time status']) ?></td>
 		      <td class="text-center">
-		      	 <?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>"; ?>
+		      	 <?php echo "<span class='label' style='background-color:".$color[$value['status']]."; font-size:0.9em'>".$value['status']."</span>"; ?>
 		      </td>
 		      <td class="text-center">
-		      	<a href="<?php echo base_url().'payment/topup_list/'.$value->id; ?>" title="view detail" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a>
-		      	<button title="cancel" data-toggle="<?php echo $value->id ?>" type="button" class="cancel btn btn-danger btn-sm"><li class="fa fa-close"></li></button>
-		      	<button title="submit" data-toggle="<?php echo $value->id ?>" type="button" class="submit btn btn-primary btn-sm"><li class="fa fa-paper-plane"></li></button>
+		      	<a href="<?php echo base_url().'payment/topup_list/'.$value['id']; ?>" title="view detail" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a>
+		      	<button title="cancel" data-toggle="<?php echo $value['id'] ?>" type="button" class="cancel btn btn-danger btn-sm"><li class="fa fa-close"></li></button>
+		      	<button title="submit" data-toggle="<?php echo $value['id'] ?>" type="button" class="submit btn btn-primary btn-sm"><li class="fa fa-paper-plane"></li></button>
 		      </td>
 		    </tr>
 		    <?php } ?>		    

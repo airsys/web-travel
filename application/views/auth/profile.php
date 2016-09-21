@@ -21,21 +21,27 @@
               <div class="tab-pane active" id="tab_1">
               	<form class="form-horizontal" action="" method="post">
 				<div class="form-group">
+		          <label for="company" class="col-sm-2 control-label">Company</label>
+		          <div class="col-sm-4">
+		            <input type="email" disabled class="form-control" value="<?php echo ($data_post != NULL) ? $company[$data_post['company']] : ""; ?>" id="company" placeholder="company">
+		          </div>
+		        </div>
+				<div class="form-group">
 		          <label for="email" class="col-sm-2 control-label">Email</label>
 		          <div class="col-sm-4">
-		            <input type="email" disabled class="form-control" value="<?php echo ($data_post != NULL) ? $data_post->email : ""; ?>" id="email" placeholder="email">
+		            <input type="email" disabled class="form-control" value="<?php echo ($data_post != NULL) ? $data_post['email'] : ""; ?>" id="email" placeholder="email">
 		          </div>
 		        </div>
 		        <div class="form-group">
 		          <label for="first_name" class="col-sm-2 control-label">Full Name</label>
 		          <div class="col-sm-4">
-		            <input type="text" required disabled class="form-control" value="<?php echo ($data_post != NULL) ? $data_post->full_name : ""; ?>" name="full_name" id="first_name" placeholder="Full Name">
+		            <input type="text" required disabled class="form-control" value="<?php echo ($data_post != NULL) ? $data_post['full name'] : ""; ?>" name="full_name" id="first_name" placeholder="Full Name">
 		          </div>
 		        </div>
 		        <div class="form-group">
 		          <label for="phone" class="col-sm-2 control-label">Phone</label>
 		          <div class="col-sm-4">
-		            <input type="text" required disabled class="form-control" value="<?php echo ($data_post != NULL) ? $data_post->phone : ""; ?>" name="phone" id="phone" placeholder="phone">
+		            <input type="text" required disabled class="form-control" value="<?php echo ($data_post != NULL) ? $data_post['phone'] : ""; ?>" name="phone" id="phone" placeholder="phone">
 		          </div>
 		        </div>
 		        <div class="form-group">
@@ -75,12 +81,14 @@
 						      <th class="text-center">Action</th>
 						    </tr>
 					    </thead>
-					    	<?php foreach($bank as $key=>$val){ ?>
+					    
+					    	<?php 
+					    	foreach($bank as $key=>$val){ ?>
 					    	<tr class="text-center">
-					    		<td><?php echo $val->account_name ?></td>
-					    		<td><?php echo $val->bank ?></td>
-					    		<td><?php echo $val->rek_number ?></td>
-					    		<td><?php echo ($val->enable==1 ? "ENABLE" : "DISABLE"); ?>
+					    		<td><?php echo $val['account name'] ?></td>
+					    		<td><?php echo $val['bank'] ?></td>
+					    		<td><?php echo $val['rek number'] ?></td>
+					    		<td><?php echo ($val['enable']==1 ? "ENABLE" : "DISABLE"); ?>
 					    		</td>
 					    		<td><a href="<?php echo base_url()."auth2/bank_detail/".$key ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
 					    	</tr>

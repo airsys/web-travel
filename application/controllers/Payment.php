@@ -48,8 +48,8 @@ class Payment extends CI_Controller {
 		$data = array('content'=>'payment/topup',
 					  'unique'=>$unique,
 					  'message'=>$message,
-					  'bank'=>listDataCustom('payment_bank','id','rek_number,bank,account_name','where type=0'),
-					  'bank_account'=>listDataCustom('payment_bank','id','rek_number,bank,account_name',"where enable=1 and id_user= ".$this->session->userdata('user_id')),
+					  'bank'=>listDataCustom('acc bank','id','rek number,bank,account name','where company=0 and enable=1'),
+					  'bank_account'=>listDataCustom('acc bank','id','rek number,bank,account name',"where enable=1 and company= ".$this->session->userdata('company')),
 					);
 		$this->load->view("index",$data);
 				
@@ -63,14 +63,14 @@ class Payment extends CI_Controller {
 			$data_select = $this->m_payment->topup_list();
 		 	$data = array('content'=>'payment/topup_list',
 		 				  'data_table'=>$data_select,
-		 				  'bank'=>listDataCustom('payment_bank','id','rek_number,bank,account_name'),
+		 				  'bank'=>listDataCustom('acc bank','id','rek number,bank,account name'),
 		 			);
 		}elseif($id_topup!=NULL){
 			$data_select = $this->m_payment->topup_list_detail($id_topup);
 		 	$data = array('content'=>'payment/topup_list_detail',
 		 				  'data_topup'=>$data_select['topup'][0],
 		 				  'data_status'=>$data_select['status'],
-		 				  'bank'=>listDataCustom('payment_bank','id','rek_number,bank,account_name'),
+		 				  'bank'=>listDataCustom('acc bank','id','rek number,bank,account name'),
 		 			);
 		}
 	 	$this->load->view("index",$data);
@@ -132,6 +132,15 @@ class Payment extends CI_Controller {
             ->set_content_type('application/json')
             ->set_status_header($code)
             ->set_output(json_encode($hasil));
+	 }
+	 
+	 function report_sales(){
+	 	
+	 	$data = array('content'=>'payment/report_sales',
+					  'bank'=>listDataCustom('payment_bank','id','rek_number,bank,account_name','where type=0'),
+					  'bank_account'=>listDataCustom('payment_bank','id','rek_number,bank,account_name',"where enable=1 and id_user= ".$this->session->userdata('user_id')),
+					);
+		$this->load->view("index",$data);
 	 }
 	 
 }

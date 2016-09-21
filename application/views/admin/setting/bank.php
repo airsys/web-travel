@@ -23,10 +23,10 @@
 	    <?php
 		foreach($bank as $key => $value){ ?>
 	    <tr>
-	      <td class="text-center"><?php echo ucwords($value->account_name) ?></td>
-	      <td class='text-center'><?php echo $value->rek_number ?></td>
-	      <td class='text-center'><?php echo $value->bank ?></td>
-	      <td class='text-center'><?php echo ($value->enable==1 ? "ENABLE" : "DISABLE"); ?></td>
+	      <td class="text-center"><?php echo ucwords($value['account name']) ?></td>
+	      <td class='text-center'><?php echo $value['rek number'] ?></td>
+	      <td class='text-center'><?php echo $value['bank'] ?></td>
+	      <td class='text-center'><?php echo ($value['enable']==1 ? "ENABLE" : "DISABLE"); ?></td>
 	      <td class='text-center'><a href="<?php echo base_url()."admin/setting/bank_detail/".$key ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
 	    </tr>
 	    <?php } ?>	    

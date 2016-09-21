@@ -30,6 +30,12 @@
           </div>
         </div>
         <div class="form-group">
+          <label for="company" class="col-sm-2 control-label">Company</label>
+          <div class="col-sm-4">
+            <input type="text" required class="form-control" value="<?php echo ($data_post != NULL) ? $data_post['company'] : ""; ?>" name="company" id="company" placeholder="company">
+          </div>
+        </div>
+        <div class="form-group">
           <label for="password" class="col-sm-2 control-label">Password</label>
           <div class="col-sm-4">
             <input type="password"  required class="form-control" name="password" id="company" placeholder="Password">

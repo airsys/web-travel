@@ -11,7 +11,7 @@ class Setting extends CI_Controller {
 	function bank($action=''){
 		$data_view = array(
 			'content'=>'setting/bank',
-			'bank'=>listDataCustom('payment_bank','id','rek_number,bank,account_name,enable',"where type=0 order by id desc"),
+			'bank'=>listDataCustom('acc bank','id','rek number,bank,account name,enable',"where admin=0 order by id desc"),
 		);		
 		$this->load->view("admin/index",$data_view);	
 	}
@@ -30,13 +30,12 @@ class Setting extends CI_Controller {
 	
 	function bank_detail($id){
 		if(isset($_POST) && !empty($_POST)){
-			$this->load->model('m_payment');
 			$this->m_setting->change_status_bank();
 			redirect('admin/setting/bank/','refresh');
 		} else{
 			$data_view = array(
 						'content'=>'setting/bank_detail',
-						'bank'=> listDataCustom('payment_bank','id','bank,account_name,rek_number,enable',"where type = 0 and id = $id"),
+						'bank'=> listDataCustom('acc bank','id','bank,account name,rek number,enable',"where admin = 0 and id = $id"),
 						'id'=>$id,
 			);
 			$this->load->view("admin/index",$data_view);	

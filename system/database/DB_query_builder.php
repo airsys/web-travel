@@ -623,7 +623,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 	 * @return	CI_DB_query_builder
 	 */
 	public function or_where($key, $value = NULL, $escape = NULL)
-	{
+	{ 
 		return $this->_wh('qb_where', $key, $value, 'OR ', $escape);
 	}
 
@@ -645,11 +645,12 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 	 * @return	CI_DB_query_builder
 	 */
 	protected function _wh($qb_key, $key, $value = NULL, $type = 'AND ', $escape = NULL)
-	{
+	{	//print_r($value);
 		$qb_cache_key = ($qb_key === 'qb_having') ? 'qb_cache_having' : 'qb_cache_where';
 
 		if ( ! is_array($key))
 		{
+			//$return = preg_replace("'` `'", ' ', $item.$alias);
 			$key = array($key => $value);
 		}
 
@@ -669,7 +670,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 					$v = ' '.$this->escape($v);
 				}
 
-				if ( ! $this->_has_operator($k))
+				if ( ! $this->_has_operator($k) || preg_match('/`| /',trim($k)))
 				{
 					$k .= ' = ';
 				}
