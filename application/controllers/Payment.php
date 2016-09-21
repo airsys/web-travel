@@ -51,8 +51,7 @@ class Payment extends CI_Controller {
 					  'bank'=>listDataCustom('acc bank','id','rek number,bank,account name','where company=0 and enable=1'),
 					  'bank_account'=>listDataCustom('acc bank','id','rek number,bank,account name',"where enable=1 and company= ".$this->session->userdata('company')),
 					);
-		$this->load->view("index",$data);
-				
+		$this->load->view("index",$data);				
 	 }
 	 
 	 function topup_list($id_topup='00'){
@@ -105,9 +104,9 @@ class Payment extends CI_Controller {
 	 }
 	 
 	 function issued(){
-	 	$this->load->model('m_airlines');
-	 	$id_flight = $this->input->post('id');
-	 	$NTA = $this->m_airlines->retrieve_list(NULL,$id_flight);
+	 	$this->load->model('m_booking');
+	 	$id_booking = $this->input->post('id');
+	 	$NTA = $this->m_booking->retrieve_list(NULL,$id_booking);
 	 	$hasil['message'] = 'id or user not found';
 		$hasil['data']=0;
 		$code = 400;
@@ -116,7 +115,7 @@ class Payment extends CI_Controller {
 			$hasil['data']=0;
 			$code = 400;
 		}elseif(saldo()>$NTA[0]->NTA){
-			if($this->m_payment->issued($id_flight,$NTA[0]->NTA)){
+			if($this->m_payment->issued($id_booking,$NTA[0]->NTA)){
 				$hasil['message'] = 'Berhasil issued';
 				$hasil['data']=1;
 				$code = 200;

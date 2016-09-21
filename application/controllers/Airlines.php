@@ -325,11 +325,12 @@ class Airlines extends CI_Controller {
 					'infant'=> $array->infant,				
 					'adult'=> $array->adult,				
 				);		
-				$this->m_booking->booking_update($data_update,$code);
+				$id_booking = $this->m_booking->booking_update($data_update,$code);
 			 }
 			
 			$data = array('content'=>'airlines/retrieve',
 					  'data_detail'=>$array,
+					  'id_booking'=>$id_booking,
 					  'status'=>$this->m_booking->get_status_booking($code),
 					  'data_table'=>NULL,
 					  'bandara'=>$bandara,

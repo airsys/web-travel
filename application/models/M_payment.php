@@ -88,23 +88,21 @@ class M_payment extends CI_Model
 		return $this->_set_status_topup($this->input->post('id'),$status);
 	}
 	
-	function issued($id_flight , $nta){
-		//dalam issued: merubah booking status & menambah row di payment topup dengan kode K
-		$this->load->model('m_airlines');
-		if($this->m_airlines->set_status_booking($id_flight,'issued')){ //<- merubah booking status
+	function issued($id_booking , $nta){
+		//dalam issued: merubah booking status & menambah row di acc balance dengan kode D
+		$this->load->model('m_booking');
+		if($this->m_booking->set_status_booking($id_booking,'issued')){ //<- merubah booking status
 			$date = date_create();
 			$saldo = $this->_get_saldo();
 			$data=array(
-					"id_user"=>$this->session->userdata('user_id'),
+					"company"=>$this->session->userdata('company'),
 					"nominal"=>$nta,
-					"unique"=>0,
-					"id_bank_to"=>NULL,
 					"created"=>$date->getTimestamp(),
-					"id_bank"=>NULL,
-					"code"=>'CI',
-					"saldo"=>$saldo-$nta,
+					"code"=>'DI',
+					"pay for"=>$id_booking,
+					"balance"=>$saldo-$nta,
 			);
-			$this->db->insert('payment_topup',$data); //<-menambah row di payment topup
+			$this->db->insert('acc balance',$data); //<-menambah row di payment topup
 		}
 		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
 	}

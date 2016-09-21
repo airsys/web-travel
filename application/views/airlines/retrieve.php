@@ -279,7 +279,7 @@
           <?php } ?>
         </div>
       </div>
-      <input type="hidden" id="id" value="<?php echo $data_detail->id ?>"/>
+      <input type="hidden" id="id" value="<?php echo $id_booking ?>"/>
     </section>
     <!-- /.content -->
     <?php } ?>

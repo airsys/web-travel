@@ -57,7 +57,7 @@ class M_booking extends CI_Model
 		$this->db->where('company', $this->session->userdata('company'))
 				 ->where("`booking code`", $booking_code)
 				 ->order_by('id')
-				 ->limit(1,1);
+				 ->limit(0,1);
 		$this->db->update('booking', $data_update);
 		
 		$this->db->where("`id flight`",$data['id flight']);
@@ -66,16 +66,17 @@ class M_booking extends CI_Model
 		$this->_insert_passenger_list($data['passenger list'],$id_booking);
 		$this->_insert_flight_list($data['flight list'],$id_booking);		
 		$this->_set_status_booking($id_booking,'booking');
+		return $id_booking;
 	}
 	
-	function retrieve_list($data_or=NULL, $id_flight=NULL){
+	function retrieve_list($data_or=NULL, $id_booking=NULL){
 		if($data_or!=NULL){
 			foreach ($data_or as $val){
 				$this->db->like($val['key'], $val['val'],FALSE);
 			}
 		}
-		if($id_flight!=NULL){
-			$this->db->where('b.id_flight',$id_flight);
+		if($id_booking!=NULL){
+			$this->db->where('b.id',$id_booking);
 		}
 		$this->db->select(" b.*, `status`,time status")
 				 ->from("booking AS b, booking status AS s")
