@@ -50,10 +50,10 @@ class M_payment extends CI_Model
 		$get_saldo = $this->db->where("company",$this->session->userdata('company'))
 	 				 ->order_by('id','desc')
 	 				 ->limit(0,1)
-	 				 ->get("acc topup")->row();
-	 	if(empty($get_saldo->saldo)){
+	 				 ->get("acc balance")->row();
+	 	if(empty($get_saldo->balance)){
 			return 0;
-		}else return $get_saldo->saldo;
+		}else return $get_saldo->balance;
 	}
 	
 	function topup_list(){
