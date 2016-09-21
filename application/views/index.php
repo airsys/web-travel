@@ -171,7 +171,7 @@
 	        <p class="modal-title" id="myModalLabel">Sign in to start your session</p>
 	      </div>
 	          <!-- form start -->
-          <form id="form-login-header" role="form">
+          <form id="form-login-header" action="" method="post" role="form">
 		      <div class="modal-body">
 	              <div class="box-body">
 	              	<div id="login-warning"></div>
@@ -206,7 +206,7 @@
 		function callmodal(){
 			if(login==0) $('#modal-content').modal('show');
 		}
-		$('#form-login-header').on('submit', function() {
+		 $('#form-login-header').submit(function( event ) {
 			event.preventDefault();
 		    $.ajax({
                 url:  base_url+"auth2/login_ajax",
