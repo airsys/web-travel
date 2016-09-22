@@ -6,11 +6,7 @@ class Report extends CI_Controller {
 	
 	function __construct() {
 	     parent::__construct();
-	     $this->load->model('m_report');
-	     if (!$this->ion_auth->logged_in())
-		{
-			redirect('airlines/', 'refresh');
-		}
+	     $this->load->model('admin/m_report');
 	 }
 	 
 	 function sales(){
@@ -22,14 +18,14 @@ class Report extends CI_Controller {
 			$rangt = strtotime(str_replace('/', '-', $range[1]))+86399;
 			$array_range = "`time status` BETWEEN $rangf AND $rangt";
 		}else{
-			redirect ('report/sales?range='.date('d/m/Y', strtotime('-30 days')).' - '.date('d/m/Y'),'redirect');
+			redirect ('admin/report/sales?range='.date('d/m/Y', strtotime('-30 days')).' - '.date('d/m/Y'),'redirect');
 		}
 	 	$data_table = $this->m_report->sales($array_range);
 	 	$data = array('content'=>'report/sales',
 					  'data_table'=>$data_table,
 					  'date_range'=>$this->input->get('range'),
 					);
-	 	$this->load->view("index",$data);
+	 	$this->load->view("admin/index",$data);
 	 }
 	 
 	 function finance(){
@@ -43,7 +39,7 @@ class Report extends CI_Controller {
 			$array_range = "`created` BETWEEN $rangf AND $rangt";
 			//echo date("Y-m-d H:i:s",$rangf).'|'.date("Y-m-d H:i:s",$rangt);die();
 		}else{
-			redirect ('report/finance?range='.date('d/m/Y', strtotime('-30 days')).' - '.date('d/m/Y'),'redirect');
+			redirect ('admin/report/finance?range='.date('d/m/Y', strtotime('-30 days')).' - '.date('d/m/Y'),'redirect');
 		}
 	 	$data_table = $this->m_report->finance($array_range);
 	 	$data = array('content'=>'report/finance',
@@ -51,6 +47,6 @@ class Report extends CI_Controller {
 					  'payfor'=>$this->m_report->finance_payfor($rangf,$rangt),
 					  'date_range'=>$this->input->get('range'),
 					);
-	 	$this->load->view("index",$data);
+	 	$this->load->view("admin/index",$data);
 	 }
 }
