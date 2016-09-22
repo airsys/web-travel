@@ -70,6 +70,7 @@
               <!-- tab-pane -->
               <div class="tab-pane" id="tab_2">
                <div class="row">
+               	  <?php if($bank!=NULL){ ?>
 	           	  <div class="table-responsive no-padding col-md-6">
 					  <table class="table table-hover table-striped">
 					  	<thead>
@@ -94,7 +95,12 @@
 					    	</tr>
 					    	<?php } ?>		    
 					  </table>
-				  </div>     
+				  </div>
+				  <?php } 
+				  	else{
+							echo 'belum ada data bank, <br>silahkan melakukan topup terlebih dahulu';	
+						}
+				  ?> 
 	           </div>	            
 	          </div>
               <!-- /.tab-pane -->

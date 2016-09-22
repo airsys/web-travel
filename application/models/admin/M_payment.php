@@ -44,9 +44,8 @@ class M_payment extends CI_Model
 		$this->db->insert('acc topup status',$data);
 		if($status=='confirm'){
 			$get_nominal = $this->db->where("id",$id_topup)->get("acc topup")->row();
-			$this->_change_saldo($id_topup,$get_nominal->nominal,$get_nominal->company,'CT');
+			$this->_change_saldo($id_topup,$get_nominal->nominal+$get_nominal->unique,$get_nominal->company,'CT');
 		}
-		//$this->_change_saldo($id_topup,$status);
 		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
 	}
 	

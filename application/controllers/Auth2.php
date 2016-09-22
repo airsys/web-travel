@@ -109,8 +109,7 @@ class Auth2 extends CI_Controller {
 		$this->load->view("index",$data_view);
 	}
 	
-	function profile(){
-		
+	function profile(){		
 		$user = NULL;
 		$message = '';
 		$id = $this->session->userdata('id');
@@ -162,7 +161,7 @@ class Auth2 extends CI_Controller {
 					'content'=>'auth/profile',
 					'data_post'=> $user,
 					'company'=> listData('auth company','id','brand',"where `id` = '".$this->session->userdata('company')."'"),
-					'bank'=> listDataCustom('acc bank','id','bank,account name,rek number,enable',"where `company` = '".$this->session->userdata('user_id')."'"),
+					'bank'=> listDataCustom('acc bank','id','bank,account name,rek number,enable',"where `company` = '".$this->session->userdata('company')."'"),
 					'message'=> $message,		
 				);
 		$this->load->view("index",$data_view);
@@ -177,7 +176,7 @@ class Auth2 extends CI_Controller {
 			$this->load->helper('dropdown');
 			$data_view = array(
 						'content'=>'auth/bank_detail',
-						'bank'=> listDataCustom('payment_bank','id','bank,account_name,rek_number,enable',"where id_user = '".$this->session->userdata('user_id')."' and id = $id"),
+						'bank'=> listDataCustom('payment_bank','id','bank,account_name,rek_number,enable',"where company = '".$this->session->userdata('company')."' and id = $id"),
 						'id'=>$id,
 			);
 			$this->load->view("index",$data_view);	

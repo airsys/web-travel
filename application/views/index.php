@@ -1,3 +1,4 @@
+<?php date_default_timezone_set('Asia/Jakarta'); ?>
 <!DOCTYPE html>
 <html>
 
@@ -72,7 +73,7 @@
 		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Report <span class="caret"></span></a>
 		              <ul class="dropdown-menu" role="menu">
 		                <li><a href="<?php echo base_url().'report/sales' ?>">Sales</a></li>
-		                <li><a href="<?php echo base_url().'payment/topup_list' ?>">Finance</a></li>
+		                <li><a href="<?php echo base_url().'report/finance' ?>">Finance</a></li>
 		              </ul>
 		            </li>
 		         	<?php } ?>

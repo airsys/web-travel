@@ -1,11 +1,4 @@
-<?php 
- 	$color = array(
- 				'booking'=>'#636c70',
- 				'issued'=>'#00bd30',
- 				'cancel'=>'#d3ce0a',
- 				'timeup'=>'#e7bd41',
- 			);
-?>
+<?php //print_r($payfor); ?>
 <!-- Jquery Tag Editor -->
 <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/daterangepicker/daterangepicker.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
@@ -39,7 +32,7 @@
   <?php if($data_table != NULL){?>
   	<div id="result-content" class="box box-primary center-block" style="width: 100%">
 		<div class="box-header with-border">
-			<h3 class="box-title">Retrieve List</h3>
+			<h3 class="box-title"></h3>
 		</div><!-- /.box-header -->
 		<div class="box-body">
 			<div id="alert"></div>
@@ -47,34 +40,23 @@
 				<div class="box-body table-responsive no-padding">
 				  <table class="table table-hover table-striped">
 				    <tr>
-				      <th>Booking Code</th>
-				      <th>Tujuan</th>
-				      <th>Contact</th>
-				      <th>Booking time</th>
-				      <th>Time Issued</th>
-				      <th>Fare</th>
-				      <th>NTA</th>
-				      <th>Passanger</th>
-				      <th>Status booking</th>
+				      <th>Code</th>
+				      <th>Credit</th>
+				      <th>Debet</th>
+				      <th>Pay for</th>
+				      <th>Date</th>
 				      <th>Detail</th>
 				    </tr>
 				    <?php
 				    $i=0;
 					foreach($data_table as $value){ $i++;?>
 				    <tr>
-				      <td><?php echo $value->airline." - ".$value->{'booking code'} ?></td>
-				      <td><?php echo $value->{'area depart'}."-".$value->{'area arrive'} ?></td>
-				      <td><?php echo $value->name ?></td>
-				      <td><?php echo date("d-m-Y H:i:s",$value->{'booking time'}) ?></td>
-				      <td><?php echo date("d-m-Y H:i:s",$value->{'time status'}) ?></td>
-				      <td><?php echo number_format($value->{'base fare'}+$value->tax) ?></td>
-				      <td><?php echo number_format($value->NTA) ?></td>
-				      <td>
-				      	<?php echo "A: $value->adult | C: $value->child | I: $value->infant" ?>
-				      	
-				      </td>
-				      <td><?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>" ?></td>
-				      <td><a href="<?php echo base_url()."airlines/retrieve/".$value->{'booking code'} ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
+				      <td><?php echo $value->code ?></td>
+				      <td><?php echo $value->credit ?></td>
+				      <td><?php echo $value->debet ?></td>
+				      <td><?php echo $payfor[$value->code][$value->{'pay for'}]; ?></td>
+				      <td><?php echo $value->created ?></td>
+				      <td><a href="<?php echo base_url()."airlines/retrieve/".$value->id ;?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
 				    </tr>
 				    <?php } ?>
 				    
@@ -96,7 +78,7 @@ $(document).ready(function(){
 					locale: {format: 'DD/MM/YYYY'},
 				}
 	).on('apply.daterangepicker', function(ev, p){
-          window.location = base_url+"report/sales?range="+$(this).val();
+          window.location = base_url+"report/finance?range="+$(this).val();
     });
 });
 </script>
