@@ -26,7 +26,7 @@
               <div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
               </div>
-              <input type="text" value="<?php echo date('d/m/Y', strtotime('-30 days')).' - '.date('d/m/Y'); ?>" class="form-control pull-right" id="reservation">
+              <input type="text" value="<?php echo $date_range; ?>" class="form-control pull-right" id="reservation">
             </div>
             <!-- /.input group -->
           </div>
@@ -89,6 +89,14 @@
  
 <script>
 $(document).ready(function(){
+	var change = 0;
+	$('#reservation').on('change', function() {
+		change++;
+		if(change>3){
+			window.location = base_url+"report/sales?range="+$(this).val();
+		}		
+		//window.location = base_url+"report/sales?range="+$(this).val();
+	});
 	$('#reservation').daterangepicker(
 				{
 					"opens": "right",

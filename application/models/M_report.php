@@ -7,10 +7,15 @@ class M_report extends CI_Model
 		$this->load->library('subquery');
 	}
 	
-	function sales($data_where=NULL){
+	function sales($betwen =NULL,$data_where=NULL){
 		if($data_where!=NULL){
 			foreach ($data_where as $key=> $val2){
 				$this->db->where($key, $val2,FALSE);
+			}
+		}
+		if($betwen!=NULL){
+			foreach ($betwen as $val1){
+				$this->db->where($val1);
 			}
 		}
 		$this->db->select(" b.*, `status`,time status")
