@@ -70,6 +70,13 @@
                 <li><a href="<?php echo base_url().'admin/setting/bank' ?>">Admin Bank</a></li>
               </ul>
             </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Report <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="<?php echo base_url().'admin/report/sales' ?>">Sales</a></li>
+                <li><a href="<?php echo base_url().'admin/report/finance' ?>">Finance</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
         <div class="navbar-custom-menu">

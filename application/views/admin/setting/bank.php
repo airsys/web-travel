@@ -9,6 +9,7 @@
   	<div class="form-group">
   		<a href="<?php echo base_url().'admin/setting/bank_add' ?>" type="button" class="btn btn-success"><li class="fa fa-plus"></li>&nbsp;ADD</a>
   	</div>
+  	<?php if($bank!=NULL){ ?>
   	<div class="table-responsive no-padding">
 	  <table class="table table-hover table-striped">
 	  	<thead>
@@ -32,6 +33,11 @@
 	    <?php } ?>	    
 	  </table>
 	</div>
+	<?php } 
+	  	else{
+				echo '<div class="alert alert-success">belum ada data bank, <br>silahkan ADD terlebih dahulu</div>';	
+			}
+	  ?> 
   </div>
   <div class="box-footer">
   </div>

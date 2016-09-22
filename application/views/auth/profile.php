@@ -98,7 +98,7 @@
 				  </div>
 				  <?php } 
 				  	else{
-							echo 'belum ada data bank, <br>silahkan melakukan topup terlebih dahulu';	
+							echo '<div class="alert alert-success">belum ada data bank, <br>silahkan Input Topup terlebih dahulu</div>';	
 						}
 				  ?> 
 	           </div>	            

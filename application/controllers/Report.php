@@ -4,11 +4,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Report extends CI_Controller {
 	
-	private $time;
 	function __construct() {
 	     parent::__construct();
 	     $this->load->model('m_report');
-	     $this->time = 68401;
+	     if (!$this->ion_auth->logged_in())
+		{
+			redirect('airlines/', 'refresh');
+		}
 	 }
 	 
 	 function sales(){

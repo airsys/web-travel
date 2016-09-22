@@ -39,7 +39,7 @@
   <?php if($data_table != NULL){?>
   	<div id="result-content" class="box box-primary center-block" style="width: 100%">
 		<div class="box-header with-border">
-			<h3 class="box-title">Retrieve List</h3>
+			<h3 class="box-title">Sales List</h3>
 		</div><!-- /.box-header -->
 		<div class="box-body">
 			<div id="alert"></div>
