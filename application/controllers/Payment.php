@@ -36,9 +36,10 @@ class Payment extends CI_Controller {
 					$id_bank = $this->input->post('bank_account');
 				}
 				if($id_bank!==FALSE){
-					if($this->m_payment->insert_topup($id_bank)){
+					$id =$this->m_payment->insert_topup($id_bank); 
+					if($id){
 						$message= 'success topup';
-						redirect('payment/topup_list','refresh');
+						redirect("payment/topup_list/$id",'refresh');
 					}else{
 						$message= 'fail topup';
 					}
@@ -99,10 +100,6 @@ class Payment extends CI_Controller {
             ->set_output(json_encode($hasil));
 	 }
 	 
-	 function topup_confirmation($id='00'){
-	 	
-	 }
-	 
 	 function issued(){
 	 	$this->load->model('m_booking');
 	 	$id_booking = $this->input->post('id');
@@ -116,6 +113,8 @@ class Payment extends CI_Controller {
 			$code = 400;
 		}elseif(saldo()>$NTA[0]->NTA){
 			if($this->m_payment->issued($id_booking,$NTA[0]->NTA)){
+				//$data_booking = $this->_issued($NTA[0]->{'booking code'});
+				
 				$hasil['message'] = 'Berhasil issued';
 				$hasil['data']=1;
 				$code = 200;
@@ -133,6 +132,20 @@ class Payment extends CI_Controller {
             ->set_output(json_encode($hasil));
 	 }
 	 
+	 private function _issued($booking_code){
+	 	$this->load->library('curl');
+    	$this->config->load('api');
+		$this->curl->http_header('token', $this->config->item('api-token'));
+		$this->curl->option('TIMEOUT', 70000);	
+		$this->url = $this->config->item('api-url') . 'lion';
+		$data=array(
+			'booking_code'=>$booking_code
+		);
+		$json = $this->curl->simple_post("$this->url/pay", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
+	 	$this->_write($json);
+	 	return json_encode($json);
+	 }
+	 
 	 function report_sales(){
 	 	
 	 	$data = array('content'=>'payment/report_sales',
@@ -140,6 +153,19 @@ class Payment extends CI_Controller {
 					  'bank_account'=>listDataCustom('payment_bank','id','rek_number,bank,account_name',"where enable=1 and id_user= ".$this->session->userdata('user_id')),
 					);
 		$this->load->view("index",$data);
+	 }
+	 
+	 private function _write ($json){	 	
+		$this->load->helper('file');
+		$data = 'Some file data';
+	    if ( ! write_file('./assets/ajax/data.txt', "\n".$json."\n", "a+"))
+	    {
+	        //echo 'Unable to write the file';
+	    }
+	    else
+	    {
+	        //echo 'File written!';
+	    }
 	 }
 	 
 }

@@ -401,12 +401,6 @@ class Airlines extends CI_Controller {
 		$this->load->view("index",$data);
 	}
 	
-	function coba(){
-		$d['ini nama']='nama';
-		print_r($d);
-	}
-	
-	
 	function jsongetform(){
 		return '{
   "code": 200,

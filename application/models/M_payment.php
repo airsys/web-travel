@@ -31,8 +31,9 @@ class M_payment extends CI_Model
 				"bank from"=>$id_bank,
 		);
 		$this->db->insert('acc topup',$data);
-		$this->_set_status_topup($this->db->insert_id(),'pending');
-		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
+		$id = $this->db->insert_id();
+		$this->_set_status_topup($id,'pending');
+		return ($this->db->affected_rows()>0) ? $id : FALSE;
 	}
 	
 	private function _set_status_topup($id_topup,$status){
@@ -61,7 +62,7 @@ class M_payment extends CI_Model
 				 ->from("acc topup AS t, acc topup status AS s")
 				 ->where("s.id topup = t.id")
 				 ->where('company',$this->session->userdata('company'))
-				 ->where("status='pending'")
+				 ->where("(status='pending' OR status='submit')")
 				 ->order_by('s.time status','desc');
 		$sub = $this->subquery->start_subquery('where');
 		$sub->select_max('time status')->from('acc topup status')->where('id topup = t.id');
@@ -112,10 +113,9 @@ class M_payment extends CI_Model
 	}
 	
 	function change_status_bank($id,$enable){
-		//$data = ($this->input->post('status')=='false') ? 0 : 1;
 		$this->db->where('id', $id)
-				 ->where('id_user',$this->session->userdata('user_id'));
-		$this->db->update('payment_bank', array('enable'=>$enable));
+				 ->where('company',$this->session->userdata('company'));
+		$this->db->update('acc bank', array('enable'=>$enable));
 		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
 	}
 

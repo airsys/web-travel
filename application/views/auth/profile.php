@@ -1,3 +1,9 @@
+<?php 
+ 	$color = array(
+ 				'1'=>'#00bd30',
+ 				'0'=>'#ec1e23',
+ 			);
+?>
 <!-- Horizontal Form -->
   <div class="box box-info">
     <div class="box-header with-border">
@@ -89,7 +95,9 @@
 					    		<td><?php echo $val['account name'] ?></td>
 					    		<td><?php echo $val['bank'] ?></td>
 					    		<td><?php echo $val['rek number'] ?></td>
-					    		<td><?php echo ($val['enable']==1 ? "ENABLE" : "DISABLE"); ?>
+					    		<td>
+					    			<?php $status =  ($val['enable']==1 ? "ENABLE" : "DISABLE"); ?>
+					    			<?php echo "<span class='label' style='background-color:".$color[$val['enable']]."; font-size:0.9em'>".$status."</span>"; ?>
 					    		</td>
 					    		<td><a href="<?php echo base_url()."auth2/bank_detail/".$key ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
 					    	</tr>

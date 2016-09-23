@@ -43,8 +43,16 @@
 		      </td>
 		      <td class="text-center">
 		      	<a href="<?php echo base_url().'payment/topup_list/'.$value['id']; ?>" title="view detail" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a>
-		      	<button title="cancel" data-toggle="<?php echo $value['id'] ?>" type="button" class="cancel btn btn-danger btn-sm"><li class="fa fa-close"></li></button>
-		      	<button title="submit" data-toggle="<?php echo $value['id'] ?>" type="button" class="submit btn btn-primary btn-sm"><li class="fa fa-paper-plane"></li></button>
+		      	<?php 
+		      	   $id = $value['id'];
+				   $disable = '';
+		      	   if($value['status']!='pending'){
+				   	  $id = '';
+				   	  $disable = 'disabled';
+				   }
+		      	?>
+		      	<button title="cancel" <?php echo $disable ?> data-toggle="<?php echo $id ?>" type="button" class="cancel btn btn-danger btn-sm"><li class="fa fa-close"></li></button>
+		      	<button title="submit" <?php echo $disable ?> data-toggle="<?php echo $id ?>" type="button" class="submit btn btn-primary btn-sm"><li class="fa fa-paper-plane"></li></button>
 		      </td>
 		    </tr>
 		    <?php } ?>		    
