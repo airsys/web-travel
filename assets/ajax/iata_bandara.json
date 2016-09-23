@@ -2048,5 +2048,15 @@
 "id_country":"ID",
 "code_country":832,
 "Type":"Domestik"
+},
+{
+"no":9189,
+"code_route":"WNI",
+"name_airport":"Matahora",
+"city":"Wakatobi",
+"country":"Indonesia",
+"id_country":"ID",
+"code_country":832,
+"Type":"Domestik"
 }
 ]
