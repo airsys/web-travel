@@ -143,7 +143,7 @@ class Payment extends CI_Controller {
 			'booking_code'=>$booking_code
 		);
 		$json = $this->curl->simple_post("$this->url/pay", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
-	 	$this->_write($json);
+	 	$this->log($json);
 	 	return json_encode($json);
 	 }
 	 
@@ -156,17 +156,19 @@ class Payment extends CI_Controller {
 		$this->load->view("index",$data);
 	 }
 	 
-	 private function _write ($json){	 	
-		$this->load->helper('file');
-		$data = 'Some file data';
-	    if ( ! write_file('./assets/ajax/data.txt', "\n".$json."\n", "a+"))
-	    {
-	        //echo 'Unable to write the file';
-	    }
-	    else
-	    {
-	        //echo 'File written!';
-	    }
+	 function log ($json){	 	
+		if($json=='view'){
+			$data =	$this->db->select('*')
+					->order_by('id','desc')
+					->get('system log')
+					->result();
+			print_r($data);
+		}else{
+			$data = array(
+				'log'=>$json,
+			);
+			$this->db->insert('system log',$data);
+		}
 	 }
 	 
 }

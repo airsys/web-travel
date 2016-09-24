@@ -400,7 +400,7 @@ class Airlines extends CI_Controller {
 		$data = array('content'=>'airlines/search_bestprice');
 		$this->load->view("index",$data);
 	}
-	
+		
 	function jsongetform(){
 		return '{
   "code": 200,
