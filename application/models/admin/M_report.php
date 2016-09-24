@@ -20,7 +20,6 @@ class M_report extends CI_Model
 				 ->from("booking AS b, booking status AS s, auth company AS c")
 				 ->where("b.id = s.id booking")
 				 ->where("b.company = c.id")
-				 ->where("status",'issued')
 				 ->order_by('s.time status','desc');
 		$sub = $this->subquery->start_subquery('where');
 		$sub->select_max('time status')->from('booking status')->where('`id booking` = b.id');

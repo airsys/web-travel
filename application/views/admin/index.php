@@ -73,8 +73,9 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Report <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="<?php echo base_url().'admin/report/sales' ?>">Sales</a></li>
+                <li><a href="<?php echo base_url().'admin/report/sales/issued' ?>">Sales</a></li>
                 <li><a href="<?php echo base_url().'admin/report/finance' ?>">Finance</a></li>
+                <li><a href="<?php echo base_url().'admin/report/sales/booking' ?>">Booking</a></li>
               </ul>
             </li>
           </ul>

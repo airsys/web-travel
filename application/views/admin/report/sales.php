@@ -39,7 +39,7 @@
   <?php if($data_table != NULL){?>
   	<div id="result-content" class="box box-primary center-block" style="width: 100%">
 		<div class="box-header with-border">
-			<h3 class="box-title">Sales List</h3>
+			<h3 class="box-title"><?php echo ucfirst($position); ?> List</h3>
 		</div><!-- /.box-header -->
 		<div class="box-body">
 			<div id="alert"></div>
@@ -52,7 +52,9 @@
 				      <th>Tujuan</th>
 				      <th>Contact</th>
 				      <th>Booking time</th>
-				      <th>Time Issued</th>
+				      <th>
+				      	<?php echo ($position=='issued')? 'Time Issued': 'Time Limit'?>
+				      </th>
 				      <th>Fare</th>
 				      <th>NTA</th>
 				      <th>Passanger</th>
@@ -67,7 +69,7 @@
 				      <td><?php echo $value->{'area depart'}."-".$value->{'area arrive'} ?></td>
 				      <td><?php echo $value->name ?></td>
 				      <td><?php echo date("d-m-Y H:i:s",$value->{'booking time'}) ?></td>
-				      <td><?php echo date("d-m-Y H:i:s",$value->{'time status'}) ?></td>
+				      <td><?php echo ($position=='issued')? date("d-m-Y H:i:s",$value->{'time status'}): date("d-m-Y H:i:s",$value->{'time limit'}); ?></td>
 				      <td><?php echo number_format($value->{'base fare'}+$value->tax) ?></td>
 				      <td><?php echo number_format($value->NTA) ?></td>
 				      <td>
@@ -89,6 +91,7 @@
  
 <script>
 $(document).ready(function(){
+	var position = '<?php echo $position; ?>';
 	$('#reservation').daterangepicker(
 				{
 					"opens": "right",
@@ -96,7 +99,7 @@ $(document).ready(function(){
 					locale: {format: 'DD/MM/YYYY'},
 				}
 	).on('apply.daterangepicker', function(ev, p){
-          window.location = base_url+"report/sales?range="+$(this).val();
+          window.location = base_url+"report/sales/"+position+"?range="+$(this).val();
     });
 });
 </script>

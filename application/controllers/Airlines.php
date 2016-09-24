@@ -12,7 +12,6 @@ class Airlines extends CI_Controller {
 		$this->curl->http_header('token', $this->config->item('api-token'));
 		$this->curl->option('TIMEOUT', 70000);
 		$this->load->model('m_booking');
-		$this->url = 'http://52.36.25.143:8989/lion';	
 		$this->url = $this->config->item('api-url') . 'lion';
 	 }
 	 
