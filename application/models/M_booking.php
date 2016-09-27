@@ -135,7 +135,7 @@ class M_booking extends CI_Model
 				$i++;
 				$data_insert[$i]=array(
 					//'date arrive'=>$val->date_arrive,
-					//'date depart'=>$val->date_depart,
+					'class'=>$val->code,
 					'airport depart'=>$val->area_depart,
 					'airport arrive'=>$val->area_arrive,
 					'time depart'=>strtotime($val->date_depart.' '.$val->time_depart.":00"),

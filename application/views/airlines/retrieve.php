@@ -161,6 +161,7 @@
             <tr>
               <th>#</th>
               <th>Flight ID</th>
+              <th>Class</th>
               <th>Area Depart</th>
               <th>Date Depart</th>
               <th>Time Depart</th>
@@ -178,6 +179,7 @@
             		 <tr>
 		              <td><?php echo $i ?></td>
             		  <td><?php echo $val->flight_id ?></td>
+            		  <td><?php echo $val->code ?></td>
 		              <td style="background-color:#e0dedf;"><?php echo $val->area_depart ?></td>
 		              <td style="background-color:#e0dedf;"><?php echo $val->date_depart ?></td>
 		              <td style="background-color:#e0dedf;"><?php echo $val->time_depart ?></td>
@@ -204,6 +206,7 @@
               <th>Name</th>
               <th>Birth Date</th>
               <th>Passenger Type</th>
+              <th>Ticket No.</th>
             </tr>
             </thead>
             <tbody>
@@ -217,6 +220,7 @@
 		              <td><?php echo $val->name ?></td>
 		              <td><?php echo $val->birth_date ?></td>
 		              <td><?php echo $val->passenger_type ?></td>
+		              <td><?php echo $val->ticket_no ?></td>
 		            </tr>
             	<?php } ?>
             </tbody>
@@ -273,9 +277,11 @@
       <?php if($this->session->flashdata('message')!=NULL) echo "<div id='warning' class='alert alert-success'>".$this->session->flashdata('message')."</div>"; ?>
       <div class="row no-print">
         <div class="col-xs-12">
-          <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+          <a href='<?php echo base_url()."airlines/invoice/$data_detail->booking_code" ?>' target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print Invoice</a>
           <?php if($status[0]->status=='booking'){ ?>
           <button id="issued" type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment </button>
+          <?php }else{ ?>
+          <a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code" ?>' target="_blank" class="btn btn-primary pull-right"><i class="fa fa-print"></i> Print Ticket</a>
           <?php } ?>
         </div>
       </div>
