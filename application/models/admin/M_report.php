@@ -27,6 +27,18 @@ class M_report extends CI_Model
 		return $this->db->get()->result();
 	}
 	
+	function get_status_booking($booking_code){
+		$this->db->select(" `status`,time status")
+				 ->from("booking as b, `booking status` as s")
+				 ->where("`b`.`id` = s.`id booking`")
+				 ->where("`booking code`",$booking_code)
+				 ->order_by('s.`time status`','desc');
+		$sub = $this->subquery->start_subquery('where');
+		$sub->select_max('booking time')->from('booking')->where('`booking code`',$booking_code);
+		$this->subquery->end_subquery('booking time');
+		return $this->db->get()->result();
+	}
+	
 	function finance($betwen =NULL,$data_where=NULL){
 		if($data_where!=NULL){
 			foreach ($data_where as $key=> $val2){

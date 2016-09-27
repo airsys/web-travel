@@ -76,7 +76,7 @@
 				      	<?php echo "A: $value->adult | C: $value->child | I: $value->infant" ?>
 				      	
 				      </td>
-				      <td><a href="<?php echo base_url()."airlines/retrieve/".$value->{'booking code'} ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
+				      <td><a href="<?php echo base_url()."admin/report/retrieve/".$value->{'booking code'} ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
 				    </tr>
 				    <?php } ?>
 				    

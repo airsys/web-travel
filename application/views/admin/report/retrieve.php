@@ -1,3 +1,11 @@
+<?php 
+ 	$color = array(
+ 				'booking'=>'#636c70',
+ 				'issued'=>'#00bd30',
+ 				'cancel'=>'#d3ce0a',
+ 				'timeup'=>'#e7bd41',
+ 			);
+?>
 <!-- Main content -->
 <section class="invoice">
   <!-- title row -->
@@ -166,6 +174,6 @@
       <?php } ?>
     </div>
   </div>
-  <input type="hidden" id="id" value="<?php echo $id_booking ?>"/>
+  <input type="hidden" id="id" value="<?php echo ''//$id_booking ?>"/>
 </section>
 <!-- /.content -->

@@ -29,17 +29,27 @@ class Report extends CI_Controller {
 	 	$this->load->view("admin/index",$data);
 	 }
 	 
-	 function retrive(){
+	 function retrieve($code){
 	 	$array = $this->_boking_detail($code);
-	 	$data = array('content'=>'admin/report/retrieve',
+	 	$data = array('content'=>'report/retrieve',
 					  'data_detail'=>$array,
-					  'id_booking'=>$id_booking,
-					  'status'=>$this->m_booking->get_status_booking($code),
+					 // 'id_booking'=>$id_booking,
+					  'status'=>$this->m_report->get_status_booking($code),
 					  'data_table'=>NULL,
-					  'bandara'=>$bandara,
+					  'bandara'=>$this->_bandara(),
 					);
+		$this->load->view("admin/index",$data);
 	 }
 	 
+	 private function _bandara(){
+		$str = file_get_contents(base_url().'assets/ajax/iata_bandara.json');
+		$bandara = json_decode($str,TRUE);
+		$return = array();
+		foreach($bandara as $val){
+			$return[$val['code_route']] = $val;
+		}
+		return $return;
+	}
 	 private function _boking_detail($code){
 	 	$this->load->library('curl');
     	$this->config->load('api');
