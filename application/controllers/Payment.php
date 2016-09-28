@@ -112,10 +112,8 @@ class Payment extends CI_Controller {
 			$hasil['data']=0;
 			$code = 400;
 		}elseif(saldo()>$NTA[0]->NTA){
-			if($this->m_payment->issued($id_booking,$NTA[0]->NTA)){
-				
-				$data_booking = $this->_issued($NTA[0]->{'booking code'});
-				
+			if($this->m_payment->issued($id_booking,$NTA[0]->NTA)){				
+				$data_booking = $this->_issued($NTA[0]->{'booking code'});				
 				$hasil['message'] = 'Berhasil issued';
 				$hasil['data']=1;
 				$code = 200;

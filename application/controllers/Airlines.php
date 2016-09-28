@@ -1,7 +1,8 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+use Dompdf\Dompdf;
+use Dompdf\Options;
 class Airlines extends CI_Controller {
 	private $url ;
 	 function __construct() {
@@ -370,6 +371,9 @@ class Airlines extends CI_Controller {
 	}
 	
 	function invoice($code){
+		if(!$this->ion_auth->logged_in()){
+			redirect('airlines','refresh');
+		}
 		$array = $this->_boking_detail($code);
 		$data = array('data_detail'=>$array,
 				  'status'=>$this->m_booking->get_status_booking($code),
@@ -380,11 +384,22 @@ class Airlines extends CI_Controller {
 	}
 	
 	function eticket($code){
+		if(!$this->ion_auth->logged_in()){
+			redirect('airlines','refresh');
+		}
 		$array = $this->_boking_detail($code);
 		$data = array('data_detail'=>$array,
 				  'bandara'=>$this->_bandara(),
 				);
-		$this->load->view("airlines/eticket",$data);
+		
+		$html = $this->load->view("airlines/eticketHtml",$data,true);
+		$options = new Options();
+		$options->setIsRemoteEnabled(true);
+		$dompdf = new Dompdf($options);
+		$dompdf->loadHtml($html);
+		$dompdf->setPaper('A4', 'landscape');
+		$dompdf->render();
+		$dompdf->stream($code,array("Attachment"=>1)); 
 	}
 	
 	private function _boking_detail($code){
