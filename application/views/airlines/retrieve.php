@@ -38,6 +38,7 @@
 }
 </style>
   <!-- Form Element sizes -->
+  <?php if($this->uri->segment(4)!='finance'){ ?>
   <div class="box box-success">
     <div class="box-header with-border">
       <h3 class="box-title">Search</h3>
@@ -58,6 +59,7 @@
     <!-- /.box-body -->
   </div>
   <!-- /.box -->
+  <?php } ?>
   
   <?php if($data_table != NULL){?>
   	<div id="result-content" class="box box-primary center-block" style="width: 100%">
@@ -277,11 +279,15 @@
       <?php if($this->session->flashdata('message')!=NULL) echo "<div id='warning' class='alert alert-success'>".$this->session->flashdata('message')."</div>"; ?>
       <div class="row no-print">
         <div class="col-xs-12">
-          <a href='<?php echo base_url()."airlines/invoice/$data_detail->booking_code" ?>' target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print Invoice</a>
-          <?php if($status[0]->status=='booking'){ ?>
-          <button id="issued" type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment </button>
-          <?php }else{ ?>
-          <a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code" ?>' target="_blank" class="btn btn-primary pull-right"><i class="fa fa-print"></i> Print Ticket</a>
+          <?php if($this->uri->segment(4)!='finance'){ ?>
+	          <a href='<?php echo base_url()."airlines/invoice/$data_detail->booking_code" ?>' target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print Invoice</a>
+	          <?php if($status[0]->status=='booking'){ ?>
+	          <button id="issued" type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment </button>
+	          <?php }else{ ?>
+	          <a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code" ?>' target="_blank" class="btn btn-primary pull-right"><i class="fa fa-print"></i> Print Ticket</a>
+	          <?php } ?>
+          <?php } else { ?>
+          	  <a href='#' onclick="window.history.go(-1); return false;" class="btn btn-info"><i class="fa fa-arrow-circle-left"></i> Back</a>
           <?php } ?>
         </div>
       </div>

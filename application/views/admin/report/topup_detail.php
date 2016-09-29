@@ -75,15 +75,6 @@
       <div class="box-footer">
       	<div class="col-sm-6 col-md-6">
 	        <a href="#" onclick="window.history.go(-1); return false;" class="btn btn-info"><i class="fa fa-arrow-circle-left"></i> Back</a>
-	        <?php
-	      	   if($data_status[0]->status=='pending'){
-		    ?>
-	        <div class="form-group pull-right">	        	
-		      	<button title="cancel" type="button" class="cancel btn btn-danger "><li class="fa fa-close"></li> Cancel</button>
-		      	<button title="submit" type="button" class="submit btn btn-primary"><li class="fa fa-paper-plane"></li> Submit</button>
-		        <input id="id" type="hidden" value="<?php echo $data_topup->id; ?>" />
-      		</div>
-      		<?php } ?>
       	</div>
       </div>
       <!-- /.box-footer -->

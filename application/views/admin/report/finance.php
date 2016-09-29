@@ -58,7 +58,14 @@
 				      <td><?php echo $value->debet ?></td>
 				      <td><?php echo $payfor[$value->code][$value->{'pay for'}]; ?></td>
 				      <td><?php echo $value->created ?></td>
-				      <td><a href="<?php echo base_url()."airlines/retrieve/".$value->id ;?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
+					  <td>
+				      	<?php 
+				      		$link = '';
+				      		if($value->code=='CT') $link = base_url()."admin/report/topup_detail/".$value->{'pay for'}."/finance";
+				      		if($value->code=='DI') $link = base_url()."admin/report/retrieve/".$payfor[$value->code][$value->{'pay for'}]."/finance";
+				      	?>
+				      	<a href="<?php echo $link ;?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a>
+				      </td>
 				    </tr>
 				    <?php } ?>
 				    

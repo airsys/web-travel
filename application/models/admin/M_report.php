@@ -64,4 +64,18 @@ class M_report extends CI_Model
 		
 		return $payfor;
 	}
+	
+	function topup_detail($id_topup){
+		$data = [];
+		$this->db->select(" t.id, t.company, t.nominal, t.`unique`, t.bank from, t.bank to")
+				 ->from("acc topup AS t")
+				 ->where("t.id",$id_topup);
+		$data['topup']= $this->db->get()->result();
+		$this->db->select("status,time status")
+				 ->from("acc topup status")
+				 ->where("`id topup`",$id_topup)
+				 ->order_by('time status', 'desc');
+		$data['status']=$this->db->get()->result();
+		return $data;
+	}
 }

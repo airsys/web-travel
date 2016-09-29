@@ -6,7 +6,8 @@ class Report extends CI_Controller {
 	
 	function __construct() {
 	     parent::__construct();
-	     $this->load->model('admin/m_report');
+	     $this->load->model('admin/m_report');	     
+	 	 $this->load->helper('dropdown');
 	 }
 	 
 	 function sales($position=''){
@@ -66,7 +67,6 @@ class Report extends CI_Controller {
 	}
 	 
 	 function finance(){
-	 	$this->load->helper('dropdown');
 	 	$array_range = NULL;
 	 	if($this->input->get('range')){
 			$range = str_replace(' ', '', $this->input->get('range'));
@@ -84,6 +84,16 @@ class Report extends CI_Controller {
 					  'payfor'=>$this->m_report->finance_payfor($rangf,$rangt),
 					  'date_range'=>$this->input->get('range'),
 					);
+	 	$this->load->view("admin/index",$data);
+	 }
+	 
+	 function topup_detail($id_topup='00'){
+			$data_select = $this->m_report->topup_detail($id_topup);
+		 	$data = array('content'=>'report/topup_detail',
+		 				  'data_topup'=>$data_select['topup'][0],
+		 				  'data_status'=>$data_select['status'],
+		 				  'bank'=>listDataCustom('acc bank','id','rek number,bank,account name'),
+		 			);
 	 	$this->load->view("admin/index",$data);
 	 }
 }

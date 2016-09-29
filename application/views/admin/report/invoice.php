@@ -6,6 +6,32 @@
  				'timeup'=>'#e7bd41',
  			);
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE 2 | Invoice</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/dist/css/AdminLTE.min.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="wrapper">
 <!-- Main content -->
 <section class="invoice">
   <!-- title row -->
@@ -56,6 +82,7 @@
         <tr>
           <th>#</th>
           <th>Flight ID</th>
+          <th>Class</th>
           <th>Area Depart</th>
           <th>Date Depart</th>
           <th>Time Depart</th>
@@ -73,6 +100,7 @@
         		 <tr>
 	              <td><?php echo $i ?></td>
         		  <td><?php echo $val->flight_id ?></td>
+        		  <td><?php echo $val->code ?></td>
 	              <td style="background-color:#e0dedf;"><?php echo $val->area_depart ?></td>
 	              <td style="background-color:#e0dedf;"><?php echo $val->date_depart ?></td>
 	              <td style="background-color:#e0dedf;"><?php echo $val->time_depart ?></td>
@@ -99,6 +127,7 @@
           <th>Name</th>
           <th>Birth Date</th>
           <th>Passenger Type</th>
+          <th>Ticket No.</th>
         </tr>
         </thead>
         <tbody>
@@ -112,6 +141,7 @@
 	              <td><?php echo $val->name ?></td>
 	              <td><?php echo $val->birth_date ?></td>
 	              <td><?php echo $val->passenger_type ?></td>
+	              <td><?php echo $val->ticket_no ?></td>
 	            </tr>
         	<?php } ?>
         </tbody>
@@ -129,16 +159,16 @@
       <div class="table-responsive">
         <table class="table">
           <tr>
-            <th style="width:50%">Fare:</th>
+            <th style="width:50%">Base Fare:</th>
+            <td>Rp <?php echo number_format($data_detail->base_fare); ?></td>
+          </tr>
+          <tr>
+            <th>Tax:</th>
+            <td>Rp <?php echo number_format($data_detail->tax); ?></td>
+          </tr>
+          <tr>
+            <th>Total:</th>
             <td>Rp <?php echo number_format($data_detail->base_fare+$data_detail->tax); ?></td>
-          </tr>
-          <tr>
-            <th>NTA:</th>
-            <td>Rp <?php echo number_format($data_detail->NTA); ?></td>
-          </tr>
-          <tr>
-            <th>Profit:</th>
-            <td>Rp <?php echo number_format($data_detail->base_fare+$data_detail->tax-$data_detail->NTA); ?></td>
           </tr>
         </table>
       </div>
@@ -162,16 +192,9 @@
     <!-- /.col -->
   </div>
   <!-- /.row -->
-
-  <!-- this row will not appear when printing -->
-  <div id="warning"></div>
-  <?php if($this->session->flashdata('message')!=NULL) echo "<div id='warning' class='alert alert-success'>".$this->session->flashdata('message')."</div>"; ?>
-  <div class="row no-print">
-    <div class="col-xs-12">
-      <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-      <a href='#' onclick="window.history.go(-1); return false;" class="btn btn-info pull-right"><i class="fa fa-arrow-circle-left"></i> Back</a>
-    </div>
-  </div>
-  <input type="hidden" id="id" value="<?php echo ''//$id_booking ?>"/>
 </section>
 <!-- /.content -->
+</div>
+<!-- ./wrapper -->
+</body>
+</html>
