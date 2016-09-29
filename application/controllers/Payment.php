@@ -151,8 +151,7 @@ class Payment extends CI_Controller {
 	 	return json_encode($json);
 	 }
 	 
-	 function report_sales(){
-	 	
+	 function report_sales(){	 	
 	 	$data = array('content'=>'payment/report_sales',
 					  'bank'=>listDataCustom('payment_bank','id','rek_number,bank,account_name','where type=0'),
 					  'bank_account'=>listDataCustom('payment_bank','id','rek_number,bank,account_name',"where enable=1 and id_user= ".$this->session->userdata('user_id')),

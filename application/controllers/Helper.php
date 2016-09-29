@@ -40,6 +40,7 @@ class Helper extends CI_Controller {
 					->order_by('iata','asc')
 					->get('airport')
 					->result();
-		echo '</pre>';print_r($data);
+		//echo '</pre>';print_r($data);
+		echo json_encode($data);
 	 }
 }

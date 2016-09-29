@@ -392,7 +392,9 @@ class Airlines extends CI_Controller {
 				  'bandara'=>$this->_bandara(),
 				);
 		
-		$html = $this->load->view("airlines/eticketHtml",$data,true);
+		$html = '';
+		//$html = $this->load->view("airlines/eticketHtml",$data,true);
+		$this->load->view("airlines/eticketHtml",$data);
 		$options = new Options();
 		$options->setIsRemoteEnabled(true);
 		$dompdf = new Dompdf($options);
