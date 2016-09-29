@@ -392,7 +392,7 @@ class Airlines extends CI_Controller {
 				  'bandara'=>$this->_bandara(),
 				);
 		
-		$html = '';
+		$html = 'Hallo';
 		//$html = $this->load->view("airlines/eticketHtml",$data,true);
 		$this->load->view("airlines/eticketHtml",$data);
 		$options = new Options();
