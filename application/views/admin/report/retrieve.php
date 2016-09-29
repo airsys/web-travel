@@ -168,7 +168,7 @@
   <?php if($this->session->flashdata('message')!=NULL) echo "<div id='warning' class='alert alert-success'>".$this->session->flashdata('message')."</div>"; ?>
   <div class="row no-print">
     <div class="col-xs-12">
-      <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+      <a href="<?php echo base_url().'admin/report/invoice/'.$data_detail->booking_code ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
       <a href='#' onclick="window.history.go(-1); return false;" class="btn btn-info pull-right"><i class="fa fa-arrow-circle-left"></i> Back</a>
     </div>
   </div>

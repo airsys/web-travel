@@ -35,7 +35,7 @@ class Report extends CI_Controller {
 	 	$data = array('content'=>'report/retrieve',
 					  'data_detail'=>$array,
 					 // 'id_booking'=>$id_booking,
-					  'status'=>$this->m_report->get_status_booking($code),
+					  'status'=>$this->m_report->get_status_booking($code, $array->id),
 					  'data_table'=>NULL,
 					  'bandara'=>$this->_bandara(),
 					);
@@ -95,5 +95,14 @@ class Report extends CI_Controller {
 		 				  'bank'=>listDataCustom('acc bank','id','rek number,bank,account name'),
 		 			);
 	 	$this->load->view("admin/index",$data);
+	 }
+	 
+	 function invoice($code){
+	 	$array = $this->_boking_detail($code);
+		$data = array('data_detail'=>$array,
+				  'status'=>$this->m_report->get_status_booking($code, $array->id),
+				  'bandara'=>$this->_bandara(),
+				);
+		$this->load->view("admin/report/invoice",$data);
 	 }
 }

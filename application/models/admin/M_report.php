@@ -27,11 +27,12 @@ class M_report extends CI_Model
 		return $this->db->get()->result();
 	}
 	
-	function get_status_booking($booking_code){
+	function get_status_booking($booking_code, $id_flight){
 		$this->db->select(" `status`,time status")
 				 ->from("booking as b, `booking status` as s")
 				 ->where("`b`.`id` = s.`id booking`")
 				 ->where("`booking code`",$booking_code)
+				 ->where("`id flight`",$id_flight)
 				 ->order_by('s.`time status`','desc');
 		$sub = $this->subquery->start_subquery('where');
 		$sub->select_max('booking time')->from('booking')->where('`booking code`',$booking_code);
@@ -78,4 +79,5 @@ class M_report extends CI_Model
 		$data['status']=$this->db->get()->result();
 		return $data;
 	}
+	
 }
