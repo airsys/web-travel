@@ -112,12 +112,18 @@ class Payment extends CI_Controller {
 			$hasil['data']=0;
 			$code = 400;
 		}elseif(saldo()>$NTA[0]->NTA){
-			if($this->m_payment->issued($id_booking,$NTA[0]->NTA)){				
-				$data_booking = $this->_issued($NTA[0]->{'booking code'});				
-				$hasil['message'] = 'Berhasil issued';
-				$hasil['data']=1;
-				$code = 200;
-				$this->session->set_flashdata('message','Berhasil Issued');
+			if(!$this->m_payment->cek_issued($this->input->post('id'))){
+				if($this->m_payment->issued($id_booking,$NTA[0]->NTA)){				
+					$data_booking = $this->_issued($NTA[0]->{'booking code'});				
+					$hasil['message'] = 'Berhasil issued';
+					$hasil['data']=1;
+					$code = 200;
+					$this->session->set_flashdata('message','Berhasil Issued');
+				}
+			}else{
+				$hasil['message'] = 'Sebelumnya, Sudah di-issued';
+				$hasil['data']=0;
+				$code = 400;
 			}
 		}
 		else{
@@ -160,7 +166,7 @@ class Payment extends CI_Controller {
 					->order_by('id','desc')
 					->get('system log')
 					->result();
-			print_r($data);
+			echo'<pre>';print_r($data);
 		}else{
 			$data = array(
 				'log'=>$json,

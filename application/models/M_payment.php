@@ -108,6 +108,16 @@ class M_payment extends CI_Model
 		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
 	}
 	
+	function cek_issued($pay_for){
+		$jum = 0;
+		$this->db->where('code',"DI")
+				 ->where('pay for',$pay_for);
+		$jum = $this->db->count_all_results('acc balance');
+		if ($jum<1){
+			return FALSE;
+		} return TRUE;
+	}
+	
 	function get_saldo(){
 		return $this->_get_saldo();
 	}
