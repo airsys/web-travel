@@ -147,7 +147,7 @@ class Payment extends CI_Controller {
 			'booking_code'=>$booking_code
 		);
 		$json = $this->curl->simple_post("$this->url/pay", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
-	 	$this->log($json);
+	 	$this->log($json, $booking_code);
 	 	return json_encode($json);
 	 }
 	 
@@ -160,7 +160,7 @@ class Payment extends CI_Controller {
 		$this->load->view("index",$data);
 	 }
 	 
-	 function log ($json){	 	
+	 function log ($json, $booking_code){	 	
 		if($json=='view'){
 			$data =	$this->db->select('*')
 					->order_by('id','desc')
@@ -168,8 +168,11 @@ class Payment extends CI_Controller {
 					->result();
 			echo'<pre>';print_r($data);
 		}else{
+			$date = date("Y-m-d H:i:s");
 			$data = array(
 				'log'=>$json,
+				'code'=>$booking_code,
+				'created'=>$date,
 			);
 			$this->db->insert('system log',$data);
 		}
