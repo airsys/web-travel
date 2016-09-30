@@ -1,10 +1,4 @@
 *.clpprj
 application/config/database.php
-<<<<<<< HEAD
-application/config/database.php
-indsiti_clcs.csprj
-*.csprj
-=======
 application/config/config.php
 indsiti_clcs.csprj
->>>>>>> origin/master
