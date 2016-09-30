@@ -393,14 +393,14 @@ class Airlines extends CI_Controller {
 				);
 		
 		$html = 'Hallo dunia<br>';
-		//$html = $this->load->view("airlines/eticketHtml",$data,true);
-		$this->load->view("airlines/eticketHtml",$data);
+		$html = $this->load->view("airlines/eticketHtml",$data,true);
+		//$this->load->view("airlines/eticketHtml",$data);
 		$options = new Options();
 		$options->setIsRemoteEnabled(true);
 		//$options->setFontCache('/tmp');
-		$html .= 'fontcache : '.$options->getFontCache().'<br>';
-		$html .= 'temdir : '.$options->getTempDir().'<br>';
-		$html .= 'fontdir : '.$options->getFontDir();
+		//$html .= 'fontcache : '.$options->getFontCache().'<br>';
+		//$html .= 'temdir : '.$options->getTempDir().'<br>';
+		//$html .= 'fontdir : '.$options->getFontDir();
 		$dompdf = new Dompdf($options);
 		//$dompdf->set_option('fontCache','../tmpfontcache');
 		$dompdf->loadHtml($html);
