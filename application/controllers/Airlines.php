@@ -392,16 +392,21 @@ class Airlines extends CI_Controller {
 				  'bandara'=>$this->_bandara(),
 				);
 		
-		$html = 'Hallo';
+		$html = 'Hallo dunia<br>';
 		//$html = $this->load->view("airlines/eticketHtml",$data,true);
 		$this->load->view("airlines/eticketHtml",$data);
 		$options = new Options();
 		$options->setIsRemoteEnabled(true);
+		//$options->setFontCache('/tmp');
+		$html .= 'fontcache : '.$options->getFontCache().'<br>';
+		$html .= 'temdir : '.$options->getTempDir().'<br>';
+		$html .= 'fontdir : '.$options->getFontDir();
 		$dompdf = new Dompdf($options);
+		//$dompdf->set_option('fontCache','../tmpfontcache');
 		$dompdf->loadHtml($html);
 		$dompdf->setPaper('A4', 'landscape');
 		$dompdf->render();
-		$dompdf->stream($code,array("Attachment"=>1)); 
+		$dompdf->stream($code,array("Attachment"=>0)); 
 	}
 	
 	private function _boking_detail($code){
