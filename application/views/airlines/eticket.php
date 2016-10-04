@@ -51,7 +51,7 @@
     <!-- /.col -->
     <div class="col-sm-4 invoice-col">
     	<h2 class="page-header">
-		  Booking Code: <br><b><?php echo $data_detail->booking_code; ?></b>
+		  Booking Code: <br><b style="color:#21d321;"><?php echo $data_detail->booking_code; ?></b>
 		</h2>
     </div>
     <!-- /.col -->

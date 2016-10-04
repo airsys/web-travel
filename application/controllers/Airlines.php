@@ -1,8 +1,9 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-use Dompdf\Dompdf;
-use Dompdf\Options;
+use Spipu\Html2Pdf\Html2Pdf;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
+use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 class Airlines extends CI_Controller {
 	private $url ;
 	 function __construct() {
@@ -383,7 +384,7 @@ class Airlines extends CI_Controller {
 		$this->load->view("airlines/invoice",$data);
 	}
 	
-	function eticket($code){
+	function eticket($code, $html=''){
 		if(!$this->ion_auth->logged_in()){
 			redirect('airlines','refresh');
 		}
@@ -391,22 +392,23 @@ class Airlines extends CI_Controller {
 		$data = array('data_detail'=>$array,
 				  'bandara'=>$this->_bandara(),
 				);
-		
-		$html = 'Hallo dunia<br>';
-		$html = $this->load->view("airlines/eticketHtml",$data,true);
-		//$this->load->view("airlines/eticketHtml",$data);
-		$options = new Options();
-		$options->setIsRemoteEnabled(true);
-		//$options->setFontCache('/tmp');
-		//$html .= 'fontcache : '.$options->getFontCache().'<br>';
-		//$html .= 'temdir : '.$options->getTempDir().'<br>';
-		//$html .= 'fontdir : '.$options->getFontDir();
-		$dompdf = new Dompdf($options);
-		//$dompdf->set_option('fontCache','../tmpfontcache');
-		$dompdf->loadHtml($html);
-		$dompdf->setPaper('A4', 'landscape');
-		$dompdf->render();
-		$dompdf->stream($code,array("Attachment"=>0)); 
+		if($html == ''){
+			try {
+			    //ob_start();
+			    $content=$this->load->view("airlines/eticketHtml",$data, TRUE);
+			    //$content = ob_get_clean();
+
+			    $html2pdf = new Html2Pdf('P', 'A4', 'en');
+			    $html2pdf->pdf->SetDisplayMode('fullpage');
+			    $html2pdf->writeHTML($content);
+			    $html2pdf->Output($code.'.pdf');
+			} catch (Html2PdfException $e) {
+			    $formatter = new ExceptionFormatter($e);
+			    echo $formatter->getHtmlMessage();
+			}
+		}else{
+			$this->load->view("airlines/eticket",$data);
+		} 
 	}
 	
 	private function _boking_detail($code){

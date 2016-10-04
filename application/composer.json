@@ -1,6 +1,6 @@
 {
-  "name" : "dompdf/codeigniter",
+  "name" : "html2pdf/codeigniter",
   "require": {
-    "dompdf/dompdf": "dev-master"
+    "spipu/html2pdf": "dev-master"
   }
 }

@@ -284,7 +284,8 @@
 	          <?php if($status[0]->status=='booking'){ ?>
 	          <button id="issued" type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment </button>
 	          <?php }else{ ?>
-	          <a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code" ?>' target="_blank" class="btn btn-primary pull-right"><i class="fa fa-print"></i> Print Ticket</a>
+	          <a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code" ?>' target="_blank" class="btn btn-danger pull-right"><i class="fa fa-file-pdf-o"></i> Print Ticket to PDF</a>
+	          <a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code/web" ?>' target="_blank" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-print"></i> Print Ticket to WEB</a>
 	          <?php } ?>
           <?php } else { ?>
           	  <a href='#' onclick="window.history.go(-1); return false;" class="btn btn-info"><i class="fa fa-arrow-circle-left"></i> Back</a>

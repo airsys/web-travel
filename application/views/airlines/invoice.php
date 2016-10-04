@@ -39,7 +39,6 @@
     <div class="col-xs-12">
       <h2 class="page-header">
         <i class="fa fa-book"> </i> Booking Code: <b><?php echo $data_detail->booking_code; ?></b>
-        <small class="pull-right">Booking time: <?php echo date("d-m-Y", $data_detail->booking_time); ?></small>
       </h2>
     </div>
     <!-- /.col -->
@@ -154,8 +153,6 @@
   <div class="row">
     <!-- accepted payments column -->
     <div class="col-xs-12 col-md-6 pull-right">
-      <p class="lead">Payment Time Limit <b><?php echo date("d-m-Y", $data_detail->time_limit); ?> | <?php echo date("H:i", $data_detail->time_limit); ?></b><br></p>
-
       <div class="table-responsive">
         <table class="table">
           <tr>

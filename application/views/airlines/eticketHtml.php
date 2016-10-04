@@ -13,8 +13,8 @@
 	}
 </style>
 
-<div style="padding: 20px; font-family:'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;">
-<table width= '800px'>
+<div style="padding: 20px; ">
+<table>
 	<tr>
 		<td>
 			<span>From</span><br />
@@ -28,9 +28,9 @@
 	        		<?php echo $bandara[$data_detail->area_arrive]['name_airport'].'-'. $bandara[$data_detail->area_arrive]['code_route']; ?>
 	        </strong><br>
 		</td>
-		<td>
+		<td style="text-align: right; width:300px;">
 			<span style="font-size: 20px;">Booking Code:</span><br>
-			<span style="font-size: 31px; color:#21d321">
+			<span style="font-size: 28px; color:#21d321">
 				<b><?php echo $data_detail->booking_code; ?></b>
 			</span>
 		</td>
@@ -100,5 +100,5 @@
     </tbody>
   </table>
   <br>
-  <img src="<?php echo base_url().'assets/dist/img/ticket_peringatan.jpg' ?>" align="middle" width="800px;"/>
+  <img src="<?php echo base_url().'assets/dist/img/ticket_peringatan.jpg' ?>" align="middle;" width="600px;"/>
 </div>
