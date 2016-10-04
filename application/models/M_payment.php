@@ -118,6 +118,18 @@ class M_payment extends CI_Model
 		} return TRUE;
 	}
 	
+	function insert_ticket_no($data,$id_booking){
+		foreach($data->results->passenger_list as $val){
+			$data_u = array(
+			    'ticket no' => $val->ticket_no,
+			);
+
+			$this->db->where('id booking', $id_booking);
+			$this->db->where('name', $val->name);
+			$this->db->update('booking passenger', $data_u);
+		}
+	}
+	
 	function get_saldo(){
 		return $this->_get_saldo();
 	}

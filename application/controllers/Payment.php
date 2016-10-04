@@ -112,13 +112,13 @@ class Payment extends CI_Controller {
 			$hasil['data']=0;
 			$code = 400;
 		}elseif(saldo()>$NTA[0]->NTA){
-			if(!$this->m_payment->cek_issued($this->input->post('id'))){
+			if(!$this->m_payment->cek_issued($id_booking)){
 				if($this->m_payment->issued($id_booking,$NTA[0]->NTA)){				
-					$data_booking = $this->_issued($NTA[0]->{'booking code'});				
-					$hasil['message'] = 'Berhasil issued';
+					$data_booking = $this->_issued($NTA[0]->{'booking code'});
+					 $this->insert_ticket_no($data_booking,$id_booking);
+					$hasil['message'] = 'Berhasil issued - Jika No. Ticket belum keluar hubungi operator';
 					$hasil['data']=1;
 					$code = 200;
-					$this->session->set_flashdata('message','Berhasil Issued');
 				}
 			}else{
 				$hasil['message'] = 'Sebelumnya, Sudah di-issued';
@@ -131,6 +131,7 @@ class Payment extends CI_Controller {
 			$hasil['data']=0;
 			$code = 400;
 		}
+		$this->session->set_flashdata('message',$hasil['message']);
 	 	return $this->output
             ->set_content_type('application/json')
             ->set_status_header($code)
@@ -159,7 +160,7 @@ class Payment extends CI_Controller {
 		$this->load->view("index",$data);
 	 }
 	 
-	 function log ($json, $booking_code){	 	
+	 function log ($json, $booking_code){ 	
 		if($json=='view'){
 			$data =	$this->db->select('*')
 					->order_by('id','desc')
@@ -175,6 +176,68 @@ class Payment extends CI_Controller {
 			);
 			$this->db->insert('system log',$data);
 		}
+	 }
+	 
+	 function coba(){
+	 	$s= '{
+   "code":200,
+   "results":{
+      "time_limit":1475523060,
+      "infant":0,
+      "total_price":1292000,
+      "name":"muhammad sidar",
+      "adult":1,
+      "area_depart":"CGK",
+      "payment_status":1,
+      "flight_list":[
+         {
+            "code":"V",
+            "date_arrive":"5-10-2016",
+            "date_depart":"5-10-2016",
+            "area_depart":"CGK",
+            "flight_id":"JT 774",
+            "area_arrive":"UPG",
+            "time_depart":"11:20",
+            "time_arrive":"14:40"
+         },
+         {
+            "code":"L",
+            "date_arrive":"5-10-2016",
+            "date_depart":"5-10-2016",
+            "area_depart":"UPG",
+            "flight_id":"IW 1308",
+            "area_arrive":"BUW",
+            "time_depart":"16:10",
+            "time_arrive":"17:15"
+         }
+      ],
+      "base_fare":1232000,
+      "area_arrive":"BUW",
+      "passenger_list":[
+         {
+            "birth_date":"0-0-0000",
+            "passenger_type":"Adult",
+            "ticket_no":"9902139629702",
+            "name":"Mr muhammad sidar"
+         }
+      ],
+      "phone":"082299888014",
+      "booking_time":1475487189,
+      "airline":"lion",
+      "child":0,
+      "NTA":1259000,
+      "tax":60000,
+      "id":153,
+      "booking_code":"KHJIWO"
+   }
+}';
+	 	$ss = json_decode($s);
+	 	$p = [];
+	 	foreach($ss->results->passenger_list as $key => $val){
+			$p['ticket no'] = $val->ticket_no;
+			$p['name'] = $val->name;
+		}
+		print_r($p);
 	 }
 	 
 }
