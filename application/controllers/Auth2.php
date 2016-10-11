@@ -109,7 +109,7 @@ class Auth2 extends CI_Controller {
 		$this->load->view("index",$data_view);
 	}
 	
-	function profile(){		
+	function profile(){	
 		$user = NULL;
 		$message = '';
 		$id = $this->session->userdata('id');

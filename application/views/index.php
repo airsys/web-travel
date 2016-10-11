@@ -178,7 +178,7 @@
 	              	<div id="login-warning"></div>
 	                <div class="form-group">
 	                  <label for="InputEmail1">Email address</label>
-	                  <input name="identity" type="email" class="form-control" id="InputEmail1" placeholder="Enter email">
+	                  <input name="identity" type="text" class="form-control" id="InputEmail1" placeholder="Enter email">
 	                </div>
 	                <div class="form-group">
 	                  <label for="InputPassword1">Password</label>
@@ -210,7 +210,7 @@
 		 $('#form-login-header').submit(function( event ) {
 			event.preventDefault();
 		    $.ajax({
-                url:  base_url+"auth2/login_ajax",
+                url:  base_url+"auth_bkw/login_ajax",
                 type: "post",
                 data: $("#form-login-header").serialize(),
                 success: function(d,textStatus, xhr) {

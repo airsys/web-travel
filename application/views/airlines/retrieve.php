@@ -282,7 +282,11 @@
           <?php if($this->uri->segment(4)!='finance'){ ?>
 	          <a href='<?php echo base_url()."airlines/invoice/$data_detail->booking_code" ?>' target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print Invoice</a>
 	          <?php if($status[0]->status=='booking'){ ?>
+	          
 	          <button id="issued" type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment </button>
+	          <div class="col-md-2 col-sm-2 col-xs-12 pull-right">
+	          <input class="form-control" type="password" placeholder="Password" required id="password" />
+	          </div>
 	          <?php }else{ ?>
 	          <a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code" ?>' target="_blank" class="btn btn-danger pull-right"><i class="fa fa-file-pdf-o"></i> Print Ticket to PDF</a>
 	          <a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code/web" ?>' target="_blank" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-print"></i> Print Ticket to WEB</a>
@@ -358,6 +362,7 @@
 	            type: "post",
 	            data: {
 	            	'id': $('#id').val(),
+	            	'password': $('#password').val(),
 	            },
 	            success: function(d,textStatus, xhr) {
 	               if(xhr.status==200 && d.data==1){

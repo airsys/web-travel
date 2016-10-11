@@ -897,13 +897,13 @@ class Ion_auth_model extends CI_Model
 		$password   = $this->hash_password($password, $salt);
 		
 		//insert company first
-		$company = $this->_insert_company($this->input->post('company'));
+		//$company = $this->_insert_company($this->input->post('company'));
 		// Users table.
 		$data = array(
 		    $this->identity_column   => $identity,
 		    'password'   => $password,
 		    'email'      => $email,
-		    'company'    => $company,
+		    'company'    => $identity, //identity sebagai company
 		    'master'     => 1,
 		    "created on" => time(),
 		    'active'     => ($manual_activation === false ? 1 : 0)
@@ -1765,7 +1765,7 @@ class Ion_auth_model extends CI_Model
 
 		$salt = $this->salt();
 
-		$this->db->update($this->tables['users'], array('remember_code' => $salt), array('id' => $id));
+		$this->db->update($this->tables['users'], array('remember code' => $salt), array('id' => $id));
 
 		if ($this->db->affected_rows() > -1)
 		{
@@ -1823,7 +1823,7 @@ class Ion_auth_model extends CI_Model
 		$this->trigger_events('extra_where');
 		$query = $this->db->select($this->identity_column.', id, email, last login, company')
 		                  ->where($this->identity_column, get_cookie($this->config->item('identity_cookie_name', 'ion_auth')))
-		                  ->where('remember_code', get_cookie($this->config->item('remember_cookie_name', 'ion_auth')))
+		                  ->where('`remember code`', get_cookie($this->config->item('remember_cookie_name', 'ion_auth')))
 		                  ->limit(1)
 		    			  ->order_by('id', 'desc')
 		                  ->get($this->tables['users']);

@@ -104,6 +104,14 @@ class Payment extends CI_Controller {
 	 	$this->load->model('m_booking');
 	 	$id_booking = $this->input->post('id');
 	 	$NTA = $this->m_booking->retrieve_list(NULL,array('b.id'=>$id_booking));
+	 	
+	 	$url = 'https://www.bkwisata.com/apiwisata/';
+	 	$user = $this->session->userdata('identity');
+	 	$pass = md5($this->input->post('password'));
+	 	$total = $NTA[0]->NTA;
+	 	$info = 'Pay for '.$NTA[0]->{'booking code'};
+	 	$data_payment = json_decode(file_get_contents($url."payment?user=$user&pass=$pass&total=$total&info=$info"));
+	 	//print_r($data_payment);die();
 	 	$hasil['message'] = 'id or user not found';
 		$hasil['data']=0;
 		$code = 400;
@@ -111,11 +119,11 @@ class Payment extends CI_Controller {
 			$hasil['message'] = 'id or user not found';
 			$hasil['data']=0;
 			$code = 400;
-		}elseif(saldo()>$NTA[0]->NTA){
+		}elseif($data_payment->status == 1){
 			if(!$this->m_payment->cek_issued($id_booking)){
 				if($this->m_payment->issued($id_booking,$NTA[0]->NTA)){				
-					$data_booking = $this->_issued($NTA[0]->{'booking code'});
-					 $this->insert_ticket_no($data_booking,$id_booking);
+					//$data_booking = $this->_issued($NTA[0]->{'booking code'});
+					 //$this->insert_ticket_no($data_booking,$id_booking);
 					$hasil['message'] = 'Berhasil issued - Jika No. Ticket belum keluar hubungi operator';
 					$hasil['data']=1;
 					$code = 200;
@@ -127,7 +135,7 @@ class Payment extends CI_Controller {
 			}
 		}
 		else{
-			$hasil['message'] = 'saldo TIDAK cukup - silahkan melakukan topup terlebih dahulu <br> <a href="'.base_url().'payment/topup" type="button" class="btn btn-success" >TOPUP</a>';
+			$hasil['message'] = $data_payment->message;
 			$hasil['data']=0;
 			$code = 400;
 		}

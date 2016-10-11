@@ -218,27 +218,14 @@ class Airlines extends CI_Controller {
 		unset($data['password']);
 		unset($data['identity']);
 		
-		unset($data['full_name']);
-		unset($data['email']);
-		unset($data['phone']);
-		unset($data['password']);
-		unset($data['password_confirm']);
-		
 		unset($data['position']);
 		
 		$this->form_validation->set_rules('contact_title', 'contact title', 'required');
 		$this->form_validation->set_rules('contact_name', 'contact name', 'required');
 		$this->form_validation->set_rules('contact_phone', 'contact phone', 'required');
 		if (!$this->ion_auth->logged_in() && $this->input->post('position')=='lo'){
-			$this->form_validation->set_rules('identity', 'email', 'required|valid_email');
+			$this->form_validation->set_rules('identity', 'User Name', 'required');
 			$this->form_validation->set_rules('password', 'password', 'required');
-		}
-		if (!$this->ion_auth->logged_in() && $this->input->post('position')=='re'){
-			$this->form_validation->set_rules('full_name', 'full_name', 'required');
-			$this->form_validation->set_rules('email', 'email', 'required|valid_email|is_unique[' . $tables['users'] . '.email]');
-			$this->form_validation->set_rules('phone', 'phone', 'required|trim|numeric');
-			$this->form_validation->set_rules('password_register', 'password', 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
-			$this->form_validation->set_rules('password_confirm', 'password_confirm', 'required');
 		}
 		
 		$hasil = '';
@@ -250,21 +237,20 @@ class Airlines extends CI_Controller {
 		}else{
 			if (!$this->ion_auth->logged_in() && $this->input->post('position')=='lo'){
 				$remember = (bool) $this->input->post('remember');
-				$this->ion_auth->login($this->input->post('identity'), $this->input->post('password'),$remember);
-				
-			}
-			if (!$this->ion_auth->logged_in() && $this->input->post('position')=='re'){
-				$identity_column = $this->config->item('identity','ion_auth');
-				$email    = strtolower($this->input->post('email'));
-		        $identity = ($identity_column==='email') ? $email : $this->input->post('identity');
-		        $password = $this->input->post('password_register');
-
-		        $additional_data = array(
-		            'full name' => $this->input->post('full_name'),
-		            'phone'      => $this->input->post('phone'),
-		        );
-		        $this->ion_auth->register($identity, $password, $email, $additional_data);
-		        $this->ion_auth->login($identity, $password, TRUE);
+				$pass = $this->input->post('password');
+				$identity = $this->input->post('identity');
+				$url = 'https://www.bkwisata.com/apiwisata/';
+				$data_login = json_decode(file_get_contents($url."usercheck?user=$identity&pass=$pass"));
+				if($data_login->status==1){
+					$reg = $this->register($identity, $pass, 
+								 			$data_login->data->email,
+								 			$data_login->data->name, 
+								 			$data_login->data->phone);					
+					$hasil['message'] = 'Berhasil';
+					$hasil['data']=1;
+					$code = 200;
+					$this->ion_auth->login($data['identity'], $pass,$remember);
+				}
 			}
 			if ($this->ion_auth->logged_in()){
 				$json = $this->curl->simple_post("$this->url/book", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
@@ -294,6 +280,15 @@ class Airlines extends CI_Controller {
 	            ->set_content_type('text/html')
 	            ->set_status_header($code)
 	            ->set_output($hasil);
+	}
+	// register
+	private function register($identity, $password, $email, 
+							 $full_name, $phone){
+        $additional_data = array(
+            'full name' => $full_name,
+            'phone'      => $phone,
+        );
+     	return	$this->ion_auth->register($identity, $password, $email, $additional_data);		
 	}
 	
 	function retrieve($code='00'){

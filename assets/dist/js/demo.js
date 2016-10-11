@@ -340,7 +340,7 @@
 })(jQuery, $.AdminLTE);
 
 function base_url(){
-	return 'http://localhost/travelo2/web-travel/';
+	return 'http://localhost/bkw/';
 }
 var over = '<div id="overlay" class="">' +
             '</div>';
