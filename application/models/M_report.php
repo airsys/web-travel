@@ -16,11 +16,12 @@ class M_report extends CI_Model
 		if($betwen!=NULL){
 			$this->db->where($betwen);
 		}
+		$company = $this->session->userdata('company');
 		$this->db->select(" b.*, `status`,time status")
 				 ->from("booking AS b, booking status AS s")
 				 ->where("b.id = s.id booking")
 				 ->where("status",'issued')
-				 ->where('company',$this->session->userdata('company'))
+				 ->where('company',"$company")
 				 ->order_by('s.time status','desc');
 		$sub = $this->subquery->start_subquery('where');
 		$sub->select_max('time status')->from('booking status')->where('`id booking` = b.id');
@@ -37,20 +38,21 @@ class M_report extends CI_Model
 		if($betwen!=NULL){
 			$this->db->where($betwen);
 		}
+		$company = $this->session->userdata('company');
 		$this->db->select(" b.id, `code`,
 							if(`code`='CT',nominal,0)as credit,
 							if(`code`='DI',nominal,0)as debet,
 							`pay for`,from_unixtime(b.created  ,'%d-%m-%Y %h:%i:%s') as created")
 				 ->from("acc balance AS b")
-				 ->where('b.company',$this->session->userdata('company'));
+				 ->where('b.company',"$company");
 		return $this->db->get()->result();
 	}
 	
 	function finance_payfor($from , $to){
 		$payfor=[];
-		$company = $this->session->userdata('company');	
+		$company = "'".$this->session->userdata('company')."'";	
 		//for CT
-		$payfor['CT']=listData('acc topup','id','unique',"where company = $company and `created` BETWEEN $from AND $to");
+		//$payfor['CT']=listData('acc topup','id','unique',"where company = $company and `created` BETWEEN $from AND $to");
 		$payfor['DI']=listData('booking','id','booking code',"where company = $company and `booking time` BETWEEN $from AND $to");
 		
 		return $payfor;

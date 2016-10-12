@@ -239,8 +239,7 @@ class Airlines extends CI_Controller {
 				$remember = (bool) $this->input->post('remember');
 				$pass = $this->input->post('password');
 				$identity = $this->input->post('identity');
-				$url = 'https://www.bkwisata.com/apiwisata/';
-				$data_login = json_decode(file_get_contents($url."usercheck?user=$identity&pass=$pass"));
+				$data_login = json_decode(file_get_contents($this->url."usercheck?user=$identity&pass=$pass"));
 				if($data_login->status==1){
 					$reg = $this->register($identity, $pass, 
 								 			$data_login->data->email,

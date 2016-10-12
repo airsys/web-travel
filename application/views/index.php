@@ -63,13 +63,6 @@
 		            <?php if($this->ion_auth->logged_in()){ ?>
 		            <li class="menu-bar"><a href="<?php echo base_url().'airlines/retrieve' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
 		            <li class="dropdown">
-		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Topup <span class="caret"></span></a>
-		              <ul class="dropdown-menu" role="menu">
-		                <li><a href="<?php echo base_url().'payment/topup' ?>">Input Topup</a></li>
-		                <li><a href="<?php echo base_url().'payment/topup_list' ?>">List Topup</a></li>
-		              </ul>
-		            </li>
-		            <li class="dropdown">
 		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Report <span class="caret"></span></a>
 		              <ul class="dropdown-menu" role="menu">
 		                <li><a href="<?php echo base_url().'report/sales' ?>">Sales</a></li>
@@ -104,26 +97,15 @@
 		              <?php 
 		                if($this->ion_auth->logged_in()){ ?>
 			              <!-- Menu Body -->
-			              <li class="user-body">
-			                <div class="row">
-			                  <div class="col-xs-8 text-center">
-			                    <a href="#">Saldo: Rp <?php echo number_format(saldo()); ?></a>
-			                  </div>
-			                  <div class="col-xs-4 text-center">
-			                    <a href="#"></a>
-			                  </div>
-			                </div>
-			                <!-- /.row -->
-			              </li>
 		               <?php } ?>
 		                <!-- Menu Footer-->
 		                <li class="user-footer">
 		                  <div class="pull-left">
 		                  	<?php 
 		                		if(!$this->ion_auth->logged_in()){
-									echo "<a href='#' class='pull-left btn btn-danger btn-flat' id='register-header'>Register</a>";
+									echo "";
 								}else{
-									echo "<a href='#' class='pull-left btn btn-primary btn-flat' id='register-header'>Profile</a>";
+									//echo "<a href='#' class='pull-left btn btn-primary btn-flat' id='register-header'>Profile</a>";
 								}
 		                	?>
 		                  </div>

@@ -41,7 +41,6 @@
 				  <table class="table table-hover table-striped">
 				    <tr>
 				      <th>Code</th>
-				      <th>Credit</th>
 				      <th>Debet</th>
 				      <th>Pay for</th>
 				      <th>Date</th>
@@ -52,7 +51,6 @@
 					foreach($data_table as $value){ $i++;?>
 				    <tr>
 				      <td><?php echo $value->code ?></td>
-				      <td><?php echo $value->credit ?></td>
 				      <td><?php echo $value->debet ?></td>
 				      <td><?php echo $payfor[$value->code][$value->{'pay for'}]; ?></td>
 				      <td><?php echo $value->created ?></td>
