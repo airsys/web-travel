@@ -20,7 +20,7 @@ class Auth_bkw extends CI_Controller {
 		{
 			$data = $this->input->post();
 			$pass = md5($data['password']);
-			echo $this->url."usercheck?user=$data[identity]&pass=$pass";die();
+			//echo $this->url."usercheck?user=$data[identity]&pass=$pass";die();
 			$data_login = json_decode(file_get_contents($this->url."usercheck?user=$data[identity]&pass=$pass"));
 			if($data_login->status==1){
 				$reg = $this->register($data['identity'], $pass, 
