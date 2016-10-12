@@ -5,7 +5,8 @@ class Auth_bkw extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->library(array('form_validation'));
-		$this->url = 'https://www.bkwisata.com/apiwisata/';
+		$this->config->load('api');
+		$this->url = $this->config->item('bkw-url');
 	}
 	
 	public function login_ajax(){
@@ -19,6 +20,7 @@ class Auth_bkw extends CI_Controller {
 		{
 			$data = $this->input->post();
 			$pass = md5($data['password']);
+			echo $this->url."usercheck?user=$data[identity]&pass=$pass";die();
 			$data_login = json_decode(file_get_contents($this->url."usercheck?user=$data[identity]&pass=$pass"));
 			if($data_login->status==1){
 				$reg = $this->register($data['identity'], $pass, 
@@ -29,6 +31,9 @@ class Auth_bkw extends CI_Controller {
 				$hasil['data']=1;
 				$code = 200;
 				$this->ion_auth->login($data['identity'], $pass,TRUE);
+			}else{
+				$hasil['message'] = $data_login->message;
+				$code = 400;
 			}
 			
 		}else{
