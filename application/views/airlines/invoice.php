@@ -39,6 +39,7 @@
     <div class="col-xs-12">
       <h2 class="page-header">
         <i class="fa fa-book"> </i> Booking Code: <b><?php echo $data_detail->booking_code; ?></b>
+        <img class="pull-right" height="50px" src="<?php echo base_url().'assets/dist/img/logo-company.jpg' ?>"/>
       </h2>
     </div>
     <!-- /.col -->

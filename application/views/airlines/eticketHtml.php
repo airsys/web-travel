@@ -14,6 +14,7 @@
 </style>
 
 <div style="padding: 20px; ">
+<img height="50px" src="<?php echo base_url().'assets/dist/img/logo-company.jpg' ?>"/>
 <table>
 	<tr>
 		<td>

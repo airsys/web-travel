@@ -41,4 +41,37 @@ class Setting extends CI_Controller {
 			$this->load->view("admin/index",$data_view);	
 		}
 	}
+	
+	/**
+	* SITE
+	*/
+	function site(){
+		$config['upload_path'] = './assets/dist/img/';
+		$config['allowed_types'] = 'jpg';
+		$config['max_size']     = '2048';
+		$config['max_width'] = '700';
+		$config['max_height'] = '200';
+		$config['overwrite'] = TRUE;
+		$config['file_name'] = 'logo-company';
+		$this->load->library('upload', $config);
+		if($this->input->post()){
+			//die();
+			 if ( ! $this->upload->do_upload('logo'))
+	        {
+	            $error = array('error' => $this->upload->display_errors());
+	            $print_r($error);die();
+	            //$this->load->view('upload_form', $error);
+	        }
+	        else
+	        {
+			    $data = array('upload_data' => $this->upload->data());
+			    //$this->load->view('upload_success', $data);
+	        }
+		}		
+		
+		$data_view = array(
+			'content'=>'setting/site',
+		);		
+		$this->load->view("admin/index",$data_view);	
+	}
 }
