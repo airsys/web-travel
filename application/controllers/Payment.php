@@ -3,11 +3,14 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Payment extends CI_Controller {
+	private $url_bkw ;
 	 function __construct() {
 	     parent::__construct();
 	     $this->load->library(array('form_validation'));	     
 		 $this->load->model('m_payment');
 		 $this->load->helper('dropdown');
+		 $this->config->load('api');
+		 $this->url_bkw = $this->config->item('bkw-url');
 	 }
 	 
 	 function topup(){
@@ -100,18 +103,37 @@ class Payment extends CI_Controller {
             ->set_output(json_encode($hasil));
 	 }
 	 
+	 private function _info($retrieve){
+	 	$info = '';
+	 	$info .= 'booking code : '.$retrieve->{'booking code'}.', ';
+	 	$info .= 'booking time : '.$retrieve->{'booking time'}.', ';
+	 	$info .= 'time limit : '.$retrieve->{'time limit'}.', ';
+	 	$info .= 'base fare : '.$retrieve->{'base fare'}.', ';
+	 	$info .= 'tax : '.$retrieve->{'tax'}.', ';
+	 	$info .= 'NTA : '.$retrieve->{'NTA'}.', ';
+	 	$info .= 'airline : '.$retrieve->{'airline'}.', ';
+	 	$info .= 'area depart : '.$retrieve->{'area depart'}.', ';
+	 	$info .= 'area arrive : '.$retrieve->{'area arrive'}.', ';
+	 	$info .= 'infant : '.$retrieve->{'infant'}.', ';
+	 	$info .= 'child : '.$retrieve->{'child'}.', ';
+	 	$info .= 'adult : '.$retrieve->{'adult'}.', ';
+	 	$info .= 'contact name : '.$retrieve->{'name'}.', ';
+	 	$info .= 'contact phone : '.$retrieve->{'phone'}.', ';
+	 	
+	 	return $info;
+	 }
+	 
 	 function issued(){
 	 	$this->load->model('m_booking');
 	 	$id_booking = $this->input->post('id');
 	 	$NTA = $this->m_booking->retrieve_list(NULL,array('b.id'=>$id_booking));
 	 	
-	 	$url = 'https://www.bkwisata.com/apiwisata/';
 	 	$user = $this->session->userdata('identity');
 	 	$pass = md5($this->input->post('password'));
 	 	$total = $NTA[0]->NTA;
-	 	$info = 'Pay for '.$NTA[0]->{'booking code'};
-	 	$data_payment = json_decode(file_get_contents($url."payment?user=$user&pass=$pass&total=$total&info=$info"));
-	 	//print_r($data_payment);die();
+	 	$info = $this->_info($NTA[0]);
+	 	$data_payment = json_decode(file_get_contents($this->url_bkw."payment?user=$user&pass=$pass&total=$total&info=$info"));
+	 	//print_r($this->url_bkw."payment?user=$user&pass=$pass&total=$total&info=$info");die();
 	 	$hasil['message'] = 'id or user not found';
 		$hasil['data']=0;
 		$code = 400;

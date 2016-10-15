@@ -159,8 +159,8 @@
 	              <div class="box-body">
 	              	<div id="login-warning"></div>
 	                <div class="form-group">
-	                  <label for="InputEmail1">Email address</label>
-	                  <input name="identity" type="text" class="form-control" id="InputEmail1" placeholder="Enter email">
+	                  <label for="InputEmail1">Username</label>
+	                  <input name="identity" type="text" class="form-control" id="InputEmail1" placeholder="Enter Username">
 	                </div>
 	                <div class="form-group">
 	                  <label for="InputPassword1">Password</label>

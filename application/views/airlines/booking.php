@@ -17,8 +17,8 @@
   <div id="form-login" style="background-color:#f3f3f3" class="box-body">
   	<div class="col-md-4">
     <div class="form-group">
-      <label for="InputEmail1">Email address</label>
-      <input name="identity" required type="email" class="form-control" id="InputEmail1" placeholder="Enter email">
+      <label for="InputEmail1">Username</label>
+      <input name="identity" required type="text" class="form-control" id="InputEmail1" placeholder="Enter Username">
     </div>              
     </div>
     <div class="col-md-4">
@@ -93,8 +93,8 @@
 	      Login &nbsp;&nbsp;&nbsp;
 	    </label>
 	    <label>
-	      <input type="radio" value="re" name="position" id="position" class="flat-red" >
-	      Register
+	      <?php /*<input type="radio" value="re" name="position" id="position" class="flat-red" > 
+	      Register */?>
 	    </label>
 	  </div>
 	</div>

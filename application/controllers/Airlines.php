@@ -6,6 +6,7 @@ use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 class Airlines extends CI_Controller {
 	private $url ;
+	private $url_bkw ;
 	 function __construct() {
 	        parent::__construct();
 	    $this->load->library('curl');		
@@ -15,6 +16,7 @@ class Airlines extends CI_Controller {
 		$this->curl->option('TIMEOUT', 70000);
 		$this->load->model('m_booking');
 		$this->url = $this->config->item('api-url') . 'lion';
+	 	$this->url_bkw = $this->config->item('bkw-url');
 	 }
 	 
 	 function search(){		
@@ -237,9 +239,10 @@ class Airlines extends CI_Controller {
 		}else{
 			if (!$this->ion_auth->logged_in() && $this->input->post('position')=='lo'){
 				$remember = (bool) $this->input->post('remember');
-				$pass = $this->input->post('password');
+				$pass = md5($this->input->post('password'));
 				$identity = $this->input->post('identity');
-				$data_login = json_decode(file_get_contents($this->url."usercheck?user=$identity&pass=$pass"));
+				$data_login = json_decode(file_get_contents($this->url_bkw."usercheck?user=$identity&pass=$pass"));
+				
 				if($data_login->status==1){
 					$reg = $this->register($identity, $pass, 
 								 			$data_login->data->email,
@@ -248,7 +251,7 @@ class Airlines extends CI_Controller {
 					$hasil['message'] = 'Berhasil';
 					$hasil['data']=1;
 					$code = 200;
-					$this->ion_auth->login($data['identity'], $pass,$remember);
+					$this->ion_auth->login($identity, $pass,$remember);
 				}
 			}
 			if ($this->ion_auth->logged_in()){
@@ -275,6 +278,7 @@ class Airlines extends CI_Controller {
 				$hasil = $this->ion_auth->errors();
 			}
 		}
+		//print_r($this->url_bkw."usercheck?user=$identity&pass=$pass");die();
 		return $this->output
 	            ->set_content_type('text/html')
 	            ->set_status_header($code)
