@@ -2,12 +2,12 @@
 	<div class="box-header with-border">
 	</div>
 	<form id="form" method="post" name="form">
-		<div class="box-body" style="padding-left: 30px;padding-right: 30px;">
+		<div class="box-body" style="padding-left: 30px;padding-right: 30px;left: 6%;position: relative;">
 			<div class="col-search3">
 				<div class="form-group">
 					<label>LEAVING FROM</label>
                     <div class="input-group">
-                        <div class="input-group-addon">
+                        <div class="input-group-addon" style="background-color: #d2d6de;">
                             <i class="fa fa-map-marker"></i>
                         </div> 
                         <select class="form-control bandara" id='from' name='from' style="width: 100%;">
@@ -20,7 +20,7 @@
 				<div class="form-group">
 					<label>GOING TO</label>
                     <div class="input-group">
-                        <div class="input-group-addon" style="border-left-width: 0px;">
+                        <div class="input-group-addon" style="background-color: #d2d6de;">
                             <i class="fa fa-map-marker"></i>
                         </div>
                                 <select class="form-control bandara" id='to' name='to' style="width: 100%;">
@@ -34,7 +34,7 @@
 					<label>DEPARTING ON</label>
 					<div class="input-group">
 						<div class="input-group date">
-							<div class="input-group-addon" style="border-left-width: 0px;">
+							<div class="input-group-addon" style="background-color: #d2d6de;">
 								<i class="fa fa-calendar"></i>
 							</div><input class="form-control pull-right" id="datepicker" name='date' required="" type="text" style="padding-right: 50px;">
 						</div>
@@ -126,8 +126,9 @@
                     <label>PASSENGER</label>
                     <div class="input-group margin" style="margin: 0px 0px 0px 0px;">
                     <div class="input-group-btn ">
-                            <button type="button" class="btn btn-flat dropdown-toggle" data-toggle="dropdown">
+                            <button type="button" class="btn btn-flat dropdown-toggle" data-toggle="dropdown" style="padding-right: 0px;padding-top: 0px;padding-bottom: 0px;">
                                 <i class="fa fa-user"></i> 
+                                <input type="text" class="" id="passanger" value="1" name="passanger" style="width: 71px;height: 32px; border-width: 0px 0px 0px 0px; margin-left: 10px;text-align: center" readonly>
                             </button>
                                  <ul class="dropdown-menu" role="menu">
                                     <div class="countuser input-group" align="center"style="width:100%;">
@@ -136,12 +137,11 @@
                                             <input type="text" name="adult" size="5" id="adult" value="1" readonly
                                                     style="height: 35.22222px;
                                                             padding-top: 0px;
-                                                            border-right-width: 0px;
-                                                            border-left-width: 0px;
-                                                            border-top-width: 0px;
+                                                            border-width: 0px 0px 0px 0px;
+                                                            text-align: center;
                                                         "></td>
                                             <input type="button" value="+" onClick="adultplus()" class="btn btn-flat btn-success" onFocus="startUser();" onBlur="stopUser();" 
-                                            data-toggle="popover" data-timeout="3000" data-content="Jumlah Dewasa dan Anak tidak boleh melebihi 7"/> 
+                                            data-toggle="popover" data-trigger="" data-timeout="2000" data-content="Jumlah Dewasa dan Anak tidak boleh melebihi 7"/> 
 
                                      </div>   
                                     <div class="countuser input-group" align="center"style="width:100%;">
@@ -150,12 +150,11 @@
                                             <input type="text" name="child" size="5" id="child" value="0" readonly
                                                      style="height: 35.22222px;
                                                             padding-top: 0px;
-                                                            border-right-width: 0px;
-                                                            border-left-width: 0px;
-                                                            border-top-width: 0px;
+                                                            border-width: 0px 0px 0px 0px;
+                                                            text-align: center;
                                                         "></td>
                                             <input type="button" value="+" onClick="childplus()" class="btn btn-flat btn-success" onFocus="startUser();" onBlur="stopUser();" 
-                                            data-toggle="popover" data-timeout="3000" data-content="Jumlah Dewasa dan Anak tidak boleh melebihi 7"/> 
+                                            data-toggle="popover" data-trigger="" data-timeout="2000" data-content="Jumlah Dewasa dan Anak tidak boleh melebihi 7"/> 
 
                                     </div>
                                      <div class="countuser input-group" align="center"style="width:100%;">
@@ -164,21 +163,21 @@
                                         <input type="text" name="infant" size="5" id="infant" value="0" readonly
                                                      style="height: 35.22222px;
                                                             padding-top: 0px;
-                                                            border-right-width: 0px;
-                                                            border-left-width: 0px;
-                                                            border-top-width: 0px;
+                                                            border-width: 0px 0px 0px 0px;
+                                                            text-align: center;
                                                         "></td>
                                         <input type="button" value="+" onClick="infantplus()" class="btn btn-flat btn-success"  onFocus="startUser();" onBlur="stopUser();" 
-                                        data-toggle="popover" data-timeout="3000" data-content="Jumlah bayi tidak boleh melebihi jumlah dewasa"/> 
+                                        data-toggle="popover" data-trigger="" data-timeout="1000" data-content="Jumlah bayi tidak boleh melebihi jumlah dewasa"/> 
                                     </div> 
                                 </ul>
-                    </div><input type="text" class="form-control" id="passanger" name="passanger"  readonly>
+                    </div>
+
                     </div>
                 </div>
             </div>
 			<div class="col-search2">
 				<div class="input-group" style="margin-top: 25px;">
-				<button id='btn-search' class="btn btn-flat btn-success btn-lg" style="height: 33px;padding-top: 0px;padding-bottom: 0px;">
+				<button id='btn-search' class="btn btn-flat btn-success btn-lg" style="height: 34px;padding-top: 0px;padding-bottom: 0px;">
                     <i class="fa fa-search"></i> | SEARCH</button>
 				</div>
 			</div>
@@ -216,6 +215,7 @@ $(document).ready(function(){
        selectOtherMonths: true,
        dateFormat: 'dd-mm-yy', 
        minDate: 0,
+       numberOfMonths: 2,
     });
     $(".bandara").select2();
     var bandara = [] ;
