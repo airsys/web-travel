@@ -184,10 +184,15 @@
 	                  <label for="InputPassword1">Password</label>
 	                  <input name="password" type="password" class="form-control" id="InputPassword1" placeholder="Password">
 	                </div>
+	                <div class="form-group">
 	                <div class="checkbox">
 	                  <label>
 	                    <input type="checkbox" name="remember" value="1"> Remember me
 	                  </label>
+	                  <label class="pull-right">
+	                    <input id="show-password" type="checkbox" value="1"> Show password
+	                  </label>
+	                </div>
 	                </div>
 	              </div>
 	              <!-- /.box-body -->
@@ -203,7 +208,16 @@
 	<script>
 		$('.show-modal').on('click', function() {
 		    callmodal();
-		});	
+		});
+		var sh_pass = 0;
+		$('#show-password').on('click', function() {
+		    sh_pass++;
+		    if(sh_pass%2==0){
+				$('#InputPassword1').get(0).setAttribute('type', 'password');
+			}else{
+				$('#InputPassword1').get(0).setAttribute('type', 'text');
+			}
+		});
 		function callmodal(){
 			if(login==0) $('#modal-content').modal('show');
 		}
