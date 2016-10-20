@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title> | a ticketing system</title>
+	<title> Bumi Khatulistiwa</title>
 	<!-- Tell the browser to be responsive to screen width -->
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<!-- Bootstrap 3.3.6 -->
@@ -183,39 +183,43 @@
 	  </div>
 	</div>
 	<script>
-		$('.show-modal').on('click', function() {
-		    callmodal();
-		});	
-		function callmodal(){
-			if(login==0) $('#modal-content').modal('show');
-		}
-		 $('#form-login-header').submit(function( event ) {
-			event.preventDefault();
-		    $.ajax({
-                url:  base_url+"auth_bkw/login_ajax",
-                type: "post",
-                data: $("#form-login-header").serialize(),
-                success: function(d,textStatus, xhr) {
-                   if(xhr.status==200 && d.data==1){
-				   	 login = 1;
-				   	$('#login-header').text('Logout');
-				   	$('#register-header').text('Profile');
-				   	$("#user-header").children("span").text(d.user);
-				   	$("#user-header").children("i").removeClass('fa-lock');
-	    			$("#user-header").children("i").addClass('fa-user');
-				   	 showalert(d.message,'success','#login-warning');
-				   	 window.location = base_url;
-				   	 setTimeout(function() {
-					     $('#modal-content').modal('hide');
-					 }, 2000);
-				   }
-                },
-                 error: function (request, status, error) {
-                 	  var err = eval("(" + request.responseText + ")");
-                      showalert(err.message,'danger','#login-warning');
-                }
-            });
-		});	
+		$(document).ready(function(){
+			callmodal();
+			$('.show-modal').on('click', function() {
+				callmodal();
+			});	
+			function callmodal(){
+				if(login==0) $('#modal-content').modal('show');
+			}
+			 $('#form-login-header').submit(function( event ) {
+				event.preventDefault();
+				$.ajax({
+					url:  base_url+"auth_bkw/login_ajax",
+					type: "post",
+					data: $("#form-login-header").serialize(),
+					success: function(d,textStatus, xhr) {
+					   if(xhr.status==200 && d.data==1){
+						 login = 1;
+						$('#login-header').text('Logout');
+						$('#register-header').text('Profile');
+						$("#user-header").children("span").text(d.user);
+						$("#user-header").children("i").removeClass('fa-lock');
+						$("#user-header").children("i").addClass('fa-user');
+						 showalert(d.message,'success','#login-warning');
+						 window.location = base_url;
+						 setTimeout(function() {
+							 $('#modal-content').modal('hide');
+						 }, 2000);
+					   }
+					},
+					 error: function (request, status, error) {
+						  var err = eval("(" + request.responseText + ")");
+						  showalert(err.message,'danger','#login-warning');
+					}
+				});
+			});	
+		});
+		
 	</script>
 	<?php } else {?>
 		<script>
@@ -259,7 +263,8 @@
 			}else{
 				window.location = base_url+"auth2/register/";
 			}	
-		});	
+		});
+		
 	var base_url ="<?php echo base_url() ?>";
 	<?php if($this->ion_auth->logged_in()==0){ 
 		echo "var login = 0;";
