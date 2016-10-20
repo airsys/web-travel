@@ -79,7 +79,7 @@
 		            <!-- User Account Menu -->
 		            <li class="dropdown user user-menu">
 		              <!-- Menu Toggle Button -->
-		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		              <a href="#" class="dropdown-toggle <?php echo $this->ion_auth->logged_in() ? "":"show-modal"; ?>" data-toggle="dropdown">
 		                <!-- The user image in the navbar-->
 		                <?php 
 		                	if(!$this->ion_auth->logged_in()){
@@ -114,7 +114,7 @@
 		                		if($this->ion_auth->logged_in()){
 									echo "<a href='#' class='btn btn-warning btn-flat' id='login-header'>Logout</a>";
 								}else {
-									echo "<a href='#' class='show-modal btn btn-success btn-flat' id='login-header'>Login</a>";
+									//echo "<a href='#' class='btn btn-success btn-flat' id='login-header'>Login</a>";
 								}
 		                	?>
 		                  </div>
@@ -184,7 +184,6 @@
 	</div>
 	<script>
 		$(document).ready(function(){
-			callmodal();
 			$('.show-modal').on('click', function() {
 				callmodal();
 			});	
