@@ -257,6 +257,19 @@ class Airlines extends CI_Controller {
 		        $this->ion_auth->login($identity, $password, TRUE);
 			}
 			if ($this->ion_auth->logged_in()){
+				if($this->_cek_double_booking()>0){
+					return $this->output
+			            ->set_content_type('text/html')
+			            ->set_status_header(400)
+			            ->set_output('Anda terindikasi double booking');
+				}
+				if($this->_cek_double_booking(FALSE)>14){
+					return $this->output
+			            ->set_content_type('text/html')
+			            ->set_status_header(400)
+			            ->set_output('Anda terindikasi Group booking');
+				}
+				
 				$json = $this->curl->simple_post("$this->url/book", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
 				//$json = $this->jsonbooking();
 				
@@ -286,16 +299,48 @@ class Airlines extends CI_Controller {
 	            ->set_output($hasil);
 	}
 	
-	private function _cek_double_booking($name=NULL, $date, $from, $goingto, $airline){
-		$names = '';
-		if($name!=NULL){
-			foreach($name as $vname){
-				$names .= $vname.',';
+	private function _cek_double_booking($db=TRUE){
+		$names = [];
+		$i=0;
+			foreach($this->input->post() as $key => $val){
+				if($db){
+					if (preg_match('/title_/',$key)){
+						$i++;
+						$names[$i] = $val;				
+					}
+					if (preg_match('/name_/',$key)){
+						$names[$i] .= " ".$val;						
+					}
+				}
 			}
-			$names .= '';
-		}
-		return $names;
-		
+			
+			$this->db->where('`area depart`', $this->input->post('from'));
+			$this->db->where('`area arrive`', $this->input->post('to'));
+			$this->db->where('`airline`', $this->input->post('airline'));
+
+			$this->db->select("count(*) AS jml")
+					 ->from("booking AS b, booking status AS s, `auth company` AS `c`")
+					 ->where("b.id = s.id booking")
+					 ->where("b.company = c.id")
+					 ->where("status = 'booking'")
+					 ->where('company',$this->session->userdata('company'))
+					 ->where("(SELECT from_unixtime(`time arrive`, '%d-%m-%Y') FROM `booking flight` 
+							  WHERE `id booking` = b.id ORDER BY `time arrive` ASC LIMIT 1)",$this->input->post('date'))
+					 ->order_by('s.time status','desc');
+			
+			$sub = $this->subquery->start_subquery('where');
+			$sub->select_max('time status')->from('booking status')->where('`id booking` = b.id');
+			$this->subquery->end_subquery('s.time status');
+			
+			if($db){
+				$sub2 = $this->subquery->start_subquery('where');
+				$sub2->select('COUNT(*)')->from('booking passenger')
+					  ->where('`id booking` = b.id')->where_in('name', $names);
+				$this->subquery->end_subquery($this->input->post('passanger_count'));
+				
+			}
+			$return = $this->db->get()->row();
+			return $return->jml;
 	}
 	
 	function retrieve($code='00'){

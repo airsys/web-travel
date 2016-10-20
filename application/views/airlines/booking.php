@@ -232,6 +232,15 @@
     <div class="box-footer">
       <input type="hidden" name="flight_key" value="<?php echo $data['key']; ?>" />
       <input type="hidden" name="date" value="<?php echo $data['date']; ?>" />
+      <input type="hidden" name="from" value="<?php echo $data['from']; ?>" />
+      <input type="hidden" name="to" value="<?php echo $data['to']; ?>" />
+      <input type="hidden" name="airline" value="<?php echo 'lion'; ?>" />
+      
+      <input type="hidden" name="adult_count" value="<?php echo $data['adult']; ?>" />
+      <input type="hidden" name="child_count" value="<?php echo $data['child']; ?>" />
+      <input type="hidden" name="infant_count" value="<?php echo $data['infant']; ?>" />
+      <input type="hidden" name="passanger_count" value="<?php echo $data['infant']+$data['child']+$data['adult']; ?>" />
+      
       <button id="btn-booking" class="btn btn-flat btn-success btn-lg pull-right"><i class="fa fa-paper-plane"></i> | BOOKING</button>
     </div>
   </form>
