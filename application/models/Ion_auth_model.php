@@ -545,7 +545,7 @@ class Ion_auth_model extends CI_Model
 			return FALSE;
 		}
 
-		$this->db->where('forgotten_password_code', $code);
+		$this->db->where('`forgotten password code`', $code);
 
 		if ($this->db->count_all_results($this->tables['users']) > 0)
 		{
@@ -599,9 +599,9 @@ class Ion_auth_model extends CI_Model
 		// also clear the forgotten password code
 		$data = array(
 		    'password' => $new,
-		    'remember_code' => NULL,
-		    'forgotten_password_code' => NULL,
-		    'forgotten_password_time' => NULL,
+		    '`remember code`' => NULL,
+		    '`forgotten password code`' => NULL,
+		    '`forgotten password time`' => NULL,
 		);
 
 		$this->trigger_events('extra_where');
@@ -657,7 +657,7 @@ class Ion_auth_model extends CI_Model
 			$hashed_new_password  = $this->hash_password($new, $user->salt);
 			$data = array(
 			    'password' => $hashed_new_password,
-			    'remember_code' => NULL,
+			    '`remember code`' => NULL,
 			);
 
 			$this->trigger_events('extra_where');
@@ -792,8 +792,8 @@ class Ion_auth_model extends CI_Model
 		$this->trigger_events('extra_where');
 
 		$update = array(
-		    'forgotten_password_code' => $key,
-		    'forgotten_password_time' => time()
+		    '`forgotten password code`' => $key,
+		    '`forgotten password time`' => time()
 		);
 
 		$this->db->update($this->tables['users'], $update, array($this->identity_column => $identity));
@@ -1765,7 +1765,7 @@ class Ion_auth_model extends CI_Model
 
 		$salt = $this->salt();
 
-		$this->db->update($this->tables['users'], array('remember_code' => $salt), array('id' => $id));
+		$this->db->update($this->tables['users'], array('`remember code`' => $salt), array('id' => $id));
 
 		if ($this->db->affected_rows() > -1)
 		{
@@ -1823,7 +1823,7 @@ class Ion_auth_model extends CI_Model
 		$this->trigger_events('extra_where');
 		$query = $this->db->select($this->identity_column.', id, email, last login, company')
 		                  ->where($this->identity_column, get_cookie($this->config->item('identity_cookie_name', 'ion_auth')))
-		                  ->where('remember_code', get_cookie($this->config->item('remember_cookie_name', 'ion_auth')))
+		                  ->where('`remember code`', get_cookie($this->config->item('remember_cookie_name', 'ion_auth')))
 		                  ->limit(1)
 		    			  ->order_by('id', 'desc')
 		                  ->get($this->tables['users']);

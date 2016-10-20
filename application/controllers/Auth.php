@@ -915,5 +915,4 @@ class Auth extends CI_Controller {
 
 		if ($returnhtml) return $view_html;//This will return html on 3rd argument being true
 	}
-
 }

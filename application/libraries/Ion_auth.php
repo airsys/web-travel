@@ -78,6 +78,7 @@ class Ion_auth
 		if ($this->config->item('use_ci_email', 'ion_auth') && isset($email_config) && is_array($email_config))
 		{
 			$this->email->initialize($email_config);
+			$this->email->set_newline("\r\n");
 		}
 
 		$this->ion_auth_model->trigger_events('library_constructor');
@@ -146,7 +147,7 @@ class Ion_auth
 			{
 				$data = array(
 					'identity'		=> $user->{$this->config->item('identity', 'ion_auth')},
-					'forgotten_password_code' => $user->forgotten_password_code
+					'forgotten_password_code' => $user->{'forgotten password code'}
 				);
 
 				if(!$this->config->item('use_ci_email', 'ion_auth'))
@@ -262,7 +263,7 @@ class Ion_auth
 	 */
 	public function forgotten_password_check($code)
 	{
-		$profile = $this->where('forgotten_password_code', $code)->users()->row(); //pass the code to profile
+		$profile = $this->where('`forgotten password code`', $code)->users()->row(); //pass the code to profile
 
 		if (!is_object($profile))
 		{

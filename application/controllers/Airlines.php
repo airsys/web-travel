@@ -186,18 +186,8 @@ class Airlines extends CI_Controller {
 		//parse_str(utf8_decode(urldecode($data['data'])), $output);
 		$hasil = array();
 		$hasil['key'] = '';
-		foreach($data as $key => $val){
-			/*for($i = 1; $i <= sizeof($data['flightid']); $i++){
-				if(!empty($data[$key][$i])){
-					$hasil['seat'][$i][$key] = $data[$key][$i];
-					if($key == 'key'){
-						$hasil['key'] .= $data['key'][$i]. '|';
-					}
-				}else */
-				{
-					$hasil[$key] = $data[$key];
-				}
-			//}			
+		foreach($data as $key => $val){				
+			$hasil[$key] = $data[$key];
 		}
 		if($bestprice != 0){
 			$hasil['key'] = $data['key'][1];
@@ -294,6 +284,18 @@ class Airlines extends CI_Controller {
 	            ->set_content_type('text/html')
 	            ->set_status_header($code)
 	            ->set_output($hasil);
+	}
+	
+	private function _cek_double_booking($name=NULL, $date, $from, $goingto, $airline){
+		$names = '';
+		if($name!=NULL){
+			foreach($name as $vname){
+				$names .= $vname.',';
+			}
+			$names .= '';
+		}
+		return $names;
+		
 	}
 	
 	function retrieve($code='00'){

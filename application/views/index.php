@@ -60,6 +60,7 @@
 		        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
 		          <ul class="nav navbar-nav">
 		            <li class="menu-bar"><a href="<?php echo base_url() ?>">Search Ticket <span class="sr-only">(current)</span></a></li>
+		            <li class="menu-bar"><a href="<?php echo base_url() ?>airlines/search_bestprice">Search Best  Fare <span class="sr-only"></span></a></li>
 		            <?php if($this->ion_auth->logged_in()){ ?>
 		            <li class="menu-bar"><a href="<?php echo base_url().'airlines/retrieve' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
 		            <li class="dropdown">
@@ -194,6 +195,11 @@
 	                  </label>
 	                </div>
 	                </div>
+	                <div class="text-center">
+	                	<label>
+		                	<a class="btn btn-default btn-xs" href="<?php echo base_url() ?>auth2/forgot_password" > Forgot Password</a>	                
+		                </label>
+	                </div>
 	              </div>
 	              <!-- /.box-body -->
 		      </div>
@@ -206,48 +212,56 @@
 	  </div>
 	</div>
 	<script>
-		$('.show-modal').on('click', function() {
-		    callmodal();
-		});
-		var sh_pass = 0;
-		$('#show-password').on('click', function() {
-		    sh_pass++;
-		    if(sh_pass%2==0){
-				$('#InputPassword1').get(0).setAttribute('type', 'password');
-			}else{
-				$('#InputPassword1').get(0).setAttribute('type', 'text');
+		$(document).ready(function(){
+			<?php 				
+			if($this->session->flashdata('message')){
+				echo 'callmodal();';
+				echo "showalert('".$this->session->flashdata('message')."','warning','#login-warning',10000);";
+			} 
+			?>
+			$('.show-modal').on('click', function() {
+			    callmodal();
+			});
+			var sh_pass = 0;
+			$('#show-password').on('click', function() {
+			    sh_pass++;
+			    if(sh_pass%2==0){
+					$('#InputPassword1').get(0).setAttribute('type', 'password');
+				}else{
+					$('#InputPassword1').get(0).setAttribute('type', 'text');
+				}
+			});
+			function callmodal(){
+				if(login==0) $('#modal-content').modal('show');
 			}
-		});
-		function callmodal(){
-			if(login==0) $('#modal-content').modal('show');
-		}
-		 $('#form-login-header').submit(function( event ) {
-			event.preventDefault();
-		    $.ajax({
-                url:  base_url+"auth2/login_ajax",
-                type: "post",
-                data: $("#form-login-header").serialize(),
-                success: function(d,textStatus, xhr) {
-                   if(xhr.status==200 && d.data==1){
-				   	 login = 1;
-				   	$('#login-header').text('Logout');
-				   	$('#register-header').text('Profile');
-				   	$("#user-header").children("span").text(d.user);
-				   	$("#user-header").children("i").removeClass('fa-lock');
-	    			$("#user-header").children("i").addClass('fa-user');
-				   	 showalert(d.message,'success','#login-warning');
-				   	 window.location = base_url;
-				   	 setTimeout(function() {
-					     $('#modal-content').modal('hide');
-					 }, 2000);
-				   }
-                },
-                 error: function (request, status, error) {
-                 	  var err = eval("(" + request.responseText + ")");
-                      showalert(err.message,'danger','#login-warning');
-                }
-            });
-		});	
+			 $('#form-login-header').submit(function( event ) {
+				event.preventDefault();
+			    $.ajax({
+	                url:  base_url+"auth2/login_ajax",
+	                type: "post",
+	                data: $("#form-login-header").serialize(),
+	                success: function(d,textStatus, xhr) {
+	                   if(xhr.status==200 && d.data==1){
+					   	 login = 1;
+					   	$('#login-header').text('Logout');
+					   	$('#register-header').text('Profile');
+					   	$("#user-header").children("span").text(d.user);
+					   	$("#user-header").children("i").removeClass('fa-lock');
+		    			$("#user-header").children("i").addClass('fa-user');
+					   	 showalert(d.message,'success','#login-warning');
+					   	 window.location = base_url;
+					   	 setTimeout(function() {
+						     $('#modal-content').modal('hide');
+						 }, 2000);
+					   }
+	                },
+	                 error: function (request, status, error) {
+	                 	  var err = eval("(" + request.responseText + ")");
+	                      showalert(err.message,'danger','#login-warning');
+	                }
+	            });
+			});	
+		});		
 	</script>
 	<?php } else {?>
 		<script>

@@ -231,6 +231,7 @@
     <!-- /.box-body -->
     <div class="box-footer">
       <input type="hidden" name="flight_key" value="<?php echo $data['key']; ?>" />
+      <input type="hidden" name="date" value="<?php echo $data['date']; ?>" />
       <button id="btn-booking" class="btn btn-flat btn-success btn-lg pull-right"><i class="fa fa-paper-plane"></i> | BOOKING</button>
     </div>
   </form>
