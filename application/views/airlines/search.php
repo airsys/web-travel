@@ -129,6 +129,7 @@
                             <button type="button" class="btn btn-flat dropdown-toggle" data-toggle="dropdown" style="padding-right: 0px;padding-top: 0px;padding-bottom: 0px;">
                                 <i class="fa fa-user"></i> 
                                 <input type="text" class="" id="passanger" value="1" name="passanger" style="width: 71px;height: 32px; border-width: 0px 0px 0px 0px; margin-left: 10px;text-align: center" readonly>
+                                <input type="text" class="" id="triggerPass" value="1" name="triggerPass" style="width: 30px;height: 32px; border-width: 0px 0px 0px 0px; margin-left: 0px;text-align: center" hidden>
                             </button>
                                  <ul class="dropdown-menu" role="menu">
                                     <div class="countuser input-group" align="center"style="width:100%;">
@@ -210,13 +211,24 @@
 <script>
 $(document).ready(function(){
     //Date picker
-    $('#datepicker').datepicker({
-       showOtherMonths: true,
-       selectOtherMonths: true,
-       dateFormat: 'dd-mm-yy', 
-       minDate: 0,
-       numberOfMonths: 2,
+    if (screen.width <=650) {
+        $('#datepicker').datepicker({
+           showOtherMonths: true,
+           selectOtherMonths: true,
+           dateFormat: 'dd-mm-yy', 
+           minDate: 0,
+           numberOfMonths: 1,
     });
+    }else{
+        $('#datepicker').datepicker({
+           showOtherMonths: true,
+           selectOtherMonths: true,
+           dateFormat: 'dd-mm-yy', 
+           minDate: 0,
+           numberOfMonths: 2,
+    });
+    };
+
     $(".bandara").select2();
     var bandara = [] ;
     $.get( base_url+'assets/ajax/iata_bandara.json', function(data) {
@@ -421,8 +433,8 @@ $(document).ready(function(){
 /*passanger*/
 function adultplus() {
         var adult = parseFloat(document.form.adult.value);
-        var passanger = parseFloat(document.form.passanger.value);
-        if (passanger <=6) {
+        var triggerPass = parseFloat(document.form.triggerPass.value);
+        if (triggerPass <=6) {
             var countadult=adult+1;
             form.adult.value=countadult
         }else {
@@ -439,8 +451,8 @@ function adultmin() {
 
 function childplus() {
         var child = parseFloat(document.form.child.value);
-        var passanger = parseFloat(document.form.passanger.value);
-        if (passanger <=6) {
+        var triggerPass = parseFloat(document.form.triggerPass.value);
+        if (triggerPass <=6) {
             var countchild=child+1;
             form.child.value=countchild
         }else {
@@ -479,6 +491,7 @@ function user(){
     child=document.form.child.value;
     infant=document.form.infant.value;
     document.form.passanger.value=(adult*1)+(child*1)+(infant*1)
+    document.form.triggerPass.value=(adult*1)+(child*1)
   }
 function stopUser(){
       clearInterval(interval)
