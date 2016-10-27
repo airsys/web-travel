@@ -288,7 +288,9 @@
 	<!-- BaseUrl -->
 	<script type="text/javascript">
 		$('.menu-bar').find('a').each(function() {
-			if($(this).attr('href')==window.location.href) $(this).parent("li").addClass('active');
+			var url = window.location.href;
+			var mlink = $(this).attr('href');
+			if(mlink==url || mlink+'/'==url) $(this).parent("li").addClass('active');
 		});
 		
 		$('#login-header').on('click', function() {

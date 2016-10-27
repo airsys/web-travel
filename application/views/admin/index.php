@@ -54,7 +54,7 @@
     <nav class="navbar navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-          <a href="../../index2.html" class="navbar-brand"><b>IND</b>SITI</a>
+          <a href="#" class="navbar-brand"><b>IND</b>SITI</a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
           </button>
@@ -78,6 +78,7 @@
                 <li><a href="<?php echo base_url().'admin/report/sales/booking' ?>">Booking</a></li>
               </ul>
             </li>
+            <li class=""><a href="<?php echo base_url().'admin/check/name' ?>">Check Name <span class="sr-only"></span></a></li>
           </ul>
         </div>
         <div class="navbar-custom-menu">
@@ -166,7 +167,11 @@
 <script src="<?php echo base_url(); ?>assets/plugins/select2/select2.full.min.js"></script>
 <script>
 $(document).ready(function(){
-	
+	$('.menu-bar').find('a').each(function() {
+		var url = window.location.href;
+		var mlink = $(this).attr('href');
+		if(mlink==url || mlink+'/'==url) $(this).parent("li").addClass('active');
+	});
 });
 var base_url ="<?php echo base_url().'admin/' ?>";
 </script>

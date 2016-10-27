@@ -23,7 +23,7 @@
     <div class="box-header with-border">
       <h3 class="box-title">Cek Nama</h3>
     </div>
-		<div class="box-body table-responsive no-padding">
+		<div class="box-body table-responsive ">
 		<table class="table table-hover table-striped" id="spreadsheet">
 			<tr>
 				<th>Airline</th>
@@ -34,8 +34,11 @@
 			</tr>
 			
 		</table><br>
-			<div class="form-group">
-				<button style="margin: 20px;" class="btn btn-primary btn-sm pull-right" id="load-more" >Load More</button>
+			<div id="loading" class="form-group">
+				<img class="center-block" style="height: 80px;" src="<?= base_url() ?>assets/dist/img/loading.gif">
+			</div>
+			<div class="form-group text-center">
+				<button style="margin: 20px;" class="btn btn-primary btn-sm" id="load-more" >Load More</button>
 			</div>
 		</div>
   </div>
@@ -84,14 +87,15 @@
 		function data_append(s = '',id=''){
 			var tr = $('<tr class="tr_'+id+'" />').append(s).appendTo($('#spreadsheet'));
 		}
-		
+		$('#loading').hide();
 		function ajax_get(){
 			var s ='';
 			load = false;
 			$('#load-more').hide();
+			$('#loading').show();
 			$.ajax({
 			  type: 'GET',
-			  url: base_url+'ceking/get_name2/'+limit+'/'+offset,
+			  url: base_url+'check/get_name2/'+limit+'/'+offset,
 			  dataType: 'json',
 			  success: function(jsonData) {
 			  	if(jsonData.length!=0){
@@ -113,13 +117,18 @@
 				    });
 				    load = true;
 				    $('#load-more').show();
-				} else alert('Sudah Terload semua');
+				    $('#loading').hide();
+				} else {
+					alert('Sudah Terload semua');
+					$('#loading').hide();
+				}
 			  	
 			  },
 			  error: function() {
 			    alert('Error loading');
 			    load = true;
 			    $('#load-more').show();
+			    $('#loading').hide();
 			  }
 			});
 		}
@@ -141,7 +150,7 @@
 		};
 		$.ajax({
 		  type: 'POST',
-		  url: base_url+'ceking/valid',
+		  url: base_url+'check/valid',
 		  data: {id:id, 
 		  		 note : nt,
 		  		 status : status,

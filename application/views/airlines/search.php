@@ -1,6 +1,4 @@
 <div class="box" id="cari">
-	<div class="box-header with-border">
-	</div>
 	<form id="form" method="post" name="form">
 		<div class="box-body">
 			<div class="col-md-3">
@@ -115,9 +113,6 @@
 				</div>
 			</div>
 		</div><!-- /.box-body -->
-		<div class="box-footer">
-			
-		</div>
 	</form>
 	<form id="booking" action="<?php echo base_url()?>airlines/booking" method="post">
 		<input id='h_from' name='from' type="hidden" value=''> 
