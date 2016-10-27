@@ -6,6 +6,7 @@ use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 class Airlines extends CI_Controller {
 	private $url ;
+	private $logo ;
 	 function __construct() {
 	        parent::__construct();
 	    $this->load->library('curl');		
@@ -15,9 +16,11 @@ class Airlines extends CI_Controller {
 		$this->curl->option('TIMEOUT', 70000);
 		$this->load->model('m_booking');
 		$this->url = $this->config->item('api-url') . 'lion';
+	 	$this->logo = $this->db->get_where('`auth users`', array('id' => $this->session->userdata('user_id')))->row();
+	 	//if(empty($this->logo->logo)) $this->logo = '';
 	 }
 	 
-	 function search(){		
+	 function search(){	
 		$data = $this->input->post();
 		$this->form_validation->set_rules('from', 'Asal Keberangkatan', 'required');
 		$this->form_validation->set_rules('to', 'Tujuan', 'required');
@@ -425,6 +428,7 @@ class Airlines extends CI_Controller {
 				  'status'=>$this->m_booking->get_status_booking($code),
 				  'data_table'=>NULL,
 				  'bandara'=>$this->_bandara(),
+				  'logo'=> $this->logo,
 				);
 		$this->load->view("airlines/invoice",$data);
 	}
@@ -436,6 +440,7 @@ class Airlines extends CI_Controller {
 		$array = $this->_boking_detail($code);
 		$data = array('data_detail'=>$array,
 				  'bandara'=>$this->_bandara(),
+				  'logo'=> $this->logo,
 				);
 		if($html == ''){
 			try {

@@ -145,12 +145,29 @@ class Auth2 extends CI_Controller {
 				{
 					$data['password'] = $this->input->post('password');
 				}
+				
+				$config['upload_path'] = './assets/dist/img/logo/';
+				$config['allowed_types'] = 'jpg|jpeg|png';
+				$config['max_size']     = '2048';
+				$config['max_width'] = '700';
+				$config['max_height'] = '700';
+				$config['overwrite'] = TRUE;
+				$config['file_name'] = $user->id.'-logo-company';
+				$this->load->library('upload', $config);
+				
+				if ( ! $this->upload->do_upload('logo'))
+		        {
+		            $message = $this->upload->display_errors();
+		        }
+				
+				$data_u = $this->upload->data();
+				$data['logo'] = $data_u['file_name'];
 				// check to see if we are updating the user
 			   if($this->ion_auth->update($user->id, $data))
 			    {
-			    	$message = $this->ion_auth->messages();
+			    	$message .= $this->ion_auth->messages();
 			    }else{
-					$message = $this->ion_auth->errors();
+					$message .= $this->ion_auth->errors();
 				}
 			}
 		}

@@ -39,7 +39,6 @@
     <div class="col-xs-12">
       <h2 class="page-header">
         <i class="fa fa-book"> </i> Booking Code: <b><?php echo $data_detail->booking_code; ?></b>
-        <img class="pull-right" height="50px" src="<?php echo base_url().'assets/dist/img/logo-company.jpg' ?>"/>
       </h2>
     </div>
     <!-- /.col -->
@@ -174,18 +173,7 @@
     <!-- /.col -->
     
     <div class="col-xs-12 col-md-6">
-      <p class="lead">Booking status:</p>
-
-      <div class="table-responsive">
-        <table class="table">
-        <?php foreach($status as $val){ ?>
-          <tr>
-            <th style="width:20%"><?php echo "<span class='label' style='background-color:".$color[$val->status]."; font-size:0.9em'>".$val->status."</span>" ?></th>
-            <td><?php echo date("d-m-Y H:i:s",$val->{'time status'}); ?></td>
-          </tr>
-          <?php } ?>
-        </table>
-      </div>
+      <img class="center-block" height="100px" src="<?php echo base_url().'assets/dist/img/logo/'.$logo->logo ?>"/>
     </div>
     <!-- /.col -->
   </div>

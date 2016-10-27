@@ -14,7 +14,7 @@
 </style>
 
 <div style="padding: 20px; ">
-<img height="50px" src="<?php echo base_url().'assets/dist/img/logo-company.jpg' ?>"/>
+<img style="height: 80px;" src="<?php echo base_url().'assets/dist/img/logo/'.$logo->logo ?>"/>
 <table>
 	<tr>
 		<td>
@@ -101,5 +101,4 @@
     </tbody>
   </table>
   <br>
-  <img src="<?php echo base_url().'assets/dist/img/ticket_peringatan.jpg' ?>" align="middle;" width="600px;"/>
 </div>

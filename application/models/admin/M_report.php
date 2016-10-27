@@ -39,11 +39,13 @@ class M_report extends CI_Model
 				 ->where("`booking code`",$booking_code)
 				 ->where("`id flight`",$id_flight)
 				 ->where("`status` != 'verified'")
+				 ->where("`status` != 'unverified'")
 				 ->order_by('s.`time status`','desc');
 		$sub = $this->subquery->start_subquery('where');
 		$sub->select_max('booking time')->from('booking')
 				->where('`booking code`',$booking_code)
-				->where("`status` != 'verified'");
+				->where("`status` != 'verified'")
+				->where("`status` != 'unverified'");
 		$this->subquery->end_subquery('booking time');
 		return $this->db->get()->result();
 	}

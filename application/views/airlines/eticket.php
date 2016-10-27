@@ -30,7 +30,7 @@
     <!-- /.col -->
   </div>
   <!-- info row -->
-  <img height="50px" src="<?php echo base_url().'assets/dist/img/logo-company.jpg' ?>"/>
+    <img class="center-block" height="100px" src="<?php echo base_url().'assets/dist/img/logo/'.$logo->logo ?>" /><br>
   <div class="row invoice-info">
     <div class="col-sm-4 invoice-col">
       From

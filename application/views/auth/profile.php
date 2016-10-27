@@ -25,7 +25,7 @@
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="tab_1">
-              	<form class="form-horizontal" action="" method="post">
+              	<form class="form-horizontal" enctype="multipart/form-data" action="" method="post">
 				<div class="form-group">
 		          <label for="company" class="col-sm-2 control-label">Company</label>
 		          <div class="col-sm-4">
@@ -60,6 +60,13 @@
 		          <label for="password_confirm" class="col-sm-2 control-label">Password Confirm (optional)</label>
 		          <div class="col-sm-4">
 		            <input type="password" disabled  class="form-control" name="password_confirm" id="password_confirm" placeholder="password confirm">
+		          </div>
+		        </div>
+		        <div class="form-group">
+		          <label for="first_name" class="col-sm-2 control-label">Logo(optional)</label>
+		          <div class="col-sm-4">
+		          	<input type="file" disabled class="form-control" name="logo" id="logo">
+		          	<img src="<?= base_url().'assets/dist/img/logo/'.$data_post['logo'] ?>" alt="logo" height="150px;" class="margin">
 		          </div>
 		        </div>
 		        <div class="form-group">
@@ -132,11 +139,11 @@
   		$("#edit").on("click", function(event) {
   			edit++;
   			if(edit%2!=0){
-				$(".form-horizontal").find('input[type=checkbox],select,input[type=text],input[type=password],button').prop('disabled',false);
+				$(".form-horizontal").find('input[type=checkbox],select,input[type=file],input[type=text],input[type=password],button').prop('disabled',false);
 				$("#edit").val('Cancel');
 			}			     
 			else{
-				$(".form-horizontal").find('input[type=checkbox],select,input[type=text],input[type=password],button').prop('disabled',true); 
+				$(".form-horizontal").find('input[type=checkbox],select,input[type=text],input[type=file],input[type=password],button').prop('disabled',true); 
 				$("#edit").val('Edit');
 			}
   		});
