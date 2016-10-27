@@ -169,7 +169,6 @@ class Airlines extends CI_Controller {
             ->set_content_type('application/json')
             ->set_status_header($code)
             ->set_output($hasil);
-		
 	}
 	
 	function get_form(){	
@@ -337,7 +336,6 @@ class Airlines extends CI_Controller {
 				$sub2->select('COUNT(*)')->from('booking passenger')
 					  ->where('`id booking` = b.id')->where_in('name', $names);
 				$this->subquery->end_subquery($this->input->post('passanger_count'));
-				
 			}
 			$return = $this->db->get()->row();
 			return $return->jml;

@@ -83,10 +83,12 @@ class M_booking extends CI_Model
 		$this->db->select(" b.*, `status`,time status")
 				 ->from("booking AS b, booking status AS s")
 				 ->where("b.id = s.id booking")
+				 ->where("status!='verified'")
+				 ->where("status!='unverified'")
 				 ->where('company',$this->session->userdata('company'))
 				 ->order_by('s.time status','desc');
 		$sub = $this->subquery->start_subquery('where');
-		$sub->select_max('time status')->from('booking status')->where('`id booking` = b.id');
+		$sub->select_max('time status')->from('booking status')->where('`id booking` = b.id AND status!="verified" AND status!="unverified"');
 		$this->subquery->end_subquery('s.time status');
 		return $this->db->get()->result();
 	}
@@ -96,10 +98,15 @@ class M_booking extends CI_Model
 				 ->from("booking as b, `booking status` as s")
 				 ->where("`b`.`id` = s.`id booking`")
 				 ->where("`booking code`",$booking_code)
-				 ->where('`user`',$this->session->userdata('user_id'))
+				 ->where("`status` != 'verified'")
+				 ->where("`status` != 'unverified'")
+				 ->where('`company`',$this->session->userdata('company'))
 				 ->order_by('s.`time status`','desc');
 		$sub = $this->subquery->start_subquery('where');
-		$sub->select_max('booking time')->from('booking')->where('`booking code`',$booking_code);
+		$sub->select_max('booking time')->from('booking')
+				->where('`booking code`',$booking_code)
+				->where("`status` != 'verified'")
+				->where("`status` != 'unverified'");
 		$this->subquery->end_subquery('booking time');
 		return $this->db->get()->result();
 	}

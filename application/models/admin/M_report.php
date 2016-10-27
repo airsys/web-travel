@@ -20,9 +20,14 @@ class M_report extends CI_Model
 				 ->from("booking AS b, booking status AS s, auth company AS c")
 				 ->where("b.id = s.id booking")
 				 ->where("b.company = c.id")
+				 ->where("`status` != 'verified'")
+				 ->where("`status` != 'unverified'")
 				 ->order_by('s.time status','desc');
 		$sub = $this->subquery->start_subquery('where');
-		$sub->select_max('time status')->from('booking status')->where('`id booking` = b.id');
+		$sub->select_max('time status')->from('booking status')
+				->where('`id booking` = b.id')
+				->where("`status` != 'verified'")
+				->where("`status` != 'unverified'");
 		$this->subquery->end_subquery('s.time status');
 		return $this->db->get()->result();
 	}
@@ -33,9 +38,12 @@ class M_report extends CI_Model
 				 ->where("`b`.`id` = s.`id booking`")
 				 ->where("`booking code`",$booking_code)
 				 ->where("`id flight`",$id_flight)
+				 ->where("`status` != 'verified'")
 				 ->order_by('s.`time status`','desc');
 		$sub = $this->subquery->start_subquery('where');
-		$sub->select_max('booking time')->from('booking')->where('`booking code`',$booking_code);
+		$sub->select_max('booking time')->from('booking')
+				->where('`booking code`',$booking_code)
+				->where("`status` != 'verified'");
 		$this->subquery->end_subquery('booking time');
 		return $this->db->get()->result();
 	}
