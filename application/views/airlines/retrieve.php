@@ -280,16 +280,39 @@
       <div class="row no-print">
         <div class="col-xs-12">
           <?php if($this->uri->segment(4)!='finance'){ ?>
-	          <a href='<?php echo base_url()."airlines/invoice/$data_detail->booking_code" ?>' target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print Invoice</a>
+	          <div class="btn-group">
+				<button type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown">
+				    <span class="col-lg-10">
+				        <i class="fa fa-print"></i> Print Invoice  <span class="caret"></span>
+				    </span>
+				</button>
+				<ul class="dropdown-menu btn-block" role="menu">
+					<li><a href='<?php echo base_url()."airlines/invoice/$data_detail->booking_code/pdf" ?>' target="_blank"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+					<li><a href='<?php echo base_url()."airlines/invoice/$data_detail->booking_code" ?>' target="_blank"><i class="fa fa-external-link"></i> WEB</a></li>
+					<li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+				</ul>
+			  </div>
+			  
 	          <?php if($status[0]->status=='booking'){ ?>
 	          <button id="issued" type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment </button>
 	          <?php }else{ ?>
-	          <a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code" ?>' target="_blank" class="btn btn-danger pull-right"><i class="fa fa-file-pdf-o"></i> Print Ticket to PDF</a>
-	          <a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code/web" ?>' target="_blank" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-print"></i> Print Ticket to WEB</a>
-	          <?php } ?>
+	          <div class="btn-group pull-right">
+				<button type="button" class="btn btn-danger btn-block dropdown-toggle" data-toggle="dropdown">
+				    <span class="col-lg-10">
+				        <i class="fa fa-print"></i> Print Ticket  <span class="caret"></span>
+				    </span>
+				</button>
+				<ul class="dropdown-menu btn-block" role="menu">
+					<li><a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code" ?>' target="_blank"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+					<li><a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code/web" ?>' target="_blank"><i class="fa fa-external-link"></i> WEB</a></li>
+					<li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
+				</ul>
+			  </div>
+			  <?php } ?>
           <?php } else { ?>
           	  <a href='#' onclick="window.history.go(-1); return false;" class="btn btn-info"><i class="fa fa-arrow-circle-left"></i> Back</a>
           <?php } ?>
+          
         </div>
       </div>
       <input type="hidden" id="id" value="<?php echo $id_booking ?>"/>

@@ -419,7 +419,7 @@ class Airlines extends CI_Controller {
 		$this->load->view("index",$data);
 	}
 	
-	function invoice($code){
+	function invoice($code, $html=''){
 		if(!$this->ion_auth->logged_in()){
 			redirect('airlines','refresh');
 		}
@@ -430,7 +430,24 @@ class Airlines extends CI_Controller {
 				  'bandara'=>$this->_bandara(),
 				  'logo'=> $this->logo,
 				);
-		$this->load->view("airlines/invoice",$data);
+		if($html == ''){
+			$this->load->view("airlines/invoiceHtml",$data);
+			//$this->load->view("airlines/invoice",$data);
+		}else{
+			try {
+			    //ob_start();
+			    $content=$this->load->view("airlines/invoiceHtml",$data, TRUE);
+			    //$content = ob_get_clean();
+
+			    $html2pdf = new Html2Pdf('P', 'A4', 'en');
+			    $html2pdf->pdf->SetDisplayMode('fullpage');
+			    $html2pdf->writeHTML($content);
+			    $html2pdf->Output($code.'.pdf');
+			} catch (Html2PdfException $e) {
+			    $formatter = new ExceptionFormatter($e);
+			    echo $formatter->getHtmlMessage();
+			}
+		}
 	}
 	
 	function eticket($code, $html=''){
