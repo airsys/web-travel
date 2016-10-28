@@ -1,3 +1,4 @@
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.3.0/list.min.js"></script>
 <div class="box" id="cari">
 	<form id="form" method="post" name="form">
 		<div class="box-body">
@@ -131,7 +132,9 @@
 	</div><!-- /.box-header -->
 	<div class="box-body">
 		<div id="alert"></div>
-		<div class="result"></div>
+		<div id="result-id" class="result">
+			<div class="list"></div>
+		</div>
 	</div>
 </div><!-- /.box-body -->
 
@@ -170,7 +173,7 @@ $(document).ready(function(){
         
         $(over).appendTo("#cari");
         event.preventDefault(); 
-        $(".result").empty();
+        $(".list").empty();
         $.ajax({
             url:  base_url+"airlines/search",
             type: "post",
@@ -239,7 +242,8 @@ $(document).ready(function(){
                                 '<\/div>'+                           
                            '<\/div>' ;
             var tampilan2 = '';
-            $(tampilan).appendTo($(".result"));
+            var time_depart = 'time_depart';
+            $(tampilan).appendTo($(".list"));
             $(".container-fare_"+j).hide();
             $(".container-loading_"+j).hide();
             for (i = 1; i <= data.flight_count; i++) {
@@ -249,7 +253,7 @@ $(document).ready(function(){
                 }
                 tampilan2 = '<div class="panel-body '+color+'">'+
                                 '<div class="col-md-6 text-center">'+
-                                    '<h4><span id="depart_'+j+'_'+i+'"><\/span> | <span id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h4>'+
+                                    '<h4><span id="depart_'+j+'_'+i+'"><\/span> | <span class="'+time_depart+'" id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h4>'+
                                 '<\/div>'+
                                 '<div class="col-md-3 col-xs-6">'+ 
                                     '<label><img id="image_'+j+'_'+i+'" src="" height="36" alt="" />&nbsp;<span id="flightid_'+j+'_'+i+'"><\/span><\/label> '+                
@@ -267,7 +271,7 @@ $(document).ready(function(){
                 $('#timearrive_'+j+'_'+i).text(data.segment[i].time_arrive);
                 $('#flightid_'+j+'_'+i).text(data.segment[i].flight_id);
                 $('#image_'+j+'_'+i).attr("src", data.segment[i].airline_icon);
-                
+                time_depart = '';
                 KelasGenerate(j,i,data.segment[i].seat);
             }
         });
@@ -332,6 +336,11 @@ $(document).ready(function(){
 				$(elemen).find('input, textarea, button, select, img, label').prop('disabled',false);
 			}
         }
+        var opt_sort = {
+	    	valueNames: [ 'time_depart' ]
+		};
+		var MySort = new List('result-id', opt_sort);
+		MySort.sort('time_depart', { asc: true });
     }
     $('#from').on('change', function(){
     	$('#to').select2('open');
@@ -342,6 +351,5 @@ $(document).ready(function(){
     $('#datepicker').on('change', function(){
     	$("#adult").focus();
     });
-    
 });
 </script>

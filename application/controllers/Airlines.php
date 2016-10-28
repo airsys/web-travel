@@ -431,8 +431,8 @@ class Airlines extends CI_Controller {
 				  'logo'=> $this->logo,
 				);
 		if($html == ''){
-			$this->load->view("airlines/invoiceHtml",$data);
-			//$this->load->view("airlines/invoice",$data);
+			//$this->load->view("airlines/invoiceHtml",$data);
+			$this->load->view("airlines/invoice",$data);
 		}else{
 			try {
 			    //ob_start();
