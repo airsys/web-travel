@@ -22,18 +22,36 @@ class M_payment extends CI_Model
 	
 	function insert_topup($id_bank){
 		$date = date_create();
-		$data=array(
-				"company"=>$this->session->userdata('company'),
-				"nominal"=>$this->input->post('nominal'),
-				"unique"=>$this->input->post('unique'),
-				"bank to"=>$this->input->post('id_bank_to'),
-				"created"=>$date->getTimestamp(),
-				"bank from"=>$id_bank,
-		);
-		$this->db->insert('acc topup',$data);
-		$id = $this->db->insert_id();
-		$this->_set_status_topup($id,'pending');
-		return ($this->db->affected_rows()>0) ? $id : FALSE;
+		$date = $date->getTimestamp();
+		if($this->_cek_topup($this->session->userdata('company'),
+					$this->input->post('unique'),
+					$date) <= 0 ){		
+			$data=array(
+					"company"=>$this->session->userdata('company'),
+					"nominal"=>$this->input->post('nominal'),
+					"unique"=>$this->input->post('unique'),
+					"bank to"=>$this->input->post('id_bank_to'),
+					"created"=>$date,
+					"bank from"=>$id_bank,
+			);
+			$this->db->insert('acc topup',$data);
+			$id = $this->db->insert_id();
+			$this->_set_status_topup($id,'pending');
+			return ($this->db->affected_rows()>0) ? $id : FALSE;
+		} else return TRUE ;
+		
+	}
+	
+	private function _cek_topup($c , $u, $cr){
+		$date = date_create();
+		$date = $date->getTimestamp();
+		$date = $date-$cr;
+		$this->db->select('COUNT(*) as jml')
+				 ->where('company',$c)
+				 ->where('`unique`',$u)
+				 ->where("$date < 30");
+		$r = $this->db->get('`acc topup`')->row();
+		return $r->jml;
 	}
 	
 	private function _set_status_topup($id_topup,$status){
