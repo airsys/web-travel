@@ -1,3 +1,4 @@
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.3.0/list.min.js"></script>
 <div class="box" id="cari">
 	<form id="form" method="post" name="form">
 		<div class="box-body">
@@ -27,7 +28,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-4 col-sm-6 col-xs-12">
+			<div class="col-md-2 col-sm-6 col-xs-12" style="padding: 0;margin: 0;">
 				<div class="col-md-4 col-sm-4 col-xs-4">
 					<label>ADULT</label>
 					<div class="input-group">
@@ -107,10 +108,12 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-md-2 col-sm-4 col-xs-4">
+				<div class="input-group" style="margin-top: 17px;">
+				<button id='btn-search' class="btn btn-flat btn-success btn-lg"><i class="fa fa-search"></i> | SEARCH</button>
+				</div>
+			</div>
 		</div><!-- /.box-body -->
-		<div class="box-footer">
-			<button id='btn-search' class="btn btn-flat btn-success btn-lg pull-right"><i class="fa fa-search"></i> | SEARCH</button>
-		</div>
 	</form>
 	<form id="booking" action="<?php echo base_url()?>airlines/booking" method="post">
 		<input id='h_from' name='from' type="hidden" value=''> 
@@ -129,7 +132,11 @@
 	</div><!-- /.box-header -->
 	<div class="box-body">
 		<div id="alert"></div>
-		<div class="result"></div>
+		<div class="result" id="result-id">
+			 <!--<button class="sort" data-sort="time_depart">Depart time</button>
+    		 <button class="sort" data-sort="total">Total</button>-->
+			<div class="list"></div>
+		</div>
 	</div>
 </div><!-- /.box-body -->
 
@@ -168,7 +175,7 @@ $(document).ready(function(){
         
         $(over).appendTo("#cari");
         event.preventDefault(); 
-        $(".result").empty();
+        $(".list").empty();
         $.ajax({
             url:  base_url+"airlines/get_bestprice",
             type: "post",
@@ -228,7 +235,8 @@ $(document).ready(function(){
                                     '<div class="row">'+
                                         '<div class="col-md-12">'+
                                             '<div class="col-md-10 col-sm-10 col-xs-12">'+
-                                                '<div class="pull-right container-fare_'+j+'">Rp <span id="fare_'+j+'">'+addCommas(data.fare)+'<\/span>(fare)+Rp '+addCommas(data.tax)+'<span id="tax_'+j+'"><\/span>(tax) <label>TOTAL = Rp <span id="total_'+j+'"> '+addCommas(data.fare+data.tax)+'<\/span><\/label><\/div>'+
+                                                '<div class="pull-right container-fare_'+j+'">Rp <span id="fare_'+j+'">'+addCommas(data.fare)+'<\/span>(fare)+Rp '+addCommas(data.tax)+'<span id="tax_'+j+'"><\/span>(tax) <label>TOTAL = Rp <span id="total_'+j+'">'+addCommas(data.fare+data.tax)+'<\/span><\/label><\/div>'+
+                                            	'<input type="hidden" class="total" data="'+(data.fare+data.tax)+'"  />'+
                                             '<\/div>'+                           
                                         '<button flight_key="'+data.flight_key+'" type="button" class="btn-booking button-booking_'+j+' col-md-2 col-sm-2 col-xs-12 btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>'+
                                         '<\/div>'+
@@ -236,7 +244,8 @@ $(document).ready(function(){
                                 '<\/div>'+                           
                            '<\/div>' ;
             var tampilan2 = '';
-            $(tampilan).appendTo($(".result"));
+            var time_depart = 'time_depart';
+            $(tampilan).appendTo($(".list"));
            // $(".container-fare_"+j).hide();
             //$(".container-loading_"+j).hide();
             for (i = 0; i <= data.flight_count-1; i++) {
@@ -246,7 +255,7 @@ $(document).ready(function(){
                 }
                 tampilan2 = '<div class="panel-body '+color+'">'+
                                 '<div class="col-md-6 text-center">'+
-                                    '<h4><span id="depart_'+j+'_'+i+'"><\/span> | <span id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h4>'+
+                                    '<h4><span id="depart_'+j+'_'+i+'"><\/span> | <span class="'+time_depart+'" id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h4>'+
                                 '<\/div>'+
                                 '<div class="col-md-3 col-xs-6">'+ 
                                     '<label><img id="image_'+j+'_'+i+'" src="" height="36" alt="" />&nbsp;<span id="flightid_'+j+'_'+i+'"><\/span><\/label> '+                
@@ -262,8 +271,7 @@ $(document).ready(function(){
                 $('#timearrive_'+j+'_'+i).text(data.segment[i].time_arrive);
                 $('#flightid_'+j+'_'+i).text(data.segment[i].flight_id);
                 $('#image_'+j+'_'+i).attr("src", data.airline_icon);
-                
-              //  KelasGenerate(j,i,data.segment[i].seat);
+                time_depart = '';
             }
         });
         
@@ -327,6 +335,13 @@ $(document).ready(function(){
 				$(elemen).find('input, textarea, button, select, img, label').prop('disabled',false);
 			}
         }
+        var opt_sort = {
+	    	valueNames: [ 'time_depart','total',
+	    				  { name: 'total', attr: 'data' },
+	    				 ]
+		};
+		var MySort = new List('result-id', opt_sort);
+		MySort.sort('total', { asc: true });
     }
     $('#from').on('change', function(){
     	$('#to').select2('open');
