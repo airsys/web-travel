@@ -48,7 +48,7 @@ class Report extends CI_Controller {
 	 	$data_table = $this->m_report->finance($array_range);
 	 	$data = array('content'=>'report/finance',
 					  'data_table'=>$data_table,
-					  'payfor'=>$this->m_report->finance_payfor($rangf,$rangt),
+					  //'payfor'=>$this->m_report->finance_payfor($rangf,$rangt),
 					  'date_range'=>$this->input->get('range'),
 					);
 	 	$this->load->view("index",$data);

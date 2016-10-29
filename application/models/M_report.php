@@ -40,7 +40,9 @@ class M_report extends CI_Model
 		$this->db->select(" b.id, `code`,
 							if(`code`='CT',nominal,0)as credit,
 							if(`code`='DI',nominal,0)as debet,
-							`pay for`,from_unixtime(b.created  ,'%d-%m-%Y %h:%i:%s') as created")
+							if(`code`='CT', (SELECT `unique` FROM `acc topup` WHERE id = b.`pay for`),
+											(SELECT `booking code` FROM `booking` WHERE id = b.`pay for`))as payfor,
+							from_unixtime(b.created  ,'%d-%m-%Y %h:%i:%s') as created, `pay for`")
 				 ->from("acc balance AS b")
 				 ->where('b.company',$this->session->userdata('company'));
 		return $this->db->get()->result();

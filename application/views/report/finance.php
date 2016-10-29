@@ -52,15 +52,15 @@
 					foreach($data_table as $value){ $i++;?>
 				    <tr>
 				      <td><?php echo $value->code ?></td>
-				      <td><?php echo $value->credit ?></td>
-				      <td><?php echo $value->debet ?></td>
-				      <td><?php echo $payfor[$value->code][$value->{'pay for'}]; ?></td>
+				      <td><?php echo number_format($value->credit) ?></td>
+				      <td><?php echo number_format($value->debet) ?></td>
+				      <td><?php echo $value->{'payfor'}; ?></td>
 				      <td><?php echo $value->created ?></td>
 				      <td>
 				      	<?php 
 				      		$link = '';
 				      		if($value->code=='CT') $link = base_url()."payment/topup_list/".$value->{'pay for'}."/finance";
-				      		if($value->code=='DI') $link = base_url()."airlines/retrieve/".$payfor[$value->code][$value->{'pay for'}]."/finance";
+				      		if($value->code=='DI') $link = base_url()."airlines/retrieve/".$value->{'payfor'}."/finance";
 				      	?>
 				      	<a href="<?php echo $link ;?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a>
 				      </td>
