@@ -66,7 +66,7 @@
 		          <label for="first_name" class="col-sm-2 control-label">Logo(optional)</label>
 		          <div class="col-sm-4">
 		          	<input type="file" disabled class="form-control" name="logo" id="logo">
-		          	<img src="<?= base_url().'assets/dist/img/logo/'.$data_post['logo'] ?>" alt="logo" height="150px;" class="margin">
+		          	<img src="<?= base_url().'assets/dist/img/logo/'.$data_post['logo'] ?>" alt="logo" height="75px;" class="margin">
 		          </div>
 		        </div>
 		        <div class="form-group">

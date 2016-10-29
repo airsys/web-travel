@@ -158,10 +158,11 @@ class Auth2 extends CI_Controller {
 				if ( ! $this->upload->do_upload('logo'))
 		        {
 		            $message = $this->upload->display_errors();
-		        }
+		        }else{
+					$data_u = $this->upload->data();
+					$data['logo'] = $data_u['file_name'];
+				}				
 				
-				$data_u = $this->upload->data();
-				$data['logo'] = $data_u['file_name'];
 				// check to see if we are updating the user
 			   if($this->ion_auth->update($user->id, $data))
 			    {
@@ -170,6 +171,8 @@ class Auth2 extends CI_Controller {
 					$message .= $this->ion_auth->errors();
 				}
 			}
+			$this->session->flashdata('message', $message);
+			redirect('auth2/profile/', 'refresh');
 		}
 		
 		$user = $this->ion_auth->user($id)->row_array();

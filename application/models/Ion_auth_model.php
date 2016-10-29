@@ -905,6 +905,7 @@ class Ion_auth_model extends CI_Model
 		    'email'      => $email,
 		    'company'    => $company,
 		    'master'     => 1,
+		    'logo'       => 'default-logo.png',
 		    "created on" => time(),
 		    'active'     => ($manual_activation === false ? 1 : 0)
 		);
