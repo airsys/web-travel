@@ -183,27 +183,24 @@
 	                </div>
 	                <div class="form-group">
 	                  <label for="InputPassword1">Password</label>
-	                  <input name="password" type="password" class="form-control" id="InputPassword1" placeholder="Password">
+	                	<div class="input-group">
+				            <input id="InputPassword1" name="password" type="password" class="form-control" placeholder="Password">
+				            <span id="show-password" class="input-group-addon"><i id="eye" class="fa fa-eye-slash"></i></span>
+				        </div>
 	                </div>
+	                 
 	                <div class="form-group">
 	                <div class="checkbox">
 	                  <label>
 	                    <input type="checkbox" name="remember" value="1"> Remember me
 	                  </label>
-	                  <label class="pull-right">
-	                    <input id="show-password" type="checkbox" value="1"> Show password
-	                  </label>
 	                </div>
-	                </div>
-	                <div class="text-center">
-	                	<label>
-		                	<a class="btn btn-default btn-xs" href="<?php echo base_url() ?>auth2/forgot_password" > Forgot Password</a>	                
-		                </label>
 	                </div>
 	              </div>
 	              <!-- /.box-body -->
 		      </div>
 		      <div class="modal-footer">
+		        <a class="pull-left" style="color:#ffffff;  text-decoration: underline; margin-top: 5px;" href="<?php echo base_url() ?>auth2/forgot_password" > Forgot Password</a>	 
 		      	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		        <button id="login" type="submit" class="btn btn-success">Sign in</button>
 		      </div>
@@ -227,8 +224,12 @@
 			    sh_pass++;
 			    if(sh_pass%2==0){
 					$('#InputPassword1').get(0).setAttribute('type', 'password');
+					 $("#eye").removeClass("fa-eye");
+					 $("#eye").addClass("fa-eye-slash");
 				}else{
 					$('#InputPassword1').get(0).setAttribute('type', 'text');
+					$("#eye").removeClass("fa-eye-slash");
+					$("#eye").addClass("fa-eye");
 				}
 			});
 			function callmodal(){
@@ -294,6 +295,8 @@
 		});
 		
 		$('#login-header').on('click', function() {
+			setTimeout(function() { $('input[name="identity"]').focus() }, 1100);
+			$('input[name="identity"]').val('');
 			if(login==1){
 				$.get( base_url+'auth2/logout', function(data) {
 			         window.location = base_url+"airlines";
