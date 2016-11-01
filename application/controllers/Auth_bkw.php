@@ -23,14 +23,14 @@ class Auth_bkw extends CI_Controller {
 			//echo $this->url."usercheck?user=$data[identity]&pass=$pass";die();
 			$data_login = json_decode(file_get_contents($this->url."usercheck?user=$data[identity]&pass=$pass"));
 			if($data_login->status==1){
-				$reg = $this->register($data['identity'], $pass, 
+				$reg = $this->register($data_login->data->username, $pass, 
 							 			$data_login->data->email,
 							 			$data_login->data->name, 
 							 			$data_login->data->phone);					
 				$hasil['message'] = 'Berhasil';
 				$hasil['data']=1;
 				$code = 200;
-				$this->ion_auth->login($data['identity'], $pass,TRUE);
+				$this->ion_auth->login($data_login->data->username, $pass,TRUE);
 			}else{
 				$hasil['message'] = $data_login->message;
 				$code = 400;
