@@ -2,15 +2,15 @@
 	<div class="box-header with-border">
 	</div>
 	<form id="form" method="post" name="form">
-		<div class="box-body" style="padding-left: 30px;padding-right: 30px;left: 6%;position: relative;">
+		<div class="box-body" style="padding-left: 30px;padding-right: 60px;left: 6%;position: relative;">
 			<div class="col-search3">
 				<div class="form-group">
 					<label>LEAVING FROM</label>
-                    <div class="input-group">
+                    <div class="input-group ">
                         <div class="input-group-addon" style="background-color: #d2d6de;">
                             <i class="fa fa-map-marker"></i>
                         </div> 
-                        <select class="form-control bandara" id='from' name='from' style="width: 100%;">
+                        <select class="form-control bandara" id='from' name='from' style="width: 101%;" >
 							<option value=""></option>
 						</select>
                         </div>
@@ -23,7 +23,7 @@
                         <div class="input-group-addon" style="background-color: #d2d6de;">
                             <i class="fa fa-map-marker"></i>
                         </div>
-                                <select class="form-control bandara" id='to' name='to' style="width: 100%;">
+                                <select class="form-control bandara" id='to' name='to' style="width: 101%;">
 							         <option value=""></option>
 						      </select>
                     </div>
@@ -32,11 +32,12 @@
 			<div class="col-search2" style="padding-right: 0;margin-right: 0;">
 				<div class="form-group">
 					<label>DEPARTING ON</label>
-					<div class="input-group">
+					<div class="input-group" style="width: 100%;">
 						<div class="input-group date">
 							<div class="input-group-addon" style="background-color: #d2d6de;">
 								<i class="fa fa-calendar"></i>
-							</div><input class="form-control pull-right" id="datepicker" name='date' required="" type="text" style="padding-right: 50px;">
+							</div><input class="form-control pull-right" id="datepicker" name='date' required="" type="text" readonly="readonly" 
+                                        style="padding-right: 50px;background-color: white;">
 						</div>
 					</div>
 				</div>

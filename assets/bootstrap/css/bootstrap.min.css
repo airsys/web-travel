@@ -19,3 +19,23 @@
     text-align: center;
     padding-bottom: 5px;
 }
+@media (min-width: 530px) and (max-width: 569px) {
+  .select2 {
+    max-width: 350px;
+  }
+ }
+@media (min-width: 400px) and (max-width: 529px) {
+  .select2 {
+    max-width: 250px;
+  }
+ }
+ @media (min-width: 360px) and (max-width: 399px) {
+  .select2 {
+    max-width: 200px;
+  }
+ }
+ @media (min-width: 300px) and (max-width: 359px) {
+  .select2 {
+    max-width: 170px;
+  }
+ }
