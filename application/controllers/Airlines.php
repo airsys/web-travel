@@ -81,7 +81,7 @@ class Airlines extends CI_Controller {
             ->set_output($hasil);
 	}
 	
-	function get_bestprice(){		
+	function get_bestprice(){
 		$data = $this->input->post();
 		$this->form_validation->set_rules('from', 'Asal Keberangkatan', 'required');
 		$this->form_validation->set_rules('to', 'Tujuan', 'required');
@@ -96,7 +96,7 @@ class Airlines extends CI_Controller {
 			$json = $this->curl->simple_get("$this->url/search/best_price?from=$data[from]&to=$data[to]&date=$data[date]&adult=$data[adult]&child=$data[child]&infant=$data[infant]");
 			//$json = $this->jsonbestprice();		
 			$array = json_decode ($json);
-			//print_r("");die();
+			//print_r($array);die();
 			
 			if( ( empty($array) || $array->code==404 || $array->code==204) ){
 				if(empty($array)){
@@ -142,6 +142,7 @@ class Airlines extends CI_Controller {
 			$key .= '|'.$data['key'][$i];
 		}
 		$key = substr($key, 1);
+		//print_r($key);die();
 		$json = $this->curl->simple_get("$this->url/get_price?flight_key=$key");
 		//$json = $this->getfare();
 		
@@ -213,10 +214,18 @@ class Airlines extends CI_Controller {
 		unset($data['full_name']);
 		unset($data['email']);
 		unset($data['phone']);
-		unset($data['password']);
 		unset($data['password_confirm']);
+		unset($data['password_register']);
 		
 		unset($data['position']);
+		unset($data['date']);
+		unset($data['from']);
+		unset($data['to']);
+		unset($data['airline']);
+		unset($data['adult_count']);
+		unset($data['child_count']);
+		unset($data['infant_count']);
+		unset($data['passanger_count']);
 		
 		$this->form_validation->set_rules('contact_title', 'contact title', 'required');
 		$this->form_validation->set_rules('contact_name', 'contact name', 'required');
@@ -271,8 +280,9 @@ class Airlines extends CI_Controller {
 			            ->set_status_header(400)
 			            ->set_output('Anda terindikasi Group booking');
 				}
-				
+				//print_r($data); echo "---";die();
 				$json = $this->curl->simple_post("$this->url/book", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
+				//echo $json;die();
 				//$json = $this->jsonbooking();
 				
 				$array = json_decode ($json);
@@ -505,7 +515,7 @@ class Airlines extends CI_Controller {
 		$this->load->view("index",$data);
 	}
 	function search_bestprice(){
-		$data = array('content'=>'airlines/search_bestprice');
+		$data = array('content'=>'airlines/search_bestprice2');
 		$this->load->view("index",$data);
 	}
 }

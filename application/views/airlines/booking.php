@@ -136,7 +136,7 @@
         <div class="col-md-2 col-sm-3 col-xs-3">
           <div class="form-group">
             <label>Child Title <?php echo $i; ?></label>
-            <select required id='chlid_title_<?php echo $i; ?>' name='chlid_title_<?php echo $i; ?>' class="form-control">
+            <select required id='child_title_<?php echo $i; ?>' name='child_title_<?php echo $i; ?>' class="form-control">
               <option value="Mstr">Mstr</option>
               <option value="Miss">Miss</option>
             </select>
@@ -145,7 +145,20 @@
         <div class="col-md-5 col-sm-9 col-xs-9">
           <div class="form-group">
             <label>Child Name <?php echo $i; ?></label>
-            <input required type='text' id='chlid_name_<?php echo $i; ?>' name='chlid_name_<?php echo $i; ?>' class="form-control" />
+            <input required type='text' id='child_name_<?php echo $i; ?>' name='child_name_<?php echo $i; ?>' class="form-control" />
+          </div>
+        </div>        
+        <div class="col-md-2 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Child Birth Date <?php echo $i; ?></label>
+            <div class="input-group">
+              <div class="input-group date">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input required id='child_birth_date_<?php echo $i; ?>' name='child_birth_date_<?php echo $i; ?>' type="text" class="datepicker form-control pull-right">
+              </div>
+            </div>
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -253,8 +266,8 @@
 $(document).ready(function(){
     $('.datepicker').datepicker({
       autoclose: true,
-	  format: 'dd-mm-yyyy', 
-	   todayHighlight: true,
+	  dateFormat: 'dd-mm-yy', 
+	  todayHighlight: true,
     });
     
      //iCheck for checkbox and radio inputs
