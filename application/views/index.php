@@ -310,7 +310,8 @@
 			}else{
 				window.location = base_url+"auth2/register/";
 			}	
-		});	
+		});
+		
 	var base_url ="<?php echo base_url() ?>";
 	<?php if($this->ion_auth->logged_in()==0){ 
 		echo "var login = 0;";

@@ -717,7 +717,6 @@ function _init() {
  * @usage $("#todo-widget").todolist( options );
  */
 (function ($) {
-
   'use strict';
 
   $.fn.todolist = function (options) {
