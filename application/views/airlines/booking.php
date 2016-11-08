@@ -268,6 +268,8 @@ $(document).ready(function(){
       autoclose: true,
 	  dateFormat: 'dd-mm-yy', 
 	  todayHighlight: true,
+	  changeMonth: true,
+      changeYear: true
     });
     
      //iCheck for checkbox and radio inputs
