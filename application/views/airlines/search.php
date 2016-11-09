@@ -1,5 +1,6 @@
-<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.3.0/list.min.js"></script>
 <div class="box" id="cari">
+	<div class="box-header with-border">
+	</div>
 	<form id="form" method="post" name="form">
 		<div class="box-body" style="padding-left: 30px;padding-right: 60px;left: 6%;position: relative;">
 			<div class="col-search3">
@@ -31,7 +32,7 @@
 			<div class="col-search2" style="padding-right: 0;margin-right: 0;">
 				<div class="form-group">
 					<label>DEPARTING ON</label>
-					<div class="input-group" style="width: 100%;">
+					<div class="input-group" style="width: 101%;">
 						<div class="input-group date">
 							<div class="input-group-addon" style="background-color: #d2d6de;">
 								<i class="fa fa-calendar"></i>
@@ -124,11 +125,19 @@
            <div class="col-md-1" style="padding-right: 0;margin-right: 0;padding-left: 0;margin-left: 0;">
                 <div class="form-group">
                     <label>PASSENGER</label>
-                    <div class="input-group margin" style="margin: 0px 0px 0px 0px;">
+                    <div class="input-group margin" style="margin: 0px 0px 0px 0px; width: 50%;">
+                    <i class="fa fa-user" style="
+                                                padding-top: 10px;
+                                                width: 35px;
+                                                height: 34px;
+                                                border-top-width: 1px;
+                                                padding-left: 11px;
+                                                background-color: #d2d6de;">
+                    </i> 
                     <div class="input-group-btn ">
-                            <button type="button" class="btn btn-flat dropdown-toggle" data-toggle="dropdown" style="padding-right: 0px;padding-top: 0px;padding-bottom: 0px;">
-                                <i class="fa fa-user"></i> 
-                                <input type="text" class="" id="passanger" value="1" name="passanger" style="width: 71px;height: 32px; border-width: 0px 0px 0px 0px; margin-left: 10px;text-align: center" readonly>
+                            <button type="button" class="btn btn-flat dropdown-toggle" data-toggle="dropdown" style="padding-right: 0px;padding-top: 0px;padding-bottom: 0px;padding-left: 0px;">
+                                
+                                <input type="text" class="" id="passanger" value="1" name="passanger" style="width: 71px;height: 32px; border-width: 0px 0px 0px 0px;text-align: center" readonly>
                                 <input type="text" class="" id="triggerPass" value="1" name="triggerPass" style="width: 30px;height: 32px; border-width: 0px 0px 0px 0px; margin-left: 0px;text-align: center" hidden>
                             </button>
                                  <ul class="dropdown-menu" role="menu">
@@ -183,6 +192,9 @@
 				</div>
 			</div>
 		</div><!-- /.box-body -->
+		<div class="box-footer">
+			
+		</div>
 	</form>
 	<form id="booking" action="<?php echo base_url()?>airlines/booking" method="post">
 		<input id='h_from' name='from' type="hidden" value=''> 
@@ -201,9 +213,7 @@
 	</div><!-- /.box-header -->
 	<div class="box-body">
 		<div id="alert"></div>
-		<div id="result-id" class="result">
-			<div class="list"></div>
-		</div>
+		<div class="result"></div>
 	</div>
 </div><!-- /.box-body -->
 
@@ -254,7 +264,7 @@ $(document).ready(function(){
         
         $(over).appendTo("#cari");
         event.preventDefault(); 
-        $(".list").empty();
+        $(".result").empty();
         $.ajax({
             url:  base_url+"airlines/search",
             type: "post",
@@ -323,8 +333,7 @@ $(document).ready(function(){
                                 '<\/div>'+                           
                            '<\/div>' ;
             var tampilan2 = '';
-            var time_depart = 'time_depart';
-            $(tampilan).appendTo($(".list"));
+            $(tampilan).appendTo($(".result"));
             $(".container-fare_"+j).hide();
             $(".container-loading_"+j).hide();
             for (i = 1; i <= data.flight_count; i++) {
@@ -334,7 +343,7 @@ $(document).ready(function(){
                 }
                 tampilan2 = '<div class="panel-body '+color+'">'+
                                 '<div class="col-md-6 text-center">'+
-                                    '<h4><span id="depart_'+j+'_'+i+'"><\/span> | <span class="'+time_depart+'" id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h4>'+
+                                    '<h4><span id="depart_'+j+'_'+i+'"><\/span> | <span id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h4>'+
                                 '<\/div>'+
                                 '<div class="col-md-3 col-xs-6">'+ 
                                     '<label><img id="image_'+j+'_'+i+'" src="" height="36" alt="" />&nbsp;<span id="flightid_'+j+'_'+i+'"><\/span><\/label> '+                
@@ -352,7 +361,7 @@ $(document).ready(function(){
                 $('#timearrive_'+j+'_'+i).text(data.segment[i].time_arrive);
                 $('#flightid_'+j+'_'+i).text(data.segment[i].flight_id);
                 $('#image_'+j+'_'+i).attr("src", data.segment[i].airline_icon);
-                time_depart = '';
+                
                 KelasGenerate(j,i,data.segment[i].seat);
             }
         });
@@ -417,11 +426,6 @@ $(document).ready(function(){
 				$(elemen).find('input, textarea, button, select, img, label').prop('disabled',false);
 			}
         }
-        var opt_sort = {
-	    	valueNames: [ 'time_depart' ]
-		};
-		var MySort = new List('result-id', opt_sort);
-		MySort.sort('time_depart', { asc: true });
     }
     $('#from').on('change', function(){
     	$('#to').select2('open');
@@ -432,6 +436,7 @@ $(document).ready(function(){
     $('#datepicker').on('change', function(){
     	$("#adult").focus();
     });
+    
 });
 
 /*passanger*/
