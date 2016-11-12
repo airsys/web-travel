@@ -11,6 +11,8 @@
 			padding: 0px;
 		}
 	.tooltip_templates { display: none; }
+	.panel-group { margin-bottom: 10px; }
+	label { margin-bottom: 2px;}
 </style>
 <div class="box" id="cari">
 	<form id="form" method="post" name="form">
@@ -275,25 +277,6 @@ $(document).ready(function(){
         });
         
   });
-
-    function KelasGenerate(j,i,seat){
-        var array_kelas = {'promo':['T','V','X','R','O','U'],'ekonomi':['Y','A','G','W','S','B','H','K','L','M','N','Q'],'bisnis':['C','J','D','I','Z']};
-        $.each( array_kelas, function( key, value ) {
-           var group = $('<optgroup label="' + key + '" />');
-                group.appendTo($('#kelas_'+j+'_'+i));
-                for (x = 0; x < value.length; x++) {
-                    if(seat[value[x]]!==undefined){
-                        $($('#kelas_'+j+'_'+i))
-                          .append($('<option value="'+seat[value[x]].flight_key+'">')
-                          .text('class '+value[x]+' - '+seat[value[x]].available));
-                    } else{
-                    	$($('#kelas_'+j+'_'+i))
-                          .append($('<option disabled value="">')
-                          .text('class '+value[x]+' - 0'));
-					}
-                }
-        }); 
-    }
     
     function json_tabel(json){
         var j = 0 ;
@@ -324,86 +307,38 @@ $(document).ready(function(){
                            '<\/div>' ;
             var tampilan2 = '';
             var time_depart = 'time_depart';
+            var flights = '';
             $(tampilan).appendTo($(".list"));
            // $(".container-fare_"+j).hide();
             //$(".container-loading_"+j).hide();
             for (i = 0; i <= data.flight_count-1; i++) {
-            	var harga = '';
             	var button = '';
                 color = 'bg-success';
                 if(i%2 == 0){
                     color = 'bg-info';
                 }
-                harga = '';
-                button = '<div class="col-md-2 col-xs-12"> '+ 
-  '<div class="pull-right container-fare_'+j+'">Rp <span id="fare_'+j+'">'+addCommas(data.fare)+'<\/span>(fare)+Rp '+addCommas(data.tax)+'<span id="tax_'+j+'"><\/span>(tax) <label>TOTAL = Rp <span id="total_'+j+'">'+addCommas(data.fare+data.tax)+'<\/span><\/label><\/div>'+
-  '<input type="hidden" class="total" data="'+(data.fare+data.tax)+'"  />' +
-'<\/div>'+
-'<div class="col-md-2 col-xs-12"> '+ 
-  '<button flight_key="'+data.flight_key+'" type="button" class="btn-booking button-booking_'+j+' col-md-12 col-sm-12 col-xs-12 btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>' +
-'<\/div>';
-                if(i != 0) { harga = ''; button=''; display='display:none;';}
+               
+                if(i != 0) { display='display:none;';}
                 tampilan2 = '<div class="panel-body '+' col-md-7 col-xs-12" style="'+display+'">'+
                                 '<div class="col-md-6 text-center">'+
                                     '<h4 style="display:none"><span id="depart_'+j+'_'+i+'"><\/span> | <span class="'+time_depart+'" id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h4>'+
                                     '<h4><span>'+data.area_depart+'<\/span> | <span>'+data.time_depart+'<\/span> - <span>'+data.area_arrive+'<\/span> | <span>'+data.time_arrive+'<\/span><\/h4>'+
                                 '<\/div>'+
-                                '<div class="col-md-6 col-xs-12 text-center">'+ 
-                                    '<label><img id="image_'+j+'_'+i+'" src="" height="36" alt="" />&nbsp;<span id="flightid_'+j+'_'+i+'"><\/span><\/label> '+                
+                                '<div id="image_'+j+'" class="col-md-6 col-xs-12 text-center">'+ 
+                                               
                                 '<\/div>'+
                            '<\/div>';
+                flights = flights + '<label><img id="image_'+j+'_'+i+'" src="'+data.airline_icon+'" height="25" alt="" />&nbsp;<span id="flightid_'+j+'_'+i+'">'+data.segment[i].flight_id+'<\/span><\/label><br>';
                 $(tampilan2).appendTo($("#group"+j));
                 $('#depart_'+j+'_'+i).text(data.segment[i].area_depart);
                 $('#arrive_'+j+'_'+i).text(data.segment[i].area_arrive);
                 $('#timedepart_'+j+'_'+i).text(data.segment[i].time_depart);
                 $('#timearrive_'+j+'_'+i).text(data.segment[i].time_arrive);
-                $('#flightid_'+j+'_'+i).text(data.segment[i].flight_id);
-                $('#image_'+j+'_'+i).attr("src", data.airline_icon);
+              //  $('#flightid_'+j+'_'+i).text(data.segment[i].flight_id);
+               // $('#image_'+j+'_'+i).attr("src", data.airline_icon);
                 time_depart = '';
             }
-        });
-        
-        $('.kelas').on('change', function(){
-            $("#h_flight_key").val('');
-            var data = $(this).attr('data').split('_'); // 0.urutan 1.segmen 2.flight_count
-            var flightcount = 0;
-            for (x = 1; x <= data[2]; x++) {
-                if($('#kelas_'+data[0]+'_'+x).val()!=''){
-                    flight_key[x] = $('#kelas_'+data[0]+'_'+x).val();
-                    flightcount++;
-                    if(flightcount == data[2]){
-                    	disable("#group-panel"+data[0]);
-                        $(".container-loading_"+data[0]).show();
-                        $.ajax({
-                            url:  base_url+"airlines/get_fare",
-                            type: "post",
-                            data: {
-                                key : flight_key
-                            },
-                            success: function(d) {
-                                disable("#group-panel"+data[0],false);
-                                $('#fare_'+data[0]).text(addCommas(d.fare));
-                                $('#tax_'+data[0]).text(addCommas(d.tax));
-                                $('#total_'+data[0]).text(addCommas(d.fare+d.tax));
-                                $(".container-fare_"+data[0]).show();
-                                $(".container-loading_"+data[0]).hide();
-                                $(".button-booking_"+data[0]).removeClass("disabled");
-                                $(".button-booking_"+data[0]).removeClass("btn-default");
-                                $(".button-booking_"+data[0]).addClass("btn-success");
-                                $(".button-booking_"+data[0]).prop('disabled',false);
-                                $(".button-booking_"+data[0]).attr("flight_key", d.flight_key);
-                            },
-                             error: function (request, status, error) {
-                                disable("#group-panel"+data[0],false);
-                                $(".button-booking_"+data[0]).addClass("btn-success");                                
-                                $(".button-booking_"+data[0]).removeClass("btn-default");
-                                showalert(error,'warning');
-                                $(".container-loading_"+data[0]).hide();
-                            }
-                        });
-                    }
-                }
-            }
+            $(flights).appendTo($("#image_"+j));
         });
         
         $('.btn-booking').on('click', function(){
