@@ -1,4 +1,6 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.3.0/list.min.js"></script>
+<script src="<?php echo base_url(); ?>/assets/plugins/tooltip/tooltipster.bundle.min.js"></script>
+<link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/tooltip/tooltipster.bundle.min.css" />
 <div class="box" id="cari">
 	<form id="form" method="post" name="form">
 		<div class="box-body" style="padding-left: 30px;padding-right: 60px;left: 6%;position: relative;">
@@ -9,7 +11,7 @@
                         <div class="input-group-addon" style="background-color: #d2d6de;">
                             <i class="fa fa-map-marker"></i>
                         </div> 
-                        <select class="form-control bandara" id='from' name='from' style="width: 101%;" >
+                        <select class="form-control bandara" id='from' required name='from' style="width: 101%;" >
 							<option value=""></option>
 						</select>
                         </div>
@@ -22,7 +24,7 @@
                         <div class="input-group-addon" style="background-color: #d2d6de;">
                             <i class="fa fa-map-marker"></i>
                         </div>
-                                <select class="form-control bandara" id='to' name='to' style="width: 101%;">
+                                <select class="form-control bandara" required id='to' name='to' style="width: 101%;">
 							         <option value=""></option>
 						      </select>
                     </div>
@@ -35,7 +37,7 @@
 						<div class="input-group date">
 							<div class="input-group-addon" style="background-color: #d2d6de;">
 								<i class="fa fa-calendar"></i>
-							</div><input class="form-control pull-right" id="datepicker" name='date' required="" type="text" readonly="readonly" 
+							</div><input class="form-control pull-right" id="datepicker" name='date' required type="text" 
                                         style="padding-right: 50px;background-color: white;">
 						</div>
 					</div>
@@ -185,10 +187,17 @@
                 </div>
             </div>
 			<div class="col-search2">
-				<div class="input-group" style="margin-top: 25px;">
-				<button id='btn-search' class="btn btn-flat btn-success btn-lg" style="height: 34px;padding-top: 0px;padding-bottom: 0px;">
-                    <i class="fa fa-search"></i> | SEARCH</button>
-				</div>
+				 <input type="hidden" name="tipe" id="tipe" value="all"/>
+				 <div class="btn-group" style="margin-top: 25px;">
+                  <button type="submit" id='btn-search' class="btn btn-success btn-flat btn-lg" style="height: 34px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-search"></i> | SEARCH</button>
+                  <button type="button" class="btn btn-success btn-flat dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li style="text-align: center" ><button class="sub-search btn btn-sm btn-success btn-flat" type="submit" id='search-lion' >Lion Air</button></li>
+                  </ul>
+                </div>
 			</div>
 		</div><!-- /.box-body -->
 	</form>
@@ -233,8 +242,61 @@ $(document).ready(function(){
            dateFormat: 'dd-mm-yy', 
            minDate: 0,
            numberOfMonths: 2,
-    });
+    	});
     };
+    
+    $('body').on('mouseenter', '.tooltips:not(.tooltipstered)', function(){
+         flights = $(this).attr('data-count').split("_");
+         var itenary = '';
+         for (a = 0; a < flights[0]; a++) {
+         	itenary = itenary + $('#depart_'+flights[1]+'_'+a).text() + ' | ' + $('#timedepart_'+flights[1]+'_'+a).text() + ' - ';
+         	itenary = itenary + $('#arrive_'+flights[1]+'_'+a).text() + ' | ' + $('#timearrive_'+flights[1]+'_'+a).text() + '';
+         	itenary = itenary + '<br>';
+         }
+         
+         $(this).tooltipster({
+            contentAsHTML: true,
+            animation: 'grow',
+            position: 'top',
+            contentCloning: true,
+            interactive: true,
+            content:'',
+            functionFormat: function(instance, helper, content){
+		        var displayedContent = itenary;		        
+		        return displayedContent;
+		    },		    
+            trigger: 'custom',
+		    triggerOpen: {
+		        mouseenter: true,
+		        touchstart: true,
+		        tap: true
+		    },
+		    triggerClose: {
+		        mouseleave: true,
+		    }
+         });
+         $(this).tooltipster('open');
+    });
+    
+    $('body').on('mouseenter', '.tooltips-harga:not(.tooltipstered)', function(){
+        $(this).tooltipster({
+            contentAsHTML: true,
+            animation: 'grow',
+            position: 'top',
+            contentCloning: true,
+            interactive: true,
+            trigger: 'custom',
+		    triggerOpen: {
+		        mouseenter: true,
+		        touchstart: true,
+		        tap: true
+		    },
+		    triggerClose: {
+		        mouseleave: true,
+		    }
+         });
+         $(this).tooltipster('open');
+    });
 
     $(".bandara").select2();
     var bandara = [] ;
@@ -246,8 +308,20 @@ $(document).ready(function(){
     	$('#from').select2('open');
     });
     
-  $("#result-content").hide();
-  $("#form").on("submit", function(event) {
+    $(".sub-search").on('click',function(event) {
+    	$("#tipe").val('lion');
+    });
+    
+    $("#btn-search").on('click',function(event) {
+    	$("#tipe").val('all');
+    });
+    
+	$("#form").on('submit',function(event) {
+		var tipe = $("#tipe").val();
+		var mylink = "airlines/search";
+		if(tipe == 'all'){
+			 mylink = "airlines/get_bestprice";
+		}
         $("#h_from").val($("#from").val());
         $("#h_to").val($("#to").val());
         $("#h_date").val($("#datepicker").val());
@@ -264,12 +338,17 @@ $(document).ready(function(){
         event.preventDefault(); 
         $(".list").empty();
         $.ajax({
-            url:  base_url+"airlines/search",
+            url:  base_url+mylink,
             type: "post",
-            data: $(this).serialize(),
+            data: $('#form').serialize(),
             success: function(d) {
                 $('#overlay').remove();
-                json_tabel(d);
+                if(tipe != 'all'){
+					 json_tabel(d);
+				} else{
+					json_tabel2(d);
+				}
+                
                 $("#btn-search").removeClass('btn-warning');
 		        $("#btn-search").addClass('btn-success');
 		        $("#btn-search").children("i").addClass('fa-search');
@@ -289,6 +368,9 @@ $(document).ready(function(){
         });
         
   });
+    
+  
+  $("#result-content").hide();
 
     function KelasGenerate(j,i,seat){
     	var array_kelas = {'promo':['U','O','R','X','V','T'],'ekonomi':['Q','N','M','L','K','H','B','S','W','G','A','Y'],'bisnis':['Z','I','D','J','C']};
@@ -431,6 +513,96 @@ $(document).ready(function(){
  		var MySort = new List('result-id', opt_sort);		
  		MySort.sort('time_depart', { asc: true });
     }
+	
+	function json_tabel2(json){
+        var j = 0 ;
+        var color = '';
+        var flight_key = [];
+        $.each(json, function() {
+            j++;
+            data = this;
+            var transit = 'Langsung';
+            var display = '';
+            if(data.flight_count > 1) transit = "Transit " + (parseInt(data.flight_count)-1);
+            var tampilan = '<div id="group-panel'+j+'" class="panel-group">'+
+                                '<div class="panel panel-info ">'+
+                                    '<div id="group'+j+'"><\/div>'+
+                                    '<div style="margin:7px;">'+
+                                    '<div class="col-md-1 col-xs-6 text-center"><label data-count="'+data.flight_count+'_'+j+'" class="tooltips label bg-green" >'+transit+'</label></div>'+
+                                    '<div class="col-md-2 col-xs-6"> '+ 
+									  '<div class=" text-center container-fare_'+j+'"><label>Rp <span class="tooltips-harga" title="Rp '+addCommas(data.fare)+'(fare) + Rp '+addCommas(data.tax)+'(tax)" id="total_'+j+'">'+addCommas(data.fare+data.tax)+'<\/span><\/label><\/div>'+
+									  '<input type="hidden" class="total" data="'+(data.fare+data.tax)+'"  />' +
+									'<\/div>'+
+									'</div>'+
+									'<div class="col-md-2 col-xs-12"> '+ 
+									  '<button flight_key="'+data.flight_key+'" type="button" class="center-block btn-booking button-booking_'+j+' btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>' +
+									'<\/div>'+
+                                    '<div class="row">'+
+                                    '<\/div>'+
+                                '<\/div>'+                           
+                           '<\/div>' ;
+            var tampilan2 = '';
+            var time_depart = 'time_depart';
+            var flights = '';
+            $(tampilan).appendTo($(".list"));
+           // $(".container-fare_"+j).hide();
+            //$(".container-loading_"+j).hide();
+            for (i = 0; i <= data.flight_count-1; i++) {
+            	var button = '';
+                color = 'bg-success';
+                if(i%2 == 0){
+                    color = 'bg-info';
+                }
+               
+                if(i != 0) { display='display:none;';}
+                tampilan2 = '<div class="panel-body '+' col-md-7 col-xs-12" style="'+display+'">'+
+                                '<div class="col-md-6 text-center">'+
+                                    '<h4 style="display:none"><span id="depart_'+j+'_'+i+'"><\/span> | <span class="'+time_depart+'" id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h4>'+
+                                    '<h4><span>'+data.area_depart+'<\/span> | <span>'+data.time_depart+'<\/span> - <span>'+data.area_arrive+'<\/span> | <span>'+data.time_arrive+'<\/span><\/h4>'+
+                                '<\/div>'+
+                                '<div id="image_'+j+'" class="col-md-6 col-xs-12 text-center">'+ 
+                                               
+                                '<\/div>'+
+                           '<\/div>';
+                flights = flights + '<label><img id="image_'+j+'_'+i+'" src="'+data.airline_icon+'" height="25" alt="" />&nbsp;<span id="flightid_'+j+'_'+i+'">'+data.segment[i].flight_id+'<\/span><\/label><br>';
+                $(tampilan2).appendTo($("#group"+j));
+                $('#depart_'+j+'_'+i).text(data.segment[i].area_depart);
+                $('#arrive_'+j+'_'+i).text(data.segment[i].area_arrive);
+                $('#timedepart_'+j+'_'+i).text(data.segment[i].time_depart);
+                $('#timearrive_'+j+'_'+i).text(data.segment[i].time_arrive);
+              //  $('#flightid_'+j+'_'+i).text(data.segment[i].flight_id);
+               // $('#image_'+j+'_'+i).attr("src", data.airline_icon);
+                time_depart = '';
+            }
+            $(flights).appendTo($("#image_"+j));
+        });
+        
+        $('.btn-booking').on('click', function(){
+            $("#h_flight_key").val($(this).attr('flight_key'));
+			booking();
+        });
+        
+        function booking(){
+        	$('#booking').submit()
+        }
+        
+        function disable(elemen,dis=true){
+        	$(elemen).css("cursor", "wait");
+			$(elemen).find('input, textarea, button, select, img, label').prop('disabled',true);
+        	if(dis==false){
+				$(elemen).css("cursor", "auto");
+				$(elemen).find('input, textarea, button, select, img, label').prop('disabled',false);
+			}
+        }
+        var opt_sort = {
+	    	valueNames: [ 'time_depart','total',
+	    				  { name: 'total', attr: 'data' },
+	    				 ]
+		};
+		var MySort = new List('result-id', opt_sort);
+		MySort.sort('total', { asc: true });
+    }
+
     $('#from').on('change', function(){
     	$('#to').select2('open');
     });

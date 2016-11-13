@@ -60,7 +60,6 @@
 		        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
 		          <ul class="nav navbar-nav">
 		            <li class="menu-bar"><a href="<?php echo base_url() ?>">Search Ticket <span class="sr-only">(current)</span></a></li>
-		            <li class="menu-bar"><a href="<?php echo base_url() ?>airlines/search_bestprice">Search Best  Fare <span class="sr-only"></span></a></li>
 		            <?php if($this->ion_auth->logged_in()){ ?>
 		            <li class="menu-bar"><a href="<?php echo base_url().'airlines/retrieve' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
 		            <li class="dropdown">
