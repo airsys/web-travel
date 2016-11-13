@@ -1,6 +1,11 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.3.0/list.min.js"></script>
 <script src="<?php echo base_url(); ?>/assets/plugins/tooltip/tooltipster.bundle.min.js"></script>
 <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/tooltip/tooltipster.bundle.min.css" />
+<style>
+	.err {
+    	color: #ff1313;
+	}
+</style>
 <div class="box" id="cari">
 	<form id="form" method="post" name="form">
 		<div class="box-body" style="padding-left: 30px;padding-right: 60px;left: 6%;position: relative;">
@@ -14,7 +19,7 @@
                         <select class="form-control bandara" id='from' required name='from' style="width: 101%;" >
 							<option value=""></option>
 						</select>
-                        </div>
+                    </div>
 				</div>
 			</div>
 			<div class="col-search3">
@@ -195,7 +200,7 @@
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul class="dropdown-menu" role="menu">
-                    <li style="text-align: center" ><button class="sub-search btn btn-sm btn-success btn-flat" type="submit" id='search-lion' >Lion Air</button></li>
+                    <li style="text-align: center" ><a href="#" class="btn btn-flat" type="submit" id='search-lion' >Lion Air</a></li>
                   </ul>
                 </div>
 			</div>
@@ -307,16 +312,50 @@ $(document).ready(function(){
         });
     	$('#from').select2('open');
     });
+    $('.bandara').on('change', function() {
+	    $(this).valid();
+	});
     
-    $(".sub-search").on('click',function(event) {
+    $("#search-lion").on('click',function(event) {
     	$("#tipe").val('lion');
+     	if($("#form").valid()){			
+    		coba(); 
+		}
     });
     
     $("#btn-search").on('click',function(event) {
     	$("#tipe").val('all');
     });
     
-	$("#form").on('submit',function(event) {
+    
+	$('form input').tooltipster({
+        trigger: 'custom',
+        position: 'bottom'
+    });
+    
+    $('#form').validate({
+	    rules: {
+	        to: {
+	            required: true
+	        },
+	        from: {
+	            required: true
+	        },
+	        date: {
+	            required: true
+	        },
+	        passanger:{
+				min: 1, required: true
+			}
+	    },
+	    errorElement: "span",
+    	errorClass: "err",
+	    errorPlacement: function(error, element) {
+	    	error.insertAfter(element.parent());
+		}	   
+	});
+    
+    function coba(){
 		var tipe = $("#tipe").val();
 		var mylink = "airlines/search";
 		if(tipe == 'all'){
@@ -335,7 +374,6 @@ $(document).ready(function(){
         $("#btn-search").children("i").addClass('fa-refresh fa-spin');
         
         $(over).appendTo("#cari");
-        event.preventDefault(); 
         $(".list").empty();
         $.ajax({
             url:  base_url+mylink,
@@ -366,8 +404,14 @@ $(document).ready(function(){
         		$("#result-content").show();
              }
         });
-        
-  });
+	}
+    
+	$("#form").on('submit',function(event) {	
+        event.preventDefault(); 
+		if($("#form").valid()){			
+    		coba(); 
+		}      
+  	});
     
   
   $("#result-content").hide();
@@ -611,6 +655,7 @@ $(document).ready(function(){
     });
     $('#datepicker').on('change', function(){
     	$("#adult").focus();
+    	$(this).valid();
     });
     
 });
