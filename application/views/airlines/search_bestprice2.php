@@ -1,4 +1,4 @@
-<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.3.0/list.min.js"></script>
+<script src="http://cdn.jsdelivr.net/jquery.mixitup/latest/jquery.mixitup.min.js"></script>
 <script src="<?php echo base_url(); ?>/assets/plugins/tooltip/tooltipster.bundle.min.js"></script>
 <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/tooltip/tooltipster.bundle.min.css" />
 <style>
@@ -38,7 +38,7 @@
 						<div class="input-group date">
 							<div class="input-group-addon">
 								<i class="fa fa-calendar"></i>
-							</div><input class="form-control pull-right" id="datepicker" required="" name='date' type="text">
+							</div><input class="form-control pull-right" id="datepicker" name='date' type="text">
 						</div>
 					</div>
 				</div>
@@ -148,9 +148,9 @@
 	<div class="box-body">
 		<div id="alert"></div>
 		<div class="result" id="result-id">
-			 <!--<button class="sort" data-sort="time_depart">Depart time</button>
-    		 <button class="sort" data-sort="total">Total</button>-->
-			<div class="list"></div>
+			 <button class="sort-btn" data-sort="time:asc">Depart time</button>
+    		 <button class="sort-btn" data-sort="total:asc">Total</button>
+			<div class="list" id="list"></div>
 		</div>
 	</div>
 </div><!-- /.box-body -->
@@ -258,6 +258,7 @@ $(document).ready(function(){
             success: function(d) {
                 $('#overlay').remove();
                 json_tabel(d);
+                $('.panel-group').css('display','');
                 $("#btn-search").removeClass('btn-warning');
 		        $("#btn-search").addClass('btn-success');
 		        $("#btn-search").children("i").addClass('fa-search');
@@ -288,14 +289,13 @@ $(document).ready(function(){
             var transit = 'Langsung';
             var display = '';
             if(data.flight_count > 1) transit = "Transit " + (parseInt(data.flight_count)-1);
-            var tampilan = '<div id="group-panel'+j+'" class="panel-group">'+
+            var tampilan = '<div data-time="'+data.time_depart+'" data-total="'+(data.fare+data.tax)+'" id="group-panel'+j+'" class="panel-group">'+
                                 '<div class="panel panel-info ">'+
                                     '<div id="group'+j+'"><\/div>'+
                                     '<div style="margin:7px;">'+
                                     '<div class="col-md-1 col-xs-6 text-center"><label data-count="'+data.flight_count+'_'+j+'" class="tooltips label bg-green" >'+transit+'</label></div>'+
                                     '<div class="col-md-2 col-xs-6"> '+ 
 									  '<div class=" text-center container-fare_'+j+'"><label>Rp <span class="tooltips-harga" title="Rp '+addCommas(data.fare)+'(fare) + Rp '+addCommas(data.tax)+'(tax)" id="total_'+j+'">'+addCommas(data.fare+data.tax)+'<\/span><\/label><\/div>'+
-									  '<input type="hidden" class="total" data="'+(data.fare+data.tax)+'"  />' +
 									'<\/div>'+
 									'</div>'+
 									'<div class="col-md-2 col-xs-12"> '+ 
@@ -358,13 +358,27 @@ $(document).ready(function(){
 				$(elemen).find('input, textarea, button, select, img, label').prop('disabled',false);
 			}
         }
-        var opt_sort = {
-	    	valueNames: [ 'time_depart','total',
-	    				  { name: 'total', attr: 'data' },
-	    				 ]
-		};
-		var MySort = new List('result-id', opt_sort);
-		MySort.sort('total', { asc: true });
+        
+		if($('#list').mixItUp('isLoaded')){
+			$('#list').mixItUp('destroy');
+		}        
+        $('#list').mixItUp({
+			  load: {
+			  	sort: 'total:asc time:asc'
+			  },
+			  selectors: {
+			    target: '.panel-group',
+			    sort: '.sort-btn'
+			  },
+			  layout: {
+				display: 'inherit'
+			 },			 
+			  callbacks: {
+			    onMixEnd: function(state){
+			      console.log(state)
+			    }
+			  }
+		});
     }
     $('#from').on('change', function(){
     	$('#to').select2('open');

@@ -1,4 +1,4 @@
-<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.3.0/list.min.js"></script>
+<script src="http://cdn.jsdelivr.net/jquery.mixitup/latest/jquery.mixitup.min.js"></script>
 <script src="<?php echo base_url(); ?>/assets/plugins/tooltip/tooltipster.bundle.min.js"></script>
 <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/tooltip/tooltipster.bundle.min.css" />
 <style>
@@ -214,17 +214,20 @@
 		<input id='h_child' name='child' type="hidden" value=''> 
 		<input id='h_infant' name='infant' type="hidden" value=''> 
 		<input id='h_flight_key' name='key' type="hidden" value=''>
+		<input id='h_flight_number' name='flight_number' type="hidden" value=''>
 	</form><!-- /.box-footer-->
 </div><!-- /.box -->
-
 <div id="result-content" class="box box-primary center-block" style="width: 100%">
 	<div class="box-header with-border">
-		<h3 class="box-title"></h3>
 	</div><!-- /.box-header -->
 	<div class="box-body">
 		<div id="alert"></div>
 		<div id="result-id" class="result">
- 			<div class="list"></div>		
+			<div class="box-title text-center">			
+				<button id="sorttime" data-sort="time:asc total:asc" class="sort-btn btn btn-primary btn-xs" data-sort="time_depart">Depart time <i class="fa " aria-hidden="true"></i></button>
+	    		<button id="sortprice" data-sort="total:asc time:asc" class="sort-btn btn btn-primary btn-xs" data-sort="total">Price <i class="fa " aria-hidden="true"></i></button>
+			</div><br />
+ 			<div class="list center-block" style="max-width: 700px;"></div>		
  		</div>
 	</div>
 </div><!-- /.box-body -->
@@ -321,10 +324,12 @@ $(document).ready(function(){
      	if($("#form").valid()){			
     		coba(); 
 		}
+		$(".box-title").hide();
     });
     
     $("#btn-search").on('click',function(event) {
     	$("#tipe").val('all');
+    	$(".box-title").hide();
     });
     
     
@@ -385,6 +390,9 @@ $(document).ready(function(){
 					 json_tabel(d);
 				} else{
 					json_tabel2(d);
+					$(".box-title").show();
+					$('.fa').removeClass('fa-caret-down');
+					$('.fa').removeClass('fa-caret-up');
 				}
                 
                 $("#btn-search").removeClass('btn-warning');
@@ -442,7 +450,7 @@ $(document).ready(function(){
         $.each(json, function() {
             j++;
             data = this;
-            var tampilan = '<div id="group-panel'+j+'" class="panel-group">'+
+            var tampilan = '<div data-time="" id="group-panel'+j+'" class="panel-group">'+
                                 '<div class="panel panel-info">'+
                                     '<div id="group'+j+'"><\/div>'+
                                     '<div class="row">'+
@@ -451,12 +459,13 @@ $(document).ready(function(){
                                                 '<div class ="pull-right container-loading_'+j+'" ><i class="fa fa-refresh fa-spin"></i> Loading<\/div>'+ 
                                                 '<div class="pull-right container-fare_'+j+'">Rp <span id="fare_'+j+'"><\/span>(fare)+Rp <span id="tax_'+j+'"><\/span>(tax) <label>TOTAL = Rp <span id="total_'+j+'"> <\/span><\/label><\/div>'+
                                             '<\/div>'+                           
-                                        '<button flight_key="" type="button" disabled class="btn-booking button-booking_'+j+' disabled col-md-2 col-sm-2 col-xs-12 btn btn-flat btn-default btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>'+
+                                        '<button flight_number="" flight_key="" type="button" disabled class="btn-booking button-booking_'+j+' disabled col-md-2 col-sm-2 col-xs-12 btn btn-flat btn-default btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>'+
                                         '<\/div>'+
                                     '<\/div>'+
                                 '<\/div>'+                           
                            '<\/div>' ;
             var tampilan2 = '';
+            var flight_number = '';
             var time_depart = 'time_depart';
             $(tampilan).appendTo($(".list"));
             $(".container-fare_"+j).hide();
@@ -470,10 +479,10 @@ $(document).ready(function(){
                                 '<div class="col-md-6 text-center">'+
 									'<h4><span id="depart_'+j+'_'+i+'"><\/span> | <span class="'+time_depart+'" id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h4>'+
                                 '<\/div>'+
-                                '<div class="col-md-3 col-xs-6">'+ 
+                                '<div class="col-md-2 col-xs-6">'+ 
                                     '<label><img id="image_'+j+'_'+i+'" src="" height="36" alt="" />&nbsp;<span id="flightid_'+j+'_'+i+'"><\/span><\/label> '+                
                                 '<\/div>'+
-                                '<div class="col-md-2 col-xs-6"> '+
+                                '<div class="col-md-4 col-xs-6"> '+
                                     '<select data="'+j+'_'+i+'_'+data.flight_count+'" id="kelas_'+j+'_'+i+'" class="kelas form-control" style="width: 100%;">'+
                                         '<option value="">Pilih kelas<\/option>'+
                                     '<\/select>'+            
@@ -488,6 +497,9 @@ $(document).ready(function(){
                 $('#image_'+j+'_'+i).attr("src", data.segment[i].airline_icon);
                 time_depart = '';
                 KelasGenerate(j,i,data.segment[i].seat);
+                flight_number = flight_number + data.segment[i].flight_id+',';
+            	$(".button-booking_"+j).attr("flight_number", flight_number);
+            	if(i==1) $('#group-panel'+j).attr("data-time", data.segment[i].time_depart);
             }
         });
         
@@ -536,6 +548,7 @@ $(document).ready(function(){
         
         $('.btn-booking').on('click', function(){
             $("#h_flight_key").val($(this).attr('flight_key'));
+            $("#h_flight_number").val($(this).attr('flight_number'));
 			booking();
         });
         
@@ -551,11 +564,22 @@ $(document).ready(function(){
 				$(elemen).find('input, textarea, button, select, img, label').prop('disabled',false);
 			}
         }
-        var opt_sort = {		
- 	    	valueNames: [ 'time_depart' ]		
- 		};		
- 		var MySort = new List('result-id', opt_sort);		
- 		MySort.sort('time_depart', { asc: true });
+        
+        if($('.list').mixItUp('isLoaded')){
+			$('.list').mixItUp('destroy');
+		}        
+        $('.list').mixItUp({
+			  load: {
+			  	sort: 'time:asc'
+			  },
+			  selectors: {
+			    target: '.panel-group',
+			    sort: '.sort-btn'
+			  },
+			  layout: {
+				display: 'inherit'
+			 }
+		});
     }
 	
 	function json_tabel2(json){
@@ -568,25 +592,27 @@ $(document).ready(function(){
             var transit = 'Langsung';
             var display = '';
             if(data.flight_count > 1) transit = "Transit " + (parseInt(data.flight_count)-1);
-            var tampilan = '<div id="group-panel'+j+'" class="panel-group">'+
+            var tampilan = '<div data-time="'+data.time_depart+'" data-total="'+(data.fare+data.tax)+'" id="group-panel'+j+'" class="panel-group">'+
                                 '<div class="panel panel-info ">'+
-                                    '<div id="group'+j+'"><\/div>'+
-                                    '<div style="margin:7px;">'+
-                                    '<div class="col-md-1 col-xs-6 text-center"><label data-count="'+data.flight_count+'_'+j+'" class="tooltips label bg-green" >'+transit+'</label></div>'+
-                                    '<div class="col-md-2 col-xs-6"> '+ 
+                                    '<div class="col-md-6 col-xs-8">'+
+                                    	'<div id="group'+j+'"></div>'+
+                                    	'<div class="col-md-12 col-xs-12"><label data-count="'+data.flight_count+'_'+j+'" class="tooltips label bg-green" >'+transit+'</label></div>'+
+                                    '<\/div>'+						
+									'<div id="image_'+j+'" class="col-md-2 col-xs-4">'+ 
+                                	'<\/div>'+
+                                	
+									'<div class="col-md-4 col-xs-12"> '+
 									  '<div class=" text-center container-fare_'+j+'"><label>Rp <span class="tooltips-harga" title="Rp '+addCommas(data.fare)+'(fare) + Rp '+addCommas(data.tax)+'(tax)" id="total_'+j+'">'+addCommas(data.fare+data.tax)+'<\/span><\/label><\/div>'+
-									  '<input type="hidden" class="total" data="'+(data.fare+data.tax)+'"  />' +
-									'<\/div>'+
-									'</div>'+
-									'<div class="col-md-2 col-xs-12"> '+ 
-									  '<button flight_key="'+data.flight_key+'" type="button" class="center-block btn-booking button-booking_'+j+' btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>' +
+									  '<button flight_number="" flight_key="'+data.flight_key+'" type="button" class="center-block btn-booking button-booking_'+j+' btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>' +
 									'<\/div>'+
                                     '<div class="row">'+
                                     '<\/div>'+
                                 '<\/div>'+                           
                            '<\/div>' ;
             var tampilan2 = '';
+            var flight_number = '';
             var time_depart = 'time_depart';
+            var flightid = 'flightid';
             var flights = '';
             $(tampilan).appendTo($(".list"));
            // $(".container-fare_"+j).hide();
@@ -595,34 +621,34 @@ $(document).ready(function(){
             	var button = '';
                 color = 'bg-success';
                 if(i%2 == 0){
-                    color = 'bg-info';
+                   color = 'bg-info';
                 }
                
                 if(i != 0) { display='display:none;';}
-                tampilan2 = '<div class="panel-body '+' col-md-7 col-xs-12" style="'+display+'">'+
-                                '<div class="col-md-6 text-center">'+
+                tampilan2 = '<div class="panel-body" style="'+display+'">'+
+                                '<div class="col-md-12">'+
                                     '<h4 style="display:none"><span id="depart_'+j+'_'+i+'"><\/span> | <span class="'+time_depart+'" id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h4>'+
-                                    '<h4><span>'+data.area_depart+'<\/span> | <span>'+data.time_depart+'<\/span> - <span>'+data.area_arrive+'<\/span> | <span>'+data.time_arrive+'<\/span><\/h4>'+
-                                '<\/div>'+
-                                '<div id="image_'+j+'" class="col-md-6 col-xs-12 text-center">'+ 
-                                               
+                                    '<h4 style="margin:5px;"><span>'+data.area_depart+'<\/span> | <span>'+data.time_depart+'<\/span> - <span>'+data.area_arrive+'<\/span> | <span>'+data.time_arrive+'<\/span><\/h4>'+
                                 '<\/div>'+
                            '<\/div>';
-                flights = flights + '<label><img id="image_'+j+'_'+i+'" src="'+data.airline_icon+'" height="25" alt="" />&nbsp;<span id="flightid_'+j+'_'+i+'">'+data.segment[i].flight_id+'<\/span><\/label><br>';
+                flights = flights + '<label><img id="image_'+j+'_'+i+'" src="'+data.airline_icon+'" height="25" alt="" />&nbsp;<span class="'+flightid+'" id="flightid_'+j+'_'+i+'">'+data.segment[i].flight_id+'<\/span><\/label><br>';
                 $(tampilan2).appendTo($("#group"+j));
                 $('#depart_'+j+'_'+i).text(data.segment[i].area_depart);
                 $('#arrive_'+j+'_'+i).text(data.segment[i].area_arrive);
                 $('#timedepart_'+j+'_'+i).text(data.segment[i].time_depart);
                 $('#timearrive_'+j+'_'+i).text(data.segment[i].time_arrive);
-              //  $('#flightid_'+j+'_'+i).text(data.segment[i].flight_id);
+               // $('#flightid_'+j+'_'+i).text(data.segment[i].flight_id);
                // $('#image_'+j+'_'+i).attr("src", data.airline_icon);
-                time_depart = '';
+                flight_number = flight_number + data.segment[i].flight_id+',';
+            	$(".button-booking_"+j).attr("flight_number", flight_number);
+                time_depart = ''; flightid='';
             }
             $(flights).appendTo($("#image_"+j));
         });
         
         $('.btn-booking').on('click', function(){
             $("#h_flight_key").val($(this).attr('flight_key'));
+            $("#h_flight_number").val($(this).attr('flight_number'));
 			booking();
         });
         
@@ -638,15 +664,38 @@ $(document).ready(function(){
 				$(elemen).find('input, textarea, button, select, img, label').prop('disabled',false);
 			}
         }
-        var opt_sort = {
-	    	valueNames: [ 'time_depart','total',
-	    				  { name: 'total', attr: 'data' },
-	    				 ]
-		};
-		var MySort = new List('result-id', opt_sort);
-		MySort.sort('total', { asc: true });
+        if($('.list').mixItUp('isLoaded')){
+			$('.list').mixItUp('destroy');
+		}        
+        $('.list').mixItUp({
+			  load: {
+			  	sort: 'total:asc time:asc'
+			  },
+			  selectors: {
+			    target: '.panel-group',
+			    sort: '.sort-btn'
+			  },
+			  layout: {
+				display: 'inherit'
+			 }
+		});
     }
-
+	
+	$('.sort-btn').on('click', function(){
+		$('.sort-btn').find('.fa').removeClass('fa-caret-up');
+		$('.sort-btn').find('.fa').removeClass('fa-caret-down');
+		var val= $(this).attr("data-sort")
+		
+		if($(this).attr("data-sort").indexOf("asc")>1){			
+			$(this).attr("data-sort", val.replace(/asc/gi,"desc"))
+			$(this).find('.fa').addClass('fa-caret-up');
+		}else{
+			$(this).attr("data-sort", val.replace(/desc/gi,"asc"))
+			$(this).find('.fa').addClass('fa-caret-down');
+		}
+		$(this).removeClass('active');
+    });
+	
     $('#from').on('change', function(){
     	$('#to').select2('open');
     });
@@ -656,8 +705,7 @@ $(document).ready(function(){
     $('#datepicker').on('change', function(){
     	$("#adult").focus();
     	$(this).valid();
-    });
-    
+    });    
 });
 
 /*passanger*/
