@@ -274,11 +274,11 @@ class Airlines extends CI_Controller {
 			            ->set_status_header(400)
 			            ->set_output('Anda terindikasi double booking');
 				}
-				if($this->_cek_double_booking(FALSE)>14){
+				if($this->_cek_group_booking()>14){
 					return $this->output
 			            ->set_content_type('text/html')
 			            ->set_status_header(400)
-			            ->set_output('Anda terindikasi Group booking');
+			            ->set_output('Anda terindikasi Group booking, Silahkan kontak Admin');
 				}
 				//print_r($data); echo "---";die();
 				$json = $this->curl->simple_post("$this->url/book", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
@@ -352,6 +352,36 @@ class Airlines extends CI_Controller {
 			}
 			$return = $this->db->get()->row();
 			return $return->jml;
+	}
+	private function _cek_group_booking(){
+		$area_depart = $this->input->post('from');
+		$area_arrive = $this->input->post('to');
+		$flight_number = explode(",", $this->input->post('flight_number'));
+		$flight_number = $flight_number[0];
+		$user  = $this->session->userdata('user_id');
+		
+		$ids = $this->db->query("
+			SELECT DISTINCT(b.id)
+			from `booking status` s, booking b, `booking flight` f
+			WHERE s.`id booking` = b.id AND f.`id booking`=b.id 
+			AND `area depart`='$area_depart' AND `area arrive`='$area_arrive' AND 
+			f.`flight number` = '$flight_number' AND
+			`status` = 'booking' AND
+			s.`time status` = (SELECT MAX(`time status`) FROM `booking status` WHERE id=s.id)
+			AND `user`='$user' ORDER BY `time status` DESC
+		");
+		$ids = $ids->result();
+		$ids2=[0];
+		foreach($ids as $key => $value){
+			$ids2[] = $value->id;
+		}
+		
+		$this->db->select('COUNT(*) as jml')
+				 ->where_in('`id booking`', $ids2)
+				 ->from('`booking passenger`');
+		$jml = $this->db->get()->row()->jml;
+		if($jml==NULL) return $this->input->post('passanger_count')*1 ; 
+			else return $jml+$this->input->post('passanger_count')*1;
 	}
 	
 	function retrieve($code='00'){
@@ -518,6 +548,7 @@ class Airlines extends CI_Controller {
 		$data = array('content'=>'airlines/search_bestprice2');
 		$this->load->view("index",$data);
 	}
+	
 }
 
 

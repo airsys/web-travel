@@ -248,6 +248,7 @@
       <input type="hidden" name="from" value="<?php echo $data['from']; ?>" />
       <input type="hidden" name="to" value="<?php echo $data['to']; ?>" />
       <input type="hidden" name="airline" value="<?php echo 'lion'; ?>" />
+      <input type="hidden" name="flight_number" value="<?php echo $data['flight_number']; ?>" />
       
       <input type="hidden" name="adult_count" value="<?php echo $data['adult']; ?>" />
       <input type="hidden" name="child_count" value="<?php echo $data['child']; ?>" />
