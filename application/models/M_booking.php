@@ -80,9 +80,10 @@ class M_booking extends CI_Model
 				$this->db->where($key, $val2,FALSE);
 			}
 		}
-		$this->db->select(" b.*, `status`,time status")
-				 ->from("booking AS b, booking status AS s")
+		$this->db->select(" b.*, `status`,time status, time depart")
+				 ->from("booking AS b, booking status AS s, booking flight as f")
 				 ->where("b.id = s.id booking")
+				 ->where("b.id = f.id booking")
 				 ->where("status!='verified'")
 				 ->where("status!='unverified'")
 				 ->where('company',$this->session->userdata('company'))

@@ -445,6 +445,21 @@ class Airlines extends CI_Controller {
 					if(preg_replace('/\s+/', '', $string2[0])=='datebooking'){
 						$data_or[$i]=array('val'=>date("Y-m-d", strtotime($string2[1])), 'key'=>'FROM_UNIXTIME(`b`.`booking time`,"%Y-%m-%d")');
 					}
+					if(preg_replace('/\s+/', '', $string2[0])=='areadepart'){
+						$data_or[$i]=array('val'=>$string2[1], 'key'=>'area depart');
+					}
+					if(preg_replace('/\s+/', '', $string2[0])=='areaarrive'){
+						$data_or[$i]=array('val'=>$string2[1], 'key'=>'area arrive');
+					}
+					if(preg_replace('/\s+/', '', $string2[0])=='airline'){
+						$data_or[$i]=array('val'=>$string2[1], 'key'=>'airline');
+					}
+					if(preg_replace('/\s+/', '', $string2[0])=='status'){
+						$data_or[$i]=array('val'=>$string2[1], 'key'=>'status');
+					}
+					if(preg_replace('/\s+/', '', $string2[0])=='datedepart'){
+						$data_or[$i]=array('val'=>date("Y-m-d", strtotime($string2[1])), 'key'=>'FROM_UNIXTIME(`f`.`time depart`,"%Y-%m-%d")');
+					}
 				}elseif($string2[1]!=''){
 					$data_or[$i]=array('val'=>$string2[0], 'key'=>'booking code');
 				}

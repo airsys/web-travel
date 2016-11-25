@@ -1,17 +1,17 @@
 <?php 
- 	$color = array(
- 				'booking'=>'#636c70',
- 				'issued'=>'#00bd30',
- 				'cancel'=>'#d3ce0a',
- 				'timeup'=>'#e7bd41',
- 			);
+    $color = array(
+                'booking'=>'#636c70',
+                'issued'=>'#00bd30',
+                'cancel'=>'#d3ce0a',
+                'timeup'=>'#e7bd41',
+            );
 ?>
 <!-- Jquery Tag Editor -->
 <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/jquery.tag-editor/jquery.tag-editor.css" />
 <script src="<?php echo base_url(); ?>assets/plugins/jquery.tag-editor/jquery.tag-editor.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugins/jquery.tag-editor/jquery.caret.min.js"></script>
 <style>
-	.ui-autocomplete {
+    .ui-autocomplete {
     position: absolute;
     z-index:1000 !important;
     cursor: default;
@@ -36,79 +36,139 @@
 .ui-helper-hidden-accessible {
   display: none;
 }
+.tag-editor{
+  height: 34px;
+}
+
 </style>
-  <!-- Form Element sizes -->
-  <?php if($this->uri->segment(4)!='finance'){ ?>
-  <div class="box box-success">
+<!--
+ <div class="box box-success">
     <div class="box-header with-border">
-      <h3 class="box-title">Search</h3>
+      <h3 class="box-title">Search Code Booking</h3>
     </div>
     <div class="box-body">
-    	<div class="col-md-8 col-sm-8 col-xs-8">
-			<div class="form-group">
-				<input id="booking_code" class="form-control" type="text" placeholder="Search anything: booking code, date booking, date departure">
-			</div>
-			<input type="hidden" id="dp" />
-		</div>
-		<div class="col-md-1 col-sm-2 col-xs-2">
-			<div class="form-group">
-				<a href="#" id="cek" class="btn btn-info btn-flat">CEK</a>
-			</div>
-		</div>
+        <div class="btn-group col-md-8 col-sm-8 col-xs-8">
+                  <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i> Filter 
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Status</a></li>
+                    <li><a href="#" onclick="$('#booking_code').tagEditor('addTag', 'booking code:');" >Code Booking</a></li>
+                    <li><a href="#" >Airlines</a></li>
+                    <li><a href="#">Leaving From</a></li>
+                    <li><a href="#">Going To</a></li>
+                    <li><a href="#" onclick="$('#booking_code').tagEditor('addTag', 'date booking:');">Date Booking</a></li>
+                    <li><a href="#">Date Depature</a></li>
+                    
+                  </ul>
+        
+                <div class="form-group" style="height: 34px;">
+                    <input id="booking_code" class="form-control" type="text" placeholder="Search anything: booking code, date booking, date departure" >
+                    <input type="hidden" id="dp" />
+                </div>
+                
+        </div>
+        <div class="col-md-1 col-sm-2 col-xs-2">
+            <div class="form-group">
+                <a href="#" id="cek" class="btn btn-info btn-flat">CEK</a>
+            </div>
+        </div>
+        </div>
+    
+   
+  </div> --> <!-- /.box-body -->
+  <!-- /.box -->
+
+<!-- Search for date booking -->
+  <div class="box box-success">
+    <div class="box-header with-border">
+      <h3 class="box-title">Search </h3>
     </div>
+    <div class="box-body">
+        <div class="btn-group col-md-8 col-sm-8 col-xs-12">
+                  <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" 
+                  style="margin-bottom: 20px;"><i class="fa fa-search"></i> Filter 
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" style="top: 40px;">
+                    <li id="filterStatus"><a href="#">status</a></li> 
+                    <li id="filter"><a href="#">airline</a></li>
+                    <li id="filter"><a href="#">booking code</a></li>
+                    <li><a href="#" onclick="date_booking()">date booking</a></li>
+                    <li><a href="#" onclick="date_depart()">date depart</a></li>
+                    <li class="divider"></li>
+                    <li id="filter"><a href="#">area depart</a></li>
+                    <li><a href="#" onclick="addfilter()">area arrive</a></li>
+                   
+                  </ul>
+        
+                <div class="form-group" >
+                    <input id="booking_code" class="form-control" type="text" value="status:booking" style="width: 90%;width: 90%;color: rgba(119, 119, 119, 0.76);">
+                    <input type="hidden" id="dp" />
+                </div>
+                
+        </div>
+        <div class="col-md-1 col-sm-2 col-xs-2">
+            <div class="form-group">
+                <a href="#" id="cek" class="btn btn-info btn-flat">CEK</a>
+            </div>
+        </div>
+    </div>
+    
     <!-- /.box-body -->
   </div>
   <!-- /.box -->
-  <?php } ?>
-  
+
   <?php if($data_table != NULL){?>
-  	<div id="result-content" class="box box-primary center-block" style="width: 100%">
-		<div class="box-header with-border">
-			<h3 class="box-title">Retrieve List</h3>
-		</div><!-- /.box-header -->
-		<div class="box-body">
-			<div id="alert"></div>
-			<div id="">
-				<div class="box-body table-responsive no-padding">
-				  <table class="table table-hover table-striped">
-				    <tr>
-				      <th>Booking Code</th>
-				      <th>Tujuan</th>
-				      <th>Contact</th>
-				      <th>Booking time</th>
-				      <th>Payment limit</th>
-				      <th>Fare</th>
-				      <th>NTA</th>
-				      <th>Passanger</th>
-				      <th>Status booking</th>
-				      <th>Detail</th>
-				    </tr>
-				    <?php
-				    $i=0;
-					foreach($data_table as $value){ $i++;?>
-				    <tr>
-				      <td><?php echo $value->airline." - ".$value->{'booking code'} ?></td>
-				      <td><?php echo $value->{'area depart'}."-".$value->{'area arrive'} ?></td>
-				      <td><?php echo $value->name ?></td>
-				      <td><?php echo date("d-m-Y H:i:s",$value->{'booking time'}) ?></td>
-				      <td><?php echo date("d-m-Y H:i:s",$value->{'time limit'}) ?></td>
-				      <td><?php echo number_format($value->{'base fare'}+$value->tax) ?></td>
-				      <td><?php echo number_format($value->NTA) ?></td>
-				      <td>
-				      	<?php echo "A: $value->adult | C: $value->child | I: $value->infant" ?>
-				      	
-				      </td>
-				      <td><?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>" ?></td>
-				      <td><a href="<?php echo base_url()."airlines/retrieve/".$value->{'booking code'} ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
-				    </tr>
-				    <?php } ?>
-				    
-				  </table>
-				</div>
-				<!-- /.box-body -->
-			</div>
-		</div>
-	</div><!-- /.box-body -->  
+    <div id="result-content" class="box box-primary center-block" style="width: 100%">
+        <div class="box-header with-border">
+            <h3 class="box-title">Retrieve List</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <div id="alert"></div>
+            <div id="">
+                <div class="box-body table-responsive no-padding">
+                  <table class="table table-hover table-striped">
+                    <tr>
+                      <th>Booking Code</th>
+                      <th>Tujuan</th>
+                      <th>Contact</th>
+                      <th>Booking time</th>
+                      <th>Payment limit</th>
+                      <th>Fare</th>
+                      <th>NTA</th>
+                      <th>Passanger</th>
+                      <th>Status booking</th>
+                      <th>Detail</th>
+                    </tr>
+                    <?php
+                    $i=0;
+                    foreach($data_table as $value){ $i++;?>
+                    <tr>
+                      <td><?php echo $value->airline." - ".$value->{'booking code'} ?></td>
+                      <td><?php echo $value->{'area depart'}."-".$value->{'area arrive'} ?></td>
+                      <td><?php echo $value->name ?></td>
+                      <td><?php echo date("d-m-Y H:i:s",$value->{'booking time'}) ?></td>
+                      <td><?php echo date("d-m-Y H:i:s",$value->{'time limit'}) ?></td>
+                      <td><?php echo number_format($value->{'base fare'}+$value->tax) ?></td>
+                      <td><?php echo number_format($value->NTA) ?></td>
+                      <td>
+                        <?php echo "A: $value->adult | C: $value->child | I: $value->infant" ?>
+                        
+                      </td>
+                      <td><?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>" ?></td>
+                      <td><a href="<?php echo base_url()."airlines/retrieve/".$value->{'booking code'} ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
+                    </tr>
+                    <?php } ?>
+                    
+                  </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div><!-- /.box-body -->  
   <?php } ?>
   
  <?php if($data_detail != NULL){ ?>
@@ -131,7 +191,7 @@
           From
           <address>
             <strong><?php echo $bandara[$data_detail->area_depart]['city'] ?><br>
-            		<?php echo $bandara[$data_detail->area_depart]['name_airport'].'-'. $bandara[$data_detail->area_depart]['code_route']; ?>
+                    <?php echo $bandara[$data_detail->area_depart]['name_airport'].'-'. $bandara[$data_detail->area_depart]['code_route']; ?>
             </strong><br>
           </address>
         </div>
@@ -140,7 +200,7 @@
           To
           <address>
             <strong><?php echo $bandara[$data_detail->area_arrive]['city'] ?><br>
-            		<?php echo $bandara[$data_detail->area_arrive]['name_airport'].'-'. $bandara[$data_detail->area_arrive]['code_route']; ?>
+                    <?php echo $bandara[$data_detail->area_arrive]['name_airport'].'-'. $bandara[$data_detail->area_arrive]['code_route']; ?>
             </strong><br>
           </address>
         </div>
@@ -173,23 +233,23 @@
             </tr>
             </thead>
             <tbody>
-            	<?php 
-            		$i=0;
-            		foreach($data_detail->flight_list as $val){ 
-            			$i++;
-            	?>
-            		 <tr>
-		              <td><?php echo $i ?></td>
-            		  <td><?php echo $val->flight_id ?></td>
-            		  <td><?php echo $val->code ?></td>
-		              <td style="background-color:#e0dedf;"><?php echo $val->area_depart ?></td>
-		              <td style="background-color:#e0dedf;"><?php echo $val->date_depart ?></td>
-		              <td style="background-color:#e0dedf;"><?php echo $val->time_depart ?></td>
-		              <td style="background-color:#d6d1d3;"><?php echo $val->area_arrive ?></td>
-		              <td style="background-color:#d6d1d3;"><?php echo $val->date_arrive ?></td>
-		              <td style="background-color:#d6d1d3;"><?php echo $val->time_arrive ?></td>
-		            </tr>
-            	<?php } ?>
+                <?php 
+                    $i=0;
+                    foreach($data_detail->flight_list as $val){ 
+                        $i++;
+                ?>
+                     <tr>
+                      <td><?php echo $i ?></td>
+                      <td><?php echo $val->flight_id ?></td>
+                      <td><?php echo $val->code ?></td>
+                      <td style="background-color:#e0dedf;"><?php echo $val->area_depart ?></td>
+                      <td style="background-color:#e0dedf;"><?php echo $val->date_depart ?></td>
+                      <td style="background-color:#e0dedf;"><?php echo $val->time_depart ?></td>
+                      <td style="background-color:#d6d1d3;"><?php echo $val->area_arrive ?></td>
+                      <td style="background-color:#d6d1d3;"><?php echo $val->date_arrive ?></td>
+                      <td style="background-color:#d6d1d3;"><?php echo $val->time_arrive ?></td>
+                    </tr>
+                <?php } ?>
             </tbody>
           </table>
         </div>
@@ -212,19 +272,19 @@
             </tr>
             </thead>
             <tbody>
-            	<?php 
-            		$i=0;
-            		foreach($data_detail->passenger_list as $val){ 
-            			$i++;
-            	?>
-            		 <tr>
-		              <td><?php echo $i ?></td>
-		              <td><?php echo $val->name ?></td>
-		              <td><?php echo $val->birth_date ?></td>
-		              <td><?php echo $val->passenger_type ?></td>
-		              <td><?php echo $val->ticket_no ?></td>
-		            </tr>
-            	<?php } ?>
+                <?php 
+                    $i=0;
+                    foreach($data_detail->passenger_list as $val){ 
+                        $i++;
+                ?>
+                     <tr>
+                      <td><?php echo $i ?></td>
+                      <td><?php echo $val->name ?></td>
+                      <td><?php echo $val->birth_date ?></td>
+                      <td><?php echo $val->passenger_type ?></td>
+                      <td><?php echo $val->ticket_no ?></td>
+                    </tr>
+                <?php } ?>
             </tbody>
           </table>
         </div>
@@ -279,40 +339,12 @@
       <?php if($this->session->flashdata('message')!=NULL) echo "<div id='warning' class='alert alert-success'>".$this->session->flashdata('message')."</div>"; ?>
       <div class="row no-print">
         <div class="col-xs-12">
-          <?php if($this->uri->segment(4)!='finance'){ ?>
-	          <div class="btn-group">
-				<button type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown">
-				    <span class="col-lg-10">
-				        <i class="fa fa-print"></i> Print Invoice  <span class="caret"></span>
-				    </span>
-				</button>
-				<ul class="dropdown-menu btn-block" role="menu">
-					<li><a href='<?php echo base_url()."airlines/invoice/$data_detail->booking_code/pdf" ?>' target="_blank"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
-					<li><a href='<?php echo base_url()."airlines/invoice/$data_detail->booking_code" ?>' target="_blank"><i class="fa fa-external-link"></i> WEB</a></li>
-					<li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-				</ul>
-			  </div>
-			  
-	          <?php if($status[0]->status=='booking'){ ?>
-	          <button id="issued" type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment </button>
-	          <?php }else{ ?>
-	          <div class="btn-group pull-right">
-				<button type="button" class="btn btn-danger btn-block dropdown-toggle" data-toggle="dropdown">
-				    <span class="col-lg-10">
-				        <i class="fa fa-print"></i> Print Ticket  <span class="caret"></span>
-				    </span>
-				</button>
-				<ul class="dropdown-menu btn-block" role="menu">
-					<li><a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code" ?>' target="_blank"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
-					<li><a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code/web" ?>' target="_blank"><i class="fa fa-external-link"></i> WEB</a></li>
-					<li><a href="#"><i class="fa fa-envelope-o"></i> Email</a></li>
-				</ul>
-			  </div>
-			  <?php } ?>
-          <?php } else { ?>
-          	  <a href='#' onclick="window.history.go(-1); return false;" class="btn btn-info"><i class="fa fa-arrow-circle-left"></i> Back</a>
+          <a href='<?php echo base_url()."airlines/invoice/$data_detail->booking_code" ?>' target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print Invoice</a>
+          <?php if($status[0]->status=='booking'){ ?>
+          <button id="issued" type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment </button>
+          <?php }else{ ?>
+          <a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code" ?>' target="_blank" class="btn btn-primary pull-right"><i class="fa fa-print"></i> Print Ticket</a>
           <?php } ?>
-          
         </div>
       </div>
       <input type="hidden" id="id" value="<?php echo $id_booking ?>"/>
@@ -321,82 +353,138 @@
     <?php } ?>
     
     <script>
-    	$(document).ready(function(){
-			var href = '';
-	    	var booking_code ='';
-	    	href = window.location.href;
-	    	if(href.indexOf("q=")===-1){
-				booking_code = href.substr(href.lastIndexOf('/') + 1);
-	    		if(booking_code !='retrieve')$("#booking_code").val(booking_code.replace('#',''));
-			}else {
-				booking_code = href.substr(href.lastIndexOf('=') + 1);
-				$("#booking_code").val(decodeURI(booking_code.replace('#','')));
-			}  
-			
-			$('#booking_code').tagEditor(
-				{
-				  	autocomplete:{ 
-	  					'source': ['booking code:','contact name:','date booking:'],
-	  					select: function( event, ui ) {
-	  						if(ui.item.value.indexOf('date') !== -1){
-								$('#dp').datepicker({
-					        		changeMonth: true,
-					        		changeYear: true,
-					        		showOn: 'both',
-									dateFormat: 'dd-mm-yy',
-									onSelect: function(date) {								
-										 var tags = $('#booking_code').tagEditor('getTags')[0].tags;					 
-					    				 $('#booking_code').tagEditor('addTag',ui.item.value+date);
-					    				 $('#booking_code').tagEditor('removeTag', tags[tags.length-1]);
-					    				 $(this).datepicker("destroy");
-									},
-								});
-		  						$('#dp').datepicker('show');
-							}				  						
-					  	},
-				  	},
-				  	removeDuplicates:false,
-				  	clickDelete: true,
-				  	placeholder: 'Search anything: booking code, date booking, date departure',
-				  	forceLowercase:false,
-				  	onChange: function(field, editor, tags, tag, val) {
-						$(document).keypress(function(event){
-						  	$('#dp').datepicker('hide');
-						  	$('#dp').datepicker("destroy");
-						});
-				    },
-				}
-			);
-			
-    	$("#cek").on("click", function(event) {
-    		if($("#booking_code").val().search(/:|,/)===-1)
-    			window.location = base_url+"airlines/retrieve/"+$("#booking_code").val();
-    		else window.location = base_url+"airlines/retrieve?q="+$("#booking_code").val();
-    	});
-    	
-    	$("#issued").on("click", function(event) {
-    		if(confirm("Are you sure want to make issued?")){
-	  		$.ajax({
-	            url:  base_url+"payment/issued",
-	            type: "post",
-	            data: {
-	            	'id': $('#id').val(),
-	            },
-	            success: function(d,textStatus, xhr) {
-	               if(xhr.status==200 && d.data==1){
-				   	 showalert(d.message,'success','#warning',6000000);
-				   	 location.reload();
-				   }
-	            },
-	             error: function (request, status, error) {
-	             	 var err = eval("(" + request.responseText + ")");
-	                 showalert(err.message,'danger','#warning',6000000);
-	            }
-	        });
-	    }
-	    else{
-	        return false;
-	    }
-    	});
+        $(document).ready(function(){
+            var href = '';
+            var booking_code ='';
+            href = window.location.href;
+            if(href.indexOf("q=")===-1){
+                booking_code = href.substr(href.lastIndexOf('/') + 1);
+                if(booking_code !='retrieve')$("#booking_code").val(booking_code.replace('#',''));
+            }else {
+                booking_code = href.substr(href.lastIndexOf('=') + 1);
+                $("#booking_code").val(decodeURI(booking_code.replace('#','')));
+            }  
+            /*
+            $('#booking_code').tagEditor(
+                {
+                    autocomplete:{ 
+                        'source': ['booking code:','contact name:','date booking:'],
+                        select: function( event, ui ) {
+                            if(ui.item.value.indexOf('date') !== -1){
+                                $('#dp').datepicker({
+                                    changeMonth: true,
+                                    changeYear: true,
+                                    showOn: 'both',
+                                    dateFormat: 'dd-mm-yy',
+                                    onSelect: function(date) {                              
+                                         var tags = $('#booking_code').tagEditor('getTags')[0].tags;                     
+                                         $('#booking_code').tagEditor('addTag',ui.item.value+date);
+                                         $('#booking_code').tagEditor('removeTag', tags[tags.length-1]);
+                                         $(this).datepicker("destroy");
+                                    },
+                                });
+                                $('#dp').datepicker('show');
+                            }                                       
+                        },
+                    },
+                    removeDuplicates:true,
+                    clickDelete: true,
+                    placeholder: 'Search anything: booking code, date booking, date departure',
+                    forceLowercase:false,
+                    onChange: function(field, editor, tags, tag, val) {
+                        $(document).keypress(function(event){
+                            $('#dp').datepicker('hide');
+                            $('#dp').datepicker("destroy");
+                        });
+                    },
+                }
+            );
+            */
+        $("#cek").on("click", function(event) {
+            if($("#booking_code").val().search(/:|,/)===-1)
+                window.location = base_url+"airlines/retrieve/"+$("#booking_code").val();
+            else window.location = base_url+"airlines/retrieve?q="+$("#booking_code").val();
+        });
+        
+        $("#issued").on("click", function(event) {
+            if(confirm("Are you sure want to make issued?")){
+            $.ajax({
+                url:  base_url+"payment/issued",
+                type: "post",
+                data: {
+                    'id': $('#id').val(),
+                },
+                success: function(d,textStatus, xhr) {
+                   if(xhr.status==200 && d.data==1){
+                     showalert(d.message,'success','#warning',6000000);
+                     location.reload();
+                   }
+                },
+                 error: function (request, status, error) {
+                     var err = eval("(" + request.responseText + ")");
+                     showalert(err.message,'danger','#warning',6000000);
+                }
+            });
+        }
+        else{
+            return false;
+        }
+        });
     });
-    </script>
+  </script>
+
+<!--costum-->
+ <script type="text/javascript">
+$(document).ready(function(){
+    $("#filter a").click(function(){
+        var value = $(this).html();
+        var def = document.getElementById("booking_code").value;
+        var input = $('#booking_code');
+        input.val(def+','+' '+value+':');
+    });
+})
+function addfilter() {
+    var filter=document.getElementById("booking_code").value;
+    filter=filter+',' + ' ' + 'area arrive:';
+    document.getElementById("booking_code").value=filter;
+    }
+$(document).ready(function(){
+    $("#filterStatus a").click(function(){
+        var value = $(this).html();
+        var input = $('#booking_code');
+        input.val('status:booking' );
+    });
+})
+function date_booking() {
+    $('#dp').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'both',
+            dateFormat: 'dd-mm-yy',
+             onSelect: function (date) {                              
+                      var value=document.getElementById("booking_code").value;
+                      var dp=document.getElementById("dp").value;
+                      datedp=value+', '+'date booking:'+dp ;
+                      document.getElementById("booking_code").value=datedp;
+                      },
+    });
+    $('#dp').datepicker('show');
+                          
+    }
+function date_depart() {
+    $('#dp').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'both',
+            dateFormat: 'dd-mm-yy',
+             onSelect: function (date) {                              
+                      var value=document.getElementById("booking_code").value;
+                      var dp=document.getElementById("dp").value;
+                      datedp=value+', '+'date depart:'+dp ;
+                      document.getElementById("booking_code").value=datedp;
+                      },
+    });
+    $('#dp').datepicker('show');
+                          
+    }
+</script>
