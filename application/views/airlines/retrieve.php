@@ -93,14 +93,15 @@
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul class="dropdown-menu" role="menu" style="top: 40px;">
-                    <li id="filterStatus"><a href="#">status</a></li> 
-                    <li id="filter"><a href="#">airline</a></li>
-                    <li id="filter"><a href="#">booking code</a></li>
-                    <li><a href="#" onclick="date_booking()">date booking</a></li>
-                    <li><a href="#" onclick="date_depart()">date depart</a></li>
+                    <li id="filterStatus"><a href="#">Your Status</a></li> 
+                    <li><a href="#" onclick="addfilterAirline()">Your Airlline</a></li>
+                    <li><a href="#" onclick="addfilterBookingcode()">Your Booking Code</a></li>
+                    <li><a href="#" onclick="date_booking()">Your Date Booking</a></li>
+                    <li><a href="#" onclick="date_depart()">Your Date Depart</a></li>
                     <li class="divider"></li>
-                    <li id="filter"><a href="#">area depart</a></li>
-                    <li><a href="#" onclick="addfilter()">area arrive</a></li>
+                    <li> <center><strong>Flight Route</strong></center></li>
+                    <li><a href="#" onclick="addfilterAreadepart()">Leaving From</a></li>
+                    <li><a href="#" onclick="addfilterAreaarrive()">Going To</a></li>
                    
                   </ul>
         
@@ -443,7 +444,7 @@ $(document).ready(function(){
         input.val(def+','+' '+value+':');
     });
 })
-function addfilter() {
+function addfilterAreaarrive() {
     var filter=document.getElementById("booking_code").value;
     filter=filter+',' + ' ' + 'area arrive:';
     document.getElementById("booking_code").value=filter;
@@ -455,6 +456,21 @@ $(document).ready(function(){
         input.val('status:booking' );
     });
 })
+function addfilterAirline() {
+    var filter=document.getElementById("booking_code").value;
+    filter=filter+',' + ' ' + 'airline:';
+    document.getElementById("booking_code").value=filter;
+    }
+function addfilterBookingcode() {
+    var filter=document.getElementById("booking_code").value;
+    filter=filter+',' + ' ' + 'booking code:';
+    document.getElementById("booking_code").value=filter;
+    }
+function addfilterAreadepart() {
+    var filter=document.getElementById("booking_code").value;
+    filter=filter+',' + ' ' + 'area depart:';
+    document.getElementById("booking_code").value=filter;
+    }
 function date_booking() {
     $('#dp').datepicker({
             changeMonth: true,
