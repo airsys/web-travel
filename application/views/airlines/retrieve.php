@@ -106,7 +106,7 @@
                   </ul>
         
                 <div class="form-group" >
-                    <input id="booking_code" class="form-control" type="text" value="status:booking" style="width: 90%;width: 90%;color: rgba(119, 119, 119, 0.76);">
+                    <input id="booking_code" class="form-control" type="text" value="status:booking" style="width: 85%;color: rgba(119, 119, 119, 0.76);">
                     <input type="hidden" id="dp" />
                 </div>
                 

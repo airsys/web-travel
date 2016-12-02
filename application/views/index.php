@@ -46,7 +46,7 @@
 <body class="hold-transition skin-black layout-top-nav">
 	<!-- Site wrapper -->
 	<div class="wrapper">
-		<header class="main-header">
+		<header class="main-header" style="z-index: 1;">
 			<nav class="navbar navbar-static-top">
 		      <div class="container">
 		        <div class="navbar-header">
@@ -61,7 +61,7 @@
 		          <ul class="nav navbar-nav">
 		            <li class="menu-bar"><a href="<?php echo base_url() ?>">Search Ticket <span class="sr-only">(current)</span></a></li>
 		            <?php if($this->ion_auth->logged_in()){ ?>
-		            <li class="menu-bar"><a href="<?php echo base_url().'airlines/retrieve' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
+		            <li class="menu-bar"><a href="<?php echo base_url().'airlines/retrieve?q=status:booking' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
 		            <li class="dropdown">
 		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Topup <span class="caret"></span></a>
 		              <ul class="dropdown-menu" role="menu">
@@ -151,7 +151,7 @@
 		
 		<!-- =============================================== -->
 		<!-- Content Wrapper. Contains page content -->
-		<div class="content-wrapper">
+		<div class="content-wrapper" style="height: 500px;">
 			<!-- Main content -->
 			<section class="content">
 				<?php $this->load->view($content); ?> </section>
@@ -182,24 +182,17 @@
 	                </div>
 	                <div class="form-group">
 	                  <label for="InputPassword1">Password</label>
-	                	<div class="input-group">
-				            <input id="InputPassword1" name="password" type="password" class="form-control" placeholder="Password">
-				            <span id="show-password" class="input-group-addon"><i id="eye" class="fa fa-eye-slash"></i></span>
-				        </div>
+	                  <input name="password" type="password" class="form-control" id="InputPassword1" placeholder="Password">
 	                </div>
-	                 
-	                <div class="form-group">
 	                <div class="checkbox">
 	                  <label>
 	                    <input type="checkbox" name="remember" value="1"> Remember me
 	                  </label>
 	                </div>
-	                </div>
 	              </div>
 	              <!-- /.box-body -->
 		      </div>
 		      <div class="modal-footer">
-		        <a class="pull-left" style="color:#ffffff;  text-decoration: underline; margin-top: 5px;" href="<?php echo base_url() ?>auth2/forgot_password" > Forgot Password</a>	 
 		      	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		        <button id="login" type="submit" class="btn btn-success">Sign in</button>
 		      </div>
@@ -208,60 +201,39 @@
 	  </div>
 	</div>
 	<script>
-		$(document).ready(function(){
-			<?php 				
-			if($this->session->flashdata('message')){
-				echo 'callmodal();';
-				echo "showalert('".$this->session->flashdata('message')."','warning','#login-warning',10000);";
-			} 
-			?>
-			$('.show-modal').on('click', function() {
-			    callmodal();
-			});
-			var sh_pass = 0;
-			$('#show-password').on('click', function() {
-			    sh_pass++;
-			    if(sh_pass%2==0){
-					$('#InputPassword1').get(0).setAttribute('type', 'password');
-					 $("#eye").removeClass("fa-eye");
-					 $("#eye").addClass("fa-eye-slash");
-				}else{
-					$('#InputPassword1').get(0).setAttribute('type', 'text');
-					$("#eye").removeClass("fa-eye-slash");
-					$("#eye").addClass("fa-eye");
-				}
-			});
-			function callmodal(){
-				if(login==0) $('#modal-content').modal('show');
-			}
-			 $('#form-login-header').submit(function( event ) {
-				event.preventDefault();
-			    $.ajax({
-	                url:  base_url+"auth2/login_ajax",
-	                type: "post",
-	                data: $("#form-login-header").serialize(),
-	                success: function(d,textStatus, xhr) {
-	                   if(xhr.status==200 && d.data==1){
-					   	 login = 1;
-					   	$('#login-header').text('Logout');
-					   	$('#register-header').text('Profile');
-					   	$("#user-header").children("span").text(d.user);
-					   	$("#user-header").children("i").removeClass('fa-lock');
-		    			$("#user-header").children("i").addClass('fa-user');
-					   	 showalert(d.message,'success','#login-warning');
-					   	 window.location = base_url;
-					   	 setTimeout(function() {
-						     $('#modal-content').modal('hide');
-						 }, 2000);
-					   }
-	                },
-	                 error: function (request, status, error) {
-	                 	  var err = eval("(" + request.responseText + ")");
-	                      showalert(err.message,'danger','#login-warning');
-	                }
-	            });
-			});	
-		});		
+		$('.show-modal').on('click', function() {
+		    callmodal();
+		});	
+		function callmodal(){
+			if(login==0) $('#modal-content').modal('show');
+		}
+		 $('#form-login-header').submit(function( event ) {
+			event.preventDefault();
+		    $.ajax({
+                url:  base_url+"auth2/login_ajax",
+                type: "post",
+                data: $("#form-login-header").serialize(),
+                success: function(d,textStatus, xhr) {
+                   if(xhr.status==200 && d.data==1){
+				   	 login = 1;
+				   	$('#login-header').text('Logout');
+				   	$('#register-header').text('Profile');
+				   	$("#user-header").children("span").text(d.user);
+				   	$("#user-header").children("i").removeClass('fa-lock');
+	    			$("#user-header").children("i").addClass('fa-user');
+				   	 showalert(d.message,'success','#login-warning');
+				   	 window.location = base_url;
+				   	 setTimeout(function() {
+					     $('#modal-content').modal('hide');
+					 }, 2000);
+				   }
+                },
+                 error: function (request, status, error) {
+                 	  var err = eval("(" + request.responseText + ")");
+                      showalert(err.message,'danger','#login-warning');
+                }
+            });
+		});	
 	</script>
 	<?php } else {?>
 		<script>
@@ -285,19 +257,13 @@
 	<script src="<?php echo base_url(); ?>assets/plugins/jQueryUI/jquery-ui.min.js"></script>
 	<!-- Select2 -->
 	<script src="<?php echo base_url(); ?>/assets/plugins/select2/select2.full.min.js"></script>
-	<!-- Validation -->
-	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js"></script>
 	<!-- BaseUrl -->
 	<script type="text/javascript">
 		$('.menu-bar').find('a').each(function() {
-			var url = window.location.href;
-			var mlink = $(this).attr('href');
-			if(mlink==url || mlink+'/'==url) $(this).parent("li").addClass('active');
+			if($(this).attr('href')==window.location.href) $(this).parent("li").addClass('active');
 		});
 		
 		$('#login-header').on('click', function() {
-			setTimeout(function() { $('input[name="identity"]').focus() }, 1100);
-			$('input[name="identity"]').val('');
 			if(login==1){
 				$.get( base_url+'auth2/logout', function(data) {
 			         window.location = base_url+"airlines";
@@ -311,8 +277,7 @@
 			}else{
 				window.location = base_url+"auth2/register/";
 			}	
-		});
-		
+		});	
 	var base_url ="<?php echo base_url() ?>";
 	<?php if($this->ion_auth->logged_in()==0){ 
 		echo "var login = 0;";
