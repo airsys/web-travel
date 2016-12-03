@@ -48,86 +48,7 @@
 					</div>
 				</div>
 			</div>
-			<!-- <div class="col-search2" style="padding: 0;margin: 0;">
-				<div class="col-search4">
-					<label>ADULT</label>
-					<div class="input-group">
-						<select class="form-control" id='adult' name='adult' style="width: 100%;">
-							<option selected="selected">
-								1
-							</option>
-							<option>
-                                2
-							</option>
-							<option>
-								3
-							</option>
-							<option>
-								4
-							</option>
-							<option>
-								5
-							</option>
-							<option>
-								6
-							</option>
-							<option>
-								7
-							</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-search4">
-					<label>CHILDREN</label>
-					<div class="input-group">
-						<select class="form-control" id='child' name='child' style="width: 100%;">
-							<option selected="selected">
-								0
-							</option>
-							<option>
-								1
-							</option>
-							<option>
-								2
-							</option>
-							<option>
-								3
-							</option>
-							<option>
-								4
-							</option>
-							<option>
-								5
-							</option>
-							<option>
-								6
-							</option>
-							<option>
-								7
-							</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-search4">
-					<label>INFANT</label>
-					<div class="input-group">
-						<select class="form-control" id='infant' name='infant' style="width: 100%;">
-							<option selected="selected">
-								0
-							</option>
-							<option>
-								1
-							</option>
-							<option>
-								2
-							</option>
-							<option>
-								3
-							</option>
-						</select>
-					</div>
-				</div>
-			</div> -->
+			
            <div class="col-md-1" style="padding-right: 0;margin-right: 0;padding-left: 0;margin-left: 0;">
                 <div class="form-group">
                     <label>PASSENGER</label>
@@ -227,7 +148,7 @@
 				<button id="sorttime" data-sort="time:asc total:asc" class="sort-btn btn btn-primary btn-xs" data-sort="time_depart">Depart time <i class="fa " aria-hidden="true"></i></button>
 	    		<button id="sortprice" data-sort="total:asc time:asc" class="sort-btn btn btn-primary btn-xs" data-sort="total">Price <i class="fa " aria-hidden="true"></i></button>
 			</div><br />
- 			<div class="list center-block" style="max-width: 700px;"></div>		
+ 			<div class="list center-block" style="max-width: 1000px;"></div>		
  		</div>
 	</div>
 </div><!-- /.box-body -->
@@ -594,15 +515,15 @@ $(document).ready(function(){
             if(data.flight_count > 1) transit = "Transit " + (parseInt(data.flight_count)-1);
             var tampilan = '<div data-time="'+data.time_depart+'" data-total="'+(data.fare+data.tax)+'" id="group-panel'+j+'" class="panel-group">'+
                                 '<div class="panel panel-info ">'+
-                                    '<div class="col-md-6 col-xs-8">'+
-                                    	'<div id="group'+j+'"></div>'+
-                                    	'<div class="col-md-12 col-xs-12"><label data-count="'+data.flight_count+'_'+j+'" class="tooltips label bg-green" >'+transit+'</label></div>'+
-                                    '<\/div>'+						
-									'<div id="image_'+j+'" class="col-md-2 col-xs-4">'+ 
-                                	'<\/div>'+
+                                    '<div class="col-md-8 col-xs-8">'+
+                                    	'<div class="" id="group'+j+'">'+
+                                    		'<div id="image_'+j+'" class="col-md-2 col-xs-6"><\/div>'+
+                                    		'<div class="col-md-4 col-xs-6"><label data-count="'+data.flight_count+'_'+j+'" class="tooltips label bg-green" >'+transit+'</label></div>'+
+                                    	'</div>'+
+                                    '<\/div>'+
                                 	
-									'<div class="col-md-4 col-xs-12"> '+
-									  '<div class=" text-center container-fare_'+j+'"><label>Rp <span class="tooltips-harga" title="Rp '+addCommas(data.fare)+'(fare) + Rp '+addCommas(data.tax)+'(tax)" id="total_'+j+'">'+addCommas(data.fare+data.tax)+'<\/span><\/label><\/div>'+
+									'<div class="col-md-4 col-xs-4"> '+
+									  '<div class="text-center container-fare_'+j+'"><label>Rp <span class="tooltips-harga" title="Rp '+addCommas(data.fare)+'(fare) + Rp '+addCommas(data.tax)+'(tax)" id="total_'+j+'">'+addCommas(data.fare+data.tax)+'<\/span><\/label><\/div>'+
 									  '<button flight_number="" flight_key="'+data.flight_key+'" type="button" class="center-block btn-booking button-booking_'+j+' btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>' +
 									'<\/div>'+
                                     '<div class="row">'+
@@ -625,20 +546,18 @@ $(document).ready(function(){
                 }
                
                 if(i != 0) { display='display:none;';}
-                tampilan2 = '<div class="panel-body" style="'+display+'">'+
-                                '<div class="col-md-12">'+
-                                    '<h4 style="display:none"><span id="depart_'+j+'_'+i+'"><\/span> | <span class="'+time_depart+'" id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h4>'+
-                                    '<h4 style="margin:5px;"><span>'+data.area_depart+'<\/span> | <span>'+data.time_depart+'<\/span> - <span>'+data.area_arrive+'<\/span> | <span>'+data.time_arrive+'<\/span><\/h4>'+
+                tampilan2 = '<div class="col-md-6 col-xs-12" style="'+display+'">'+
+                                '<div class="">'+
+                                    '<h5 style="display:none"><span id="depart_'+j+'_'+i+'"><\/span> | <span class="'+time_depart+'" id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h5>'+
+                                    '<h5 style=""><span>'+data.area_depart+'<\/span> | <span>'+data.time_depart+'<\/span> - <span>'+data.area_arrive+'<\/span> | <span>'+data.time_arrive+'<\/span><\/h5>'+
                                 '<\/div>'+
                            '<\/div>';
-                flights = flights + '<label><img id="image_'+j+'_'+i+'" src="'+data.airline_icon+'" height="25" alt="" />&nbsp;<span class="'+flightid+'" id="flightid_'+j+'_'+i+'">'+data.segment[i].flight_id+'<\/span><\/label><br>';
+                flights = flights + '<label><img id="image_'+j+'_'+i+'" src="'+data.airline_icon+'" height="25" alt="" />&nbsp;<span class="'+flightid+'" id="flightid_'+j+'_'+i+'"><\/span><\/label>';
                 $(tampilan2).appendTo($("#group"+j));
                 $('#depart_'+j+'_'+i).text(data.segment[i].area_depart);
                 $('#arrive_'+j+'_'+i).text(data.segment[i].area_arrive);
                 $('#timedepart_'+j+'_'+i).text(data.segment[i].time_depart);
                 $('#timearrive_'+j+'_'+i).text(data.segment[i].time_arrive);
-               // $('#flightid_'+j+'_'+i).text(data.segment[i].flight_id);
-               // $('#image_'+j+'_'+i).attr("src", data.airline_icon);
                 flight_number = flight_number + data.segment[i].flight_id+',';
             	$(".button-booking_"+j).attr("flight_number", flight_number);
                 time_depart = ''; flightid='';
