@@ -15,8 +15,9 @@ class Airlines extends CI_Controller {
 		$this->curl->http_header('token', $this->config->item('api-token'));
 		$this->curl->option('TIMEOUT', 70000);
 		$this->load->model('m_booking');
-		$this->url = $this->config->item('api-url') . 'lion';
+		$this->url = $this->config->item('api-url') . airline();
 	 	$this->logo = $this->db->get_where('`auth users`', array('id' => $this->session->userdata('user_id')))->row();
+	 	//echo $this->url;die();
 	 	//if(empty($this->logo->logo)) $this->logo = '';
 	 }
 	 
@@ -35,6 +36,7 @@ class Airlines extends CI_Controller {
 			$json = $this->curl->simple_get("$this->url/search?from=$data[from]&to=$data[to]&date=$data[date]&adult=$data[adult]&child=$data[child]&infant=$data[infant]");
 			//$json = $this->jsondata();		
 			$array = json_decode ($json);
+			//echo $this->url;
 			//print_r("$this->url/search?from=$data[from]&to=$data[to]&date=$data[date]&adult=$data[adult]&child=$data[child]&infant=$data[infant]");
 			
 			if( ( empty($array) || $array->code==404 || $array->code==204) ){

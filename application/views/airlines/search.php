@@ -121,7 +121,8 @@
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul class="dropdown-menu" role="menu">
-                    <li style="text-align: center" ><a href="#" class="btn btn-flat" type="submit" id='search-lion' >Lion Air</a></li>
+                    <li style="text-align: center" ><a href="#" class="btn btn-flat tipe" type="submit" data-type='lion' id='search-lion' >Lion Air</a></li>
+                    <li style="text-align: center" ><a href="#" class="btn btn-flat tipe" type="submit" data-type='sriwijaya' id='search-sriwijaya' >Sriwijaya Air</a></li>
                   </ul>
                 </div>
 			</div>
@@ -240,8 +241,8 @@ $(document).ready(function(){
 	    $(this).valid();
 	});
     
-    $("#search-lion").on('click',function(event) {
-    	$("#tipe").val('lion');
+    $(".tipe").on('click',function(event) {
+    	$("#tipe").val($(this).attr('data-type'));
      	if($("#form").valid()){			
     		coba(); 
 		}
@@ -335,7 +336,7 @@ $(document).ready(function(){
         });
 	}
     
-	$("#form").on('submit',function(event) {	
+	$("#form").on('submit',function(event) {
         event.preventDefault(); 
 		if($("#form").valid()){			
     		coba(); 
@@ -439,7 +440,8 @@ $(document).ready(function(){
                             url:  base_url+"airlines/get_fare",
                             type: "post",
                             data: {
-                                key : flight_key
+                                key : flight_key,
+                                tipe : $("#tipe").val()
                             },
                             success: function(d) {
                                 disable("#group-panel"+data[0],false);
@@ -516,7 +518,7 @@ $(document).ready(function(){
             var tampilan = '<div data-time="'+data.time_depart+'" data-total="'+(data.fare+data.tax)+'" id="group-panel'+j+'" class="panel-group">'+
                                 '<div class="panel panel-info ">'+
                                     '<div class="col-md-8 col-xs-8">'+
-                                    	'<div class="" id="group'+j+'">'+
+                                    	'<div id="group'+j+'">'+
                                     		'<div id="image_'+j+'" class="col-md-2 col-xs-6"><\/div>'+
                                     		'<div class="col-md-4 col-xs-6"><label data-count="'+data.flight_count+'_'+j+'" class="tooltips label bg-green" >'+transit+'</label></div>'+
                                     	'</div>'+
