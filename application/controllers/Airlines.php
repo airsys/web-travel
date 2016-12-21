@@ -98,7 +98,7 @@ class Airlines extends CI_Controller {
 			$json = $this->curl->simple_get("$this->url/search/best_price?from=$data[from]&to=$data[to]&date=$data[date]&adult=$data[adult]&child=$data[child]&infant=$data[infant]");
 			//$json = $this->jsonbestprice();		
 			$array = json_decode ($json);
-			//print_r($array);die();
+			//print_r("$this->url/search/best_price?from=$data[from]&to=$data[to]&date=$data[date]&adult=$data[adult]&child=$data[child]&infant=$data[infant]");die();
 			
 			if( ( empty($array) || $array->code==404 || $array->code==204) ){
 				if(empty($array)){
@@ -433,6 +433,7 @@ class Airlines extends CI_Controller {
 					  'data_detail'=>NULL,
 					);
 		}else{
+			$this->cron_expired();
 			$data_or = [];
 			$string = explode(",",$this->input->get('q'));
 			for($i = 0; $i < count($string); $i++){
@@ -564,6 +565,25 @@ class Airlines extends CI_Controller {
 	function search_bestprice(){
 		$data = array('content'=>'airlines/search_bestprice2');
 		$this->load->view("index",$data);
+	}
+	
+	function cron_expired(){
+		$data = $this->m_booking->cron_expired();
+		$time =new DateTime();
+		$time = $time->getTimestamp();   
+		foreach($data as $val){
+			//if($val->{'time limit'} < $time) echo date('d-m-Y H:i', $val->{'time limit'})."<br>";
+			if($val->{'time limit'} <= $time) {
+				$data_insert = array(
+				   '`id booking`' => $val->{'id booking'} ,
+				   'user' => 0 ,
+				   'status' => 'expired',
+				   '`time status`' => $time,
+				);
+				$this->db->insert('`booking status`', $data_insert); 
+			}
+		}
+		
 	}
 	
 }

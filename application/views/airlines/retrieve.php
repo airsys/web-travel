@@ -3,7 +3,7 @@
                 'booking'=>'#636c70',
                 'issued'=>'#00bd30',
                 'cancel'=>'#d3ce0a',
-                'timeup'=>'#e7bd41',
+                'expired'=>'#e7bd41',
             );
 ?>
 <!-- Jquery Tag Editor -->

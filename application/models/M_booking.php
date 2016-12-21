@@ -155,4 +155,18 @@ class M_booking extends CI_Model
 			$this->db->insert_batch('booking flight',$data_insert);
 		}
 	}
+	
+	function cron_expired(){
+		$this->db->select("`id booking`,`booking code`, `status`,`time limit`,")
+				 ->from("booking AS b, booking status AS s")
+				 ->where("b.id = s.id booking")
+				 ->where("status!='verified'")
+				 ->where("status!='unverified'")
+				 ->where("`status`='booking'")
+				 ->order_by('s.time status','desc');
+		$sub = $this->subquery->start_subquery('where');
+		$sub->select_max('time status')->from('booking status')->where('`id booking` = b.id AND status!="verified" AND status!="unverified"');
+		$this->subquery->end_subquery('s.time status');
+		return $this->db->get()->result();
+	}
 }
