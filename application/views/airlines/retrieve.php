@@ -41,46 +41,10 @@
 }
 
 </style>
-<!--
- <div class="box box-success">
-    <div class="box-header with-border">
-      <h3 class="box-title">Search Code Booking</h3>
-    </div>
-    <div class="box-body">
-        <div class="btn-group col-md-8 col-sm-8 col-xs-8">
-                  <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i> Filter 
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Status</a></li>
-                    <li><a href="#" onclick="$('#booking_code').tagEditor('addTag', 'booking code:');" >Code Booking</a></li>
-                    <li><a href="#" >Airlines</a></li>
-                    <li><a href="#">Leaving From</a></li>
-                    <li><a href="#">Going To</a></li>
-                    <li><a href="#" onclick="$('#booking_code').tagEditor('addTag', 'date booking:');">Date Booking</a></li>
-                    <li><a href="#">Date Depature</a></li>
-                    
-                  </ul>
-        
-                <div class="form-group" style="height: 34px;">
-                    <input id="booking_code" class="form-control" type="text" placeholder="Search anything: booking code, date booking, date departure" >
-                    <input type="hidden" id="dp" />
-                </div>
-                
-        </div>
-        <div class="col-md-1 col-sm-2 col-xs-2">
-            <div class="form-group">
-                <a href="#" id="cek" class="btn btn-info btn-flat">CEK</a>
-            </div>
-        </div>
-        </div>
-    
-   
-  </div> --> <!-- /.box-body -->
-  <!-- /.box -->
+
 
 <!-- Search for date booking -->
+<form method="post" name="form"  >
   <div class="box box-success">
     <div class="box-header with-border">
       <h3 class="box-title">Search </h3>
@@ -92,17 +56,63 @@
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
-                  <ul class="dropdown-menu" role="menu" style="top: 40px;">
-                    <li id="filterStatus"><a href="#">Your Status</a></li> 
-                    <li><a href="#" onclick="addfilterAirline()">Your Airlline</a></li>
-                    <li><a href="#" onclick="addfilterBookingcode()">Your Booking Code</a></li>
-                    <li><a href="#" onclick="date_booking()">Your Date Booking</a></li>
-                    <li><a href="#" onclick="date_depart()">Your Date Depart</a></li>
-                    <li class="divider"></li>
-                    <li> <center><strong>Flight Route</strong></center></li>
-                    <li><a href="#" onclick="addfilterAreadepart()">Leaving From</a></li>
-                    <li><a href="#" onclick="addfilterAreaarrive()">Going To</a></li>
-                   
+                  <ul class="dropdown-menu" role="menu" style="top: 40px;width: 100%;padding-left: 20px;padding-right: 20px;">
+                   <div>
+                    <label>Status</label>
+                    <select class="form-control select2" id="filter_status"  style="width: 50%;margin-bottom: 10px;"  onkeyup='saveValue(this);' readonly >
+                      <option data-sort="1" value="booking">Booking</option>
+                      <option data-sort="2" value="issued">Issued</option>
+                      <option data-sort="3" value="cancel">Cancel</option>
+                      <option data-sort="4" value="confirm">Confirm</option>
+                    </select>
+                   </div>
+                    <div>
+                    <label>Airline</label>
+                    <select class="form-control select2" id="filter_airline" name="filter_airline" style="width:50%;margin-bottom: 10px;" onkeyup='saveValue(this);' readonly >
+                      <option ></option>
+                      <option data-sort="1" value="lion">Lion</option>
+                      <option data-sort="2" value="garuda">Garuda</option>
+                      <option data-sort="3" value="sriwijaya">Sriwijaya</option>
+                      <option data-sort="4" value="citylink">Citylink</option>
+                      <option data-sort="5" value="airasia">Airasia</option>
+                      <option data-sort="6" value="kalstar">Kalstar</option>
+                      <option data-sort="7" value="trigana">Trigana</option>
+                      <option data-sort="8" value="transnusa">transnusa</option>
+                    </select>
+                   </div>
+                   <div>
+                    <label>Booking Code</label>
+                    <input type="text" id="filter_bookingcode" class="form-control" name="filter_bookingcode" onkeyup='saveValue(this);'
+                       style="margin-bottom: 10px;">
+                   </div>
+                   <div>
+                    <label>Date Booking</label>
+                    <input type="text" class="form-control" id="filter_datebooking"  name="filter_datebooking" 
+                      onkeyup='saveValue(this);' style="margin-bottom: 10px;" placeholder="dd-mm-yyyy" readonly>
+                   </div>
+                   <div>
+                    <label>Date Depart</label>
+                    <input type="text" class="form-control" id="filter_datedepart"  name="filter_datedepart" 
+                       onkeyup='saveValue(this);' style="margin-bottom: 10px;" placeholder="dd-mm-yyyy" readonly>
+                   </div>
+                   <div>
+                    <label>Leaving From</label>
+                    <input type="text" class="form-control" id="filter_depart" name="filter_depart" 
+                      onkeyup='saveValue(this);' style="margin-bottom: 10px;" >
+                   </div>
+                   <div>
+                    <label>Going To</label>
+                    <input type="text" class="form-control" id="filter_arrive" name="filter_arrive" 
+                      onkeyup='saveValue(this);' style="margin-bottom: 10px;">
+                   </div>
+                   <div>
+                    <a href="#" id="search" onclick="filter_cari()" class="btn btn-info btn-flat" style="margin-top:20px;margin-bottom:10px;margin-right: 10px;"><i class="fa fa-search"></i> | Search</a>
+                     <button type="button" onclick="clearform()" class="btn btn-warning btn-flat" style="margin-top:20px;margin-bottom:10px;"
+                        data-toggle="popover" data-trigger="hover" data-content="you can clear the filter"
+                        ><i class="fa fa-eraser"></i> | Clear
+                      </button>
+                   </div>
+                  
                   </ul>
         
                 <div class="form-group" >
@@ -121,7 +131,7 @@
     <!-- /.box-body -->
   </div>
   <!-- /.box -->
-
+</form>
   <?php if($data_table != NULL){?>
     <div id="result-content" class="box box-primary center-block" style="width: 100%">
         <div class="box-header with-border">
@@ -437,70 +447,116 @@
 <!--costum-->
  <script type="text/javascript">
 $(document).ready(function(){
-    $("#filter a").click(function(){
-        var value = $(this).html();
-        var def = document.getElementById("booking_code").value;
-        var input = $('#booking_code');
-        input.val(def+','+' '+value+':');
-    });
-})
-function addfilterAreaarrive() {
-    var filter=document.getElementById("booking_code").value;
-    filter=filter+',' + ' ' + 'area arrive:';
-    document.getElementById("booking_code").value=filter;
+    $('[data-toggle="popover"]').popover();   
+});
+$('.dropdown-menu').click(function(event){
+     event.stopPropagation();
+ });
+function filter_cari() {
+    var result =document.getElementById("booking_code").value;
+    var BC=document.getElementById("filter_bookingcode").value;
+    var AL=document.getElementById("filter_airline").value;
+    var ST=document.getElementById("filter_status").value;
+    var DP=document.getElementById("filter_depart").value;
+    var AR=document.getElementById("filter_arrive").value;
+    var DB=document.getElementById("filter_datebooking").value;
+    var DD=document.getElementById("filter_datedepart").value;
+
+    if (!BC=='') {
+      BC=', booking code:'+BC;
     }
-$(document).ready(function(){
-    $("#filterStatus a").click(function(){
-        var value = $(this).html();
-        var input = $('#booking_code');
-        input.val('status:booking' );
-    });
-})
-function addfilterAirline() {
-    var filter=document.getElementById("booking_code").value;
-    filter=filter+',' + ' ' + 'airline:';
+   if (!AL=='') {
+      AL=', airline:'+AL;
+   }
+   if (!ST=='') {
+      ST='status:'+ST;
+   }
+   if (!DP=='') {
+      DP=', area depart:'+DP;
+   }
+   if (!AR=='') {
+      AR=', area arrive:'+AR;
+   }
+   if (!DB=='') {
+      DB=', date booking:'+DB;
+   }
+   if (!DD=='') {
+      DD=', airline:'+DD;
+   }
+  
+    filter= ST+AL+BC+DB+DD+DP+AR;
     document.getElementById("booking_code").value=filter;
+
     }
-function addfilterBookingcode() {
-    var filter=document.getElementById("booking_code").value;
-    filter=filter+',' + ' ' + 'booking code:';
-    document.getElementById("booking_code").value=filter;
-    }
-function addfilterAreadepart() {
-    var filter=document.getElementById("booking_code").value;
-    filter=filter+',' + ' ' + 'area depart:';
-    document.getElementById("booking_code").value=filter;
-    }
-function date_booking() {
-    $('#dp').datepicker({
+$(document).ready(function(){ 
+          
+        $('#filter_datebooking').datepicker({
             changeMonth: true,
             changeYear: true,
-            showOn: 'both',
             dateFormat: 'dd-mm-yy',
-             onSelect: function (date) {                              
-                      var value=document.getElementById("booking_code").value;
-                      var dp=document.getElementById("dp").value;
-                      datedp=value+', '+'date booking:'+dp ;
-                      document.getElementById("booking_code").value=datedp;
-                      },
-    });
-    $('#dp').datepicker('show');
-                          
-    }
-function date_depart() {
-    $('#dp').datepicker({
+            altField: '#filter_datebooking',
+             defaultDate: localStorage['filter_datebooking'] ? localStorage['filter_datebooking'] : new Date(),
+              onSelect: function (dataValue) {
+                  localStorage['filter_datebooking'] = dataValue; 
+                  $('#form').submit();
+              }
+        });
+          $('#filter_datedepart').datepicker({
             changeMonth: true,
             changeYear: true,
-            showOn: 'both',
             dateFormat: 'dd-mm-yy',
-             onSelect: function (date) {                              
-                      var value=document.getElementById("booking_code").value;
-                      var dp=document.getElementById("dp").value;
-                      datedp=value+', '+'date depart:'+dp ;
-                      document.getElementById("booking_code").value=datedp;
-                      },
-    });
-    $('#dp').datepicker('show');
-                          
+            altField: '#filter_datedepart',
+             defaultDate: localStorage['filter_datedepart'] ? localStorage['filter_datedepart'] : new Date(), 
+              onSelect: function (dataValue) {
+                  localStorage['filter_datedepart'] = dataValue; 
+                  $('#form').submit();
+              }
+        });
+    
+})
+
+$("#search").on("click", function(event) {
+            if($("#booking_code").val().search(/:|,/)===-1)
+                window.location = base_url+"airlines/retrieve/"+$("#booking_code").val();
+            else window.location = base_url+"airlines/retrieve?q="+$("#booking_code").val();
+        });
+
+document.getElementById("filter_bookingcode").value = getSavedValue("filter_bookingcode");
+document.getElementById("filter_datedepart").value = getSavedValue("filter_datedepart");
+document.getElementById("filter_datebooking").value = getSavedValue("filter_datebooking");
+document.getElementById("filter_arrive").value = getSavedValue("filter_arrive");
+document.getElementById("filter_depart").value = getSavedValue("filter_depart");
+function saveValue(e){
+            var id = e.id;  
+            var val = e.value; 
+            localStorage.setItem(id, val);
+        }
+function getSavedValue  (v){
+            if (localStorage.getItem(v) === null) {
+                return "";
+            }
+            return localStorage.getItem(v);
+        }
+window.onload = function() {
+    var selItem = sessionStorage.getItem("SelItem");  
+    var selItem1 = sessionStorage.getItem("SelItem1");  
+    $('#filter_status').val(selItem);
+    $('#filter_airline').val(selItem1);
     }
+    $('#filter_status').change(function() { 
+        var selVal = $(this).val();
+        sessionStorage.setItem("SelItem", selVal);
+    });
+    $('#filter_airline').change(function() { 
+        var selVal1 = $(this).val();
+        sessionStorage.setItem("SelItem1", selVal1);
+    });
+function clearform(){
+    var BC=document.getElementById("filter_bookingcode").value="";
+    var DP=document.getElementById("filter_depart").value="";
+    var AR=document.getElementById("filter_arrive").value="";
+    var DB=document.getElementById("filter_datebooking").value="";
+    var DD=document.getElementById("filter_datedepart").value="";
+ return window.localStorage.clear();
+}
 </script>
