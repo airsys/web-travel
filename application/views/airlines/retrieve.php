@@ -47,28 +47,29 @@
 <form method="post" name="form"  >
   <div class="box box-success">
     <div class="box-header with-border">
-      <h3 class="box-title">Search </h3>
     </div>
     <div class="box-body">
         <div class="btn-group col-md-8 col-sm-8 col-xs-12">
                   <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" 
-                  style="margin-bottom: 20px;"><i class="fa fa-search"></i> Filter 
+                  style="margin-bottom: 20px;"><i class="fa fa-filter"></i> Filter 
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul class="dropdown-menu" role="menu" style="top: 40px;width: 100%;padding-left: 20px;padding-right: 20px;">
-                   <div>
-                    <label>Status</label>
-                    <select class="form-control select2" id="filter_status"  style="width: 50%;margin-bottom: 10px;"  onkeyup='saveValue(this);' readonly >
+                   <div class="col-md-6 col-sm-6 col-xs-6">
+                    <label >Status :</label>
+                    <select class="form-control select2" id="filter_status"  style="margin-bottom: 10px;"  onkeyup='saveValue(this);' readonly >
                       <option data-sort="1" value="booking">Booking</option>
-                      <option data-sort="2" value="issued">Issued</option>
+                      <option data-sort="2" value="confirm">Confirm</option>
                       <option data-sort="3" value="cancel">Cancel</option>
-                      <option data-sort="4" value="confirm">Confirm</option>
+                      <option data-sort="4" value="expired">Expired</option>
+                      <option data-sort="5" value="issued">Issued</option>
+                     
                     </select>
                    </div>
-                    <div>
-                    <label>Airline</label>
-                    <select class="form-control select2" id="filter_airline" name="filter_airline" style="width:50%;margin-bottom: 10px;" onkeyup='saveValue(this);' readonly >
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                    <label>Airline :</label>
+                    <select class="form-control select2" id="filter_airline" name="filter_airline" style="margin-bottom: 10px;" onkeyup='saveValue(this);' readonly >
                       <option ></option>
                       <option data-sort="1" value="lion">Lion</option>
                       <option data-sort="2" value="garuda">Garuda</option>
@@ -80,34 +81,34 @@
                       <option data-sort="8" value="transnusa">transnusa</option>
                     </select>
                    </div>
-                   <div>
-                    <label>Booking Code</label>
+                   <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>Booking Code :</label>
                     <input type="text" id="filter_bookingcode" class="form-control" name="filter_bookingcode" onkeyup='saveValue(this);'
                        style="margin-bottom: 10px;">
                    </div>
-                   <div>
-                    <label>Date Booking</label>
+                   <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>Date Booking :</label>
                     <input type="text" class="form-control" id="filter_datebooking"  name="filter_datebooking" 
                       onkeyup='saveValue(this);' style="margin-bottom: 10px;" placeholder="dd-mm-yyyy" readonly>
                    </div>
-                   <div>
-                    <label>Date Depart</label>
+                   <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>Date Depart :</label>
                     <input type="text" class="form-control" id="filter_datedepart"  name="filter_datedepart" 
                        onkeyup='saveValue(this);' style="margin-bottom: 10px;" placeholder="dd-mm-yyyy" readonly>
                    </div>
-                   <div>
-                    <label>Leaving From</label>
+                   <div class="col-md-6 col-sm-6 col-xs-6">
+                    <label>Leaving From :</label>
                     <input type="text" class="form-control" id="filter_depart" name="filter_depart" 
                       onkeyup='saveValue(this);' style="margin-bottom: 10px;" >
                    </div>
-                   <div>
-                    <label>Going To</label>
+                   <div class="col-md-6 col-sm-6 col-xs-6">
+                    <label>Going To :</label>
                     <input type="text" class="form-control" id="filter_arrive" name="filter_arrive" 
                       onkeyup='saveValue(this);' style="margin-bottom: 10px;">
                    </div>
-                   <div>
-                    <a href="#" id="search" onclick="filter_cari()" class="btn btn-info btn-flat" style="margin-top:20px;margin-bottom:10px;margin-right: 10px;"><i class="fa fa-search"></i> | Search</a>
-                     <button type="button" onclick="clearform()" class="btn btn-warning btn-flat" style="margin-top:20px;margin-bottom:10px;"
+                   <div class="col-md-12 col-sm-12 col-xs-12">
+                    <a href="#" id="search" onclick="filter_cari()" class="btn btn-info btn-flat" style="margin-top:10px;margin-bottom:10px;margin-right: 10px;"><i class="fa fa-search"></i> | Search</a>
+                     <button type="button" onclick="clearform()" class="btn btn-warning btn-flat" style="margin-top:10px;margin-bottom:10px;"
                         data-toggle="popover" data-trigger="hover" data-content="you can clear the filter"
                         ><i class="fa fa-eraser"></i> | Clear
                       </button>
