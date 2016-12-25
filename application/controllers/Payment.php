@@ -138,16 +138,61 @@ class Payment extends CI_Controller {
             ->set_output(json_encode($hasil));
 	 }
 	 
+	 function cancel(){
+	 	$this->load->model('m_booking');
+	 	$id_booking = $this->input->post('id');
+	 	$NTA = $this->m_booking->retrieve_list(NULL,array('b.id'=>$id_booking));
+	 	//pr($NTA,TRUE);
+	 	$hasil['message'] = 'id or user not found';
+		$hasil['data']=0;
+		$code = 400;
+	 	if(empty($NTA[0]->NTA)){
+			$hasil['message'] = 'id or user not found';
+			$hasil['data']=0;
+			$code = 400;
+		}elseif($NTA[0]->status == 'booking'){
+			if($this->m_booking->set_status_booking($id_booking,'cancel')){				
+				$data_booking = $this->_cancel($NTA[0]->{'booking code'});
+				$hasil['message'] = "Code ".$NTA[0]->{'booking code'}." - Berhasil Cancel";
+				$hasil['data']=1;
+				$code = 200;
+			}
+		}
+		else{
+			$hasil['message'] = 'Sudah diCancel';
+			$hasil['data']=0;
+			$code = 400;
+		}
+		$this->session->set_flashdata('message',$hasil['message']);
+	 	return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($code)
+            ->set_output(json_encode($hasil));
+	 }
+	 
 	 private function _issued($booking_code){
 	 	$this->load->library('curl');
     	$this->config->load('api');
 		$this->curl->http_header('token', $this->config->item('api-token'));
 		$this->curl->option('TIMEOUT', 70000);	
-		$this->url = $this->config->item('api-url') . 'lion';
+		$this->url = $this->config->item('api-url') . airline();
 		$data=array(
 			'booking_code'=>$booking_code
 		);
 		$json = $this->curl->simple_post("$this->url/pay", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
+	 	$this->log($json, $booking_code);
+	 	return json_encode($json);
+	 }
+	 private function _cancel($booking_code){
+	 	$this->load->library('curl');
+    	$this->config->load('api');
+		$this->curl->http_header('token', $this->config->item('api-token'));
+		$this->curl->option('TIMEOUT', 70000);	
+		$this->url = $this->config->item('api-url') . airline();
+		$data=array(
+			'booking_code'=>$booking_code
+		);
+		$json = $this->curl->simple_post("$this->url/cancel", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
 	 	$this->log($json, $booking_code);
 	 	return json_encode($json);
 	 }

@@ -354,7 +354,8 @@
           <a href='<?php echo base_url()."airlines/invoice/$data_detail->booking_code" ?>' target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print Invoice</a>
           <?php if($status[0]->status=='booking'){ ?>
           <button id="issued" type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment </button>
-          <?php }else{ ?>
+          <button style="margin-right: 5px;" id="cancel" type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> Cancel Booking</button>
+          <?php }elseif($status[0]->status=='payment'){ ?>
           <a href='<?php echo base_url()."airlines/eticket/$data_detail->booking_code" ?>' target="_blank" class="btn btn-primary pull-right"><i class="fa fa-print"></i> Print Ticket</a>
           <?php } ?>
         </div>
@@ -442,6 +443,32 @@
             return false;
         }
         });
+        
+        $("#cancel").on("click", function(event) {
+            if(confirm("Are you sure want to cancle the booking?")){
+            $.ajax({
+                url:  base_url+"payment/cancel",
+                type: "post",
+                data: {
+                    'id': $('#id').val(),
+                },
+                success: function(d,textStatus, xhr) {
+                   if(xhr.status==200 && d.data==1){
+                     showalert(d.message,'success','#warning',6000000);
+                     location.reload();
+                   }
+                },
+                 error: function (request, status, error) {
+                     var err = eval("(" + request.responseText + ")");
+                     showalert(err.message,'danger','#warning',6000000);
+                }
+            });
+        }
+        else{
+            return false;
+        }
+        });
+        
     });
   </script>
 
