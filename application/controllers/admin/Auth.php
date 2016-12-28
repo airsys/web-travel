@@ -123,5 +123,74 @@ class Auth extends CI_Controller {
 		$this->session->set_flashdata('message', $this->ion_auth->messages());
 		redirect('admin/auth/login', 'refresh');
 	}
+	
+	function users($id=0){
+		$data = NULL;
+		if($id!=0){
+			$this->db->select("u.id, username, email, `created on` as created_on, active, 
+						 `full name` as full_name, phone, brand, 
+						 from_unixtime(`created on`,  '%d-%m-%Y %h:%i:%s') as register_on,
+						 from_unixtime(`last login`,  '%d-%m-%Y %h:%i:%s') as last_login"
+						 )
+				 ->from("auth users AS u, auth company AS c")
+				 ->where("u.company = c.id")
+				 ->where("u.id = $id");
+			$data = $this->db->get()->row();
+			$data_view = array(
+				'content'=>'auth/user_detail',
+				'data'=>$data,
+			);
+		}else{
+			$data_view = array(
+				'content'=>'auth/users',
+			);
+		}
+		
+		$this->load->view("admin/index",$data_view);
+	}
+	
+	function user_status(){		
+		$this->db->where('id', get('id'));
+		$this->db->update('`auth users`', array('active'=>get('status'))); 
+		$data_r['message'] = 'Status Changed';
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($data_r));
+	}
+	
+	function get_username($limit,$offset){
+		//print_r($_GET);
+		switch(get('type')){
+			case 'email':
+				$val = get('value');
+				$this->db->where("email = '$val'");
+				break;
+			case 'fullname':
+				$val = get('value');
+				$this->db->like('`full name`', $val);
+				break;
+			case 'registeron':
+				$val = get('value');
+				$from = strtotime($val)-25200;
+				$to = (strtotime($val)+86400-25200) ;
+				//echo $from .'--'. $to;
+				$this->db->where("`created on` BETWEEN '$from' AND '$to'");
+				break;
+			default:
+				break;
+		}
+		$this->db->select("u.id, username, email, `created on` as created_on, active, 
+						 `full name` as full_name, phone, brand, from_unixtime(`created on`,  '%d-%m-%Y %h:%i:%s') as register_on")
+				 ->from("auth users AS u, auth company AS c")
+				 ->where("u.company = c.id")
+				 ->order_by('u.`created on`','desc')
+				 ->limit($limit,$offset);
+		$data_r = json_encode($this->db->get()->result());
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output($data_r);
+	}
 
 }

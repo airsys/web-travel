@@ -79,6 +79,7 @@
               </ul>
             </li>
             <li class=""><a href="<?php echo base_url().'admin/check/name' ?>">Check Name <span class="sr-only"></span></a></li>
+            <li class=""><a href="<?php echo base_url().'admin/auth/users' ?>">Users List <span class="sr-only"></span></a></li>
           </ul>
         </div>
         <div class="navbar-custom-menu">
