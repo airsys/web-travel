@@ -136,6 +136,7 @@
 		<input id='h_child' name='child' type="hidden" value=''> 
 		<input id='h_infant' name='infant' type="hidden" value=''> 
 		<input id='h_flight_key' name='key' type="hidden" value=''>
+		<input id='h_airline' name='airline' type="hidden" value=''>
 		<input id='h_flight_number' name='flight_number' type="hidden" value=''>
 	</form><!-- /.box-footer-->
 </div><!-- /.box -->
@@ -243,6 +244,7 @@ $(document).ready(function(){
     
     $(".tipe").on('click',function(event) {
     	$("#tipe").val($(this).attr('data-type'));
+    	$("#h_airline").val($(this).attr('data-type'));
      	if($("#form").valid()){			
     		coba(); 
 		}
@@ -337,7 +339,7 @@ $(document).ready(function(){
 	}
     
 	$("#form").on('submit',function(event) {
-        event.preventDefault(); 
+        event.preventDefault();
 		if($("#form").valid()){			
     		coba(); 
 		}      
@@ -460,7 +462,7 @@ $(document).ready(function(){
                                 disable("#group-panel"+data[0],false);
                                 $(".button-booking_"+data[0]).addClass("btn-success");                                
                                 $(".button-booking_"+data[0]).removeClass("btn-default");
-                                showalert(error,'warning');
+                                showalert(request.responseText,'warning');
                                 $(".container-loading_"+data[0]).hide();
                             }
                         });

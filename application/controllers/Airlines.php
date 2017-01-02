@@ -284,7 +284,7 @@ class Airlines extends CI_Controller {
 				}
 				//print_r($data); echo "---";die();
 				$json = $this->curl->simple_post("$this->url/book", $data, array(CURLOPT_BUFFERSIZE => 10, CURLOPT_TIMEOUT=>800000));
-				//echo $json;die();
+				//echo $this->url/book;
 				//$json = $this->jsonbooking();
 				
 				$array = json_decode ($json);
