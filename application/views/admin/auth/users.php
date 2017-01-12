@@ -74,7 +74,7 @@
  	$(document).ready(function() {
 		var win = $(window);
 		var doc = $(document);
-		var limit = 2;
+		var limit = 40;
 		var offset = 0;
 		var load = true;
 		// Each time the user scrolls

@@ -360,7 +360,7 @@ function addCommas(nStr)
 
 //show alert()
 function showalert(message,alerttype,id='#alert',time=6000) {
-    $(id).append('<div id="alertdiv" class="alert alert-' +  alerttype + '"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>');
+    $(id).append('<div id="alertdiv" class="alert alert-' +  alerttype + '"><i class="close" data-dismiss="alert">×</i><span>'+message+'</span></div>');
     setTimeout(function() {
       $("#alertdiv").remove();
     }, time);

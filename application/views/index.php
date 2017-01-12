@@ -63,6 +63,13 @@
 		            <?php if($this->ion_auth->logged_in()){ ?>
 		            <li class="menu-bar"><a href="<?php echo base_url().'airlines/retrieve?q=status:booking' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
 		            <li class="dropdown">
+		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">PPOB <span class="caret"></span></a>
+		              <ul class="dropdown-menu" role="menu">
+		                <li><a href="<?php echo base_url().'ppob/tagihan' ?>">Cek Tagihan</a></li>
+		                <li><a href="<?php echo base_url().'ppob/pulsa' ?>">Pulsa HP & Listrik</a></li>
+		              </ul>
+		            </li>
+		            <li class="dropdown">
 		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Topup <span class="caret"></span></a>
 		              <ul class="dropdown-menu" role="menu">
 		                <li><a href="<?php echo base_url().'payment/topup' ?>">Input Topup</a></li>
