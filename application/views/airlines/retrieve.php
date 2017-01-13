@@ -536,11 +536,13 @@ function filter_cari() {
       DB=', date booking:'+DB;
    }
    if (!DD=='') {
-      DD=', airline:'+DD;
+      DD=', date depart:'+DD;
    }
   
     filter= ST+AL+BC+DB+DD+DP+AR;
-    document.getElementById("booking_code").value=filter;
+    var str =filter; 
+    var txt = str.replace(/^\W\s/,"");
+    document.getElementById("booking_code").value = txt;
 
     }
 $(document).ready(function(){ 
