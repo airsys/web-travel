@@ -5,22 +5,45 @@
 <script src="<?php echo base_url(); ?>assets/plugins/daterangepicker/daterangepicker.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugins/datepicker/bootstrap-datepicker.js"></script>
 
-  <!-- Form Element sizes -->
   <div class="box box-success">
     <div class="box-header with-border">
-      <h3 class="box-title">Date Filter</h3>
     </div>
     <div class="box-body">
     	 <!-- Date range -->
           <div class="form-group">
-            <label>Date range:</label>
-
-            <div class="input-group col-md-3">
-              <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
-              </div>
-              <input type="text" value="<?php echo $date_range; ?>" class="form-control pull-right" id="reservation">
-            </div>
+            <div class="btn-group col-md-8 col-sm-8 col-xs-12">
+                  <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" 
+                  style="margin-bottom: 20px;"><i class="fa fa-filter"></i> Filter 
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" style="top: 40px;width: 100%;padding-left: 20px;padding-right: 20px;">
+                     
+                   <div class="col-md-6 col-sm-6 col-xs-6">
+                    <label>Date Range :</label>
+                    <input type="text" class="form-control" id="filter_daterange" value="<?php echo $date_range; ?>" name="filter_daterange" 
+                     style="margin-bottom: 10px;" placeholder="pick your date" >
+                   </div>
+                   
+                   <div class="col-md-12 col-sm-12 col-xs-12">
+                    <a href="#" id="search" onclick="filter_cari()" class="btn btn-info btn-flat" style="margin-top:10px;margin-bottom:10px;margin-right: 10px;"><i class="fa fa-search"></i> | Search</a>
+                    
+                      </button>
+                   </div>
+                  
+                  </ul>
+                  
+                <div class="form-group" >
+                    <input id="reservation" name="reservation" class="form-control" type="text" value="" style="width: 85%;color: rgba(119, 119, 119, 0.76);">
+                  
+                </div>
+                
+        </div>
+                <div class="col-md-1 col-sm-2 col-xs-2">
+                  <div class="form-group">
+                      <a href="#" id="cek" class="btn btn-info btn-flat">CEK</a>
+                  </div>
+                </div>
             <!-- /.input group -->
           </div>
           <!-- /.form group -->
@@ -75,17 +98,48 @@
 	</div><!-- /.box-body -->  
   <?php } ?>
   
- 
 <script>
 $(document).ready(function(){
-	$('#reservation').daterangepicker(
+	$('#filter_daterange').daterangepicker(
 				{
 					"opens": "right",
 					'autoApply': true,
 					locale: {format: 'DD/MM/YYYY'},
 				}
-	).on('apply.daterangepicker', function(ev, p){
-          window.location = base_url+"report/finance?range="+$(this).val();
-    });
+	);
+
+	var href = '';
+            var reservation ='';
+            href = window.location.href;
+            if(href.indexOf("range=")===-1){
+                reservation = href.substr(href.lastIndexOf('/') + 1);
+                if(reservation !='finance')$("#reservation").val(reservation.replace('#',''));
+            }else {
+                reservation = href.substr(href.lastIndexOf('=') + 1);
+                $("#reservation").val(decodeURI(reservation.replace('#','')));
+            }  
+
+
+
+	$("#search, #cek").on("click", function(event) {
+	                window.location = base_url+"report/finance?range="+$("#reservation").val();
+	});
+
+	
+	$('.dropdown-menu').click(function(event){
+     	event.stopPropagation();
+ 	});
 });
+	function filter_cari() {
+	    var result =document.getElementById("reservation").value;
+	  
+	    var DR=document.getElementById("filter_daterange").value;
+
+        if (DR!='') {
+          filter='range:'+DR;
+        }
+	    
+	    document.getElementById("reservation").value=filter;
+	}
+ 
 </script>

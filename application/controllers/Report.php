@@ -51,6 +51,7 @@ class Report extends CI_Controller {
 	 }
 	 
 	 function finance(){
+	 	/*
 	 	$this->load->helper('dropdown');
 	 	$array_range = NULL;
 	 	if($this->input->get('range')){
@@ -61,14 +62,42 @@ class Report extends CI_Controller {
 			$array_range = "`created` BETWEEN $rangf AND $rangt";
 			//echo date("Y-m-d H:i:s",$rangf).'|'.date("Y-m-d H:i:s",$rangt);die();
 		}else{
-			redirect ('report/finance?range='.date('d/m/Y', strtotime('11/01/2016')).' - '.date('d/m/Y'),'redirect');
+			redirect ('report/finance?range='.date('d/m/Y', strtotime('-30 days')).' - '.date('d/m/Y'),'redirect');
 		}
 	 	$data_table = $this->m_report->finance($array_range);
 	 	$data = array('content'=>'report/finance',
 					  'data_table'=>$data_table,
-					  //'payfor'=>$this->m_report->finance_payfor($rangf,$rangt),
+					  'payfor'=>$this->m_report->finance_payfor($rangf,$rangt),
 					  'date_range'=>$this->input->get('range'),
 					);
 	 	$this->load->view("index",$data);
+	 	*/
+	 		$this->load->helper('dropdown');
+	 		$array_range = NULL;
+			$string = explode(",",$this->input->get('range'));
+			for($i = 0; $i < count($string); $i++){
+				$string2 = explode(":",$string[$i]);
+				if(!empty($string2[1]) && !empty($string2[0] && $string2[1]!='')){
+
+					
+					if(preg_replace('/\s+/', '', $string2[0])=='range'){	
+						$range = str_replace(' ', '', $this->input->get('range'));
+						$range = (preg_split("/[,:-]+/",$range));
+						$rangf = strtotime(str_replace('/', '-', $range[1]));
+						$rangt = strtotime(str_replace('/', '-', $range[2]))+86399;
+						$array_range = "`created` BETWEEN $rangf AND $rangt";
+					}
+				}else{
+					redirect ('report/finance?range=range:'.date('d/m/Y', strtotime('11/01/2016')).' - '.date('d/m/Y'),'redirect');
+				}
+			}
+			$data_table = $this->m_report->finance($array_range);
+			$data = array('content'=>'report/finance',
+					  'data_table'=>$data_table,
+					  'payfor'=>$this->m_report->finance_payfor($rangf,$rangt),
+					  'date_range'=>$this->input->get('range'),
+					);
+		$this->load->view("index",$data);
 	 }
+
 }

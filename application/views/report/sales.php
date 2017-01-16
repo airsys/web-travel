@@ -13,7 +13,7 @@
 <script src="<?php echo base_url(); ?>assets/plugins/datepicker/bootstrap-datepicker.js"></script>
 
   <!-- Form Element sizes -->
-  <form method="post" name="form"  >
+ <form method="post" name="form"  >
   <div class="box box-success">
     <div class="box-header with-border">
     </div>
@@ -31,7 +31,7 @@
                      
                    <div class="col-md-6 col-sm-6 col-xs-6">
                     <label>Date Range :</label>
-                    <input type="text" class="form-control" id="filter_daterange"  name="filter_daterange" onkeyup='saveValue(this);'
+                    <input type="text" class="form-control" id="filter_daterange"  name="filter_daterange" onkeyup='saveValue(this);' value="<?php echo $date_range; ?>"
                      style="margin-bottom: 10px;" placeholder="pick your date" >
                    </div>
                    
@@ -65,14 +65,13 @@
                   
                 </div>
                 
-       		</div>
-                <div class="col-md-1 col-sm-2 col-xs-2">
-                  <div class="form-group">
-                      <a href="#" id="cek" class="btn btn-info btn-flat">CEK</a>
-                  </div>
+        </div>
+            <div class="col-md-1 col-sm-2 col-xs-2">
+                <div class="form-group">
+                    <a href="#" id="cek" class="btn btn-info btn-flat">CEK</a>
                 </div>
-            <!-- /.input group -->
-          </div>
+                </div>
+         </div>
           
           <!-- /.form group -->
     </div>
@@ -80,7 +79,6 @@
   </div>
   <!-- /.box -->
   </form>
-  
   <?php if($data_table != NULL){?>
   	<div id="result-content" class="box box-primary center-block" style="width: 100%">
 		<div class="box-header with-border">
@@ -192,30 +190,31 @@ $(document).ready(function(){
 	    
 	    document.getElementById("reservation").value=filter;
 	}
-	 window.onload = function() {
-	    var selItem1 = sessionStorage.getItem("SelItem1");  
-	      $('#filter_airline').val(selItem1);
-	 }
-	      $('#filter_airline').change(function() { 
-	          var selVal1 = $(this).val();
-	          sessionStorage.setItem("SelItem1", selVal1);
-	      });
-	 function clearform(){
-	    var DR=document.getElementById("filter_daterange").value="";
-	     return window.localStorage.clear();
-	 }
+  window.onload = function() {
+    var selItem1 = sessionStorage.getItem("SelItem1");  
+      $('#filter_airline').val(selItem1);
+  }
+      $('#filter_airline').change(function() { 
+          var selVal1 = $(this).val();
+          sessionStorage.setItem("SelItem1", selVal1);
+      });
+  function clearform(){
+    var DR=document.getElementById("filter_daterange").value="";
+     return window.localStorage.clear();
+  }
 
 
-	document.getElementById("filter_daterange").value = getSavedValue("filter_daterange");
-	function saveValue(e){
-	            var id = e.id;  
-	            var val = e.value; 
-	            localStorage.setItem(id, val);
-	        }
-	function getSavedValue  (v){
-	            if (localStorage.getItem(v) === null) {
-	                return "";
-	            }
-	            return localStorage.getItem(v);
-	        }
+
+function saveValue(e){
+  document.getElementById("filter_daterange").value = getSavedValue("filter_daterange");
+            var id = e.id;  
+            var val = e.value; 
+            localStorage.setItem(id, val);
+        }
+function getSavedValue  (v){
+            if (localStorage.getItem(v) === null) {
+                return "";
+            }
+            return localStorage.getItem(v);
+        }
 </SCRIPT>
