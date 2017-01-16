@@ -26,6 +26,22 @@ function get($name=''){
 	return $CI->input->get($name);
 }
 
+function now(){
+	$time =new DateTime();
+	$time = $time->getTimestamp();
+	return $time;
+}
+
+function RandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
 function pr($data='', $die=FALSE){
 	$CI =& get_instance();
 	if($die){

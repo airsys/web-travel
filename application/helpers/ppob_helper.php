@@ -16,17 +16,25 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
 		$A = substr($msisdn, -4) . $time;
 		$B = substr($userid,0,4) . substr($pwd,0,6);
 
-		function xor_string($string, $key) {
-		    for($i = 0; $i < strlen($string); $i++)
-		        $string[$i] = ($string[$i] ^ $key[$i % strlen($key)]);
-		    return $string;
+		if ( ! function_exists('xor_string'))
+		{
+			function xor_string($string, $key) {
+			    for($i = 0; $i < strlen($string); $i++)
+			        $string[$i] = ($string[$i] ^ $key[$i % strlen($key)]);
+			    return $string;
+			}
 		}
-		function xml_array($str){
-			$xml = simplexml_load_string($str, "SimpleXMLElement", LIBXML_NOCDATA);
-			$json = json_encode($xml);
-			$array = json_decode($json,TRUE);
-			return $array;
+		
+		if ( ! function_exists('xml_array'))
+		{
+			function xml_array($str){
+				$xml = simplexml_load_string($str, "SimpleXMLElement", LIBXML_NOCDATA);
+				$json = json_encode($xml);
+				$array = json_decode($json,TRUE);
+				return $array;
+			}
 		}
+		
 
 		$sign = base64_encode(xor_string($A,$B));
 
@@ -61,6 +69,7 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
 		  //header('Content-Type: application/xml');
 		  //print $req;
 		  //print $response;
+		  /*<?xml version="1.0"?><datacell><resultcode>0</resultcode><message>XL5 No: 087825668660 sudah diterima dan sdg diproses. SN Kami :293599141. Harga: 6000. Saldo: Rp 88000.</message><trxid>293599141</trxid><ref_trxid>1484581242</ref_trxid></datacell>{"resultcode":"0","message":"XL5 No: 087825668660 sudah diterima dan sdg diproses. SN Kami :293599141. Harga: 6000. Saldo: Rp 88000.","trxid":"293599141","ref_trxid":"1484581242"}*/
 		  return xml_array($response);
 		}
 	}
@@ -68,6 +77,6 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
 	function cekSaldoPpob(){
 		$CI =& get_instance();
 		$CI->load->helper('ppob');
-		$data = ppobxml('','','saldo','');
+		$data = ppobxml('','','saldo',RandomString());
 		return filter_var($data['message'], FILTER_SANITIZE_NUMBER_INT);	
 	}
