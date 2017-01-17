@@ -59,11 +59,11 @@
 		        <!-- Collect the nav links, forms, and other content for toggling -->
 		        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
 		          <ul class="nav navbar-nav">
-		            <li class="menu-bar"><a href="<?php echo base_url() ?>">Search Ticket <span class="sr-only">(current)</span></a></li>
+		            <li class="menu-bar"><a href="<?php echo base_url() ?>">Airlines <span class="sr-only">(current)</span></a></li>
 		            <?php if($this->ion_auth->logged_in()){ ?>
-		            <li class="menu-bar"><a href="<?php echo base_url().'airlines/retrieve?q=status:booking' ?>">Cek Booking <span class="sr-only">(current)</span></a></li>
+		            <!--<li class="menu-bar"><a href="<?php //echo base_url()./*'airlines/retrieve?q=status:booking'*/ ?>">Cek Booking <span class="sr-only">(current)</span></a></li>-->
 		            <li class="dropdown">
-		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">PPOB <span class="caret"></span></a>
+		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pulse <span class="caret"></span></a>
 		              <ul class="dropdown-menu" role="menu">
 		                <li><a href="<?php echo base_url().'ppob/tagihan' ?>">Cek Tagihan</a></li>
 		                <li><a href="<?php echo base_url().'ppob/pulsa' ?>">Pulsa HP & Listrik</a></li>
@@ -81,6 +81,7 @@
 		              <ul class="dropdown-menu" role="menu">
 		                <li><a href="<?php echo base_url().'report/sales' ?>">Sales</a></li>
 		                <li><a href="<?php echo base_url().'report/finance' ?>">Finance</a></li>
+		                <li><a href="<?php echo base_url().'airlines/retrieve?q=status:booking' ?>">Check Booking</a></li>
 		              </ul>
 		            </li>
 		         	<?php } ?>
