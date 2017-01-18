@@ -14,7 +14,7 @@ class Ppob extends CI_Controller {
 	 }
 	
 	function index(){
-		echo substr('134', -4);
+		echo hargaPulsa('XL.5');
 	}
 	
 	function tagihan(){
@@ -35,10 +35,19 @@ class Ppob extends CI_Controller {
 		//$saldoserver = cekSaldoPpob();
 		if(saldo() > $price){
 			if($price > 1){
-				$return = ppobxml(post('nomer'),post('nominal'),'charge',now());
+				$my_trxid = now().'_'.RandomString(3);
+				$nomer = post('nomer');	$nominal = post('nominal');
+				$id = $this->m_ppob->insert_pulsa($my_trxid);				
+				$return = ppobxml($nomer,$nominal,'charge',$my_trxid);
 				if($return['resultcode']!=0){
+					$this->m_ppob->update_pulsa(array('message'=>$return['message'], 'trxid'=>$return['trxid'], 
+							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode']));
 					$return = array('message'=>'Pulsa gagal diisi',
 							'code'=>1);
+				}else{
+					$this->m_ppob->issued($id,$nominal);
+					$this->m_ppob->update_pulsa(array('message'=>$return['message'], 'trxid'=>$return['trxid'], 
+					 		'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode']));
 				}
 			}else{
 				$return = array('message'=>'Operator tidak terdaftar',

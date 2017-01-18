@@ -60,6 +60,7 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
 
 		$response = curl_exec($curl);
 		$err = curl_error($curl);
+		//$err = FALSE;
 
 		curl_close($curl);
 
@@ -69,7 +70,8 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
 		  //header('Content-Type: application/xml');
 		  //print $req;
 		  //print $response;
-		  /*<?xml version="1.0"?><datacell><resultcode>0</resultcode><message>XL5 No: 087825668660 sudah diterima dan sdg diproses. SN Kami :293599141. Harga: 6000. Saldo: Rp 88000.</message><trxid>293599141</trxid><ref_trxid>1484581242</ref_trxid></datacell>{"resultcode":"0","message":"XL5 No: 087825668660 sudah diterima dan sdg diproses. SN Kami :293599141. Harga: 6000. Saldo: Rp 88000.","trxid":"293599141","ref_trxid":"1484581242"}*/
+		  /*$response = '<?xml version="1.0"?><datacell><resultcode>0</resultcode><message>XL5 No: 087825668660 sudah diterima dan sdg diproses. SN Kami :293599141. Harga: 6000. Saldo: Rp 88000.</message><trxid>293599141</trxid><ref_trxid>1484581242</ref_trxid></datacell>';*/
+		  /*{"resultcode":"0","message":"XL5 No: 087825668660 sudah diterima dan sdg diproses. SN Kami :293599141. Harga: 6000. Saldo: Rp 88000.","trxid":"293599141","ref_trxid":"1484581242"}*/
 		  return xml_array($response);
 		}
 	}
@@ -79,4 +81,13 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
 		$CI->load->helper('ppob');
 		$data = ppobxml('','','saldo',RandomString());
 		return filter_var($data['message'], FILTER_SANITIZE_NUMBER_INT);	
+	}
+	
+	function hargaPulsa($kode){
+		$CI =& get_instance();
+		$CI->db->select('(nilai+markup) as harga')
+			   ->where('kode',$kode);
+		$query = $CI->db->get('`ppob product`');
+		$query = $query->row();
+		return $query->harga;
 	}
