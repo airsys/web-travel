@@ -326,7 +326,8 @@ $(document).ready(function(){
         	$('#booking').submit()
         }
         
-        function disable(elemen,dis=true){
+        function disable(elemen,dis){
+			 if (typeof(dis)==='undefined') dis = true;
         	$(elemen).css("cursor", "wait");
 			$(elemen).find('input, textarea, button, select, img, label').prop('disabled',true);
         	if(dis==false){

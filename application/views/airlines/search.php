@@ -481,7 +481,8 @@ $(document).ready(function(){
         	$('#booking').submit()
         }
         
-        function disable(elemen,dis=true){
+        function disable(elemen,dis){
+			 if (typeof(dis)==='undefined') dis = true;
         	$(elemen).css("cursor", "wait");
 			$(elemen).find('input, textarea, button, select, img, label').prop('disabled',true);
         	if(dis==false){
@@ -576,17 +577,19 @@ $(document).ready(function(){
         });
         
         function booking(){
-        	$('#booking').submit()
+        	$('#booking').submit();
         }
         
-        function disable(elemen,dis=true){
-        	$(elemen).css("cursor", "wait");
+        function disable(elemen,dis){
+			if (typeof(dis)==='undefined') a = true;
+			$(elemen).css("cursor", "wait");
 			$(elemen).find('input, textarea, button, select, img, label').prop('disabled',true);
-        	if(dis==false){
+			if(dis==false){
 				$(elemen).css("cursor", "auto");
 				$(elemen).find('input, textarea, button, select, img, label').prop('disabled',false);
 			}
         }
+		
         if($('.list').mixItUp('isLoaded')){
 			$('.list').mixItUp('destroy');
 		}        
