@@ -76,6 +76,7 @@
                 <li><a href="<?php echo base_url().'admin/report/sales/issued' ?>">Sales</a></li>
                 <li><a href="<?php echo base_url().'admin/report/finance' ?>">Finance</a></li>
                 <li><a href="<?php echo base_url().'admin/report/sales/booking' ?>">Booking</a></li>
+                <li><a href="<?php echo base_url().'admin/ppob/transaction' ?>">PPOB</a></li>
               </ul>
             </li>
             <li class=""><a href="<?php echo base_url().'admin/check/name' ?>">Check Name <span class="sr-only"></span></a></li>

@@ -73,6 +73,7 @@ class Ppob extends CI_Controller {
 	function bayar(){
 		$price = $this->m_ppob->get_price();
 		$return = [];
+		$msg='';
 		//$saldoserver = cekSaldoPpob();
 		if(saldo() > $price){
 			if($price > 1){
@@ -81,13 +82,13 @@ class Ppob extends CI_Controller {
 				$id = $this->m_ppob->insert_pulsa($my_trxid);				
 				$return = ppobxml($nomer,$nominal,'charge',$my_trxid);
 				if($return['resultcode']!=0){
-					$msg = explode(".",$return['msg']);
+					$msg = explode(".",$return['message']);
 					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
 							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode']));
 					$return = array('message'=>'Pulsa gagal diisi',
 							'code'=>1);
 				}else{
-					$msg = explode(".",$return['msg']);
+					$msg = explode(".",$return['message']);
 					$this->m_ppob->issued($id,$nominal);
 					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
 					 		'ref_trxid'=>$my_trxid, 'status'=>2222));
