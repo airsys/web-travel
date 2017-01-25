@@ -91,3 +91,13 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
 		$query = $query->row();
 		return $query->harga;
 	}
+	
+	if ( ! function_exists('xml2array'))
+		{
+			function xml2array($str){
+				$xml = simplexml_load_string($str, "SimpleXMLElement", LIBXML_NOCDATA);
+				$json = json_encode($xml);
+				$array = json_decode($json,TRUE);
+				return $array;
+			}
+		}

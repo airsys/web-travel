@@ -23,10 +23,46 @@ class Ppob extends CI_Controller {
 		$this->load->view("index",$data);		
 	}
 	
-	function pulsa(){
+	function pulsa($sn='')
+	{
+		if($sn=='sn'){
+			$this->sn();
+		}
+		if($sn=='refund'){
+			$this->refund();
+		}
 		$data = array('content'=>'ppob/pulsa',
 					  );
 		$this->load->view("index",$data);		
+	}
+	
+	private function sn(){
+		$str = '<?xml version="1.0"?>
+				<datacell>
+					 <perintah>REPORT</perintah>
+					 <trxid>101626484</trxid>
+					 <oprcode>TEL.10</oprcode>
+					 <msisdn>081397382353 </msisdn>
+					 <msg>TEL.10 No: 081397382353 SUKSES
+					     SN Operator: 879746082.
+					     SN Kami : 101626484. (Pesan Tambahan)</msg>
+					 <ref_trxid>145339124</ref_trxid>
+				</datacell> ';
+		$data = xml2array($str);
+		$sn = explode(":",$data['msg']);
+		$sn = filter_var($sn[2], FILTER_SANITIZE_NUMBER_INT);
+		//echo $sn;die();
+		$data_update = array('sn_operator'=>0,);
+		$this->db->where('trxid', $data['trxid']);
+		$this->db->update('`ppob pulsa`', $data_update);
+		
+	}
+	
+	//http://indsiti.com/ppob/pulsa/refund?resultcode=1001&msisdn=62816888999&message=Refund&trxid=7552974&ref_trxid=54321
+	private function refund(){
+		$this->m_ppob->update_pulsa(array('message'=>get('message'), 'trxid'=>get('trxid'), 
+							'ref_trxid'=>get('ref_trxid'), 'status'=>get('resultcode')));
+		$this->m_ppob->refund(get('ref_trxid'));
 	}
 	
 	function bayar(){
@@ -40,14 +76,16 @@ class Ppob extends CI_Controller {
 				$id = $this->m_ppob->insert_pulsa($my_trxid);				
 				$return = ppobxml($nomer,$nominal,'charge',$my_trxid);
 				if($return['resultcode']!=0){
-					$this->m_ppob->update_pulsa(array('message'=>$return['message'], 'trxid'=>$return['trxid'], 
+					$msg = explode(".",$return['msg']);
+					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
 							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode']));
 					$return = array('message'=>'Pulsa gagal diisi',
 							'code'=>1);
 				}else{
+					$msg = explode(".",$return['msg']);
 					$this->m_ppob->issued($id,$nominal);
-					$this->m_ppob->update_pulsa(array('message'=>$return['message'], 'trxid'=>$return['trxid'], 
-					 		'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode']));
+					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
+					 		'ref_trxid'=>$my_trxid, 'status'=>2222));
 				}
 			}else{
 				$return = array('message'=>'Operator tidak terdaftar',

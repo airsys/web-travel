@@ -23,6 +23,7 @@ class M_ppob extends CI_Model
 	function insert_pulsa($trxid){
 		$data = array('product'=>post('nominal'),
 			'ref_trxid'=>$trxid,
+			'company'=>$this->session->userdata('company'),
 		);
 		$this->db->insert('`ppob pulsa`',$data);
 		return $this->db->insert_id();
@@ -33,6 +34,7 @@ class M_ppob extends CI_Model
 					  'status'=>$data_f['status'], 'created'=>now());
 		$this->db->where('ref_trxid', $data_f['ref_trxid']);
 		$this->db->update('`ppob pulsa`', $data);
+		//return $this->db->affected_rows();
 	}
 	
 	function issued($id,$kode){
@@ -42,11 +44,38 @@ class M_ppob extends CI_Model
 					"company"=>$this->session->userdata('company'),
 					"nominal"=>$harga_pulsa,
 					"created"=>now(),
-					"code"=>'CP',
+					"code"=>'DP',
 					"pay for"=>$id,
 					"balance"=>$saldo-$harga_pulsa,
 			);
 			$this->db->insert('acc balance',$data); //<-menambah row di payment topup
 		
+	}
+	
+	function refund($ref_trxid){
+		$this->db->select('id')
+			 ->from('`ppob pulsa`')
+			 ->where('`ref_trxid`',$ref_trxid); 
+		$id = $this->db->get()->row();
+		$id = $id->id;
+		
+		$this->db->select('nominal')
+			 ->from('`acc balance`')
+			 ->where('`code`','DP') 
+			 ->where('`pay for`',$id); 
+		$harga = $this->db->get()->row();
+		$harga = $id->nominal;
+		
+		$saldo = saldo();
+		$data=array(
+				"company"=>$this->session->userdata('company'),
+				"nominal"=>$harga,
+				"created"=>now(),
+				"code"=>'CP',
+				"pay for"=>$id,
+				"balance"=>$saldo+$harga,
+		);
+		$this->db->insert('acc balance',$data); //<-menambah row di payment topup
+	
 	}
 }
