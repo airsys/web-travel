@@ -295,7 +295,7 @@
 	<!-- Select2 -->
 	<script src="<?php echo base_url(); ?>/assets/plugins/select2/select2.full.min.js"></script>
 	<!-- Validation -->
-	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.0/jquery.validate.min.js"></script>
 	<!-- BaseUrl -->
 	<script type="text/javascript">
 		$('.menu-bar').find('a').each(function() {
