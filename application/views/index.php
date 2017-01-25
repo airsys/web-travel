@@ -60,15 +60,16 @@
 		        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
 		          <ul class="nav navbar-nav">
 		            <li class="menu-bar"><a href="<?php echo base_url() ?>">Airlines <span class="sr-only">(current)</span></a></li>
-		            <?php if($this->ion_auth->logged_in()){ ?>
-		            <!--<li class="menu-bar"><a href="<?php //echo base_url()./*'airlines/retrieve?q=status:booking'*/ ?>">Cek Booking <span class="sr-only">(current)</span></a></li>-->
-		            <li class="dropdown">
-		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pulse <span class="caret"></span></a>
+		             <li class="dropdown">
+		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Market <span class="caret"></span></a>
 		              <ul class="dropdown-menu" role="menu">
 		                <li><a href="<?php echo base_url().'ppob/tagihan' ?>">Cek Tagihan</a></li>
-		                <li><a href="<?php echo base_url().'ppob/pulsa' ?>">Pulsa HP & Listrik</a></li>
+		                <li><a href="<?php echo base_url().'ppob/pulsa' ?>">Pulsa HP & PLN</a></li>
 		              </ul>
 		            </li>
+		            <?php if($this->ion_auth->logged_in()){ ?>
+		            <!--<li class="menu-bar"><a href="<?php //echo base_url()./*'airlines/retrieve?q=status:booking'*/ ?>">Cek Booking <span class="sr-only">(current)</span></a></li>-->
+		           
 		            <li class="dropdown">
 		              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Topup <span class="caret"></span></a>
 		              <ul class="dropdown-menu" role="menu">
@@ -254,7 +255,10 @@
 					   	$("#user-header").children("i").removeClass('fa-lock');
 		    			$("#user-header").children("i").addClass('fa-user');
 					   	 showalert(d.message,'success','#login-warning');
-					   	 window.location = base_url;
+					   	 
+					   	 	var url = window.location.href;
+               				window.location.reload(true) = url;
+					   	 
 					   	 setTimeout(function() {
 						     $('#modal-content').modal('hide');
 						 }, 2000);

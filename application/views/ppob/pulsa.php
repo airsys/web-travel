@@ -22,7 +22,7 @@
     		<div class="form-group">
 	          <label for="nomer" class="col-sm-2 control-label">Nomer</label>
 	          <div class="col-sm-4">
-	            <input type="number" required class="form-control" value="" name="nomer" id="nomer" placeholder="081234567890">
+	            <input type="number" required class="form-control" value="" name="nomer" id="nomer" placeholder="08XXX" onkeyup='saveValue(this);' >
 	          </div>
 	        </div>
 			<div class="form-group">
@@ -44,11 +44,21 @@
         <!-- /.col -->
       </div>
       <!-- /.box-body -->
+       <?php if($this->ion_auth->logged_in()){ ?>
       <div class="box-footer">
-      	<div class="col-sm-6">
-	        <button id="btn-submit" type="submit" class="btn btn-success pull-right"><i class="fa fa-paper-plane"></i> Submit</button>
-      	</div>
+        <div class="col-sm-6">
+          <button id="btn-submit" type="submit" class="btn btn-success pull-right "><i class="fa fa-paper-plane"></i> Submit</button>
+        </div>
       </div>
+      <?php } ?>
+      <?php if(!$this->ion_auth->logged_in()){ ?>
+      <div class="box-footer">
+        <div class="col-sm-6">
+          <a href="#" id="login-header" type="submit" class=" show-modal btn btn-success pull-right" 
+          data-placement="top" data-toggle="popover" data-trigger="hover" data-content="You must login !" ><i class="fa fa-lock"></i> Submit</a>
+        </div>
+      </div>
+      <?php } ?>
       <!-- /.box-footer -->
     </form>
   </div>
@@ -80,7 +90,23 @@
 				}
 			} 
   		});
-  		
+  		$("#nomer").on("mouseover", function(event) {
+        var keytmp = $(this).val().substring(0,4);
+        if($(this).val().length > 3){         
+          var op = '';
+        if(key!=keytmp){
+          key=keytmp;
+          if(no_prefix[key]==null) op='pln'; else op = no_prefix[key].operator;
+          $.get( base_url+'ppob/get_products/'+op, function(data) {
+                $("#nominal").html("");
+                $.each(data, function(i, item) {
+                  var nom = parseInt(item.nilai)+parseInt(item.markup)
+                    $("#nominal").append($('<option>', {value: item.kode, text: item.operator.toUpperCase() +' - '+ item.nilai+' / '+ nom}));
+                });
+            });
+        }
+      } 
+      });
   		$("#form").on("submit", function(event) {  			
 	    	$("#btn-submit").removeClass('btn-success');
 	        $("#btn-submit").addClass('btn-warning');
@@ -109,4 +135,17 @@
 	        
 	  });
 	});
+
+document.getElementById("nomer").value = getSavedValue("nomer");
+function saveValue(e){
+            var id = e.id;  
+            var val = e.value; 
+            localStorage.setItem(id, val);
+        }
+function getSavedValue  (v){
+            if (localStorage.getItem(v) === null) {
+                return "";
+            }
+            return localStorage.getItem(v);
+        }
   </script>

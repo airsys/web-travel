@@ -7,10 +7,10 @@ class Ppob extends CI_Controller {
 	     parent::__construct();
 	     $this->load->helper('ppob');
 	     $this->load->model('m_ppob');
-	     if (!$this->ion_auth->logged_in())
+	     /*if (!$this->ion_auth->logged_in())
 		{
 			redirect('airlines/', 'refresh');
-		}
+		}*/
 	 }
 	
 	function index(){
