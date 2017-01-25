@@ -25,18 +25,23 @@ class Ppob extends CI_Controller {
 	
 	function pulsa($sn='')
 	{
-		if($sn=='sn'){
-			$this->sn();
-		}
-		if($sn=='refund'){
-			$this->refund();
-		}
-		$data = array('content'=>'ppob/pulsa',
+		switch($sn){
+			case 'sn':
+				$this->sn($this->uri->segment(4));
+				break;
+			case 'refund':
+				$this->refund();
+				break;
+			default:
+				$data = array('content'=>'ppob/pulsa',
 					  );
-		$this->load->view("index",$data);		
+				$this->load->view("index",$data);	
+				break;
+		}			
 	}
 	
-	private function sn(){
+	private function sn($str){
+		//echo $str;die();
 		$str = '<?xml version="1.0"?>
 				<datacell>
 					 <perintah>REPORT</perintah>
@@ -52,7 +57,7 @@ class Ppob extends CI_Controller {
 		$sn = explode(":",$data['msg']);
 		$sn = filter_var($sn[2], FILTER_SANITIZE_NUMBER_INT);
 		//echo $sn;die();
-		$data_update = array('sn_operator'=>0,);
+		$data_update = array('sn_operator'=>$sn,'status'=>0);
 		$this->db->where('trxid', $data['trxid']);
 		$this->db->update('`ppob pulsa`', $data_update);
 		
