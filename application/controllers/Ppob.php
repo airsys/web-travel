@@ -27,7 +27,7 @@ class Ppob extends CI_Controller {
 	{
 		switch($sn){
 			case 'sn':
-				$this->sn($this->uri->segment(4));
+				$this->sn();
 				break;
 			case 'refund':
 				$this->refund();
@@ -40,26 +40,25 @@ class Ppob extends CI_Controller {
 		}			
 	}
 	
-	private function sn($str){
-		//echo $str;die();
-		$str = '<?xml version="1.0"?>
-				<datacell>
-					 <perintah>REPORT</perintah>
-					 <trxid>101626484</trxid>
-					 <oprcode>TEL.10</oprcode>
-					 <msisdn>081397382353 </msisdn>
-					 <msg>TEL.10 No: 081397382353 SUKSES
-					     SN Operator: 879746082.
-					     SN Kami : 101626484. (Pesan Tambahan)</msg>
-					 <ref_trxid>145339124</ref_trxid>
-				</datacell> ';
-		$data = xml2array($str);
+	private function sn(){
+		if(file_get_contents('php://input')=='')
+		{
+		    // THROW EXCEPTION
+		}
+		else
+		{   
+		    // get read-only stream for read raw data from the request body
+		    $strRequest = file_get_contents('php://input');
+		    //echo $strRequest;      
+		}
+		$data = xml2array($strRequest);
 		$sn = explode(":",$data['msg']);
 		$sn = filter_var($sn[2], FILTER_SANITIZE_NUMBER_INT);
 		//echo $sn;die();
 		$data_update = array('sn_operator'=>$sn,'status'=>0);
 		$this->db->where('trxid', $data['trxid']);
 		$this->db->update('`ppob pulsa`', $data_update);
+		echo $sn;
 		
 	}
 	
