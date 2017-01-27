@@ -51,6 +51,7 @@ class Ppob extends CI_Controller {
 		    $strRequest = file_get_contents('php://input');
 		    //echo $strRequest;      
 		}
+		$this->db->insert(`system log`, array('code'=>'code gagal','log'=>$strRequest));
 		$data = xml2array($strRequest);
 		$sn = explode(":",$data['msg']);
 		$sn = filter_var($sn[2], FILTER_SANITIZE_NUMBER_INT);
