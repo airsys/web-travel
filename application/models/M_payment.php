@@ -65,8 +65,9 @@ class M_payment extends CI_Model
 		return ($this->db->affected_rows()>0) ? TRUE : FALSE;
 	}
 	
-	private function _get_saldo(){
-		$get_saldo = $this->db->where("company",$this->session->userdata('company'))
+	private function _get_saldo($company=NULL){
+		if($company==NULL) $company = $this->session->userdata('company');
+		$get_saldo = $this->db->where("company",$company)
 	 				 ->order_by('id','desc')
 	 				 ->limit(0,1)
 	 				 ->get("acc balance")->row();
@@ -148,8 +149,8 @@ class M_payment extends CI_Model
 		}
 	}
 	
-	function get_saldo(){
-		return $this->_get_saldo();
+	function get_saldo($company=NULL){
+		return $this->_get_saldo($company);
 	}
 	
 	function change_status_bank($id,$enable){

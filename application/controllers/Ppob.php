@@ -69,6 +69,7 @@ class Ppob extends CI_Controller {
 		$this->m_ppob->update_pulsa(array('message'=>get('message'), 'trxid'=>get('trxid'), 
 							'ref_trxid'=>get('ref_trxid'), 'status'=>get('resultcode')));
 		$this->m_ppob->refund(get('ref_trxid'));
+		echo "oke";
 	}
 	
 	function bayar(){
@@ -80,7 +81,7 @@ class Ppob extends CI_Controller {
 			if($price > 1){
 				$my_trxid = now().'_'.RandomString(3);
 				$nomer = post('nomer');	$nominal = post('nominal');
-				$id = $this->m_ppob->insert_pulsa($my_trxid);				
+				$id = $this->m_ppob->insert_pulsa($my_trxid,$nomer);				
 				$return = ppobxml($nomer,$nominal,'charge',$my_trxid);
 				if($return['resultcode']!=0){
 					$msg = explode(".",$return['message']);

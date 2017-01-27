@@ -60,7 +60,7 @@ class M_report extends CI_Model
 			$this->db->where($betwen);
 		}
 		$this->db->select(" b.id, `code`, brand,
-							if(`code`='CT',nominal,0)as credit,
+							if(`code`='CT' OR `code`='CP',nominal,0)as credit,
 							if(`code`='DI' OR `code`='DP',nominal,0)as debet,
 							`pay for`,from_unixtime(b.created  ,'%d-%m-%Y %h:%i:%s') as created")
 				 ->from("acc balance AS b, auth company AS c")
@@ -72,8 +72,8 @@ class M_report extends CI_Model
 		$payfor=[];
 		$payfor['CT']=listData('acc topup','id','unique',"where `created` BETWEEN $from AND $to");
 		$payfor['DI']=listData('booking','id','booking code',"where `booking time` BETWEEN $from AND $to");
-		$payfor['DP']=listData('ppob pulsa','id','message',"where `created` BETWEEN $from AND $to");
-		
+		$payfor['DP']=listData('ppob pulsa','id','msisdn',"where `created` BETWEEN $from AND $to");
+		$payfor['CP']=$payfor['DP'];
 		return $payfor;
 	}
 	

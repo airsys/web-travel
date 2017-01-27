@@ -20,10 +20,11 @@ class M_ppob extends CI_Model
 		return $price;
 	}
 	
-	function insert_pulsa($trxid){
+	function insert_pulsa($trxid,$nomer){
 		$data = array('product'=>post('nominal'),
 			'ref_trxid'=>$trxid,
 			'company'=>$this->session->userdata('company'),
+			'msisdn'=>$nomer,
 		);
 		$this->db->insert('`ppob pulsa`',$data);
 		return $this->db->insert_id();
@@ -65,9 +66,9 @@ class M_ppob extends CI_Model
 			 ->where('`code`','DP') 
 			 ->where('`pay for`',$id); 
 		$harga = $this->db->get()->row();
-		$harga = $id->nominal;
+		$harga = $harga->nominal;
 		
-		$saldo = saldo();
+		$saldo = saldo($company);
 		$data=array(
 				"company"=>$company,
 				"nominal"=>$harga,

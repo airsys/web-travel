@@ -57,6 +57,7 @@
 				    <tr>
 				      <th>Company</th>
 				      <th>Product</th>
+				      <th>MSISDN</th>
 				      <th>Message</th>
 				      <th>Ref TRXID</th>
 				      <th>TRXID</th>
@@ -69,6 +70,7 @@
 				    <tr>
 				      <td><?php echo $value->brand ?></td>
 				      <td><?php echo $value->product ?></td>
+				      <td><?php echo $value->msisdn ?></td>
 				      <td><?php echo $value->message ?></td>
 				      <td><?php echo $value->ref_trxid ?></td>
 				      <td><?php echo $value->trxid ?></td>
