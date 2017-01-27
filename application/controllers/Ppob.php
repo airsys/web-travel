@@ -140,11 +140,62 @@ class Ppob extends CI_Controller {
 	}
 	
 	function cek_tagihan(){
-		$result = json_encode(ppobxml(get('idpelanggan'),get('oprcode'),'charge','1'));
+				$return = [];
+				$my_trxid = now().'_'.RandomString(3);
+				$idpelanggan = post('idpelanggan');	
+				$oprcode = post('oprcode');
+				$id = $this->m_ppob->insert_tagihan($my_trxid);				
+				$return = ppobxml($idpelanggan,$oprcode,'charge','1',$my_trxid);
+				$this->m_ppob->update_tagihan(array('message'=>$return['message'], 'trxid'=>$return['trxid'], 
+							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode']));
+
+
+		//$result = json_encode(ppobxml(get('idpelanggan'),get('oprcode'),'charge','1'));
 		return $this->output
             ->set_content_type('application/json')
             ->set_status_header(200)
-            ->set_output($result);
+            ->set_output(json_encode($return));
+    }
+
+    function telkom(){
+	$data = array('content'=>'ppob/telkom',
+					  );
+	$this->load->view("index",$data);		
+	}
+	function bayarTelkom(){
+		$nominal = post('nominal');
+		$price = $this->m_ppob->get_price();
+		$return = [];
+		//$saldoserver = cekSaldoPpob();
+		if(saldo() > $nominal){
+			if($nominal > 1){
+				$my_trxid = now().'_'.RandomString(3);
+				$idpelanggan = post('idpelanggan');	
+				$informasi = post('informasi');			
+				$id = $this->m_ppob->insert_tagihan($my_trxid);
+				$this->m_ppob->insert_idTelkom();	
+				$return = ppobxml($idpelanggan.".".$nominal.".".$informasi,'BAYAR.TELKOM','charge',$my_trxid);
+				if($return['resultcode']!=0){
+					$this->m_ppob->update_tagihan(array('message'=>$return['message'], 'trxid'=>$return['trxid'], 
+							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode']));
+					
+				}else{
+					$this->m_ppob->issuedTagihan($id,$nominal);
+					$this->m_ppob->update_tagihan(array('message'=>$return['message'], 'trxid'=>$return['trxid'], 
+					 		'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode']));
+				}
+			}else{
+				$return = array('message'=>'Operator tidak terdaftar',
+							'code'=>1);	
+			}
+		}else{
+			$return = array('message'=>'saldo anda tidak cukup',
+							'code'=>1);	
+		}
+		return $this->output
+	            ->set_content_type('application/json')
+	            ->set_status_header(200)
+	            ->set_output(json_encode($return));
 	}
 		
 }

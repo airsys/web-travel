@@ -80,4 +80,49 @@ class M_ppob extends CI_Model
 		$this->db->insert('acc balance',$data); //<-menambah row di payment topup
 	
 	}
+
+	// TAGIHAN TELKOM
+	function insert_tagihan($trxid){
+		$data = array(
+			'ref_trxid'=>$trxid,
+			'product'=> post('oprcode'),
+
+		);
+		//print_r($_POST);die();
+		$this->db->insert('`ppob tagihan`',$data);
+		return $this->db->insert_id();
+	}
+	function update_tagihan($data_f){
+		$data = array('message'=>$data_f['message'], 'trxid'=>$data_f['trxid'], 
+					  'status'=>$data_f['status'], 'created'=>now());
+		$this->db->where('ref_trxid', $data_f['ref_trxid']);
+		$this->db->update('`ppob tagihan`', $data);
+	}
+	function issuedTagihan($id,$kode){
+		$saldo = saldo();
+		$nominal = post('nominal');
+			$data=array(
+					"company"=>$this->session->userdata('company'),
+					"nominal"=>$nominal,
+					"created"=>now(),
+					"code"=>'CP',
+					"pay for"=>$id,
+					"balance"=>$saldo-$nominal,
+			);
+			$this->db->insert('acc balance',$data); //<-menambah row di payment topup
+		
+	}
+	function insert_idTelkom(){
+		$time = now();
+		$idTelkom = post('idpelanggan');
+		$informasi = post('informasi');
+		$data = array(
+			'idTelkom'=> $idTelkom,
+			'tgl'=> $time,
+			'informasi'=> $informasi,
+		);
+		$this->db->replace('`ppob idTelkom`',$data);
+		return $this->db->insert_id();
+
+	}
 }
