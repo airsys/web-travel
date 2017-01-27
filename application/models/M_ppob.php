@@ -53,10 +53,11 @@ class M_ppob extends CI_Model
 	}
 	
 	function refund($ref_trxid){
-		$this->db->select('id')
+		$this->db->select('id,company')
 			 ->from('`ppob pulsa`')
 			 ->where('`ref_trxid`',$ref_trxid); 
 		$id = $this->db->get()->row();
+		$company = $id->company;
 		$id = $id->id;
 		
 		$this->db->select('nominal')
@@ -68,7 +69,7 @@ class M_ppob extends CI_Model
 		
 		$saldo = saldo();
 		$data=array(
-				"company"=>$this->session->userdata('company'),
+				"company"=>$company,
 				"nominal"=>$harga,
 				"created"=>now(),
 				"code"=>'CP',

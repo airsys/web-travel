@@ -44,6 +44,7 @@ class Ppob extends CI_Controller {
 		if(file_get_contents('php://input')=='')
 		{
 		    // THROW EXCEPTION
+		    echo "No data";die();
 		}
 		else
 		{   
