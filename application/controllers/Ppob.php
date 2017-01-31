@@ -94,6 +94,7 @@ class Ppob extends CI_Controller {
 					$this->m_ppob->issued($id,$nominal);
 					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
 					 		'ref_trxid'=>$my_trxid, 'status'=>2222));
+					$return = array('message'=>$msg[0]."<br>".$msg[2],);
 				}
 			}else{
 				$return = array('message'=>'Operator tidak terdaftar',
