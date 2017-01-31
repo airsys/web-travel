@@ -65,10 +65,14 @@ class M_ppob extends CI_Model
 			 ->where('`ref_trxid`',$ref_trxid); 
 		$id = $this->db->get()->row();
 		$id = $id->id;
+		$user = 0;
+		if($this->session->userdata('user_id')!=NULL){
+			$user = $this->session->userdata('user_id');
+		}
 		
 		$data2 = array('id_ppob'=>$id,
 			'status'=>$status,
-			'user'=>$this->session->userdata('user_id'),
+			'user'=>$user,
 			'created'=>now(),
 			'note'=>$message,
 		);
@@ -79,7 +83,7 @@ class M_ppob extends CI_Model
 	}
 	
 	function issued($id,$kode){
-		$saldo = saldo($company);
+		$saldo = saldo();
 		$harga_pulsa = hargaPulsa($kode);
 			$data=array(
 					"company"=>$this->session->userdata('company'),

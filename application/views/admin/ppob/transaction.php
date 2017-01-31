@@ -1,11 +1,11 @@
 <?php //print_r($payfor); 
-	   $color = array(
-                '1111'=>'#0145d1', //sedang diproses
-                '0'=>'#00bd30', //berhasil
-                '2222'=>'#d3ce0a', //menunggu SN operator
-                '1001'=>'#fc2cae', //refund
-                '999'=>'#ff2025', //faild
-            );
+	  $color = array(
+	        'processing'=>'#0145d1', //sedang diproses
+	        'succes'=>'#00bd30', //berhasil
+	        'waiting SN'=>'#d3ce0a', //menunggu SN operator
+	        'refund'=>'#fc2cae', //refund
+	        'failed'=>'#ff2025', //faild
+	    );
        $tulisan = array(
                 '1111'=>'processing', //sedang diproses
                 '0'=>'succes', //berhasil
@@ -58,24 +58,30 @@
 				      <th>Company</th>
 				      <th>Product</th>
 				      <th>MSISDN</th>
-				      <th>Message</th>
+				      <th>Note</th>
 				      <th>Ref TRXID</th>
 				      <th>TRXID</th>
 				      <th>Status</th>
 				      <th>Date</th>
+				      <th>Refund</th>
 				    </tr>
 				    <?php
 				    $i=0;
 					foreach($data_table as $value){ $i++;?>
-				    <tr>
+				    <tr id=<?= $value->ref_trxid ?>>
 				      <td><?php echo $value->brand ?></td>
 				      <td><?php echo $value->product ?></td>
 				      <td><?php echo $value->msisdn ?></td>
-				      <td><?php echo $value->message ?></td>
+				      <td><?php echo $value->note ?></td>
 				      <td><?php echo $value->ref_trxid ?></td>
 				      <td><?php echo $value->trxid ?></td>
-				      <td><?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$tulisan[$value->status]."</span>" ?></td>
+				      <td><?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>" ?></td>
 				      <td><?php echo $value->created2 ?></td>
+				      <td>
+				      	<?php if($value->status!='refund' && $value->status!='failed'){ ?>
+				      	<button class="btn btn-sm btn-danger" onclick="show('<?= $value->ref_trxid ?>');" ><i class="fa fa-minus-square-o"></i></button>
+				      	<?php } ?>
+				      </td>
 				    </tr>
 				    <?php } ?>
 				    
@@ -86,10 +92,59 @@
 		</div>
 	</div><!-- /.box-body -->  
   <?php } ?>
+    <!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Note</h4>
+      </div>
+      <div class="modal-body">
+        <textarea id="note" class="form-control"></textarea>
+      	<input type="hidden" value="" id="id"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="action($('#id').val(),0,$('#note').val());" class="btn btn-danger" data-dismiss="modal">Save</button>
+      </div>
+    </div>
+
+  </div>
+</div>
   
  
 <script>
+function show(id=0){
+		$('#id').val(id)
+		$('#note').val('')		
+		$('#myModal').modal('show');
+	}
+function action(id=0,st=1,nt=''){
+	//alert(id+'-'+st+'-'+nt);
+	
+	$.ajax({
+	  type: 'POST',
+	  url: base_url+'ppob/refund',
+	  data: {ref_trxid:id, 
+	  		 note : nt,
+	  		} ,
+	  dataType: 'json',
+	  success: function(data) {
+	  	$('#'+id).css({"background-color": "#fe5667"});
+		$('#'+id).fadeTo("slow",0.02, function(){
+	        $(this).remove();
+	    });
+	  },
+	  error: function() {
+	    alert('Error confirm');
+	  }
+	});	
+}
+
 $(document).ready(function(){
+	
 	$('#reservation').daterangepicker(
 				{
 					"opens": "right",

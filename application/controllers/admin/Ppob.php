@@ -3,7 +3,11 @@
 class Ppob extends CI_Controller {
 	function __construct() {
 		parent::__construct();
-		$this->load->model('admin/m_ppob');	
+		$this->load->model('admin/m_ppob');
+		if (!$this->ion_auth->is_admin())
+		{
+			redirect('admin/payment/topup_list', 'refresh');
+		}
 	}
 	
 	function transaction(){
@@ -13,7 +17,7 @@ class Ppob extends CI_Controller {
 			$range = (explode("-",$range));
 			$rangf = strtotime(str_replace('/', '-', $range[0]));
 			$rangt = strtotime(str_replace('/', '-', $range[1]))+86399;
-			$array_range = "`created` BETWEEN $rangf AND $rangt";
+			$array_range = "p.`created` BETWEEN $rangf AND $rangt";
 			//echo date("Y-m-d H:i:s",$rangf).'|'.date("Y-m-d H:i:s",$rangt);die();
 		}else{
 			redirect ('admin/ppob/transaction?range='.date('d/m/Y', strtotime('-30 days')).' - '.date('d/m/Y'),'redirect');
@@ -36,4 +40,13 @@ class Ppob extends CI_Controller {
 		$this->load->view("admin/index",$data);
 	}
 	
+	function refund(){
+		if($this->m_ppob->refund()){
+			$data_r = array('status'=>'changed');
+			return $this->output
+	            ->set_content_type('application/json')
+	            ->set_status_header(200)
+	            ->set_output(json_encode($data_r));
+		}
+	}
 }
