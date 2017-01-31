@@ -26,4 +26,14 @@ class Ppob extends CI_Controller {
 	 	$this->load->view("admin/index",$data);
 	 }
 	
+	function finance($id=0){
+		$d = $this->m_ppob->finance($id);
+		$this->load->helper('dropdown');
+		$data = array('content'=>'ppob/finance',
+					  'data'=>$d,
+					  'product'=>listDataCustom('ppob product','kode','operator,nilai,markup'),
+					  );
+		$this->load->view("admin/index",$data);
+	}
+	
 }

@@ -22,4 +22,13 @@ class M_ppob extends CI_Model
 		return $this->db->get()->result();
 	}
 	
+	function finance($id){
+		$this->db->select("p.*,c.brand, from_unixtime(created, '%d-%m-%Y %h:%i:%s') as date")
+			 ->from('`ppob pulsa` as p, `auth company` as c')
+			 ->where('`p.id`',$id)
+			 ->where('p.company=c.id');
+		$r = $this->db->get()->row();
+		return $r ;
+	}
+	
 }

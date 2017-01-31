@@ -63,6 +63,7 @@
 				      		$link = '';
 				      		if($value->code=='CT') $link = base_url()."admin/report/topup_detail/".$value->{'pay for'}."/finance";
 				      		if($value->code=='DI') $link = base_url()."admin/report/retrieve/".$payfor[$value->code][$value->{'pay for'}]."/finance";
+				      		if($value->code=='DP' || $value->code=='CP') $link = base_url()."admin/ppob/finance/".$value->{'pay for'};
 				      	?>
 				      	<a href="<?php echo $link ;?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a>
 				      </td>
