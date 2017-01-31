@@ -198,5 +198,15 @@ class Ppob extends CI_Controller {
 	            ->set_status_header(200)
 	            ->set_output(json_encode($return));
 	}
+	
+	function finance($id=0){
+		$d = $this->m_ppob->finance($id);
+		$this->load->helper('dropdown');
+		$data = array('content'=>'ppob/finance',
+					  'data'=>$d,
+					  'product'=>listDataCustom('ppob product','kode','operator,nilai,markup'),
+					  );
+		$this->load->view("index",$data);
+	}
 		
 }

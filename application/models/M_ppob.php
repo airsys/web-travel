@@ -125,4 +125,13 @@ class M_ppob extends CI_Model
 		return $this->db->insert_id();
 
 	}
+	
+	function finance($id){
+		$this->db->select("*, from_unixtime(created, '%d-%m-%Y %h:%i:%s') as date")
+			 ->from('`ppob pulsa`')
+			 ->where('`id`',$id)
+			 ->where('`company`',$this->session->userdata('company'));
+		$r = $this->db->get()->row();
+		return $r ;
+	}
 }
