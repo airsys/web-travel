@@ -41,8 +41,8 @@ class M_report extends CI_Model
 							if(`code`='CT' OR `code`='CP',nominal,0)as credit,
 							if(`code`='DI' OR `code`='DP',nominal,0)as debet,
 							if(`code`='CT', (SELECT `unique` FROM `acc topup` WHERE id = b.`pay for`),
-											   if(`code`='DP' OR code = 'CP',(SELECT `ref_trxid` FROM `ppob pulsa` WHERE id = b.`pay for`),
-											     (SELECT `booking code` FROM `booking` WHERE id = b.`pay for`)) )as payfor, 
+							  if(`code`='DP' OR code = 'CP',(SELECT `ref_trxid` FROM `ppob pulsa` WHERE id = b.`pay for`),
+							    (SELECT `booking code` FROM `booking` WHERE id = b.`pay for`)) )as payfor, 
 							from_unixtime(b.created  ,'%d-%m-%Y %h:%i:%s') as created, `pay for`")
 				 ->from("acc balance AS b")
 				 ->where('b.company',$this->session->userdata('company'));

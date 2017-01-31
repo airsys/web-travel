@@ -1,10 +1,10 @@
 <?php 
 $color = array(
-        '1111'=>'#0145d1', //sedang diproses
-        '0'=>'#00bd30', //berhasil
-        '2222'=>'#d3ce0a', //menunggu SN operator
-        '1001'=>'#fc2cae', //refund
-        '999'=>'#ff2025', //faild
+        'processing'=>'#0145d1', //sedang diproses
+        'succes'=>'#00bd30', //berhasil
+        'waiting SN'=>'#d3ce0a', //menunggu SN operator
+        'refund'=>'#fc2cae', //refund
+        'failed'=>'#ff2025', //faild
     );
 $tulisan = array(
         '1111'=>'processing', //sedang diproses
@@ -86,16 +86,10 @@ $tulisan = array(
 			<div class="form-group">
 	          <label for="status" class="col-sm-2 control-label">Status</label>
 	          <div class="col-sm-4">
-	             <label class="control-span"><?php echo $tulisan[$data->status]; ?></label>
-	          </div>
-	        </div>
-        </div>
-        <!-- /.col -->
-        <div class="col-md-12">
-			<div class="form-group">
-	          <label for="status" class="col-sm-2 control-label">Date</label>
-	          <div class="col-sm-4">
-	             <label class="control-span"><?php echo $data->date; ?></label>
+	          		<?php 
+		          	 foreach($status as $val) {  ?>
+		             <label class="control-span"> &bull; <?php echo $val['status']."&nbsp;&nbsp;&nbsp;". date("d-m-Y H:i:s", $val['created']) ; ?></label><br>
+		             <?php } ?>
 	          </div>
 	        </div>
         </div>
