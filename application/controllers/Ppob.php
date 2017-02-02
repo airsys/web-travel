@@ -14,19 +14,9 @@ class Ppob extends CI_Controller {
 	 }
 	
 	function index($sn=''){
-		switch($sn){
-			case 'sn':
-				$this->sn();
-				break;
-			case 'refund':
-				$this->refund();
-				break;
-			default:
-				$data = array('content'=>'ppob/index',
-					  );
-				$this->load->view("index",$data);	
-				break;
-		}
+		$data = array('content'=>'ppob/index',
+			  );
+		$this->load->view("index",$data);	
 	}
 	
 	function tagihan(){
@@ -50,7 +40,7 @@ class Ppob extends CI_Controller {
 	
 	
 	
-	private function sn(){
+	function sn(){
 		if(file_get_contents('php://input')=='')
 		{
 		    // THROW EXCEPTION
@@ -75,7 +65,7 @@ class Ppob extends CI_Controller {
 	}
 	
 	//http://indsiti.com/ppob/pulsa/refund?resultcode=1001&msisdn=62816888999&message=Refund&trxid=7552974&ref_trxid=54321
-	private function refund(){
+	function refund(){
 		$this->m_ppob->update_pulsa(array('message'=>get('message'), 'trxid'=>get('trxid'), 
 							'ref_trxid'=>get('ref_trxid'), 'status'=>get('resultcode')));
 		$this->m_ppob->refund(get('ref_trxid'));
