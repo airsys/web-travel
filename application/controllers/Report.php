@@ -50,6 +50,46 @@ class Report extends CI_Controller {
 		$this->load->view("index",$data);
 	 }
 	 
+	 function sales2(){
+	 	$data_or = [];
+			$array_range = [];
+			$string = explode(",",$this->input->get('q'));
+			for($i = 0; $i < count($string); $i++){
+				$string2 = explode(":",$string[$i]);
+				if(!empty($string2[1]) && !empty($string2[0] && $string2[1]!='')){
+
+					if(preg_replace('/\s+/', '', $string2[0])=='bookingcode'){
+					$data_or[$i]=array('val'=>$string2[1], 'key'=>'booking code');
+					}
+					if(preg_replace('/\s+/', '', $string2[0])=='datebooking'){
+						$data_or[$i]=array('val'=>date("Y-m-d", strtotime($string2[1])), 'key'=>'FROM_UNIXTIME(`b`.`booking time`,"%Y-%m-%d")');
+					}
+					if(preg_replace('/\s+/', '', $string2[0])=='airline'){
+						$data_or[$i]=array('val'=>$string2[1], 'key'=>'airline');
+					}
+					if(preg_replace('/\s+/', '', $string2[0])=='range'){	
+						$range = str_replace(' ', '', $this->input->get('q'));
+						$range = (preg_split("/[,:-]+/",$range));
+						$rangf = strtotime(str_replace('/', '-', $range[1]));
+						$rangt = strtotime(str_replace('/', '-', $range[2]))+86399;
+						$array_range_airline = "`time status` BETWEEN $rangf AND $rangt";
+						$array_range_ppob = "`p.created` BETWEEN $rangf AND $rangt";
+					}
+				}else{
+					redirect ('report/sales2?q=range:'.date('d/m/Y', strtotime('11/01/2016')).' - '.date('d/m/Y'),'redirect');
+				}
+			}
+			$data_airline = $this->m_report->sales_list($data_or,$array_range_airline);
+			$data_ppob = $this->m_report->sales_ppob(NULL,$array_range_ppob);
+			$data = array('content'=>'report/sales2',
+					  'data_airline'=>$data_airline,
+					  'data_ppob'=>$data_ppob,
+					  'data_detail'=>NULL,
+					  'date_range'=>$this->input->get('q'),
+					);
+		$this->load->view("index",$data);
+	 }
+	 
 	 function finance(){
 	 	/*
 	 	$this->load->helper('dropdown');

@@ -86,4 +86,22 @@ class M_report extends CI_Model
 		$this->subquery->end_subquery('s.time status');
 		return $this->db->get()->result();
 	}
+	
+	function sales_ppob($data_or=NULL,$betwen=NULL,$data_where=NULL){
+		if($betwen!=NULL){
+			$this->db->where($betwen);
+		}
+		$this->db->select(" p.*,operator, nilai, markup")
+				 ->from("ppob pulsa AS p, ppob status AS s, ppob product AS pr")
+				 ->where("p.id = s.id_ppob")
+				 ->where("p.product = pr.kode")
+				 ->where("status != 'failed'")
+				 ->where("status != 'refund'")
+				 ->where('company',$this->session->userdata('company'))
+				 ->order_by('s.created','desc');
+		$sub = $this->subquery->start_subquery('where');
+		$sub->select_max('created')->from('ppob status')->where('`id_ppob` = p.id');
+		$this->subquery->end_subquery('s.created');
+		return $this->db->get()->result();
+	}
 }
