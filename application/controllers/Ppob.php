@@ -13,18 +13,7 @@ class Ppob extends CI_Controller {
 		}*/
 	 }
 	
-	function index(){
-		echo hargaPulsa('XL.5');
-	}
-	
-	function tagihan(){
-		$data = array('content'=>'ppob/tagihan',
-					  );
-		$this->load->view("index",$data);		
-	}
-	
-	function pulsa($sn='')
-	{
+	function index($sn=''){
 		switch($sn){
 			case 'sn':
 				$this->sn();
@@ -33,12 +22,33 @@ class Ppob extends CI_Controller {
 				$this->refund();
 				break;
 			default:
-				$data = array('content'=>'ppob/pulsa',
+				$data = array('content'=>'ppob/index',
 					  );
 				$this->load->view("index",$data);	
 				break;
-		}			
+		}
 	}
+	
+	function tagihan(){
+		$data = array('content'=>'ppob/tagihan',
+					  );
+		$this->load->view("index",$data);		
+	}
+	
+	function pulsa()
+	{
+		$data = array('content'=>'ppob/pulsa',
+					  );
+		$this->load->view("index",$data);		
+	}
+	function pln()
+	{
+		$data = array('content'=>'ppob/pln',
+					  );
+		$this->load->view("index",$data);		
+	}
+	
+	
 	
 	private function sn(){
 		if(file_get_contents('php://input')=='')

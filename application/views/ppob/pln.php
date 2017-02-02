@@ -12,7 +12,7 @@
 <!-- Horizontal Form -->
   <div class="box box-info">
     <div class="box-header with-border">
-      <h3 class="box-title">Pembelian Pulsa</h3>
+      <h3 class="box-title">Pembelian Pulsa PLN</h3>
     </div>
     <!-- /.box-header -->
     <!-- form start -->
@@ -82,23 +82,18 @@
 	    
 	    function get_number(){
 			var keytmp = $("#nomer").val().substring(0,4);
-	        if($("#nomer").val().length > 3){         
-	          var op = '';
-	        if(key!=keytmp){
-	          key=keytmp;
-	          if(no_prefix[key]==null) {
-	          	$("#nominal").html("");
-	          	$("#nominal").append($('<option>', {value: "", text: "Masukan nomer dengan benar"}));
-	          } else{ 
-	          	$.get( base_url+'ppob/get_products/'+no_prefix[key].operator, function(data) {
-	                $("#nominal").html("");
-	                $.each(data, function(i, item) {
-	                  var nom = parseInt(item.nilai)+parseInt(item.markup)
-	                    $("#nominal").append($('<option>', {value: item.kode, text: item.operator.toUpperCase() +' - '+ item.nilai+' / '+ nom}));
-	                });
-	            });	          
-	          }
-	        }
+	        if($("#nomer").val().length > 3){     
+	          	var op = '';
+		        if(key!=keytmp){
+		          key=keytmp;
+		          $.get( base_url+'ppob/get_products/pln', function(data) {
+		                $("#nominal").html("");
+		                $.each(data, function(i, item) {
+		                  var nom = parseInt(item.nilai)+parseInt(item.markup)
+		                    $("#nominal").append($('<option>', {value: item.kode, text: item.operator.toUpperCase() +' - '+ item.nilai+' / '+ nom}));
+		                });
+		            });
+		        }
 	      } 
 		}
 	    

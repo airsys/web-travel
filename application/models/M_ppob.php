@@ -34,7 +34,7 @@ class M_ppob extends CI_Model
 	
 	function update_pulsa($data_f){
 		$data = array('trxid'=>$data_f['trxid'], 
-					  'status'=>$data_f['status'], 'created'=>now());
+					  'created'=>now());
 		$this->db->where('ref_trxid', $data_f['ref_trxid']);
 		$this->db->update('`ppob pulsa`', $data);
 		$msg = '';
