@@ -10,6 +10,7 @@
 </style>
 <?php //print_r($data_post['first_name']); ?>
 <!-- Horizontal Form -->
+ <?php if($this->ion_auth->logged_in()){ ?>
   <div class="box box-info">
     <div class="box-header with-border">
       <h3 class="box-title">Pembelian Pulsa</h3>
@@ -22,7 +23,7 @@
     		<div class="form-group">
 	          <label for="nomer" class="col-sm-2 control-label">Nomer</label>
 	          <div class="col-sm-4">
-	            <input type="number" required class="form-control" value="" name="nomer" id="nomer" placeholder="08XXX" onkeyup='saveValue(this);' >
+	            <input type="number" required class="form-control" value="<?php if($_GET){ echo $_GET['nomer'];} ?>" name="nomer" id="nomer" placeholder="08XXX">
 	          </div>
 	        </div>
 			<div class="form-group">
@@ -44,7 +45,7 @@
         <!-- /.col -->
       </div>
       <!-- /.box-body -->
-       <?php if($this->ion_auth->logged_in()){ ?>
+      
       <div class="box-footer">
         <div class="col-sm-6">
           <button id="btn-submit" type="submit" class="btn btn-success pull-right "><i class="fa fa-paper-plane"></i> Submit</button>
@@ -52,10 +53,51 @@
       </div>
       <?php } ?>
       <?php if(!$this->ion_auth->logged_in()){ ?>
+      <div class="box box-info">
+	    <div class="box-header with-border">
+	      <h3 class="box-title">Pembelian Pulsa</h3>
+	    </div>
+	   
+	    <!-- form start belum login -->
+	    <form id="form_f" class="form-horizontal" action="" method="get">
+	      <div class="box-body">
+	    	<div class="col-md-12">
+	    		<div class="form-group">
+		          <label for="nomer" class="col-sm-2 control-label">Nomer</label>
+		          <div class="col-sm-4">
+		            <input type="number" required class="form-control" value="<?php if($_GET){ echo $_GET['nomer'];} ?>" name="nomer" id="nomer" placeholder="08XXX" autofocus>
+		          </div>
+		        </div>
+				<div class="form-group">
+		          <label for="nominal" class="col-sm-2 control-label">Nominal</label>
+		          <div class="col-sm-4">
+		            <select name="nominal" id="nominal" class="form-control" >
+		            	<option selected value="" >Isi Nomor terlebih dahulu</option>
+		            </select>
+		          </div>
+		        </div>
+		         <div class="form-group">
+	          <label for="first_name" class="col-sm-2 control-label"></label>
+	          <div class="col-sm-4">
+		        <div id="warnlogin"></div>
+	          </div>
+	        </div>
+		        <div class="form-group">
+		          <label for="first_name" class="col-sm-2 control-label"></label>
+		          <div class="col-sm-4">
+			        <div id="warn"></div>
+			        <!--<a href="#" id="btn-login" type="submit" class=" show-modal btn btn-warning pull-left"><i class="fa fa-lock"></i> Login</a>-->
+		          </div>
+		        </div>
+		        
+	        </div>
+	        <!-- /.col -->
+	      </div>
+      <!-- /.box-body -->
       <div class="box-footer">
         <div class="col-sm-6">
-          <a href="#" id="login-header" type="submit" class=" show-modal btn btn-success pull-right" 
-          data-placement="top" data-toggle="popover" data-trigger="hover" data-content="You must login !" ><i class="fa fa-lock"></i> Submit</a>
+        	<input type="submit" name="submit" value="submit" id="pra_login" class="btn btn-success pull-right">
+         	
         </div>
       </div>
       <?php } ?>
@@ -65,43 +107,78 @@
   <!-- /.box -->
   <script>
   	$( document ).ready(function() {
+  		
   		var no_prefix = [] ;
 	    $.get( base_url+'assets/ajax/no_prefix.json', function(data) {
 	        $.each(data, function(i, item) {
 	            no_prefix [item.number]= item;
 	        });
 	    });
-  		
-  		var key = '';
-  		$("#nomer").on("keyup", function(event) {
-  			get_number();
-  		});
-  		$("#nomer").on("mouseover", function(event) {
-	        get_number();
-	    });
-	    
-	    function get_number(){
-			var keytmp = $("#nomer").val().substring(0,4);
-	        if($("#nomer").val().length > 3){         
-	          var op = '';
-	        if(key!=keytmp){
-	          key=keytmp;
-	          if(no_prefix[key]==null) {
-	          	$("#nominal").html("");
-	          	$("#nominal").append($('<option>', {value: "", text: "Masukan nomer dengan benar"}));
-	          } else{ 
-	          	$.get( base_url+'ppob/get_products/'+no_prefix[key].operator, function(data) {
-	                $("#nominal").html("");
-	                $.each(data, function(i, item) {
-	                  var nom = parseInt(item.nilai)+parseInt(item.markup)
-	                    $("#nominal").append($('<option>', {value: item.kode, text: item.operator.toUpperCase() +' - '+ item.nilai+' / '+ nom}));
-	                });
-	            });	          
-	          }
-	        }
-	      } 
-		}
-	    
+	   
+  		 
+	  		var key = '';
+	  		$("#nomer").on("keyup", function(event) {
+	  			get_number();
+	  		});
+	  		/*
+	  		$("#nomer").on("mousemove", function(event) {
+	  			get_number();
+	      	});
+			*/
+  			function getUrlVars() {
+			    var vars = {};
+			    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+			    function(m,key,value) {
+			      vars[key] = value;
+			    });
+			    return vars;
+			  }
+
+			  
+
+	  		 function get_number(){
+				var keytmp = $("#nomer").val().substring(0,4);
+		        if($("#nomer").val().length > 3){         
+		          var op = '';
+		        if(key!=keytmp){
+		          key=keytmp;
+		          if(no_prefix[key]==null) {
+		          	$("#nominal").html("");
+		          	$("#nominal").append($('<option>', {value: "", text: "Masukan nomer dengan benar"}));
+		          } else{ 
+		          	$.get( base_url+'ppob/get_products/'+no_prefix[key].operator, function(data) {
+		                $("#nominal").html("");
+		                $.each(data, function(i, item) {
+		                  var nom = parseInt(item.nilai)+parseInt(item.markup)
+		                    $("#nominal").append($('<option>', {value: item.kode, text: item.operator.toUpperCase() +' - '+ item.nilai+' / '+ nom}));
+		                });
+		            });	          
+		          }
+		        }
+		      }
+		    <?php 
+		  		if (get('nominal')!=NULL) 
+		  		echo "
+		  		setTimeout(function() {
+		  		$('#nominal').val(getUrlVars()['nominal']).trigger('change'); 
+		  		}, 15000);
+				
+		  		";
+  		 	?>
+			} 
+
+			<?php 
+		  		if (get('nominal')!=NULL) 
+		  		echo "
+		  		setTimeout(function() {
+		  		$('#modal-content').modal('show'); 
+		  		get_number();
+		  		$('#nominal').val(getUrlVars()['nominal']).trigger('change'); 
+		  		}, 500);
+				
+		  		";
+  		 	?>
+
   		$("#form").on("submit", function(event) {  			
 	    	$("#btn-submit").removeClass('btn-success');
 	        $("#btn-submit").addClass('btn-warning');
@@ -129,8 +206,17 @@
 	        });
 	        
 	  });
-	});
+		//$('#btn-login').hide();
+		//$("#form_f").on("submit", function(event) {  
+		//event.preventDefault();	
+		 //showalert('Sepertinya Anda belum login','warning','#warnlogin',60000000);
+		//$('#btn-login').show();
 
+		//});
+
+		
+	});
+/*	
 document.getElementById("nomer").value = getSavedValue("nomer");
 function saveValue(e){
             var id = e.id;  
@@ -143,4 +229,5 @@ function getSavedValue  (v){
             }
             return localStorage.getItem(v);
         }
+ */
   </script>
