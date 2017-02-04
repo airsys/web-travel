@@ -90,6 +90,7 @@
 				<div class="box-body table-responsive no-padding">
 				  <table class="table table-hover table-striped">
 				    <tr>			      
+				      <th>Company</th>
 				      <th>Product</th>
 				      <th>Code</th>
 				      <th>Price</th>
@@ -102,6 +103,7 @@
 				    $i=0;
 					foreach($data_airline as $v_airline){ $i++;?>
 				    <tr>
+				      <td><?php echo $v_airline->brand ?></td>
 				      <td><?php echo "Airline<br>".$v_airline->airline ?></td>
 				      <td><?php echo $v_airline->{'booking code'} ?></td>
 				      <td><?php echo number_format($v_airline->{'base fare'}+$v_airline->tax)?></td>				      
@@ -111,12 +113,13 @@
 				      				 <strong><br>Passanger:</strong> A: $v_airline->adult | C: $v_airline->child | I: $v_airline->infant" ?></td>
 				      <td><?php echo date("d-m-Y H:i:s",$v_airline->{'booking time'}) ?></td>
 				      
-				      <td><a href="<?php echo base_url()."airlines/retrieve/".$v_airline->{'booking code'} ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
+				      <td><a href="<?php echo base_url()."admin/report/retrieve/".$v_airline->{'booking code'} ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
 				    </tr>
 				    <?php } ?>
 				    
 				    <?php foreach($data_ppob as $v_ppob){ $i++;?>
 				    <tr>
+				      <td><?php echo $v_ppob->brand ?></td>
 				      <td><?php echo "PPOB<br>".$v_ppob->product ?></td>
 				      <td><?php echo $v_ppob->{'ref_trxid'} ?></td>
 				      <td><?php echo number_format($v_ppob->{'nilai'}+$v_ppob->markup)?></td>				      
@@ -126,7 +129,7 @@
 				      				 <strong><br>SN Operator:</strong> $v_ppob->sn_operator" ?></td>
 				      <td><?php echo date("d-m-Y H:i:s",$v_ppob->{'created'}) ?></td>
 				      
-				      <td><a href="<?php echo base_url()."ppob/finance/".$v_ppob->{'id'} ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
+				      <td><a href="<?php echo base_url()."admin/ppob/finance/".$v_ppob->{'id'} ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
 				    </tr>
 				    <?php } ?>
 				    

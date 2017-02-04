@@ -91,4 +91,50 @@ class M_report extends CI_Model
 		return $data;
 	}
 	
+	function sales_list($data_or=NULL,$betwen=NULL,$data_where=NULL){
+		if($data_or!=NULL){
+			foreach ($data_or as $val){
+				$this->db->like($val['key'], $val['val'],FALSE);
+			}
+		}
+
+		if($data_where!=NULL){
+			foreach ($data_where as $key=> $val2){
+				$this->db->where($key, $val2,FALSE);
+			}
+		}
+
+		if($betwen!=NULL){
+			$this->db->where($betwen);
+		}
+		$this->db->select(" b.*, `status`,time status, brand")
+				 ->from("booking AS b, booking status AS s, auth company AS c")
+				 ->where("b.id = s.id booking")
+				 ->where("c.id = b.company")
+				 ->where("status",'issued')
+				 ->order_by('s.time status','desc');
+		$sub = $this->subquery->start_subquery('where');
+		$sub->select_max('time status')->from('booking status')->where('`id booking` = b.id');
+		$this->subquery->end_subquery('s.time status');
+		return $this->db->get()->result();
+	}
+	
+	function sales_ppob($data_or=NULL,$betwen=NULL,$data_where=NULL){
+		if($betwen!=NULL){
+			$this->db->where($betwen);
+		}
+		$this->db->select(" p.*,operator, nilai, markup, brand")
+				 ->from("ppob pulsa AS p, ppob status AS s, ppob product AS pr, auth company as c")
+				 ->where("p.id = s.id_ppob")
+				 ->where("p.product = pr.kode")
+				 ->where("status != 'failed'")
+				 ->where("status != 'refund'")
+				 ->where('c.id = p.company')
+				 ->order_by('s.created','desc');
+		$sub = $this->subquery->start_subquery('where');
+		$sub->select_max('created')->from('ppob status')->where('`id_ppob` = p.id');
+		$this->subquery->end_subquery('s.created');
+		return $this->db->get()->result();
+	}
+	
 }

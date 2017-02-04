@@ -173,7 +173,7 @@
 	
 	<?php if($this->ion_auth->logged_in()==0){ ?>
 	<!-- Modal -->
-	<div id="modal-content" class="modal fade modal-info" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div id="modal-content" class="modal fade modal-info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog modal-sm" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
