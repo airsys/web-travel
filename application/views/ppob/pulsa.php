@@ -32,6 +32,10 @@
 	            <select name="nominal" id="nominal" class="form-control" >
 	            	<option value="">Isi Nomor terlebih dahulu</option>
 	            </select>
+	             <div id="wait" hidden>
+		          	<div  class="fa fa-refresh fa-spin" ></div>
+		          	<label>please wait....</label>
+		          </div>
 	          </div>
 	        </div>
 	        <div class="form-group">
@@ -74,6 +78,10 @@
 		            <select name="nominal" id="nominal" class="form-control" >
 		            	<option selected value="" >Isi Nomor terlebih dahulu</option>
 		            </select>
+		             <div id="wait" hidden>
+		          	<div  class="fa fa-refresh fa-spin" ></div>
+		          	<label>please wait....</label>
+		          </div>
 		          </div>
 		        </div>
 		         <div class="form-group">
@@ -159,9 +167,11 @@
 		    <?php 
 		  		if (get('nominal')!=NULL) 
 		  		echo "
+		  		$('#wait').show(); 
 		  		setTimeout(function() {
+		  		$('#wait').hide(); 
 		  		$('#nominal').val(getUrlVars()['nominal']).trigger('change'); 
-		  		}, 15000);
+		  		}, 11000);
 				
 		  		";
   		 	?>
