@@ -89,8 +89,9 @@
 		          $.get( base_url+'ppob/get_products/pln', function(data) {
 		                $("#nominal").html("");
 		                $.each(data, function(i, item) {
+		                	var v = item.kode.split(".");
 		                  var nom = parseInt(item.nilai)+parseInt(item.markup)
-		                    $("#nominal").append($('<option>', {value: item.kode, text: item.operator.toUpperCase() +' - '+ item.nilai+' / '+ nom}));
+		                    $("#nominal").append($('<option>', {value: item.kode, text: item.operator.toUpperCase() +' - '+ v[1]+'000 / '+ nom}));
 		                });
 		            });
 		        }

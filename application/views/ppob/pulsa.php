@@ -49,12 +49,14 @@
         <!-- /.col -->
       </div>
       <!-- /.box-body -->
-      
+      </form>
       <div class="box-footer">
         <div class="col-sm-6">
           <button id="btn-submit" type="submit" class="btn btn-success pull-right "><i class="fa fa-paper-plane"></i> Submit</button>
         </div>
       </div>
+    </div>
+    
       <?php } ?>
       <?php if(!$this->ion_auth->logged_in()){ ?>
       <div class="box box-info">
@@ -158,7 +160,8 @@
 		                $("#nominal").html("");
 		                $.each(data, function(i, item) {
 		                  var nom = parseInt(item.nilai)+parseInt(item.markup)
-		                    $("#nominal").append($('<option>', {value: item.kode, text: item.operator.toUpperCase() +' - '+ item.nilai+' / '+ nom}));
+		                  	var v = item.kode.split(".");
+		                    $("#nominal").append($('<option>', {value: item.kode, text: item.operator.toUpperCase() +' - '+ v[1] +'000 / '+ nom}));
 		                });
 		            });	          
 		          }
