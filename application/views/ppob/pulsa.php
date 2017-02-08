@@ -11,13 +11,13 @@
 <?php //print_r($data_post['first_name']); ?>
 <!-- Horizontal Form -->
  <?php if($this->ion_auth->logged_in()){ ?>
+  <form id="form" class="form-horizontal" action="" method="post">
   <div class="box box-info">
     <div class="box-header with-border">
       <h3 class="box-title">Pembelian Pulsa</h3>
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    <form id="form" class="form-horizontal" action="" method="post">
       <div class="box-body">
     	<div class="col-md-12">
     		<div class="form-group">
@@ -49,13 +49,13 @@
         <!-- /.col -->
       </div>
       <!-- /.box-body -->
-      </form>
       <div class="box-footer">
         <div class="col-sm-6">
           <button id="btn-submit" type="submit" class="btn btn-success pull-right "><i class="fa fa-paper-plane"></i> Submit</button>
         </div>
       </div>
     </div>
+    </form>
     
       <?php } ?>
       <?php if(!$this->ion_auth->logged_in()){ ?>
@@ -113,7 +113,7 @@
       <?php } ?>
       <!-- /.box-footer -->
     </form>
-  </div>
+  	  </div>
   <!-- /.box -->
   <script>
   	$( document ).ready(function() {
