@@ -52,19 +52,22 @@ class Ppob extends CI_Controller {
 		    $strRequest = file_get_contents('php://input');
 		    //echo $strRequest;      
 		}
-		$this->db->insert(`system log`, array('code'=>'code gagal','log'=>$strRequest));
+		$this->db->insert("`system log`", array('code'=>'coba','log'=>$strRequest));
 		$data = xml2array($strRequest);
 		$sn = explode(":",$data['msg']);
 		$sn = filter_var($sn[2], FILTER_SANITIZE_NUMBER_INT);
 		//echo $sn;die();
-		$data_update = array('sn_operator'=>$sn,'status'=>0);
+		$data_update = array('sn_operator'=>$sn);
 		$this->db->where('trxid', $data['trxid']);
 		$this->db->update('`ppob pulsa`', $data_update);
+		
+		$this->m_ppob->change_status($data['ref_trxid'],'success',$data['msg']);
+		
 		echo $sn;
 		
 	}
 	
-	//http://indsiti.com/ppob/pulsa/refund?resultcode=1001&msisdn=62816888999&message=Refund&trxid=7552974&ref_trxid=54321
+	//http://indsiti.com/ppob/refund?resultcode=1001&msisdn=62816888999&message=Refund&trxid=7552974&ref_trxid=54321
 	function refund(){
 		$this->m_ppob->update_pulsa(array('message'=>get('message'), 'trxid'=>get('trxid'), 
 							'ref_trxid'=>get('ref_trxid'), 'status'=>get('resultcode')));
