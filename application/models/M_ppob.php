@@ -15,7 +15,7 @@ class M_ppob extends CI_Model
 		$data = $this->db->get()->row();
 		$price=0;
 		if($data!=NULL){
-			$price = $data->nilai + $data->markup;
+			$price = $data->markup;
 		}
 		return $price;
 	}

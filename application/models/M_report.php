@@ -91,7 +91,7 @@ class M_report extends CI_Model
 		if($betwen!=NULL){
 			$this->db->where($betwen);
 		}
-		$this->db->select(" p.*,operator, nilai, markup")
+		$this->db->select(" p.*,operator, nilai, markup, markup_default")
 				 ->from("ppob pulsa AS p, ppob status AS s, ppob product AS pr")
 				 ->where("p.id = s.id_ppob")
 				 ->where("p.product = pr.kode")

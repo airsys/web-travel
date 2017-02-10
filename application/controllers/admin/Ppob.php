@@ -35,7 +35,7 @@ class Ppob extends CI_Controller {
 		$this->load->helper('dropdown');
 		$data = array('content'=>'ppob/finance',
 					  'data'=>$d,
-					  'product'=>listDataCustom('ppob product','kode','operator,nilai,markup'),
+					  'product'=>listDataCustom('ppob product','kode','operator,nilai,markup,markup_default'),
 					  'status'=>listDataCustom('ppob status','status',"note,created","where id_ppob=$id order by created desc"),
 					  );
 		$this->load->view("admin/index",$data);

@@ -12,7 +12,8 @@ $tulisan = array(
         '2222'=>'waiting SN', //menunggu SN operator
         '1001'=>'refund', //refund
         '999'=>'failed', //faild
-    ); 
+    );
+   // pr($product); 
 ?>
 <style>
 	.control-span {
@@ -50,9 +51,18 @@ $tulisan = array(
         <!-- /.col -->
         <div class="col-md-12">
 			<div class="form-group">
-	          <label for="email" class="col-sm-2 control-label">Nominal</label>
+	          <label for="email" class="col-sm-2 control-label">Price to Agen</label>
 	          <div class="col-sm-4">
-	             <label class="control-span"><?php echo number_format($product[$data->product]['nilai']+$product[$data->product]['markup']); ?></label>
+	             <label class="control-span"><?php echo number_format($product[$data->product]['markup']); ?></label>
+	          </div>
+	        </div>
+        </div>
+        <!-- /.col -->
+        <div class="col-md-12">
+			<div class="form-group">
+	          <label for="email" class="col-sm-2 control-label">Price to Costumer</label>
+	          <div class="col-sm-4">
+	             <label class="control-span"><?php echo number_format($product[$data->product]['markup_default']); ?></label>
 	          </div>
 	        </div>
         </div>

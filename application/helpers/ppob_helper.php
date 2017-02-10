@@ -85,7 +85,7 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
 	
 	function hargaPulsa($kode){
 		$CI =& get_instance();
-		$CI->db->select('(nilai+markup) as harga')
+		$CI->db->select('markup as harga')
 			   ->where('kode',$kode);
 		$query = $CI->db->get('`ppob product`');
 		$query = $query->row();

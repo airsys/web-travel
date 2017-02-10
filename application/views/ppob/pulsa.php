@@ -159,9 +159,8 @@
 		          	$.get( base_url+'ppob/get_products/'+no_prefix[key].operator, function(data) {
 		                $("#nominal").html("");
 		                $.each(data, function(i, item) {
-		                  var nom = parseInt(item.nilai)+parseInt(item.markup)
 		                  	var v = item.kode.split(".");
-		                    $("#nominal").append($('<option>', {value: item.kode, text: item.operator.toUpperCase() +' - '+ v[1] +'000 / '+ nom}));
+		                    $("#nominal").append($('<option>', {value: item.kode, text: item.operator.toUpperCase() +' - '+ v[1] +'000 / '+ item.markup +' - '+item.markup_default}));
 		                });
 		            });	          
 		          }

@@ -119,8 +119,8 @@
 				    <tr>
 				      <td><?php echo "PPOB<br>".$v_ppob->product ?></td>
 				      <td><?php echo $v_ppob->{'ref_trxid'} ?></td>
-				      <td><?php echo number_format($v_ppob->{'nilai'}+$v_ppob->markup)?></td>				      
-				      <td><?php echo number_format($v_ppob->nilai)?></td>				      
+				      <td><?php echo number_format($v_ppob->markup_default)?></td>				      
+				      <td><?php echo number_format($v_ppob->markup)?></td>				      
 				      <td><?php echo "<strong>MSISDN:</strong>".$v_ppob->{'msisdn'}.
 				      				 "<strong> TRXID:</strong> $v_ppob->trxid
 				      				 <strong><br>SN Operator:</strong> $v_ppob->sn_operator" ?></td>
