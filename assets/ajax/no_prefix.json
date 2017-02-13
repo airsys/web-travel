@@ -1,223 +1,186 @@
 [
 {
-"operator":"TELKOMSEL",
-"img":null,
+"kode":"TEL", "operator":"TELKOMSEL",
 "note":" (Kartu Halo 10, 11 digit)",
 "number":"0811"
 },
 {
-"operator":"TELKOMSEL",
-"img":null,
+"kode":"TEL", "operator":"TELKOMSEL",
 "note":" (Kartu Halo, simPATI 11, 12 digit)",
 "number":"0812"
 },
 {
-"operator":"TELKOMSEL",
-"img":null,
+"kode":"TEL", "operator":"TELKOMSEL",
 "note":" (Kartu Halo, simPATI 12 digit)",
 "number":"0813"
 },
 {
-"operator":"TELKOMSEL",
-"img":null,
+"kode":"TEL", "operator":"TELKOMSEL",
 "note":" (simPATI 12 digit)",
 "number":"0821"
 },
 {
-"operator":"TELKOMSEL",
-"img":null,
+"kode":"TEL", "operator":"TELKOMSEL",
 "note":" (simPATI, Kartu Facebook)",
 "number":"0822"
 },
 {
-"operator":"TELKOMSEL",
-"img":null,
+"kode":"TEL", "operator":"TELKOMSEL",
 "note":" (Kartu As 12 digit)",
 "number":"0823"
 },
 {
-"operator":"TELKOMSEL",
-"img":null,
+"kode":"TEL", "operator":"TELKOMSEL",
 "note":" (Kartu As 12 digit)",
 "number":"0852"
 },
 {
-"operator":"TELKOMSEL",
-"img":null,
+"kode":"TEL", "operator":"TELKOMSEL",
 "note":" (Kartu As 12 digit)",
 "number":"0853"
 },
 {
-"operator":"TELKOMSEL",
-"img":null,
+"kode":"TEL", "operator":"TELKOMSEL",
 "note":" Kode Kartu AS pengganti Flexi yang sudah di akuisisi Telkomsel.",
 "number":"0851"
 },
 {
-"operator":"INDOSAT",
-"img":null,
+"kode":"IR", "operator":"INDOSAT",
 "note":" (Matrix 10 digit)",
 "number":"0855"
 },
 {
-"operator":"INDOSAT",
-"img":null,
+"kode":"IR", "operator":"INDOSAT",
 "note":" (IM3 (10 digit limited edition), 11, dan 12 digit)",
 "number":"0856"
 },
 {
-"operator":"INDOSAT",
-"img":null,
+"kode":"IR", "operator":"INDOSAT",
 "note":" (IM3 12 digit)",
 "number":"0857"
 },
 {
-"operator":"INDOSAT",
-"img":null,
+"kode":"IR", "operator":"INDOSAT",
 "note":" (Mentari 12 digit)",
 "number":"0858"
 },
 {
-"operator":"INDOSAT",
-"img":null,
+"kode":"IR", "operator":"INDOSAT",
 "note":" (Broadband Indosat M2 12 digit)",
 "number":"0814"
 },
 {
-"operator":"INDOSAT",
-"img":null,
+"kode":"IR", "operator":"INDOSAT",
 "note":" (Matrix, Mentari 11, 12 digit)",
 "number":"0815"
 },
 {
-"operator":"INDOSAT",
-"img":null,
+"kode":"IR", "operator":"INDOSAT",
 "note":" (Matrix, Mentari 10, 11, dan 12 digit)",
 "number":"0816"
 },
 {
-"operator":"XL",
-"img":null,
+"kode":"XL", "operator":"XL AXIS",
 "note":" (Pra bayar dan Explor 10, 11, 12 digit)",
 "number":"0817"
 },
 {
-"operator":"XL",
-"img":null,
+"kode":"XL", "operator":"XL AXIS",
 "note":" (Pra bayar dan Explor 10, 11, 12 digit)",
 "number":"0818"
 },
 {
-"operator":"XL",
-"img":null,
+"kode":"XL", "operator":"XL AXIS",
 "note":" (Pra bayar dan Explor 10, 11, 12 digit)",
 "number":"0819"
 },
 {
-"operator":"XL",
-"img":null,
+"kode":"XL", "operator":"XL AXIS",
 "note":" (Pra bayar dan Explor 12 digit)",
 "number":"0859"
 },
 {
-"operator":"XL",
-"img":null,
+"kode":"XL", "operator":"XL AXIS",
 "note":" (Pra bayar dan Explor 12 digit)",
 "number":"0877"
 },
 {
-"operator":"XL",
-"img":null,
+"kode":"XL", "operator":"XL AXIS",
 "note":" (Pra bayar dan Explor 12 digit)",
 "number":"0878"
 },
 {
-"operator":"TRI",
-"img":null,
+"kode":"TRI", "operator":"TRI",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0896"
 },
 {
-"operator":"TRI",
-"img":null,
+"kode":"TRI", "operator":"TRI",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0897"
 },
 {
-"operator":"TRI",
-"img":null,
+"kode":"TRI", "operator":"TRI",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0898"
 },
 {
-"operator":"TRI",
-"img":null,
+"kode":"TRI", "operator":"TRI",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0899"
 },
 {
-"operator":"SMARTFREN",
-"img":null,
+"kode":"SF", "operator":"SMARTFREN",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0881"
 },
 {
-"operator":"SMARTFREN",
-"img":null,
+"kode":"SF", "operator":"SMARTFREN",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0882"
 },
 {
-"operator":"SMARTFREN",
-"img":null,
+"kode":"SF", "operator":"SMARTFREN",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0883"
 },
 {
-"operator":"SMARTFREN",
-"img":null,
+"kode":"SF", "operator":"SMARTFREN",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0884"
 },
 {
-"operator":"SMARTFREN",
-"img":null,
+"kode":"SF", "operator":"SMARTFREN",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0885"
 },
 {
-"operator":"SMARTFREN",
-"img":null,
+"kode":"SF", "operator":"SMARTFREN",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0886"
 },
 {
-"operator":"SMARTFREN",
-"img":null,
+"kode":"SF", "operator":"SMARTFREN",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0887"
 },
 {
-"operator":"XL",
-"img":null,
+"kode":"XL", "operator":"XL AXIS",
 "note":"nomor axis",
 "number":"0838"
 },
 {
-"operator":"XL",
-"img":null,
+"kode":"XL", "operator":"XL AXIS",
 "note":"nomor untuk axis",
 "number":"0831"
 },
 {
-"operator":"XL",
-"img":null,
+"kode":"XL", "operator":"XL AXIS",
 "note":"nomor untuk axis",
 "number":"0832"
 },
 {
-"operator":"XL",
-"img":null,
+"kode":"XL", "operator":"XL AXIS",
 "note":"nomor untuk axis",
 "number":"0833"
 }

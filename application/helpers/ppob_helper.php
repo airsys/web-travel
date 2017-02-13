@@ -83,15 +83,7 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
 		return filter_var($data['message'], FILTER_SANITIZE_NUMBER_INT);	
 	}
 	
-	function hargaPulsa($kode){
-		$CI =& get_instance();
-		$CI->db->select('markup as harga')
-			   ->where('kode',$kode);
-		$query = $CI->db->get('`ppob product`');
-		$query = $query->row();
-		return $query->harga;
-	}
-	
+		
 	if ( ! function_exists('xml2array'))
 		{
 			function xml2array($str){

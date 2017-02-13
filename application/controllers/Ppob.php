@@ -76,28 +76,47 @@ class Ppob extends CI_Controller {
 	}
 	
 	function bayar(){
-		$price = $this->m_ppob->get_price();
+		$product = $this->m_ppob->get_product();
+		$price = $product->nilai + $product->markup_company;
 		$return = [];
-		$msg='';
+		$msg=''; $msgt='';
 		//$saldoserver = cekSaldoPpob();
 		if(saldo() > $price){
 			if($price > 1){
 				$my_trxid = now().'_'.RandomString(3);
 				$nomer = post('nomer');	$nominal = post('nominal');
+				
 				$id = $this->m_ppob->insert_pulsa($my_trxid,$nomer);				
+				
 				$return = ppobxml($nomer,$nominal,'charge',$my_trxid);
+				//pr($return,true);
 				if($return['resultcode']!=0){
 					$msg = explode(".",$return['message']);
 					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
-							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode']));
-					$return = array('message'=>'Pulsa gagal diisi',
+							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode'],
+							'base_pricex'=>0, 'nta'=>0));
+					$return = array('message'=>'Pulsa gagal diisi'."<br> message_sementara:$return[message]",
 							'code'=>1);
 				}else{
-					$msg = explode(".",$return['message']);
-					$this->m_ppob->issued($id,$nominal);
-					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
-					 		'ref_trxid'=>$my_trxid, 'status'=>2222));
-					$return = array('message'=>$msg[0]."<br>".$msg[2],);
+					$msg = explode(".",$return['message']);	
+					$nilai_now = preg_replace("/[^0-9,.]/", "", $msg[2]);
+					
+					$nta = $nilai_now+$product->markup_company;
+					$nta_old = $product->nilai + $product->markup_company;
+					$base_price = $nta +$product->markup_agen;
+					
+					if($nilai_now != $product->nilai){
+						$msgt = "<br><strong>Ada perubahan harga dari server, <br>
+								Harga semula $nta_old berubah menjadi $nta</strong>";
+						$this->m_ppob->change_nilai($nominal, $nilai_now);
+					}
+					
+					$this->m_ppob->update_pulsa(array('message'=>$msg[0]."<br>".$nilai_now."".$msgt,
+									'trxid'=>$return['trxid'], 'ref_trxid'=>$my_trxid, 'status'=>2222,
+									"base_pricex"=>$base_price,'nta'=>$nta));
+					
+					$this->m_ppob->issued($id,$nta);
+					$return = array('message'=>$msg[0]."<br>".$nilai_now."".$msgt,);
 				}
 			}else{
 				$return = array('message'=>'Operator tidak terdaftar',
@@ -126,21 +145,22 @@ class Ppob extends CI_Controller {
 	            ->set_output(json_encode($return));
 	}
 	
-	function get_products($operator){
-		$operator= strtolower($operator);
-		$this->db->select('*')
-				 ->from('`ppob product`')
-				 ->where('`operator`',$operator)
-				 ->order_by('nilai');
-		$return = json_encode($this->db->get()->result());
+	function get_products(){
+		$return = $this->m_ppob->get_products();
+		//pr($return,TRUE);
 		return $this->output
 	            ->set_content_type('application/json')
 	            ->set_status_header(200)
-	            ->set_output($return);
+	            ->set_output(json_encode($return,JSON_NUMERIC_CHECK));
 	}
 	
 	function cek_saldo_indsiti(){
 		pr(cekSaldoPpob());
+	}
+	
+	function markupFindsiti(){
+		$data = $this->m_ppob->markupFindsiti();
+		//pr($data,TRUE);
 	}
 	
 	function cek_tagihan(){

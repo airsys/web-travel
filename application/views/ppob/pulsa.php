@@ -118,10 +118,16 @@
   <script>
   	$( document ).ready(function() {
   		
-  		var no_prefix = [] ;
+  		var no_prefix = [] ; var products = [];
 	    $.get( base_url+'assets/ajax/no_prefix.json', function(data) {
 	        $.each(data, function(i, item) {
 	            no_prefix [item.number]= item;
+	        });
+	    });
+	    
+	    $.get( base_url+'ppob/get_products', function(data) {
+	        $.each(data, function(i, item) {
+	            products[i]= item;
 	        });
 	    });
 	   
@@ -144,8 +150,6 @@
 			    return vars;
 			  }
 
-			  
-
 	  		 function get_number(){
 				var keytmp = $("#nomer").val().substring(0,4);
 		        if($("#nomer").val().length > 3){         
@@ -155,14 +159,14 @@
 		          if(no_prefix[key]==null) {
 		          	$("#nominal").html("");
 		          	$("#nominal").append($('<option>', {value: "", text: "Masukan nomer dengan benar"}));
-		          } else{ 
-		          	$.get( base_url+'ppob/get_products/'+no_prefix[key].operator, function(data) {
-		                $("#nominal").html("");
-		                $.each(data, function(i, item) {
-		                  	var v = item.kode.split(".");
-		                    $("#nominal").append($('<option>', {value: item.kode, text: item.operator.toUpperCase() +' - '+ v[1] +'000 / '+ item.markup +' - '+item.markup_default}));
-		                });
-		            });	          
+		          } else{
+		          	$("#nominal").html("");
+	                $.each(products, function(i, item) {
+	                  	var v = item.kode.split(".");
+	                	if(v[0]==no_prefix[key].kode){
+	                		$("#nominal").append($('<option>', {value: item.id, text: no_prefix[key].operator.toUpperCase() +' - '+ v[1] +'000 / '+ item.nta +' - '+item.base_price}));
+	                	}
+	                });          
 		          }
 		        }
 		      }
