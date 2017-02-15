@@ -76,20 +76,28 @@ class Ppob extends CI_Controller {
 	}
 	
 	function bayar(){
-		$product = $this->m_ppob->get_product();
-		$price = $product->nilai + $product->markup_company;
+		$productk = explode('_',post('nominal'));
+		$ids = explode('|',$productk[1]);
+		$productk = $productk[0];		
+		
+		$product = $this->m_ppob->get_products($ids[0],$ids[1],$productk);
+		$product = array_shift($product);
+		//pr($product,TRUE);
+		$nta = $product['harga_asli'] + $product['penambahanDariIndsiti'];
+		$base_price = $nta +  $product['penambahanDariCompany'];
+		
+		$price = $base_price;
 		$return = [];
 		$msg=''; $msgt='';
 		//$saldoserver = cekSaldoPpob();
 		if(saldo() > $price){
 			if($price > 1){
 				$my_trxid = now().'_'.RandomString(3);
-				$nomer = post('nomer');	$nominal = post('nominal');
+				$nomer = post('nomer');
 				
-				$id = $this->m_ppob->insert_pulsa($my_trxid,$nomer);				
-				
-				$return = ppobxml($nomer,$nominal,'charge',$my_trxid);
-				//pr($return,true);
+				$id = $this->m_ppob->insert_pulsa($my_trxid,$nomer,$productk);				
+				$return = ppobxml($nomer,$product['kode'],'charge',$my_trxid);
+				//pr($return);
 				if($return['resultcode']!=0){
 					$msg = explode(".",$return['message']);
 					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
@@ -101,14 +109,15 @@ class Ppob extends CI_Controller {
 					$msg = explode(".",$return['message']);	
 					$nilai_now = preg_replace("/[^0-9,.]/", "", $msg[2]);
 					
-					$nta = $nilai_now+$product->markup_company;
-					$nta_old = $product->nilai + $product->markup_company;
-					$base_price = $nta +$product->markup_agen;
+					$nta = $nilai_now+$product['penambahanDariIndsiti'];
+					$nta_old = $product['harga_asli'] + $product['penambahanDariIndsiti'];
+					$base_price = $nta +$product['penambahanDariCompany'];
 					
-					if($nilai_now != $product->nilai){
+					if($nilai_now != $product['harga_asli']){
 						$msgt = "<br><strong>Ada perubahan harga dari server, <br>
 								Harga semula $nta_old berubah menjadi $nta</strong>";
-						$this->m_ppob->change_nilai($nominal, $nilai_now);
+						$this->m_ppob->change_nilai($productk, $nilai_now);
+						//die();
 					}
 					
 					$this->m_ppob->update_pulsa(array('message'=>$msg[0]."<br>".$nilai_now."".$msgt,

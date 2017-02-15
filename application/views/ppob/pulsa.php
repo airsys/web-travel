@@ -32,7 +32,7 @@
 		            <select name="nominal" id="nominal" class="form-control" >
 		            	<option value="">Isi Nomor terlebih dahulu</option>
 		            </select>
-		             
+		            <input name="ft" id="ft" type="hidden" value=""/>
 		          </div>
 		        </div>
 		        <div class="form-group">
@@ -120,13 +120,16 @@
 	        });
 	    });
 	    
-	    $.get( base_url+'ppob/get_products', function(data) {
-	        $.each(data, function(i, item) {
-	            products[i]= item;
-	        });
-	    });
+	    get_products();
 	   
-  		 
+  		function get_products(){
+			$.get( base_url+'ppob/get_products', function(data) {
+		        $.each(data, function(i, item) {
+		            products[i]= item;
+		        });
+		    });
+		}
+  		
 	  		var key = '';
 	  		$("#nomer").on("keyup", function(event) {
 	  			get_number();
@@ -160,7 +163,7 @@
 	                $.each(products, function(i, item) {
 	                  	var v = item.kode.split(".");
 	                	if(v[0]==no_prefix[key].kode){
-	                		$("#nominal").append($('<option>', {value: item.id, text: no_prefix[key].operator.toUpperCase() +' - '+ v[1] +'000 / '+ item.nta +' - '+item.base_price}));
+	                		$("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: no_prefix[key].operator.toUpperCase() +' - '+ v[1] +'000 / '+ item.nta +' - '+item.base_price}));
 	                	}
 	                });          
 
@@ -201,7 +204,7 @@
 	            success: function(d, textStatus, xhr) {
 	            	 	
 	            	showalert(d.message,'success','#warn',60000000);
-	            	
+	            	get_products();
 	            	$("#btn-submit").addClass('btn-success');
 			        $("#btn-submit").removeClass('btn-warning');
 			        $("#btn-submit").attr('disabled',false);

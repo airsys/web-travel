@@ -16,14 +16,13 @@ class M_ppob extends CI_Model
 		return $data;
 	}
 	
-	function insert_pulsa($trxid,$nomer){
-		$data = array('product'=>post('nominal'),
-			'ref_trxid'=>$trxid,
-			'user'=>$this->session->userdata('user_id'),
+	function insert_pulsa($trxid,$nomer, $productk){
+		$data = array('product'=>$productk,
+			'ref trxid'=>$trxid,
 			'company'=>$this->session->userdata('company'),
 			'msisdn'=>$nomer,
 		);
-		$this->db->insert('`ppob transaksi`',$data);
+		$this->db->insert('`ppob trx`',$data);
 		$insert_id = $this->db->insert_id();
 		
 		return $insert_id;
@@ -32,9 +31,9 @@ class M_ppob extends CI_Model
 	function update_pulsa($data_f){
 		//pr($data_f);
 		$data = array('trxid'=>$data_f['trxid'], 'created'=>now(),
-					  'base_price'=>$data_f['base_pricex'],'nta'=>$data_f['nta'] );
-		$this->db->where('ref_trxid', $data_f['ref_trxid']);
-		$this->db->update('`ppob transaksi`', $data);
+					  'price'=>$data_f['base_pricex'],'`net price`'=>$data_f['nta'] );
+		$this->db->where('`ref trxid`', $data_f['ref_trxid']);
+		$this->db->update('`ppob trx`', $data);
 		$msg = '';
 		switch($data_f['status']){
 			case 1111:
@@ -59,8 +58,8 @@ class M_ppob extends CI_Model
 	
 	function change_status($ref_trxid=0,$status='processing',$message=NULL){
 		$this->db->select('id')
-			 ->from('`ppob transaksi`')
-			 ->where('`ref_trxid`',$ref_trxid); 
+			 ->from('`ppob trx`')
+			 ->where('`ref trxid`',$ref_trxid); 
 		$id = $this->db->get()->row();
 		$id = $id->id;
 		$user = 0;
@@ -68,7 +67,7 @@ class M_ppob extends CI_Model
 			$user = $this->session->userdata('user_id');
 		}
 		
-		$data2 = array('id_ppob'=>$id,
+		$data2 = array('id trx'=>$id,
 			'status'=>$status,
 			'user'=>$user,
 			'created'=>now(),
@@ -80,9 +79,9 @@ class M_ppob extends CI_Model
 		return $insert_id;
 	}
 	
-	function change_nilai($nominal, $nilai_now){
-		$data = array('nilai'=>$nilai_now);
-		$this->db->where('kode', $nominal);
+	function change_nilai($id, $nilai_now){
+		$data = array('harga'=>$nilai_now);
+		$this->db->where('id', $id);
 		$this->db->update('`product`', $data);
 	}
 	
@@ -187,22 +186,20 @@ class M_ppob extends CI_Model
 	function markupFindsiti($to_company=NULL,$id=0){
 		$this->db->select("*")
 			->from('markup')
-			->order_by("`internal markup`");
+			->order_by("`company`");
 		if($id==0){
-			$this->db->where("company",0);
-			if($to_company != NULL){
-				$this->db->or_where("`internal markup`",$to_company);
-			}
+			$this->db->where("(`company`=0 OR `company` = $to_company) 
+					 AND `markup for` = 'internal' ");
 		}else{
 			$this->db->where("id",$id);
 		}
-		
+		$this->db->where("active",'1');
 		$data = $this->db->get()->result();
 		$r = [];
 		foreach($data as $val){
 			$r[$val->product] = array(
 					"value"=>$val->value,
-					"tipe_data"=>$val->{'tipe data'},
+					"tipe_data"=>$val->{'type'},
 					"idFindsiti"=>$val->id,
 			);
 		}
@@ -214,33 +211,34 @@ class M_ppob extends CI_Model
 		$this->db->select("*")
 			->from('markup');
 		if($id==0){
-			$this->db->where("(`company` !=0 OR `company` IS NULL OR `company` = $to_buyer) 
-					 AND `value` is NOT NULL ");
+			$this->db->where("(`company` =0 OR `company` = $to_buyer) 
+					 AND `markup for` = 'member' ");
 		}else{
 			$this->db->where("id",$id);
 		}
-		
+		$this->db->where("active",'1');
 		$data = $this->db->get()->result();
 		$r = [];
 		foreach($data as $val){
 			$r[$val->product] = array(
 					"value"=>$val->value,
-					"tipe_data"=>$val->{'tipe data'},
+					"tipe_data"=>$val->{'type'},
 					"idTbuyer"=>$val->id,
 			);
 		}
 		return $r;
 	}
 	
-	function get_products($idFindsiti=0, $idTbuyer=0){
+	function get_products($idFindsiti=0, $idTbuyer=0, $id=0){
 		$company = $this->session->userdata('company');
 		$markupFindsiti = $this->markupFindsiti($company, $idFindsiti);
 		$markupTbuyer = $this->markupTbuyer($company, $idTbuyer);
 		
-		$this->db->select('id,kode, nilai')
+		$this->db->select('id,kode, harga as nilai')
 				 ->from('`product`')
-				 ->where('`type`','ppob')
-				 ->order_by('nilai');
+				 ->where('`group`','ppob')
+				 ->order_by('harga');
+		if($id != 0) $this->db->where('`id`',$id);
 		$data = $this->db->get()->result();
 		$r = [];
 		//pr($markupTbuyer,TRUE);
