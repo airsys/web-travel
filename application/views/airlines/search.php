@@ -51,21 +51,13 @@
 			
            <div class="col-md-1" style="padding-right: 0;margin-right: 0;padding-left: 0;margin-left: 0;">
                 <div class="form-group">
-                    <label>PASSENGER</label>
-                    <div class="input-group margin" style="margin: 0px 0px 0px 0px; width: 50%;">
-                    <i class="fa fa-user" style="
-                                                padding-top: 10px;
-                                                width: 35px;
-                                                height: 34px;
-                                                border-top-width: 1px;
-                                                padding-left: 11px;
-                                                background-color: #d2d6de;">
-                    </i> 
-                    <div class="input-group-btn ">
+                  <label>PASSENGER</label>
+                  <div class="input-group margin" style="margin: 0px 0px 0px 0px; width: 100%;">
+                      <div class="input-group ">
                             <button type="button" class="btn btn-flat dropdown-toggle" data-toggle="dropdown" style="padding-right: 0px;padding-top: 0px;padding-bottom: 0px;padding-left: 0px;">
-                                
-                                <input type="text" class="" id="passanger" value="1" name="passanger" style="width: 71px;height: 32px; border-width: 0px 0px 0px 0px;text-align: center" readonly>
-                                <input type="text" class="" id="triggerPass" value="1" name="triggerPass" style="width: 30px;height: 32px; border-width: 0px 0px 0px 0px; margin-left: 0px;text-align: center" hidden>
+                              <i class="fa fa-user" style="margin-left: 10px;"></i>
+                              <input type="text" class="" id="passanger" value="1" name="passanger" style="width: 70%;height: 32px; border-width: 0px 0px 0px 0px;text-align: center;margin-left: 10px;" readonly>
+                              <input type="text" class="" id="triggerPass" value="1" name="triggerPass" style="width: 30px;height: 32px; border-width: 0px 0px 0px 0px; margin-left: 0px;text-align: center" hidden>
                             </button>
                                  <ul class="dropdown-menu" role="menu">
                                     <div class="countuser input-group" align="center"style="width:100%;">
@@ -107,9 +99,8 @@
                                         data-toggle="popover" data-trigger="" data-timeout="1000" data-content="Jumlah bayi tidak boleh melebihi jumlah dewasa"/> 
                                     </div> 
                                 </ul>
-                    </div>
-
-                    </div>
+                      </div>
+                  </div>
                 </div>
             </div>
 			<div class="col-search2">
