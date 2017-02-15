@@ -30,10 +30,12 @@ class M_ppob extends CI_Model
 	
 	function update_pulsa($data_f){
 		//pr($data_f);
-		$data = array('trxid'=>$data_f['trxid'], 'created'=>now(),
-					  'price'=>$data_f['base_pricex'],'`net price`'=>$data_f['nta'] );
-		$this->db->where('`ref trxid`', $data_f['ref_trxid']);
-		$this->db->update('`ppob trx`', $data);
+		if(!empty($data_f['base_pricex'])){
+			$data = array('trxid'=>$data_f['trxid'], 'created'=>now(),
+						  'price'=>$data_f['base_pricex'],'`net price`'=>$data_f['nta'] );
+			$this->db->where('`ref trxid`', $data_f['ref_trxid']);
+			$this->db->update('`ppob trx`', $data);
+		}
 		$msg = '';
 		switch($data_f['status']){
 			case 1111:
@@ -102,8 +104,8 @@ class M_ppob extends CI_Model
 	
 	function refund($ref_trxid){
 		$this->db->select('id,company')
-			 ->from('`ppob pulsa`')
-			 ->where('`ref_trxid`',$ref_trxid); 
+			 ->from('`ppob trx`')
+			 ->where('`ref trxid`',$ref_trxid); 
 		$id = $this->db->get()->row();
 		$company = $id->company;
 		$id = $id->id;

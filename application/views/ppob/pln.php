@@ -65,12 +65,22 @@
   <!-- /.box -->
   <script>
   	$( document ).ready(function() {
-  		var no_prefix = [] ;
+  		var no_prefix = [] ; var products = [];
 	    $.get( base_url+'assets/ajax/no_prefix.json', function(data) {
 	        $.each(data, function(i, item) {
 	            no_prefix [item.number]= item;
 	        });
 	    });
+	    
+	    get_products();
+	   
+  		function get_products(){
+			$.get( base_url+'ppob/get_products', function(data) {
+		        $.each(data, function(i, item) {
+		            products[i]= item;
+		        });
+		    });
+		}
   		
   		var key = '';
   		$("#nomer").on("keyup", function(event) {
@@ -82,20 +92,18 @@
 	    
 	    function get_number(){
 			var keytmp = $("#nomer").val().substring(0,4);
-	        if($("#nomer").val().length > 3){     
-	          	var op = '';
-		        if(key!=keytmp){
-		          key=keytmp;
-		          $.get( base_url+'ppob/get_products/pln', function(data) {
-		                $("#nominal").html("");
-		                $.each(data, function(i, item) {
-		                	var v = item.kode.split(".");
-		                  var nom = parseInt(item.nilai)+parseInt(item.markup)
-		                    $("#nominal").append($('<option>', {value: item.kode, text: item.operator.toUpperCase() +' - '+ v[1]+'000 / '+ nom}));
-		                });
-		            });
-		        }
-	      } 
+	        //if($("#nomer").val().length > 3){
+	        if(key!=keytmp){
+	          key=keytmp;
+	          $("#nominal").html("");
+              $.each(products, function(i, item) {
+                  var v = item.kode.split(".");
+                  if(v[0]=='PLN'){
+                     $("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: 'pln'.toUpperCase() +' - '+ v[1] +'000 / '+ item.nta +' - '+item.base_price}));
+                  }
+              });
+	        }
+	       // } 
 		}
 	    
   		$("#form").on("submit", function(event) {  			
@@ -112,7 +120,7 @@
 	            success: function(d, textStatus, xhr) {
 	            	 	
 	            	showalert(d.message,'success','#warn',60000000);
-	            	
+	            	get_products();
 	            	$("#btn-submit").addClass('btn-success');
 			        $("#btn-submit").removeClass('btn-warning');
 			        $("#btn-submit").attr('disabled',false);

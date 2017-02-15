@@ -57,9 +57,9 @@ class Ppob extends CI_Controller {
 		$sn = explode(":",$data['msg']);
 		$sn = filter_var($sn[2], FILTER_SANITIZE_NUMBER_INT);
 		//echo $sn;die();
-		$data_update = array('sn_operator'=>$sn);
+		$data_update = array('sn operator'=>$sn);
 		$this->db->where('trxid', $data['trxid']);
-		$this->db->update('`ppob pulsa`', $data_update);
+		$this->db->update('`ppob trx`', $data_update);
 		
 		$this->m_ppob->change_status($data['ref_trxid'],'success',$data['msg']);
 		
