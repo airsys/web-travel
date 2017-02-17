@@ -198,8 +198,14 @@ class M_ppob extends CI_Model
 		$this->db->select("*")
 			->from('markup')
 			->order_by("`company`");
+		
+		$to_companyS = "OR `company` = $to_company";
+		if($to_company == NULL){
+			$to_companyS = '';
+		}
+		
 		if($id==0){
-			$this->db->where("(`company`=0 OR `company` = $to_company) 
+			$this->db->where("(`company`=0 $to_companyS) 
 					 AND `markup for` = 'internal' ");
 		}else{
 			$this->db->where("id",$id);
@@ -221,8 +227,14 @@ class M_ppob extends CI_Model
 	function markupTbuyer($to_buyer=NULL, $id=0){
 		$this->db->select("*")
 			->from('markup');
+		
+		$to_buyerS = "OR `company` = $to_buyer";
+		if($to_buyer == NULL){
+			$to_buyerS = '';
+		}
+				
 		if($id==0){
-			$this->db->where("(`company` =0 OR `company` = $to_buyer) 
+			$this->db->where("(`company` =0 $to_buyerS) 
 					 AND `markup for` = 'member' ");
 		}else{
 			$this->db->where("id",$id);
@@ -242,6 +254,9 @@ class M_ppob extends CI_Model
 	
 	function get_products($idFindsiti=0, $idTbuyer=0, $id=0){
 		$company = $this->session->userdata('company');
+		if(!$this->session->userdata('company')){
+			$company = NULL;
+		}
 		$markupFindsiti = $this->markupFindsiti($company, $idFindsiti);
 		$markupTbuyer = $this->markupTbuyer($company, $idTbuyer);
 		

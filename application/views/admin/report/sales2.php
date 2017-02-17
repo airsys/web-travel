@@ -120,7 +120,7 @@
 				    <?php foreach($data_ppob as $v_ppob){ $i++;?>
 				    <tr>
 				      <td><?php echo $v_ppob->brand ?></td>
-				      <td><?php echo "PPOB<br>".$v_ppob->product ?></td>
+				      <td><?php echo "PPOB<br>".$v_ppob->kode ?></td>
 				      <td><?php echo $v_ppob->{'ref trxid'} ?></td>
 				      <td><?php echo number_format($v_ppob->{'net price'})?></td>			      
 				      <td><?php echo number_format($v_ppob->{'base price'})?></td>			      

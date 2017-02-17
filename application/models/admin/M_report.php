@@ -123,7 +123,7 @@ class M_report extends CI_Model
 		if($betwen!=NULL){
 			$this->db->where($betwen);
 		}
-		$this->db->select("`t`.*, note, brand, pr.`product` as productt, pr.kode")
+		$this->db->select("`t`.*, note,kode, brand, pr.`product` as productt, pr.kode")
 				 ->from("`ppob trx` AS `t`, `ppob status` AS `s`, `product` AS `pr`, `auth company` AS c")
 				 ->where("t.id = s.`id trx`")
 				 ->where("t.product = pr.id")
