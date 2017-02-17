@@ -53,7 +53,7 @@ class Report extends CI_Controller {
 						$rangf = strtotime(str_replace('/', '-', $range[1]));
 						$rangt = strtotime(str_replace('/', '-', $range[2]))+86399;
 						$array_range_airline = "`time status` BETWEEN $rangf AND $rangt";
-						$array_range_ppob = "`p.created` BETWEEN $rangf AND $rangt";
+						$array_range_ppob = "`t.created` BETWEEN $rangf AND $rangt";
 					}
 				}else{
 					redirect ('admin/report/sales2?q=range:'.date('d/m/Y', strtotime('11/01/2016')).' - '.date('d/m/Y'),'redirect');
