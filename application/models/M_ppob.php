@@ -186,7 +186,7 @@ class M_ppob extends CI_Model
 	
 	function finance($id){
 		$this->db->select("*")
-			 ->from('`ppob pulsa`')
+			 ->from('`ppob trx`')
 			 ->where('`id`',$id)
 			 ->where('`company`',$this->session->userdata('company'));
 		$r = $this->db->get()->row();

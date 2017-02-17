@@ -261,8 +261,8 @@ class Ppob extends CI_Controller {
 		$this->load->helper('dropdown');
 		$data = array('content'=>'ppob/finance',
 					  'data'=>$d,
-					  'product'=>listDataCustom('ppob product','kode','operator,nilai,markup,markup_default'),
-					  'status'=>listDataCustom('ppob status','status',"note,created","where id_ppob=$id order by created desc"),
+					  'product'=>listDataCustom('product','id','kode,product'),
+					  'status'=>listDataCustom('ppob status','status',"note,created","where `id trx`=$id order by created desc"),
 					  );
 		$this->load->view("index",$data);
 	}

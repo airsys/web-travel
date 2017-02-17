@@ -99,7 +99,7 @@
               $.each(products, function(i, item) {
                   var v = item.kode.split(".");
                   if(v[0]=='PLN'){
-                     $("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: 'pln'.toUpperCase() +' - '+ v[1] +'000 / '+ item.nta +' - '+item.base_price}));
+                     $("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: 'pln'.toUpperCase() +' - '+ v[1] +'000 / '+ item.base_price +' - '+item.price}));
                   }
               });
 	        }
