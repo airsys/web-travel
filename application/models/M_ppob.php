@@ -153,12 +153,13 @@ class M_ppob extends CI_Model
 	
 	function update_tagihan($data_f){
 		//pr($data_f);
-		if(!empty($data_f['base_pricex'])){
+		if(!empty($data_f['base_price'])){
 			$data = array('nama'=>$data_f['message'], 
 						  'trxid'=>$data_f['trxid'], 
 						  'created'=>now(),
-						  'price'=>$data_f['base_pricex'],
-						  '`net price`'=>$data_f['nta'] );
+						  'price'=>$data_f['price'],
+						  '`net price`'=>$data_f['net_price'],
+						  '`base price`'=>$data_f['base_price'] );
 			$this->db->where('`ref trxid`', $data_f['ref_trxid']);
 			$this->db->update('`ppob trx`', $data);
 		}

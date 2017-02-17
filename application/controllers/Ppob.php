@@ -221,9 +221,9 @@ class Ppob extends CI_Controller {
 				//pr($return);
 				if($return['resultcode']!=0){
 					$msg = explode(".",$return['message']);
-					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
+					$this->m_ppob->update_tagihan(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
 							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode'],
-							'base_pricex'=>0, 'nta'=>0));
+							'base_price'=>0, 'net_price'=>0, 'price'=>0));
 					$return = array('message'=>'Transaksi gagal '."<br> message_sementara:$return[message]",
 							'code'=>1);
 					
@@ -231,14 +231,14 @@ class Ppob extends CI_Controller {
 					$msg = explode(".",$return['message']);	
 					$msgt = explode(" ",$msg[0]);
 					$nilai_now = post('nominalbayar');
-					$nta = $nilai_now+$product['penambahanDariIndsiti'];
-					$nta_old = $product['harga_asli'] + $product['penambahanDariIndsiti'];
-					$base_price = $nta +$product['penambahanDariCompany'];
+					$base_price = $nilai_now+$product['penambahanDariIndsiti'];
+					$base_price_old = $product['harga_asli'] + $product['penambahanDariIndsiti'];
+					$price = $base_price +$product['penambahanDariCompany'];
 					
 					
 					$this->m_ppob->update_tagihan(array('message'=>$msgt[4],
 									'trxid'=>$return['trxid'], 'ref_trxid'=>$my_trxid, 'status'=>2222,
-									"base_pricex"=>$base_price,'nta'=>$nta));
+									"base_price"=>$base_price,'price'=>$price, 'net_price'=>$price));
 					
 					$this->m_ppob->issued($id,$nta);
 				}
