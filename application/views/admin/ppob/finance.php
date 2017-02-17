@@ -12,7 +12,8 @@ $tulisan = array(
         '2222'=>'waiting SN', //menunggu SN operator
         '1001'=>'refund', //refund
         '999'=>'failed', //faild
-    ); 
+    );
+   // pr($product); 
 ?>
 <style>
 	.control-span {
@@ -29,7 +30,16 @@ $tulisan = array(
     <div id="warning"></div>
     <!-- form start -->
     <div class="form-horizontal">
-      <div class="box-body"> 
+      <div class="box-body">
+      	<div class="col-md-12">
+			<div class="form-group">
+	          <label for="email" class="col-sm-2 control-label">Company</label>
+	          <div class="col-sm-4">
+	             <label class="control-span"><?php echo $data->brand; ?></label>
+	          </div>
+	        </div>
+        </div>
+        <!-- /.col -->
     	<div class="col-md-12">
 			<div class="form-group">
 	          <label for="email" class="col-sm-2 control-label">MSISDN</label>
@@ -43,25 +53,34 @@ $tulisan = array(
 			<div class="form-group">
 	          <label for="email" class="col-sm-2 control-label">Product</label>
 	          <div class="col-sm-4">
-	             <label class="control-span"><?php echo  strtoupper($product[$data->product]['operator'].' - '.$product[$data->product]['nilai']); ?></label>
+	             <label class="control-span"><?php echo  strtoupper($product[$data->product]['product'].' - '.$product[$data->product]['kode']); ?></label>
 	          </div>
 	        </div>
         </div>
         <!-- /.col -->
         <div class="col-md-12">
 			<div class="form-group">
-	          <label for="email" class="col-sm-2 control-label">Price to agent</label>
+	          <label for="email" class="col-sm-2 control-label">Base Price</label>
 	          <div class="col-sm-4">
-	             <label class="control-span"><?php echo number_format($product[$data->product]['markup']); ?></label>
+	             <label class="control-span"><?php echo number_format($data->{'base price'}); ?></label>
 	          </div>
 	        </div>
         </div>
         <!-- /.col -->
         <div class="col-md-12">
 			<div class="form-group">
-	          <label for="email" class="col-sm-2 control-label">Price to costumer</label>
+	          <label for="email" class="col-sm-2 control-label">Price</label>
 	          <div class="col-sm-4">
-	             <label class="control-span"><?php echo number_format($product[$data->product]['markup_default']); ?></label>
+	             <label class="control-span"><?php echo number_format($data->price); ?></label>
+	          </div>
+	        </div>
+        </div>
+        <!-- /.col -->
+        <div class="col-md-12">
+			<div class="form-group">
+	          <label for="email" class="col-sm-2 control-label">Net Price</label>
+	          <div class="col-sm-4">
+	             <label class="control-span"><?php echo number_format($data->{'net price'}); ?></label>
 	          </div>
 	        </div>
         </div>
@@ -79,7 +98,7 @@ $tulisan = array(
 			<div class="form-group">
 	          <label for="email" class="col-sm-2 control-label">Ref TRXID</label>
 	          <div class="col-sm-4">
-	             <label class="control-span"><?php echo $data->ref_trxid; ?></label>
+	             <label class="control-span"><?php echo $data->{'ref trxid'}; ?></label>
 	          </div>
 	        </div>
         </div>
@@ -87,7 +106,7 @@ $tulisan = array(
 			<div class="form-group">
 	          <label for="email" class="col-sm-2 control-label">SN Operator</label>
 	          <div class="col-sm-4">
-	             <label class="control-span"><?php echo $string = ($data->sn_operator === null) ? '--' : $data->sn_operator; ?></label>
+	             <label class="control-span"><?php echo $string = ($data->{'sn operator'} === null) ? '--' : $data->{'sn operator'}; ?></label>
 	          </div>
 	        </div>
         </div>

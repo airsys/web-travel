@@ -72,7 +72,7 @@ class M_report extends CI_Model
 		$payfor=[];
 		$payfor['CT']=listData('acc topup','id','unique',"where `created` BETWEEN $from AND $to");
 		$payfor['DI']=listData('booking','id','booking code',"where `booking time` BETWEEN $from AND $to");
-		$payfor['DP']=listData('ppob pulsa','id','msisdn',"where `created` BETWEEN $from AND $to");
+		$payfor['DP']=listData('ppob trx','id','msisdn',"where `created` BETWEEN $from AND $to");
 		$payfor['CP']=$payfor['DP'];
 		return $payfor;
 	}

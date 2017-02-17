@@ -31,10 +31,10 @@ class M_ppob extends CI_Model
 	}
 	
 	function finance($id){
-		$this->db->select("p.*,c.brand, from_unixtime(created, '%d-%m-%Y %h:%i:%s') as date")
-			 ->from('`ppob pulsa` as p, `auth company` as c')
-			 ->where('`p.id`',$id)
-			 ->where('p.company=c.id');
+		$this->db->select("t.*,c.brand, from_unixtime(created, '%d-%m-%Y %h:%i:%s') as date")
+			 ->from('`ppob trx` as t, `auth company` as c')
+			 ->where('`t.id`',$id)
+			 ->where('t.company=c.id');
 		$r = $this->db->get()->row();
 		return $r ;
 	}
