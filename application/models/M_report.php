@@ -91,16 +91,16 @@ class M_report extends CI_Model
 		if($betwen!=NULL){
 			$this->db->where($betwen);
 		}
-		$this->db->select(" p.*,operator, nilai, markup, markup_default")
-				 ->from("ppob pulsa AS p, ppob status AS s, ppob product AS pr")
-				 ->where("p.id = s.id_ppob")
-				 ->where("p.product = pr.kode")
+		$this->db->select("`t`.*, pr.`product` as productt, pr.kode")
+				 ->from("`ppob trx` AS `t`, `ppob status` AS `s`, `product` AS `pr`")
+				 ->where("t.id = s.`id trx`")
+				 ->where("t.product = pr.id")
 				 ->where("status != 'failed'")
 				 ->where("status != 'refund'")
 				 ->where('company',$this->session->userdata('company'))
 				 ->order_by('s.created','desc');
 		$sub = $this->subquery->start_subquery('where');
-		$sub->select_max('created')->from('ppob status')->where('`id_ppob` = p.id');
+			$sub->select_max('created')->from('ppob status')->where('`id trx` = t.id');
 		$this->subquery->end_subquery('s.created');
 		return $this->db->get()->result();
 	}
