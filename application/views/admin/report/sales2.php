@@ -121,13 +121,12 @@
 				    <tr>
 				      <td><?php echo $v_ppob->brand ?></td>
 				      <td><?php echo "PPOB<br>".$v_ppob->product ?></td>
-				      <td><?php echo $v_ppob->{'ref_trxid'} ?></td>
-				      <td><?php echo number_format($v_ppob->markup_default)?></td>			      
-				      <td><?php echo number_format($v_ppob->markup)?></td>			      
-				      <td><?php echo number_format($v_ppob->nilai)?></td>				      
+				      <td><?php echo $v_ppob->{'ref trxid'} ?></td>
+				      <td><?php echo number_format($v_ppob->{'net price'})?></td>			      
+				      <td><?php echo number_format($v_ppob->{'base price'})?></td>			      
 				      <td><?php echo "<strong>MSISDN:</strong>".$v_ppob->{'msisdn'}.
 				      				 "<strong> TRXID:</strong> $v_ppob->trxid
-				      				 <strong><br>SN Operator:</strong> $v_ppob->sn_operator" ?></td>
+				      				 <strong><br>SN Operator:</strong>". $v_ppob->{'sn operator'} ?></td>
 				      <td><?php echo date("d-m-Y H:i:s",$v_ppob->{'created'}) ?></td>
 				      
 				      <td><a href="<?php echo base_url()."admin/ppob/finance/".$v_ppob->{'id'} ?>" type="button" class="btn btn-success btn-sm"><li class="fa fa-eye"></li></a></td>
