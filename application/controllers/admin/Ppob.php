@@ -13,11 +13,11 @@ class Ppob extends CI_Controller {
 	function transaction(){
 	 	$array_range = NULL;
 	 	if($this->input->get('range')){
-			$range = str_replace(' ', '', $this->input->get('range'));
+			$range = str_replace(' ', '', get('range'));
 			$range = (explode("-",$range));
 			$rangf = strtotime(str_replace('/', '-', $range[0]));
 			$rangt = strtotime(str_replace('/', '-', $range[1]))+86399;
-			$array_range = "p.`created` BETWEEN $rangf AND $rangt";
+			$array_range = "t.`created` BETWEEN $rangf AND $rangt";
 			//echo date("Y-m-d H:i:s",$rangf).'|'.date("Y-m-d H:i:s",$rangt);die();
 		}else{
 			redirect ('admin/ppob/transaction?range='.date('d/m/Y', strtotime('-30 days')).' - '.date('d/m/Y'),'redirect');

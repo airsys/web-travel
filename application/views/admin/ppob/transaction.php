@@ -1,14 +1,14 @@
 <?php //print_r($payfor); 
 	  $color = array(
 	        'processing'=>'#0145d1', //sedang diproses
-	        'succes'=>'#00bd30', //berhasil
+	        'success'=>'#00bd30', //berhasil
 	        'waiting SN'=>'#d3ce0a', //menunggu SN operator
 	        'refund'=>'#fc2cae', //refund
 	        'failed'=>'#ff2025', //faild
 	    );
        $tulisan = array(
                 '1111'=>'processing', //sedang diproses
-                '0'=>'succes', //berhasil
+                '0'=>'success', //berhasil
                 '2222'=>'waiting SN', //menunggu SN operator
                 '1001'=>'refund', //refund
                 '999'=>'failed', //faild
@@ -68,18 +68,18 @@
 				    <?php
 				    $i=0;
 					foreach($data_table as $value){ $i++;?>
-				    <tr id=<?= $value->ref_trxid ?>>
+				    <tr id=<?= $value->{'ref trxid'} ?>>
 				      <td><?php echo $value->brand ?></td>
-				      <td><?php echo $value->product ?></td>
+				      <td><?php echo $value->kode ?></td>
 				      <td><?php echo $value->msisdn ?></td>
 				      <td><?php echo $value->note ?></td>
-				      <td><?php echo $value->ref_trxid ?></td>
+				      <td><?php echo $value->{'ref trxid'} ?></td>
 				      <td><?php echo $value->trxid ?></td>
 				      <td><?php echo "<span class='label' style='background-color:".$color[$value->status]."; font-size:0.9em'>".$value->status."</span>" ?></td>
 				      <td><?php echo $value->created2 ?></td>
 				      <td>
 				      	<?php if($value->status!='refund' && $value->status!='failed'){ ?>
-				      	<button class="btn btn-sm btn-danger" onclick="show('<?= $value->ref_trxid ?>');" ><i class="fa fa-minus-square-o"></i></button>
+				      	<button class="btn btn-sm btn-danger" onclick="show('<?= $value->{'ref trxid'} ?>');" ><i class="fa fa-minus-square-o"></i></button>
 				      	<?php } ?>
 				      </td>
 				    </tr>

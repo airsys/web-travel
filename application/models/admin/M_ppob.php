@@ -18,13 +18,14 @@ class M_ppob extends CI_Model
 		}
 		
 		
-		$this->db->select(" c.brand, p.*, s.status, s.note, from_unixtime(p.created  ,'%d-%m-%Y %h:%i:%s') as created2")
-				 ->from("`ppob pulsa` AS p, auth company AS c, ppob status as s")
-				 ->where('p.company = c.id')
-				 ->where('s.`id_ppob` = p.id');
+		$this->db->select(" c.brand, p.kode, t.*, s.status, s.note, from_unixtime(t.created  ,'%d-%m-%Y %h:%i:%s') as created2")
+				 ->from("`ppob trx` AS t, product as p, auth company AS c, ppob status as s")
+				 ->where('t.company = c.id')
+				 ->where('t.product = p.id')
+				 ->where('s.`id trx` = t.id');
 		$sub = $this->subquery->start_subquery('where');
 		$sub->select_max('created')->from('ppob status')
-				->where('`id_ppob` = p.id');
+				->where('`id trx` = t.id');
 		$this->subquery->end_subquery('s.created');
 		return $this->db->get()->result();
 	}
@@ -39,10 +40,14 @@ class M_ppob extends CI_Model
 	}
 	
 	function update_pulsa($data_f){
-		$data = array('trxid'=>$data_f['trxid'], 
-					  'status'=>$data_f['status'], 'created'=>now());
-		$this->db->where('ref_trxid', $data_f['ref_trxid']);
-		$this->db->update('`ppob pulsa`', $data);
+		if(!empty($data_f['base_pricex'])){
+			$data = array('trxid'=>$data_f['trxid'], 
+						  'created'=>now(),
+						  'price'=>$data_f['base_pricex'],
+						  '`net price`'=>$data_f['nta'] );
+			$this->db->where('`ref trxid`', $data_f['ref_trxid']);
+			$this->db->update('`ppob trx`', $data);
+		}
 		$msg = '';
 		switch($data_f['status']){
 			case 1111:
@@ -63,12 +68,13 @@ class M_ppob extends CI_Model
 		}
 		
 		$this->change_status($data_f['ref_trxid'],$msg,$data_f['message']);
+	
 	}
 	
 	function change_status($ref_trxid=0,$status='processing',$message=NULL){
 		$this->db->select('id')
-			 ->from('`ppob pulsa`')
-			 ->where('`ref_trxid`',$ref_trxid); 
+			 ->from('`ppob trx`')
+			 ->where('`ref trxid`',$ref_trxid); 
 		$id = $this->db->get()->row();
 		$id = $id->id;
 		$user = 0;
@@ -76,7 +82,7 @@ class M_ppob extends CI_Model
 			$user = $this->session->userdata('user_id');
 		}
 		
-		$data2 = array('id_ppob'=>$id,
+		$data2 = array('id trx'=>$id,
 			'status'=>$status,
 			'user'=>$user,
 			'created'=>now(),
@@ -90,8 +96,8 @@ class M_ppob extends CI_Model
 	
 	function refund(){
 		$this->db->select('id,company')
-			 ->from('`ppob pulsa`')
-			 ->where('`ref_trxid`',post('ref_trxid')); 
+			 ->from('`ppob trx`')
+			 ->where('`ref trxid`',post('ref_trxid')); 
 		$id = $this->db->get()->row();
 		$company = $id->company;
 		$id = $id->id;
@@ -112,6 +118,8 @@ class M_ppob extends CI_Model
 				"pay for"=>$id,
 				"balance"=>$saldo+$harga,
 		);
+		$this->db->insert('acc balance',$data); //<-menambah row di payment topup
+		
 		$this->change_status(post('ref_trxid'),'refund',post('note'));
 		if ($this->db->insert('acc balance',$data)){
 			return TRUE;
