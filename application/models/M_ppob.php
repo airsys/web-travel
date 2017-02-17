@@ -259,18 +259,18 @@ class M_ppob extends CI_Model
 			if($markupFindsiti[$val->id]['tipe_data']!='decimal'){
 				$penambahMIndsiti = $markupFindsiti[$val->id]['value']/100*$val->nilai;
 			}
-			$nta = $val->nilai+$penambahMIndsiti;
+			$base_price = $val->nilai+$penambahMIndsiti;
 			$penambahMCompany  = $markupTbuyer[$val->id]['value'];
 			if($markupTbuyer[$val->id]['tipe_data']!='decimal'){
-				$penambahMCompany = ($markupTbuyer[$val->id]['value'])/100*$nta;
+				$penambahMCompany = ($markupTbuyer[$val->id]['value'])/100*$base_price;
 			}
-			$base_price = $nta+$penambahMCompany;
+			$price = $base_price+$penambahMCompany;
 			
 			$r[] = array(
 				"id" => $val->id,
 				"kode" => $val->kode,
+				"price" =>$price,
 				"base_price" =>$base_price,
-				"nta" =>$nta,
 				"FT" => $markupFindsiti[$val->id]['idFindsiti']."|".$markupTbuyer[$val->id]['idTbuyer'],
 				
 				"penambahanDariCompany" => $penambahMCompany,

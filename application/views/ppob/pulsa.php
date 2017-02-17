@@ -163,7 +163,7 @@
 	                $.each(products, function(i, item) {
 	                  	var v = item.kode.split(".");
 	                	if(v[0]==no_prefix[key].kode){
-	                		$("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: no_prefix[key].operator.toUpperCase() +' - '+ v[1] +'000 / '+ item.nta +' - '+item.base_price}));
+	                		$("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: no_prefix[key].operator.toUpperCase() +' - '+ v[1] +'000 / '+ item.base_price +' - '+item.price}));
 	                	}
 	                });          
 

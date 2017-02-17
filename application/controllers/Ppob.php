@@ -102,27 +102,27 @@ class Ppob extends CI_Controller {
 					$msg = explode(".",$return['message']);
 					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
 							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode'],
-							'base_pricex'=>0, 'nta'=>0));
+							'base_price'=>0, 'net_price'=>0, 'price'=>0));
 					$return = array('message'=>'Pulsa gagal diisi'."<br> message_sementara:$return[message]",
 							'code'=>1);
 				}else{
 					$msg = explode(".",$return['message']);	
 					$nilai_now = preg_replace("/[^0-9,.]/", "", $msg[2]);
 					
-					$nta = $nilai_now+$product['penambahanDariIndsiti'];
-					$nta_old = $product['harga_asli'] + $product['penambahanDariIndsiti'];
-					$base_price = $nta +$product['penambahanDariCompany'];
+					$base_price = $nilai_now+$product['penambahanDariIndsiti'];
+					$base_price_old = $product['harga_asli'] + $product['penambahanDariIndsiti'];
+					$price = $base_price +$product['penambahanDariCompany'];
 					
 					if($nilai_now != $product['harga_asli']){
 						$msgt = "<br><strong>Ada perubahan harga dari server, <br>
-								Harga semula $nta_old berubah menjadi $nta</strong>";
+								Harga semula $base_price_old berubah menjadi $base_price</strong>";
 						$this->m_ppob->change_nilai($productk, $nilai_now);
 						//die();
 					}
 					
 					$this->m_ppob->update_pulsa(array('message'=>$msg[0]."<br>".$nilai_now."".$msgt,
 									'trxid'=>$return['trxid'], 'ref_trxid'=>$my_trxid, 'status'=>2222,
-									"base_pricex"=>$base_price,'nta'=>$nta));
+									"base_price"=>$base_price,'price'=>$price, 'net_price'=>$price));
 					
 					$this->m_ppob->issued($id,$nta);
 					$return = array('message'=>$msg[0]."<br>".$nilai_now."".$msgt,);
