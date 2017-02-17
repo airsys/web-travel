@@ -196,26 +196,51 @@ class Ppob extends CI_Controller {
 	$this->load->view("index",$data);		
 	}
 	function bayarTelkom(){
-		$nominal = post('nominal');
-		$price = $this->m_ppob->get_price();
+		$productk = explode('_',post('nominal'));
+		$ids = explode('|',$productk[1]);
+		$productk = $productk[0];		
+		
+		$product = $this->m_ppob->get_products($ids[0],$ids[1],$productk);
+		$product = array_shift($product);
+		//pr($product,TRUE);
+		$nta = $product['harga_asli'] + $product['penambahanDariIndsiti'];
+		$base_price = $nta +  $product['penambahanDariCompany'];
+		
+		$price = $base_price;
 		$return = [];
+		$msg=''; $msgt='';
 		//$saldoserver = cekSaldoPpob();
-		if(saldo() > $nominal){
-			if($nominal > 1){
+		if(saldo() > $price){
+			if($price > 1){
 				$my_trxid = now().'_'.RandomString(3);
-				$idpelanggan = post('idpelanggan');	
-				$informasi = post('informasi');			
-				$id = $this->m_ppob->insert_tagihan($my_trxid);
-				$this->m_ppob->insert_idTelkom();	
-				$return = ppobxml($idpelanggan.".".$nominal.".".$informasi,'BAYAR.TELKOM','charge',$my_trxid);
+				$nomer = post('nomer');
+				$contact = post('contact');
+				$email = post('email');
+				$id = $this->m_ppob->insert_tagihan($my_trxid,$nomer,$productk,$contact,$email);				
+				$return = ppobxml($nomer,$product['kode'],'charge',$my_trxid);
+				//pr($return);
 				if($return['resultcode']!=0){
-					$this->m_ppob->update_tagihan(array('message'=>$return['message'], 'trxid'=>$return['trxid'], 
-							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode']));
+					$msg = explode(".",$return['message']);
+					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
+							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode'],
+							'base_pricex'=>0, 'nta'=>0));
+					$return = array('message'=>'Transaksi gagal '."<br> message_sementara:$return[message]",
+							'code'=>1);
 					
 				}else{
-					$this->m_ppob->issuedTagihan($id,$nominal);
-					$this->m_ppob->update_tagihan(array('message'=>$return['message'], 'trxid'=>$return['trxid'], 
-					 		'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode']));
+					$msg = explode(".",$return['message']);	
+					$msgt = explode(" ",$msg[0]);
+					$nilai_now = post('nominalbayar');
+					$nta = $nilai_now+$product['penambahanDariIndsiti'];
+					$nta_old = $product['harga_asli'] + $product['penambahanDariIndsiti'];
+					$base_price = $nta +$product['penambahanDariCompany'];
+					
+					
+					$this->m_ppob->update_tagihan(array('message'=>$msgt[4],
+									'trxid'=>$return['trxid'], 'ref_trxid'=>$my_trxid, 'status'=>2222,
+									"base_pricex"=>$base_price,'nta'=>$nta));
+					
+					$this->m_ppob->issued($id,$nta);
 				}
 			}else{
 				$return = array('message'=>'Operator tidak terdaftar',

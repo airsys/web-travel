@@ -16,11 +16,13 @@ class M_ppob extends CI_Model
 		return $data;
 	}
 	
-	function insert_pulsa($trxid,$nomer, $productk){
-		$data = array('product'=>$productk,
+	function insert_pulsa($trxid,$nomer,$productk){
+		$data = array(
+			'product'=>$productk,
 			'ref trxid'=>$trxid,
 			'company'=>$this->session->userdata('company'),
 			'msisdn'=>$nomer,
+			
 		);
 		$this->db->insert('`ppob trx`',$data);
 		$insert_id = $this->db->insert_id();
@@ -31,8 +33,10 @@ class M_ppob extends CI_Model
 	function update_pulsa($data_f){
 		//pr($data_f);
 		if(!empty($data_f['base_pricex'])){
-			$data = array('trxid'=>$data_f['trxid'], 'created'=>now(),
-						  'price'=>$data_f['base_pricex'],'`net price`'=>$data_f['nta'] );
+			$data = array('trxid'=>$data_f['trxid'], 
+						  'created'=>now(),
+						  'price'=>$data_f['base_pricex'],
+						  '`net price`'=>$data_f['nta'] );
 			$this->db->where('`ref trxid`', $data_f['ref_trxid']);
 			$this->db->update('`ppob trx`', $data);
 		}
@@ -131,48 +135,53 @@ class M_ppob extends CI_Model
 	}
 
 	// TAGIHAN TELKOM
-	function insert_tagihan($trxid){
+	function insert_tagihan($trxid,$nomer,$productk,$contact,$email){
 		$data = array(
-			'ref_trxid'=>$trxid,
-			'product'=> post('oprcode'),
-
+			'product'=>$productk,
+			'ref trxid'=>$trxid,
+			'company'=>$this->session->userdata('company'),
+			'msisdn'=>$nomer,
+			'contact'=> $contact,
+			'email'=> $email,
+			
 		);
-		//print_r($_POST);die();
-		$this->db->insert('`ppob tagihan`',$data);
-		return $this->db->insert_id();
-	}
-	function update_tagihan($data_f){
-		$data = array('message'=>$data_f['message'], 'trxid'=>$data_f['trxid'], 
-					  'status'=>$data_f['status'], 'created'=>now());
-		$this->db->where('ref_trxid', $data_f['ref_trxid']);
-		$this->db->update('`ppob tagihan`', $data);
-	}
-	function issuedTagihan($id,$kode){
-		$saldo = saldo();
-		$nominal = post('nominal');
-			$data=array(
-					"company"=>$this->session->userdata('company'),
-					"nominal"=>$nominal,
-					"created"=>now(),
-					"code"=>'CP',
-					"pay for"=>$id,
-					"balance"=>$saldo-$nominal,
-			);
-			$this->db->insert('acc balance',$data); //<-menambah row di payment topup
+		$this->db->insert('`ppob trx`',$data);
+		$insert_id = $this->db->insert_id();
 		
+		return $insert_id;
 	}
-	function insert_idTelkom(){
-		$time = now();
-		$idTelkom = post('idpelanggan');
-		$informasi = post('informasi');
-		$data = array(
-			'idTelkom'=> $idTelkom,
-			'tgl'=> $time,
-			'informasi'=> $informasi,
-		);
-		$this->db->replace('`ppob idTelkom`',$data);
-		return $this->db->insert_id();
-
+	
+	function update_tagihan($data_f){
+		//pr($data_f);
+		if(!empty($data_f['base_pricex'])){
+			$data = array('nama'=>$data_f['message'], 
+						  'trxid'=>$data_f['trxid'], 
+						  'created'=>now(),
+						  'price'=>$data_f['base_pricex'],
+						  '`net price`'=>$data_f['nta'] );
+			$this->db->where('`ref trxid`', $data_f['ref_trxid']);
+			$this->db->update('`ppob trx`', $data);
+		}
+		$msg = '';
+		switch($data_f['status']){
+			case 1111:
+				$msg = 'prosessing';
+				break;
+			case 0:
+				$msg = 'succes';
+				break;
+			case 2222:
+				$msg = 'waiting SN';
+				break;
+			case 1001:
+				$msg = 'refund';
+				break;
+			default:
+				$msg = 'failed';
+				break;
+		}
+		
+		$this->change_status($data_f['ref_trxid'],$msg,$data_f['message']);
 	}
 	
 	function finance($id){
