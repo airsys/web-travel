@@ -7,12 +7,15 @@
 	input[type="number"] {
 	    -moz-appearance: textfield;
 	}
+	.err {
+    	color: #ff1313;
+	}
 </style>
 <?php //print_r($data_post['first_name']); ?>
 <!-- Horizontal Form -->
   <div class="box box-info">
     <div class="box-header with-border">
-      <h3 class="box-title">Pembelian Pulsa PLN</h3>
+      <h3 class="box-title">Pembelian Token/Pulsa PLN</h3>
     </div>
     <!-- /.box-header -->
     <!-- form start -->
@@ -20,9 +23,9 @@
       <div class="box-body">
     	<div class="col-md-12">
     		<div class="form-group">
-	          <label for="nomer" class="col-sm-2 control-label">Nomer</label>
+	          <label for="nomer" class="col-sm-2 control-label">No. Meter/ID Pelanggan</label>
 	          <div class="col-sm-4">
-	            <input type="number" required class="form-control" value="" name="nomer" id="nomer" placeholder="08XXX" onkeyup='saveValue(this);' >
+	            <input type="number" required class="form-control" value="" name="nomer" id="nomer" onkeyup='saveValue(this);' >
 	          </div>
 	        </div>
 			<div class="form-group">
@@ -65,6 +68,24 @@
   <!-- /.box -->
   <script>
   	$( document ).ready(function() {
+  		
+  		$('#form').validate({
+		    rules: {
+		        nomer: {
+		            required: true,
+		            minlength: 5
+		        },
+		        nominal: {
+		            required: true
+		        },
+		    },
+		    errorElement: "span",
+	    	errorClass: "err",
+		    errorPlacement: function(error, element) {
+		    	error.insertAfter(element.parent());
+			}	   
+		});
+  		
   		var no_prefix = [] ; var products = [];
 	    $.get( base_url+'assets/ajax/no_prefix.json', function(data) {
 	        $.each(data, function(i, item) {
@@ -99,14 +120,15 @@
               $.each(products, function(i, item) {
                   var v = item.kode.split(".");
                   if(v[0]=='PLN'){
-                     $("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: 'pln'.toUpperCase() +' - '+ v[1] +'000 / '+ item.base_price +' - '+item.price}));
+                     $("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: 'pln'.toUpperCase() +' - '+ v[1] +'000 / Rp '+ item.base_price +' - Rp '+item.price}));
                   }
               });
 	        }
 	       // } 
 		}
 	    
-  		$("#form").on("submit", function(event) {  			
+  		$("#form").on("submit", function(event) {
+  			if($("#form").valid()){		
 	    	$("#btn-submit").removeClass('btn-success');
 	        $("#btn-submit").addClass('btn-warning');
 	        $("#btn-submit").attr('disabled',true);
@@ -131,7 +153,7 @@
 	                
 	            }
 	        });
-	        
+	        }
 	  });
 	});
 

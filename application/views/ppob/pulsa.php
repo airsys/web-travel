@@ -7,6 +7,9 @@
 	input[type="number"] {
 	    -moz-appearance: textfield;
 	}
+	.err {
+    	color: #ff1313;
+	}
 </style>
 <?php //print_r($data_post['first_name']); ?>
 <!-- Horizontal Form -->
@@ -29,7 +32,7 @@
 				<div class="form-group">
 		          <label for="nominal" class="col-sm-2 control-label">Nominal</label>
 		          <div class="col-sm-4">
-		            <select name="nominal" id="nominal" class="form-control" >
+		            <select name="nominal" required id="nominal" class="form-control" >
 		            	<option value="">Isi Nomor terlebih dahulu</option>
 		            </select>
 		            <input name="ft" id="ft" type="hidden" value=""/>
@@ -113,6 +116,23 @@
   <script>
   	$( document ).ready(function() {
   		
+  		$('#form').validate({
+		    rules: {
+		        nomer: {
+		            required: true,
+		            minlength: 5
+		        },
+		        nominal: {
+		            required: true
+		        },
+		    },
+		    errorElement: "span",
+	    	errorClass: "err",
+		    errorPlacement: function(error, element) {
+		    	error.insertAfter(element.parent());
+			}	   
+		});
+  		
   		var no_prefix = [] ; var products = [];
 	    $.get( base_url+'assets/ajax/no_prefix.json', function(data) {
 	        $.each(data, function(i, item) {
@@ -163,7 +183,7 @@
 	                $.each(products, function(i, item) {
 	                  	var v = item.kode.split(".");
 	                	if(v[0]==no_prefix[key].kode){
-	                		$("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: no_prefix[key].operator.toUpperCase() +' - '+ v[1] +'000 / '+ item.base_price +' - '+item.price}));
+	                		$("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: no_prefix[key].operator.toUpperCase() +' - '+ v[1] +'000 / Rp '+ item.base_price +' - Rp '+item.price}));
 	                	}
 	                });          
 
@@ -171,26 +191,27 @@
 		        }
 		      }
 		     <?php 
-		  		if (get('nominal')!=NULL) 
+		  		/*if (get('nominal')!=NULL) 
 		  		echo "
 		  		setTimeout(function() {
 		  		$('#nominal').val(getUrlVars()['nominal']).trigger('change'); 
 		  		}, 5000);
 				
-		  		";
+		  		";*/
   		 	?>
 			} 
 			<?php 
-		  		if (get('nominal')!=NULL) 
+		  		/*if (get('nominal')!=NULL) 
 		  		echo "
 		  		setTimeout(function() {
 		  		get_number();
 		  		$('#nominal').val(getUrlVars()['nominal']).trigger('change'); 
 		  		}, 500);
 				
-		  		";
+		  		";*/
   		 	?>
-  		$("#form").on("submit", function(event) {  			
+  		$("#form").on("submit", function(event) {
+  			if($("#form").valid()){		
 	    	$("#btn-submit").removeClass('btn-success');
 	        $("#btn-submit").addClass('btn-warning');
 	        $("#btn-submit").attr('disabled',true);
@@ -215,7 +236,7 @@
 	                
 	            }
 	        });
-	   
+	   		} //form validation
 	        
 	  });
 		

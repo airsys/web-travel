@@ -125,7 +125,7 @@ class Ppob extends CI_Controller {
 									"base_price"=>$base_price,'price'=>$price, 'net_price'=>$price));
 					
 					$this->m_ppob->issued($id,$nta);
-					$return = array('message'=>$msg[0]."<br>".$nilai_now."".$msgt,);
+					$return = array('message'=>$msg[0]."<br>".$msgt,);
 				}
 			}else{
 				$return = array('message'=>'Operator tidak terdaftar',
