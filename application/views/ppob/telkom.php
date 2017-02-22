@@ -12,7 +12,7 @@
 <!-- Horizontal Form -->
   <div class="box box-info">
     <div class="box-header with-border">
-      <h3 class="box-title">Pembelian Pulsa PLN</h3>
+      <h3 class="box-title">Pembayaran Tagihan TELKOM</h3>
     </div>
     <!-- /.box-header -->
     <!-- form start -->
@@ -22,21 +22,20 @@
         <div class="form-group">
             <label for="nomer" class="col-sm-2 control-label">Nomer</label>
             <div class="col-sm-4">
-              <input type="number" required class="form-control" value="" name="nomer" id="nomer" placeholder="08XXX" onkeyup='saveValue(this);' >
-            </div>
-          </div>
-      <div class="form-group" hidden>
-            <label for="nominal" class="col-sm-2 control-label">Nominal</label>
-            <div class="col-sm-4" >
-              <select name="nominal" id="nominal" class="form-control" >
-                <option value="">Isi Nomor terlebih dahulu</option>
-              </select>
+              <input type="number" required class="form-control" value="" name="nomer" id="nomer" onkeyup='saveValue(this);' >
             </div>
           </div>
           <div class="form-group">
             <label for="nominal" class="col-sm-2 control-label">Jumlah Tagihan (Rp)</label>
             <div class="col-sm-4">
-              <input type="number" required class="form-control" value="" name="nominalbayar" id="nominalbayar" placeholder=""  >
+              <input type="number" readonly required class="form-control" value="" name="nominalbayar" id="nominalbayar" placeholder=""  >
+              <input type="hidden" required value="" name="harga_tagihan" id="harga_tagihan"  >
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="contact" class="col-sm-2 control-label">Nama</label>
+            <div class="col-sm-4">
+              <input type="text" readonly required class="form-control" value="" name="nama" id="nama" placeholder=""  >
             </div>
           </div>
           <div class="form-group">
@@ -62,71 +61,29 @@
         <!-- /.col -->
       </div>
       <!-- /.box-body -->
-       <?php if($this->ion_auth->logged_in()){ ?>
       <div class="box-footer">
         <div class="col-sm-6">
-          <button id="btn-submit" type="submit" class="btn btn-success pull-right "><i class="fa fa-paper-plane"></i> Submit</button>
+          <button id="btn-check" type="button" class="btn btn-primary "><i class="fa fa-paper-plane"></i> Check</button>
+          <?php if($this->ion_auth->logged_in()){ ?>      
+	          <button id="btn-submit" disabled type="submit" class="btn btn-success pull-right "><i class="fa fa-paper-plane"></i> Submit</button>
+	      <?php } ?>
         </div>
-      </div>
-      <?php } ?>
+       
       <?php if(!$this->ion_auth->logged_in()){ ?>
-      <div class="box-footer">
         <div class="col-sm-6">
           <a href="#" id="login-header" type="submit" class=" show-modal btn btn-success pull-right" 
           data-placement="top" data-toggle="popover" data-trigger="hover" data-content="You must login !" ><i class="fa fa-lock"></i> Submit</a>
         </div>
+      <?php } ?>	  
       </div>
-      <?php } ?>
       <!-- /.box-footer -->
     </form>
   </div>
   <!-- /.box -->
   <script>
     $( document ).ready(function() {
-      var no_prefix = [] ; var products = [];
-      $.get( base_url+'assets/ajax/no_prefix.json', function(data) {
-          $.each(data, function(i, item) {
-              no_prefix [item.number]= item;
-          });
-      });
-      
-      get_products();
-     
-      function get_products(){
-      $.get( base_url+'ppob/get_products', function(data) {
-            $.each(data, function(i, item) {
-                products[i]= item;
-            });
-        });
-    }
-      
-      var key = '';
-      $("#nomer").on("keyup", function(event) {
-        get_number();
-      });
-      $("#nomer").on("mouseover", function(event) {
-          get_number();
-      });
-       $("#nominalbayar").on("mouseover", function(event) {
-          get_number();
-      });
-      function get_number(){
-      var keytmp = $("#nomer").val().substring(0,4);
-          //if($("#nomer").val().length > 3){
-          if(key!=keytmp){
-            key=keytmp;
-            $("#nominal").html("");
-              $.each(products, function(i, item) {
-                  var v = item.kode.split(".");
-                  if(v[0]=='BAYAR'){
-                     $("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: 'pln'.toUpperCase() +' - '+ v[1] +'000 / '+ item.nta +' - '+item.base_price}));
-                  }
-              });
-          }
-         // } 
-    }
-      
-      $("#form").on("submit", function(event) {       
+            
+    $("#form").on("submit", function(event) {      
         $("#btn-submit").removeClass('btn-success');
           $("#btn-submit").addClass('btn-warning');
           $("#btn-submit").attr('disabled',true);
@@ -136,23 +93,80 @@
           $.ajax({
               url:  base_url+"ppob/bayarTelkom",
               type: "post",
-              data: $(this).serialize(),
+              data: $(this).serialize()+'&product='+products,
               success: function(d, textStatus, xhr) {
-                  
-                showalert(d.message,'success','#warn',60000000);
-                get_products();
-                $("#btn-submit").addClass('btn-success');
-              $("#btn-submit").removeClass('btn-warning');
-              $("#btn-submit").attr('disabled',false);
-              $("#btn-submit").children("i").addClass('fa-paper-plane');
-              $("#btn-submit").children("i").removeClass('fa-refresh fa-spin');
+                  if(d.code!=0){
+				  	showalert(d.message,'danger','#warn',60000000);
+				  }else{
+				  	showalert(d.message,'success','#warn',60000000);
+				  }                 
+                
+                  $("#btn-submit").addClass('btn-success');
+	              $("#btn-submit").removeClass('btn-warning');
+	              $("#btn-submit").attr('disabled',false);
+	              $("#btn-submit").children("i").addClass('fa-paper-plane');
+	              $("#btn-submit").children("i").removeClass('fa-refresh fa-spin');
               },
                error: function (request, status, error) {
                   
               }
-          });
-          
+          });          
     });
+    
+    var products = '';
+    get_products();	   
+	function get_products(){
+		$.get( base_url+'ppob/get_products', function(data) {
+	        $.each(data, function(i, item) {
+	        	if(item.kode == 'BAYAR.TELKOM'){
+					products= item.id+'_'+item.FT;
+					//console.log(products);
+				}
+	        });
+	    });
+	}
+    
+    $("#btn-check").on("click", function(event) {
+    	  var mybutton =  $(this);
+    	  //$("#warn").hide();
+          mybutton.removeClass('btn-primary');
+          mybutton.addClass('btn-warning');
+          mybutton.attr('disabled',true);
+          mybutton.children("i").removeClass('fa-paper-plane');
+          mybutton.children("i").addClass('fa-refresh fa-spin');
+          $("#btn-submit").attr('disabled',true);
+          $.ajax({
+              url: base_url+"ppob/cek_tagihan",
+              type: "post",
+              data: {
+              	idpelanggan : $("#nomer").val(),
+	            	product : products
+              },
+              success: function(d, textStatus, xhr) {
+                  
+                if(d.nama != null) {
+                	$("#nominalbayar").val(d.harga);
+	                $("#harga_tagihan").val(d.harga_tagihan);
+	                $("#nama").val(d.nama);
+                	$("#btn-submit").attr('disabled',false);
+                	showalert(d.message,'success','#warn',690000000);
+                }else{
+					showalert(d.message,'danger','#warn',690000000);
+				}
+              },
+               error: function (request, status, error) {
+                  showalert('Terdapat ERROR','danger','#warn',690000000);
+              },
+              complete : function (request, status, error) {
+              	 mybutton.addClass('btn-primary');
+              	 mybutton.removeClass('btn-warning');
+              	 mybutton.attr('disabled',false);
+              	 mybutton.children("i").addClass('fa-paper-plane');
+              	 mybutton.children("i").removeClass('fa-refresh fa-spin');
+              }
+          });          
+    });
+    
   });
 
 document.getElementById("nomer").value = getSavedValue("nomer");

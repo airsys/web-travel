@@ -17,12 +17,20 @@ class M_ppob extends CI_Model
 	}
 	
 	function insert_pulsa($trxid,$nomer,$productk){
+		$nama = NULL; $contact = NULL; $email = NULL;
+		if(! empty(post('contact'))){
+			$nama = post('nama'); 
+			$contact = post('contact'); 
+			$email = post('email');
+		}
 		$data = array(
 			'product'=>$productk,
 			'ref trxid'=>$trxid,
 			'company'=>$this->session->userdata('company'),
-			'msisdn'=>$nomer,
-			
+			'msisdn'=>$nomer,		
+			'nama'=>$nama,			
+			'contact'=>$contact,			
+			'email'=>$email,			
 		);
 		$this->db->insert('`ppob trx`',$data);
 		$insert_id = $this->db->insert_id();

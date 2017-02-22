@@ -83,6 +83,18 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
 		return filter_var($data['message'], FILTER_SANITIZE_NUMBER_INT);	
 	}
 	
+	if ( ! function_exists('GetBetween')){
+		function GetBetween($var1="",$var2="",$pool){
+			$temp1 = strpos($pool,$var1)+strlen($var1);
+			$result = substr($pool,$temp1,strlen($pool));
+			$dd=strpos($result,$var2);
+			if($dd == 0){
+				$dd = strlen($result);
+			}
+			return substr($result,0,$dd);
+		}
+	}
+
 		
 	if ( ! function_exists('xml2array'))
 		{

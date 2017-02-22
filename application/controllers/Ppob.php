@@ -103,7 +103,7 @@ class Ppob extends CI_Controller {
 					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
 							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode'],
 							'base_price'=>0, 'net_price'=>0, 'price'=>0));
-					$return = array('message'=>'Pulsa gagal diisi'."<br> message_sementara:$return[message]",
+					$return = array('message'=>'Gagal Pembayaran'."<br> message_sementara:$return[message]",
 							'code'=>1);
 				}else{
 					$msg = explode(".",$return['message']);	
@@ -124,7 +124,7 @@ class Ppob extends CI_Controller {
 									'trxid'=>$return['trxid'], 'ref_trxid'=>$my_trxid, 'status'=>2222,
 									"base_price"=>$base_price,'price'=>$price, 'net_price'=>$price));
 					
-					$this->m_ppob->issued($id,$nta);
+					$this->m_ppob->issued($id,$base_price);
 					$return = array('message'=>$msg[0]."<br>".$msgt,);
 				}
 			}else{
@@ -173,17 +173,34 @@ class Ppob extends CI_Controller {
 	}
 	
 	function cek_tagihan(){
-				$return = [];
-				$my_trxid = now().'_'.RandomString(3);
-				$idpelanggan = post('idpelanggan');	
-				$oprcode = post('oprcode');
-				$id = $this->m_ppob->insert_tagihan($my_trxid);				
-				$return = ppobxml($idpelanggan,$oprcode,'charge','1',$my_trxid);
-				$this->m_ppob->update_tagihan(array('message'=>$return['message'], 'trxid'=>$return['trxid'], 
-							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode']));
-
-
-		//$result = json_encode(ppobxml(get('idpelanggan'),get('oprcode'),'charge','1'));
+		$return = []; $data=[];
+		$my_trxid = now().'_'.RandomString(3);
+		$idpelanggan = post('idpelanggan');	
+		$productk = explode('_',post('product'));
+		$ids = explode('|',$productk[1]);
+		$productk = $productk[0];		
+		
+		$product = $this->m_ppob->get_products($ids[0],$ids[1],$productk);
+		$product = array_shift($product);
+				
+		$data = ppobxml($idpelanggan,'CEK.TELKOM','charge',$my_trxid);
+		
+		if( preg_match("/gagal|sudah ada|tidak cukup/",strtolower($data['message']))){
+			$return['message'] = $data['message'];
+		}else{
+			$harga = GetBetween($idpelanggan.'.','.',$data['message']);
+			$return['harga_tagihan'] = $harga;
+			  $harga = 2000+$harga; //markup 2000 dari datasel		
+			$return['harga_server'] = $harga;
+			$return['harga'] = $harga+$product['penambahanDariIndsiti']; //harga dari indsisti
+			$return['harga_konsumen'] = $return['harga']+$product['penambahanDariCompany'];	//harga ke buyer
+			$return['nama'] = GetBetween('a/n ',' '.$idpelanggan,$data['message']);
+			$return['jenis'] = GetBetween('Tagihan ',' a/n',$data['message']);
+			$return['message'] = "Tagihan $return[jenis] a/n $return[nama] <br>
+			  					 sebesar Rp ".number_format($return['harga'])."<br>
+			  					 Harga ke konsumen Rp ".number_format($return['harga_konsumen']);	
+		}
+		
 		return $this->output
             ->set_content_type('application/json')
             ->set_status_header(200)
@@ -196,7 +213,7 @@ class Ppob extends CI_Controller {
 	$this->load->view("index",$data);		
 	}
 	function bayarTelkom(){
-		$productk = explode('_',post('nominal'));
+		$productk = explode('_',post('product'));
 		$ids = explode('|',$productk[1]);
 		$productk = $productk[0];		
 		
@@ -209,38 +226,40 @@ class Ppob extends CI_Controller {
 		$price = $base_price;
 		$return = [];
 		$msg=''; $msgt='';
-		//$saldoserver = cekSaldoPpob();
+		
+		$nomer = post('nomer');
+		$contact = post('contact');
+		$harga_tagihan = post('harga_tagihan');
+		$msisdn = "$nomer.$harga_tagihan.$contact";
+		
 		if(saldo() > $price){
 			if($price > 1){
 				$my_trxid = now().'_'.RandomString(3);
-				$nomer = post('nomer');
-				$contact = post('contact');
-				$email = post('email');
-				$id = $this->m_ppob->insert_tagihan($my_trxid,$nomer,$productk,$contact,$email);				
-				$return = ppobxml($nomer,$product['kode'],'charge',$my_trxid);
+				$id = $this->m_ppob->insert_pulsa($my_trxid,$nomer,$productk);				
+				$return = ppobxml($msisdn,$product['kode'],'charge',$my_trxid);
 				//pr($return);
 				if($return['resultcode']!=0){
 					$msg = explode(".",$return['message']);
-					$this->m_ppob->update_tagihan(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
+					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
 							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode'],
 							'base_price'=>0, 'net_price'=>0, 'price'=>0));
 					$return = array('message'=>'Transaksi gagal '."<br> message_sementara:$return[message]",
 							'code'=>1);
 					
 				}else{
-					$msg = explode(".",$return['message']);	
-					$msgt = explode(" ",$msg[0]);
-					$nilai_now = post('nominalbayar');
-					$base_price = $nilai_now+$product['penambahanDariIndsiti'];
-					$base_price_old = $product['harga_asli'] + $product['penambahanDariIndsiti'];
-					$price = $base_price +$product['penambahanDariCompany'];
+					//Pembayaran Tagihan TELKOM a/n PT.ASTEL 0213863333 sebesar 63360. BERHASIL.Kode Ref: RRYAgQ110686. Saldo: Rp 1113204. No: 0213863333.Tgl 13092011 Jam 10:00 WIB, Transaksi Lancar
+					$msg = explode("Saldo:",$return['message']);	
+					//$msgt = explode(" ",$msg[0]);
 					
+					$harga_server = $harga_tagihan+2000;
+					$base_price = $harga_server+$product['penambahanDariIndsiti'];
+					$price = $base_price +$product['penambahanDariCompany'];					
 					
-					$this->m_ppob->update_tagihan(array('message'=>$msgt[4],
+					$this->m_ppob->update_pulsa(array('message'=>$msg[0],
 									'trxid'=>$return['trxid'], 'ref_trxid'=>$my_trxid, 'status'=>2222,
 									"base_price"=>$base_price,'price'=>$price, 'net_price'=>$price));
 					
-					$this->m_ppob->issued($id,$nta);
+					$this->m_ppob->issued($id,$base_price);
 				}
 			}else{
 				$return = array('message'=>'Operator tidak terdaftar',
