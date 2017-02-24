@@ -117,7 +117,7 @@ $tulisan = array(
       <!-- /.box-body -->
       <div class="box-footer">
       	<div class="col-sm-6 col-md-6">
-	        <a href="#" onclick="window.history.go(-1); return false;" class="btn btn-info"><i class="fa fa-arrow-circle-left"></i> Back</a>
+	        <a href="#" onclick="goback(); return false;" class="btn btn-info"><i class="fa fa-arrow-circle-left"></i> Back</a>
 	        
       	</div>
       </div>
@@ -126,6 +126,15 @@ $tulisan = array(
   </div>
   <!-- /.box -->
 <script>
+function goback(){
+	var url = window.location.href;
+	var last = url.substr(url.lastIndexOf('/') + 1);
+	if(last=='confirm'){
+		window.location=base_url+'ppob/pulsa';
+	}else{
+		window.history.go(-1);
+	}	
+}
 $(function () {
 	
 });

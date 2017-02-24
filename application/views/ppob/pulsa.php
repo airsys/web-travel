@@ -20,7 +20,7 @@
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    	<form id="form" class="form-horizontal" action="" method="post">
+    	<form id="form" class="form-horizontal" action="confirm" method="post">
 	      <div class="box-body">
 	    	<div class="col-md-12">
 	    		<div class="form-group">
@@ -35,7 +35,7 @@
 		            <select name="nominal" required id="nominal" class="form-control" >
 		            	<option value="">Isi Nomor terlebih dahulu</option>
 		            </select>
-		            <input name="ft" id="ft" type="hidden" value=""/>
+		            <input name="type" id="type" type="hidden" value="pulsa"/>
 		          </div>
 		        </div>
 		        <div class="form-group">
@@ -44,7 +44,6 @@
 			        <div id="warn"></div>
 		          </div>
 		        </div>
-		        
 	        </div>
 	        <!-- /.col -->
 	      </div>
@@ -154,11 +153,6 @@
 	  		$("#nomer").on("keyup", function(event) {
 	  			get_number();
 	  		});
-	  		/*
-	  		$("#nomer").on("mousemove", function(event) {
-	  			get_number();
-	      	});
-			*/
   			function getUrlVars() {
 			    var vars = {};
 			    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
@@ -183,33 +177,16 @@
 	                $.each(products, function(i, item) {
 	                  	var v = item.kode.split(".");
 	                	if(v[0]==no_prefix[key].kode){
-	                		$("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: no_prefix[key].operator.toUpperCase() +' - '+ v[1] +'000 / Rp '+ item.base_price +' - Rp '+item.price}));
+	                		$("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: no_prefix[key].operator.toUpperCase() +' - '+ v[1] +'000 /'+' - Rp '+item.price}));
 	                	}
 	                });          
 
 		          } 
 		        }
 		      }
-		     <?php 
-		  		/*if (get('nominal')!=NULL) 
-		  		echo "
-		  		setTimeout(function() {
-		  		$('#nominal').val(getUrlVars()['nominal']).trigger('change'); 
-		  		}, 5000);
-				
-		  		";*/
-  		 	?>
 			} 
-			<?php 
-		  		/*if (get('nominal')!=NULL) 
-		  		echo "
-		  		setTimeout(function() {
-		  		get_number();
-		  		$('#nominal').val(getUrlVars()['nominal']).trigger('change'); 
-		  		}, 500);
-				
-		  		";*/
-  		 	?>
+			
+  		/*
   		$("#form").on("submit", function(event) {
   			if($("#form").valid()){		
 	    	$("#btn-submit").removeClass('btn-success');
@@ -238,7 +215,7 @@
 	        });
 	   		} //form validation
 	        
-	  });
+	  });*/
 		
 		$("#pra_login").on("click", function(event) {
 		event.preventDefault();
@@ -255,21 +232,5 @@
 		  		$('#nominal').val(getUrlVars()['nominal']).trigger('change'); 
 		  		}, 500);
 		});
-
-
 	});
-/*	
-document.getElementById("nomer").value = getSavedValue("nomer");
-function saveValue(e){
-            var id = e.id;  
-            var val = e.value; 
-            localStorage.setItem(id, val);
-        }
-function getSavedValue  (v){
-            if (localStorage.getItem(v) === null) {
-                return "";
-            }
-            return localStorage.getItem(v);
-        }
- */
   </script>

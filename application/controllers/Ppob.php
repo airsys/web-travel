@@ -125,7 +125,10 @@ class Ppob extends CI_Controller {
 									"base_price"=>$base_price,'price'=>$price, 'net_price'=>$price));
 					
 					$this->m_ppob->issued($id,$base_price);
-					$return = array('message'=>$msg[0]."<br>".$msgt,);
+					$return = array('message'=>'Transaksi Berhasil'."<br>".$msgt,
+									'code'=>0,
+									'id' => $id,
+							        );
 				}
 			}else{
 				$return = array('message'=>'Operator tidak terdaftar',
@@ -208,9 +211,9 @@ class Ppob extends CI_Controller {
     }
 
     function telkom(){
-	$data = array('content'=>'ppob/telkom',
-					  );
-	$this->load->view("index",$data);		
+		$data = array('content'=>'ppob/telkom',
+						  );
+		$this->load->view("index",$data);		
 	}
 	function bayarTelkom(){
 		$productk = explode('_',post('product'));
@@ -273,6 +276,28 @@ class Ppob extends CI_Controller {
 	            ->set_content_type('application/json')
 	            ->set_status_header(200)
 	            ->set_output(json_encode($return));
+	}
+	
+	function confirm(){
+		$productk = explode('_',post('nominal'));
+		$ids = explode('|',$productk[1]);
+		$productk = $productk[0];		
+		
+		$product = $this->m_ppob->get_products($ids[0],$ids[1],$productk);
+		$product = array_shift($product);
+		//pr($product,TRUE);
+		$nta = $product['harga_asli'] + $product['penambahanDariIndsiti'];
+		$base_price = $nta +  $product['penambahanDariCompany'];
+		
+		$price = $base_price;
+		
+		$data = array('content'=>'ppob/confirm/pulsa',
+					  'price' => $base_price,
+					  'nominal' => post('nominal'),
+					  'nomer' => post('nomer'),
+					  'kode' => $product['kode'],
+						  );
+		$this->load->view("index",$data);
 	}
 	
 	function finance($id=0){
