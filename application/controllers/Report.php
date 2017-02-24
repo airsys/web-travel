@@ -38,7 +38,7 @@ class Report extends CI_Controller {
 						$array_range = "`time status` BETWEEN $rangf AND $rangt";
 					}
 				}else{
-					redirect ('report/sales?q=range:'.date('d/m/Y', strtotime('11/01/2016')).' - '.date('d/m/Y'),'redirect');
+					redirect ('report/sales?q=range:'.date('d/m/Y', strtotime('-30 days')).' - '.date('d/m/Y'),'redirect');
 				}
 			}
 			$data_table = $this->m_report->sales_list($data_or,$array_range);
@@ -76,7 +76,7 @@ class Report extends CI_Controller {
 						$array_range_ppob = "`t.created` BETWEEN $rangf AND $rangt";
 					}
 				}else{
-					redirect ('report/sales2?q=range:'.date('d/m/Y', strtotime('11/01/2016')).' - '.date('d/m/Y'),'redirect');
+					redirect ('report/sales2?q=range:'.date('d/m/Y', strtotime('-30 days')).' - '.date('d/m/Y'),'redirect');
 				}
 			}
 			$data_airline = $this->m_report->sales_list($data_or,$array_range_airline);
@@ -128,7 +128,7 @@ class Report extends CI_Controller {
 						$array_range = "`created` BETWEEN $rangf AND $rangt";
 					}
 				}else{
-					redirect ('report/finance?range=range:'.date('d/m/Y', strtotime('11/01/2016')).' - '.date('d/m/Y'),'redirect');
+					redirect ('report/finance?range=range:'.date('d/m/Y', strtotime('-30 days')).' - '.date('d/m/Y'),'redirect');
 				}
 			}
 			$data_table = $this->m_report->finance($array_range);
