@@ -120,7 +120,7 @@ class Auth extends CI_Controller {
 			else
 			{
 				// if the login was un-successful
-				$hasil['message'] = $this->ion_auth->messages();
+				$hasil['message'] = $this->ion_auth->errors();
 				$hasil['data']=0;
 			}
 		}

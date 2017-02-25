@@ -39,16 +39,16 @@
 		          </div>
 		        </div>
 		        <?php if(!$this->ion_auth->logged_in()){ ?>
-		        <div class="form-group">
+		        <div id="login" class="form-group">
 		          <label for="first_name" class="col-sm-2 control-label"></label>
 		          <div class="login-box-body col-sm-4">
 				    <p class="text-danger">Sign in to continue</p>
 				      <div class="form-group has-feedback">
-				        <input type="email" class="form-control" placeholder="Email">
+				        <input required type="email" name="identity" class="form-control" placeholder="Email">
 				        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 				      </div>
 				      <div class="form-group has-feedback">
-				        <input type="password" class="form-control" placeholder="Password">
+				        <input required type="password" name="password" class="form-control" placeholder="Password">
 				        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
 				      </div>
 				  </div>
@@ -108,6 +108,7 @@
 							$("#btn-submit").hide();
 							$("#btn-detail").removeClass('hide');
 							$("#btn-detail").prop("href", base_url+"ppob/finance/"+d.id+'/confirm')
+							
 						}else{
 							showalert(d.message,'danger','#warn',60000000);
 							$("#btn-submit").addClass('btn-success');
@@ -115,8 +116,11 @@
 					        $("#btn-submit").attr('disabled',false);
 					        $("#btn-submit").children("i").addClass('fa-money');
 					        $("#btn-submit").children("i").removeClass('fa-refresh fa-spin');
-						}			        
-				        
+						}
+						if(d.login==1){
+							$("#login").html('');
+							$("#login").hide();
+						}
 		            },
 		             error: function (request, status, error) {
 		             	showalert(request.message,'danger','#warn',60000000);

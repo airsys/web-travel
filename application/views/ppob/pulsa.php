@@ -13,7 +13,6 @@
 </style>
 <?php //print_r($data_post['first_name']); ?>
 <!-- Horizontal Form -->
- <?php if($this->ion_auth->logged_in()){ ?>
   <div class="box box-info">
     <div class="box-header with-border">
       <h3 class="box-title">Pembelian Pulsa</h3>
@@ -56,61 +55,6 @@
 	      </div>
      	</form>
    </div>
-      <?php } ?>
-      <?php if(!$this->ion_auth->logged_in()){ ?>
-      <div class="box box-info">
-		    <div class="box-header with-border">
-		      <h3 class="box-title">Pembelian Pulsa</h3>
-		    </div>
-		   
-		    <!-- form start belum login -->
-		    <form id="form_f" class="form-horizontal" action="" method="get">
-		      <div class="box-body">
-		    	<div class="col-md-12">
-		    		<div class="form-group">
-			          <label for="nomer" class="col-sm-2 control-label">Nomer</label>
-			          <div class="col-sm-4">
-			            <input type="text" required class="form-control" value="<?php if($_GET){ echo $_GET['nomer'];} ?>" name="nomer" id="nomer" placeholder="08XXX" autofocus>
-			          </div>
-			        </div>
-					<div class="form-group">
-			          <label for="nominal" class="col-sm-2 control-label">Nominal</label>
-			          <div class="col-sm-4">
-			            <select name="nominal" id="nominal" class="form-control" >
-			            	<option value="" >Isi Nomor terlebih dahulu</option>
-			            </select>
-			         
-			          </div>
-			        </div>
-			         <div class="form-group">
-		          <label for="first_name" class="col-sm-2 control-label"></label>
-		          <div class="col-sm-4">
-			        <div id="warnlogin"></div>
-		          </div>
-		        </div>
-			        <div class="form-group">
-			          <label for="first_name" class="col-sm-2 control-label"></label>
-			          <div class="col-sm-4">
-				        <div id="warn"></div>
-				        <!--<a href="#" id="btn-login" type="submit" class=" show-modal btn btn-warning pull-left"><i class="fa fa-lock"></i> Login</a>-->
-			          </div>
-			        </div>
-			        
-		        </div>
-		        <!-- /.col -->
-		      </div>
-	      <!-- /.box-body -->
-	      <div class="box-footer">
-	        <div class="col-sm-6">
-	        	<input type="submit" name="submit" value="submit" id="pra_login" class="btn btn-success pull-right">
-	         	
-	        </div>
-	      </div>
-	     
-	      <!-- /.box-footer -->
-	    </form>
-  	</div>
-   <?php } ?>
   <!-- /.box -->
   <script>
   	$( document ).ready(function() {
