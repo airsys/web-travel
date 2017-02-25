@@ -68,6 +68,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Setting <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="<?php echo base_url().'admin/setting/bank' ?>">Admin Bank</a></li>
+                <li><a href="<?php echo base_url().'admin/markup/listMarkup' ?>">Markup</a></li>
               </ul>
             </li>
             <li class="dropdown">
