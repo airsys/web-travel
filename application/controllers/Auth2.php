@@ -7,6 +7,7 @@ class Auth2 extends CI_Controller {
 		$this->load->helper(array('language'));
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 		$this->lang->load('auth');
+		$this->load->model('admin/m_markup');
 	}
 	
 	public function login_ajax(){
@@ -174,7 +175,7 @@ class Auth2 extends CI_Controller {
 			$this->session->flashdata('message', $message);
 			redirect('auth2/profile/', 'refresh');
 		}
-		
+		$data_select = $data_select = $this->m_markup->readMarkupMember();
 		$user = $this->ion_auth->user($id)->row_array();
 		$this->load->helper('dropdown');
 		$data_view = array(
@@ -182,6 +183,8 @@ class Auth2 extends CI_Controller {
 					'data_post'=> $user,
 					'company'=> listData('auth company','id','brand',"where `id` = '".$this->session->userdata('company')."'"),
 					'bank'=> listDataCustom('acc bank','id','bank,account name,rek number,enable',"where `company` = '".$this->session->userdata('company')."' order by enable desc"),
+					//'markup'=> listDataCustom('markup','id','product,value,type',"where `markup for` like 'member'"),
+					'markup'=>$data_select,
 					'message'=> $message,		
 				);
 		$this->load->view("index",$data_view);

@@ -30,9 +30,6 @@ function listMarkup(){
 		
 	}
 
-	function create(){
-		echo json_encode(array("id"=>$this->crud_model->create()));
-	}
 
 	function update(){
 		$id= $this->input->post("id");
@@ -46,7 +43,7 @@ function listMarkup(){
 		$value= $this->input->post("value");
 		$modul= $this->input->post("modul");
 		$company= $this->session->userdata('company');
-		$product= 77;
+		$product= $this->input->post('product');  //bisa nol tapi tidak boleh kosong??
 		
 			$this->m_markup->insertmember($id,$value,$modul,$company,$product);
 			
@@ -56,6 +53,12 @@ function listMarkup(){
 	function delete(){
 		$id= $this->input->post("id");
 		$this->m_markup->delete($id);
+		echo "{}";
+	}
+	function deletemember(){
+		$id= $this->input->post("id");
+		$company= $this->session->userdata('company');
+		$this->m_markup->deletemember($id,$company);
 		echo "{}";
 	}
 	function tambahData(){
