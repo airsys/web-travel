@@ -64,9 +64,10 @@ function listMarkup(){
 	function tambahData(){
         $data = array(
             'product' => $this->input->post('product'),
-            '`markup for`' => $this->input->post('markupFor'),
+            '`markup for`' => 'internal',
             'value' => $this->input->post('value'),
-            'type' => $this->input->post('type')
+            'type' => $this->input->post('type'),
+            'active' => '1',
         );
         $this->m_markup->tambah($data);
         $this->session->set_flashdata('notif','<div class="alert alert-success" role="alert"> Markup Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');

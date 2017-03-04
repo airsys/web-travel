@@ -141,10 +141,73 @@ td {
               <!-- /.tab-pane -->
               <!-- tab-pane markup seting -->
               <div class="tab-pane" id="tab_3">
-              	<label>Markup Setting</label>
+              <label>Markup Default</label>
               <div class="row">
 				<div class="col-md-12">
 
+
+				<!--<button class="btn btn-info" id="tambah-data"><i class="glyphicon glyphicon-plus-sign"></i> Tambah </button>-->
+				
+					<table id="table-data" class="table table-striped" >
+
+					<thead>
+					
+					<tr>
+					<th>Product</th>
+					<th>Kode</th>
+					<th>Value</th>
+					<th>Type</th>
+					</tr>
+					</thead>
+					
+					<tbody id="table-body">
+
+					<?php 
+						
+					foreach ($markup as $member) {
+						echo "<tr data-id='$member[id]' >
+
+								<td>
+									<span class='span-product ' data-id='$member[id]' >$member[product]</span> 
+								</td>
+								<td>
+									<span class='span-kode ' data-id='$member[id]' data-product='$member[product]'>$member[kode]</span> 
+								</td>
+								<td>
+									<span class='span-value caption' data-id='$member[id]' data-product='$member[product]'>$member[value]</span> 
+									<input type='text' class='field-value form-control editor' value='$member[value]' data-id='$member[id]' data-product='$member[product]'/>
+								</td>
+								<td><div class='col-sm-5'>
+									<span class='span-type caption' data-id='$member[id]' data-product='$member[product]' >$member[type]</span> 
+									<input type='text' id='typetxt' class='field-type form-control editor typetxt' value='$member[type]' data-id='$member[id]'  data-product='$member[product]' />
+									</div>
+									<div>
+									<select class='field-type form-control typecmb' id='typecmb' style='width:5%;'>
+										<option></option>
+										<option value='persen'>persen</option>
+										<option value='decimal'>decimal</option>	
+									</select>
+									</div>
+								</td>
+
+								</tr>";
+				
+					}
+					 ?>
+							<!--	<td><button class='btn btn-xs btn-danger hapus-member' data-id='$member[id]'><i class='glyphicon glyphicon-remove'></i> Hapus</button></td>-->
+
+					</tbody>
+
+					</table>
+
+					</div>
+				</div>
+
+
+				<!--markup company-->
+				<label>Markup Setting Company</label>
+				<div class="row">
+				<div class="col-md-12">
 
 				<!--<button class="btn btn-info" id="tambah-data"><i class="glyphicon glyphicon-plus-sign"></i> Tambah </button>-->
 				
@@ -165,7 +228,7 @@ td {
 
 					<?php 
 						
-					foreach ($markup as $member) {
+					foreach ($markupCompany as $member) {
 						echo "<tr data-id='$member[id]' >
 
 								<td>
@@ -203,6 +266,8 @@ td {
 
 					</div>
 				</div>
+
+				<!--/.markup company-->
 
 		</div>
 	          </div>

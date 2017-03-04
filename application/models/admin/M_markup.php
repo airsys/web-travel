@@ -25,15 +25,25 @@ function __construct(){
 	function readMarkupMember(){
 		$this->db->select("markup.*, product.kode");
 		$this->db->order_by("id","desc");
-		$this->db->where("`company`='".$this->session->userdata('company')."' OR company ='0'");
-		$this->db->where("markup.active","1");
+		$this->db->where("`company`",'0');
+		//$this->db->where("markup.active","1");
+		$this->db->where("`markup.markup for`","internal");
+		$this->db->from("markup");
+		$this->db->join("product","markup.product=product.id", 'left');
+		$query=$this->db->get();
+		return $query->result_array();
+	}
+	function readMarkupCompany(){
+		$this->db->select("markup.*, product.kode");
+		$this->db->order_by("id","desc");
+		$this->db->where("`company`",$this->session->userdata('company'));
+		//$this->db->where("markup.active","1");
 		$this->db->where("`markup.markup for`","member");
 		$this->db->from("markup");
 		$this->db->join("product","markup.product=product.id", 'left');
 		$query=$this->db->get();
 		return $query->result_array();
 	}
-	
 
 	function update($id,$value,$modul){
 		$this->db->where(array("id"=>$id));
@@ -58,9 +68,9 @@ function __construct(){
 										'company'=>$company,
 										'`markup for`'=>'member',
 										'product'=>$product));
-			$this->db->where(array("id"=>$id));
-			$this->db->where(array("company"=>'0'));
-			$this->db->update("markup",array('active'=>'0'));
+			//$this->db->where(array("id"=>$id));
+			//$this->db->where(array("company"=>'0'));
+			//$this->db->update("markup",array('active'=>'0'));
 		}else{
 			$this->db->where(array("id"=>$id));
 			$this->db->where(array("company"=>$company));

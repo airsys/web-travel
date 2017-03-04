@@ -103,16 +103,16 @@ td {
 				          
 				          </div>
                      </div>
-                     <div class="form-group">
+                <!--   <div class="form-group">
                          <label class="col-lg-2 col-sm-2 control-label">Markup For</label>
                          <div class="col-lg-10">
                           <select id="markupFor" name="markupFor" class="form-control">
-                          	<option>--</option>
+                          	<option></option>
                           	<option>internal</option>
                           	<option>member</option>
                           </select>
                          </div>
-                     </div>
+                     </div>-->
                      <div class="form-group">
                          <label class="col-lg-2 col-sm-2 control-label">Value</label>
                          <div class="col-lg-10">

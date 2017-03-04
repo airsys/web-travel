@@ -176,6 +176,7 @@ class Auth2 extends CI_Controller {
 			redirect('auth2/profile/', 'refresh');
 		}
 		$data_select = $data_select = $this->m_markup->readMarkupMember();
+		$data_markup = $this->m_markup-> readMarkupCompany();
 		$user = $this->ion_auth->user($id)->row_array();
 		$this->load->helper('dropdown');
 		$data_view = array(
@@ -185,6 +186,7 @@ class Auth2 extends CI_Controller {
 					'bank'=> listDataCustom('acc bank','id','bank,account name,rek number,enable',"where `company` = '".$this->session->userdata('company')."' order by enable desc"),
 					//'markup'=> listDataCustom('markup','id','product,value,type',"where `markup for` like 'member'"),
 					'markup'=>$data_select,
+					'markupCompany'=>$data_markup,
 					'message'=> $message,		
 				);
 		$this->load->view("index",$data_view);
