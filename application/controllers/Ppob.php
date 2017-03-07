@@ -357,7 +357,7 @@ class Ppob extends CI_Controller {
 				// if the login was un-successful
 				$hasil['message'] = $this->ion_auth->errors();
 				$hasil['data']=0;
-				$hasil['message'] .= "<br>Email atau Password salah !";
+				$hasil['message'] .= "Email atau Password salah !";
 			}
 		}
 		return $hasil;

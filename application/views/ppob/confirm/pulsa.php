@@ -37,16 +37,17 @@
 		          </div>
 		        </div>
 		        <div class="form-group">
-		          <label for="first_name" class="col-sm-2 control-label"></label>
-		          <div class="col-sm-4">
+		          <label for="first_name" class="col-sm-1 control-label"></label>
+		          <div class="col-sm-5">
 			        <div id="warn"></div>
 		          </div>
 		        </div>
 		        <?php if(!$this->ion_auth->logged_in()){ ?>
 		        <div id="login">
 			        <div class="form-group">
-			          <label for="first_name" class="col-sm-2 control-label"><p class="text-danger">Sign in to continue</p></label>
-			          <div class="col-sm-4">
+			          <label for="first_name" class="col-md-2 control-label"></label>
+			          <div class="col-md-4">
+			          	 <p class="text-danger">Sign in to continue</p>
 			          </div>
 			        </div>
 			        <div class="form-group">
