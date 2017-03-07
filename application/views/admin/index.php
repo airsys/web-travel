@@ -1,4 +1,5 @@
 <?php 
+	date_default_timezone_set('Asia/Jakarta');
 	if (!$this->ion_auth->is_admin())
 	{
 		redirect('admin/auth/login/', 'refresh');
