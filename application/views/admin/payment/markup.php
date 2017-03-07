@@ -103,16 +103,16 @@ td {
 				          
 				          </div>
                      </div>
-                     <div class="form-group">
+                <!--   <div class="form-group">
                          <label class="col-lg-2 col-sm-2 control-label">Markup For</label>
                          <div class="col-lg-10">
                           <select id="markupFor" name="markupFor" class="form-control">
-                          	<option>--</option>
+                          	<option></option>
                           	<option>internal</option>
                           	<option>member</option>
                           </select>
                          </div>
-                     </div>
+                     </div>-->
                      <div class="form-group">
                          <label class="col-lg-2 col-sm-2 control-label">Value</label>
                          <div class="col-lg-10">
@@ -210,30 +210,7 @@ $(function(){
 			}	
 
 		});
-		$(document).on("click",".typecmb",function(e){
-			if(e.keyCode==13){
-				var target=$(e.target);
-				var value=target.val();
-				var id=target.attr("data-id");
-				var data={id:id,value:value};
-				if(target.is(".field-type")){
-					data.modul="type";
-				}	
-
-				$.ajax({
-					data:data,
-					url:"<?php echo base_url('admin/markup/update'); ?>",
-					success: function(a){
-					 target.hide();
-					 target.siblings("span[class~='caption']").html(value).fadeIn();
-					 target.siblings("select[id~='typecmb']").hide();
-					}
-
-				})
-
-			}	
-
-		});
+		
 
 
 		$('.typecmb').click(function(event){

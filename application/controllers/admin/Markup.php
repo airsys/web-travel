@@ -30,9 +30,6 @@ function listMarkup(){
 		
 	}
 
-	function create(){
-		echo json_encode(array("id"=>$this->crud_model->create()));
-	}
 
 	function update(){
 		$id= $this->input->post("id");
@@ -46,7 +43,7 @@ function listMarkup(){
 		$value= $this->input->post("value");
 		$modul= $this->input->post("modul");
 		$company= $this->session->userdata('company');
-		$product= 77;
+		$product= $this->input->post('product');  //bisa nol tapi tidak boleh kosong??
 		
 			$this->m_markup->insertmember($id,$value,$modul,$company,$product);
 			
@@ -58,12 +55,19 @@ function listMarkup(){
 		$this->m_markup->delete($id);
 		echo "{}";
 	}
+	function deletemember(){
+		$id= $this->input->post("id");
+		$company= $this->session->userdata('company');
+		$this->m_markup->deletemember($id,$company);
+		echo "{}";
+	}
 	function tambahData(){
         $data = array(
             'product' => $this->input->post('product'),
-            '`markup for`' => $this->input->post('markupFor'),
+            '`markup for`' => 'internal',
             'value' => $this->input->post('value'),
-            'type' => $this->input->post('type')
+            'type' => $this->input->post('type'),
+            'active' => '1',
         );
         $this->m_markup->tambah($data);
         $this->session->set_flashdata('notif','<div class="alert alert-success" role="alert"> Markup Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
