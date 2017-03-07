@@ -110,7 +110,8 @@ class Ppob extends CI_Controller {
 						$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
 								'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode'],
 								'base_price'=>0, 'net_price'=>0, 'price'=>0));
-						$return = array('message'=>$login_message.'Gagal Pembayaran'."<br> message_sementara:$return[message]",
+						$return = array('message'=>$login_message.'Gagal Pembayaran'."<br> Telah terjadi kesalahan sistem, 
+									silakan hubungi customer service kami untuk informasi lebih lanjut",
 								'code'=>1,
 								'login'=>$login['data'],);
 					}else{

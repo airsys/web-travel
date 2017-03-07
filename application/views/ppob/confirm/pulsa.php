@@ -43,20 +43,30 @@
 		          </div>
 		        </div>
 		        <?php if(!$this->ion_auth->logged_in()){ ?>
-		        
-		        <div id="login" class="form-group">
-		          <label for="first_name" class="col-sm-2 control-label"></label>
-		          <div class="login-box-body col-sm-4">
-				    <p class="text-danger">Sign in to continue</p>
-				      <div class="form-group has-feedback">
-				        <input required type="email" name="identity" class="form-control" placeholder="Email">
-				        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-				      </div>
-				      <div class="form-group has-feedback">
-				        <input required type="password" name="password" class="form-control" placeholder="Password">
-				        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-				      </div>
-				  </div>
+		        <div id="login">
+			        <div class="form-group">
+			          <label for="first_name" class="col-sm-2 control-label"><p class="text-danger">Sign in to continue</p></label>
+			          <div class="col-sm-4">
+			          </div>
+			        </div>
+			        <div class="form-group">
+			          <label for="email" class="col-sm-2 control-label">Email</label>
+			          <div class="col-sm-4">
+			          	<div class="form-group has-feedback">
+					        <input required type="email" name="identity" class="form-control" placeholder="Email">
+					        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+					      </div>
+			          </div>
+			        </div>
+			        <div class="form-group">
+			          <label for="password" class="col-sm-2 control-label">Password</label>
+			          <div class="col-sm-4">
+			          	<div class="form-group has-feedback">
+					        <input required type="password" name="password" class="form-control" placeholder="Password">
+					        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+					    </div>
+			          </div>
+			        </div>
 		        </div>
 		        <?php } ?>
 	        </div>
