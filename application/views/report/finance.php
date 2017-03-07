@@ -78,7 +78,7 @@
 				      <td><?php echo number_format($value->credit) ?></td>
 				      <td><?php echo number_format($value->debet) ?></td>
 				      <td><?php echo $value->{'payfor'}; ?></td>
-				      <td><?php echo $value->created ?></td>
+				      <td><?php echo date("d-m-Y H:i:s",$value->created) ?></td>
 				      <td>
 				      	<?php 
 				      		$link = '';

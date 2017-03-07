@@ -57,7 +57,7 @@
 				      <td><?php echo $value->credit ?></td>
 				      <td><?php echo $value->debet ?></td>
 				      <td><?php echo $payfor[$value->code][$value->{'pay for'}]; ?></td>
-				      <td><?php echo $value->created ?></td>
+				      <td><?php echo date("d-m-Y H:i:s",$value->created) ?></td>
 					  <td>
 				      	<?php 
 				      		$link = '';

@@ -62,7 +62,7 @@ class M_report extends CI_Model
 		$this->db->select(" b.id, `code`, brand,
 							if(`code`='CT' OR `code`='CP',nominal,0)as credit,
 							if(`code`='DI' OR `code`='DP',nominal,0)as debet,
-							`pay for`,from_unixtime(b.created  ,'%d-%m-%Y %h:%i:%s') as created")
+							`pay for`,b.created as created")
 				 ->from("acc balance AS b, auth company AS c")
 				 ->where('b.company = c.id');
 		return $this->db->get()->result();
