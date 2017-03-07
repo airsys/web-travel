@@ -3,6 +3,10 @@
 		padding-bottom: 0px;
 		padding-top: 0px;
 	}
+	.control-label{
+		padding-bottom: 0px;
+		padding-top: 20px;
+	}
 </style>
 <!-- Horizontal Form -->
   <div class="box box-info">
@@ -15,21 +19,21 @@
 	      <div class="box-body" id="beli">
 	    	<div class="col-md-12">
 	    		<div class="form-group">
-		          <label for="first_name" class="col-sm-2 control-label"></label>
+		          <label for="first_name" class="col-sm-2 control-label">Nomor HP</label>
 		          <div class="col-sm-4">
-			        <h3 class=""><?= wordwrap($nomer , 3 , ' ' , true ) ?></h3>
+			        <h4 class=""><?= wordwrap($nomer , 3 , ' ' , true ) ?></h4>
 		          </div>
 		        </div>
 		        <div class="form-group">
-		          <label for="first_name" class="col-sm-2 control-label"></label>
+		          <label for="first_name" class="col-sm-2 control-label">Produk</label>
 		          <div class="col-sm-4">
-			        <h4 class="">Pembalian Pulsa <strong><?= $kode.'000' ?></strong></h4>
+			        <h4 class=""><strong><?= $kode.'000' ?></strong></h4>
 		          </div>
 		        </div>
 		        <div class="form-group">
-		          <label for="first_name" class="col-sm-2 control-label"></label>
+		          <label for="first_name" class="col-sm-2 control-label">Total Bayar</label>
 		          <div class="col-sm-4">
-			        <h4 class="">Seharga Rp <strong id='harga'><?= $price ?></strong></h4>
+			        <h4 class="">Rp <strong id='harga'><?= number_format($price) ?></strong></h4>
 		          </div>
 		        </div>
 		        <div class="form-group">
@@ -39,6 +43,7 @@
 		          </div>
 		        </div>
 		        <?php if(!$this->ion_auth->logged_in()){ ?>
+		        
 		        <div id="login" class="form-group">
 		          <label for="first_name" class="col-sm-2 control-label"></label>
 		          <div class="login-box-body col-sm-4">
