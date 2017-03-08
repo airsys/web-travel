@@ -107,7 +107,7 @@ class Report extends CI_Controller {
 	}
 	 
 	 function finance(){
-	 	$array_range = NULL;
+	 	/*$array_range = NULL;
 	 	if($this->input->get('range')){
 			$range = str_replace(' ', '', $this->input->get('range'));
 			$range = (explode("-",$range));
@@ -125,7 +125,36 @@ class Report extends CI_Controller {
 					  'date_range'=>$this->input->get('range'),
 					);
 	 	$this->load->view("admin/index",$data);
+	 }*/
+
+	 	$this->load->helper('dropdown');
+	 		$array_range = NULL;
+			$string = explode(",",$this->input->get('range'));
+			for($i = 0; $i < count($string); $i++){
+				$string2 = explode(":",$string[$i]);
+				if(!empty($string2[1]) && !empty($string2[0] && $string2[1]!='')){
+
+					
+					if(preg_replace('/\s+/', '', $string2[0])=='range'){	
+						$range = str_replace(' ', '', $this->input->get('range'));
+						$range = (preg_split("/[,:-]+/",$range));
+						$rangf = strtotime(str_replace('/', '-', $range[1]));
+						$rangt = strtotime(str_replace('/', '-', $range[2]))+86399;
+						$array_range = "`created` BETWEEN $rangf AND $rangt";
+					}
+				}else{
+					redirect ('admin/report/finance?range=range:'.date('d/m/Y', strtotime('-30 days')).' - '.date('d/m/Y'),'redirect');
+				}
+			}
+			$data_table = $this->m_report->finance($array_range);
+			$data = array('content'=>'report/finance',
+					  'data_table'=>$data_table,
+					  'payfor'=>$this->m_report->finance_payfor($rangf,$rangt),
+					  'date_range'=>$this->input->get('range'),
+					);
+		$this->load->view("admin/index",$data);
 	 }
+
 	 
 	 function topup_detail($id_topup='00'){
 			$data_select = $this->m_report->topup_detail($id_topup);
