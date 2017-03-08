@@ -50,9 +50,9 @@ class Ppob extends CI_Controller {
 		{   
 		    // get read-only stream for read raw data from the request body
 		    $strRequest = file_get_contents('php://input');
-		    //echo $strRequest;      
+		    //$strRequest .= ;      
 		}
-		$this->db->insert("`system log`", array('code'=>'coba','log'=>$strRequest));
+		$this->db->insert("`system log`", array('code'=>'coba','log'=>$strRequest."|-IP:".$this->input->ip_address()));
 		$data = xml2array($strRequest);
 		$sn = explode(":",$data['msg']);
 		$sn = filter_var($sn[2], FILTER_SANITIZE_NUMBER_INT);
