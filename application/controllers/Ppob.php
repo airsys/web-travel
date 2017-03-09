@@ -19,18 +19,6 @@ class Ppob extends CI_Controller {
 		$this->load->view("index",$data);	
 	}
 	
-	function tagihan(){
-		$data = array('content'=>'ppob/tagihan',
-					  );
-		$this->load->view("index",$data);		
-	}
-	
-	function pulsa()
-	{
-		$data = array('content'=>'ppob/pulsa',
-					  );
-		$this->load->view("index",$data);		
-	}
 	function pln()
 	{
 		$data = array('content'=>'ppob/pln',
@@ -75,11 +63,48 @@ class Ppob extends CI_Controller {
 		echo "oke";
 	}
 	
+	/**
+	* 
+	* 
+	* BAYAR PULSA
+	*/
+	//VIEW
+	function pulsa(){	
+		$data = array('content'=>'ppob/pulsa',
+					  );
+		$this->load->view("index",$data);		
+	}
+	//KONFIRMASI
+	function confirm(){
+		$productk = explode('_',post('nominal'));
+		$ids = explode('|',$productk[1]);
+		$productk = $productk[0];		
+		
+		$product = $this->m_ppob->get_products($ids[0],$ids[1],$productk);
+		$product = array_shift($product);
+		//pr($product,TRUE);
+		$nta = $product['harga_asli'] + $product['penambahanDariIndsiti'];
+		$base_price = $nta +  $product['penambahanDariCompany'];
+		
+		$price = $base_price;
+		
+		$data = array('content'=>'ppob/confirm/pulsa',
+					  'price' => $base_price,
+					  'nominal' => post('nominal'),
+					  'nomer' => post('nomer'),
+					  'kode' => $product['kode'],
+						  );
+		$this->load->view("index",$data);
+	}
+	//BAYAR
 	function bayar(){
-		$login['data'] = 1; 
-		$login['message'] = ''; 
-		if(! $this->ion_auth->logged_in()){
+		$login['data'] = 0; 
+		$login['message'] = '';
+		if(! $this->ion_auth->logged_in() && post('position')=='lo'){
 			$login = $this->_login();
+		}
+		if(! $this->ion_auth->logged_in() && post('position')=='re'){
+			$login = $this->_register();
 		}
 		if($login['data']==1){
 			$login_message = $login['message'] ;
@@ -160,7 +185,176 @@ class Ppob extends CI_Controller {
 	            ->set_content_type('application/json')
 	            ->set_status_header(200)
 	            ->set_output(json_encode($return));
+	}	
+	/* END BAYAR PULSA */
+	
+	/*======================================================*/
+	
+	/**
+	* 
+	* 
+	* BAYAR TAGIHAN
+	*/
+	//VIEW
+	function tagihan(){
+		$products=$this->m_ppob->get_products();
+		$vProducts = [];
+		foreach($products as $va){
+			if(preg_match("/BAYAR/",$va['kode'])){
+				$vProducts[$va['id'].'_'.$va['FT']] = $va['kode'];
+			}
+		}
+		
+		$data = array('content'=>'ppob/telkom',
+					  'products'=>$vProducts,
+						  );
+		$this->load->view("index",$data);		
 	}
+	//KONFIRMASI
+	function confirm_tagihan(){
+		$return = []; $data=[];
+		$my_trxid = now().'_'.RandomString(3);
+		$idpelanggan = post('nomer');
+		$productk = explode('_',post('oprcode'));
+		$ids = explode('|',$productk[1]);
+		$productk = $productk[0];		
+		
+		$product = $this->m_ppob->get_products($ids[0],$ids[1],$productk);
+		$product = array_shift($product);
+		
+		$sProduct = explode('.',$product['kode']);
+		$kode_cek = $this->_cek_products($sProduct[1]);
+		
+		$data = ppobxml($idpelanggan,$kode_cek,'charge',$my_trxid);
+		//$data['message'] = 'Tagihan TELKOM a/n PT.ASTEL 0213863333 adalah sebesar 63360.Untuk Bayar ketik: BAYAR.TELKOM.WEB.Pin.0218672720.63360.NoHpPlg atau Email';
+		
+		if( preg_match("/gagal|sudah ada|tidak cukup/",strtolower($data['message']))){
+			$return['message'] = $data['message'];
+			$return['jenis'] = $sProduct[1];
+			$return['harga_tagihan'] = 0;
+		}else{
+			$harga = filter_var(GetBetween($idpelanggan.'','.',$data['message']), FILTER_SANITIZE_NUMBER_INT);
+			$return['harga_tagihan'] = $harga;
+			  $harga = 2000+$harga; //markup 2000 dari datasel		
+			$return['harga_server'] = $harga;
+			$return['harga'] = $harga+$product['penambahanDariIndsiti']; //harga dari indsisti
+			$return['harga_konsumen'] = $return['harga']+$product['penambahanDariCompany'];	//harga ke buyer
+			$return['nama'] = GetBetween('a/n ',' '.$idpelanggan,$data['message']);
+			$return['jenis'] = $sProduct[1];
+			$return['message'] = "Tagihan $return[jenis] a/n $return[nama] <br>
+			  					 sebesar Rp ".number_format($return['harga'])."<br>
+			  					 Harga ke konsumen Rp ".number_format($return['harga_konsumen']);	
+		}
+		$data = array('content'=>'ppob/confirm/tagihan',
+					  'product' => post('oprcode'),
+					  'kode' => $product['kode'],
+					  'idpelanggan' => $idpelanggan,
+					  'costumer'=>$return,
+					  //'kode' => $product['kode'],
+				);
+		$this->load->view("index",$data);
+		
+    }    
+    //BAYAR
+    function bayar_tagihan(){
+    	$login['data'] = 0; 
+		$login['message'] = '';
+		
+		if(! $this->ion_auth->logged_in() && post('position')=='lo'){
+			$login = $this->_login();
+		}
+		if(! $this->ion_auth->logged_in() && post('position')=='re'){
+			$login = $this->_register();
+		}
+		
+		if($login['data']==1){
+			$login_message = $login['message'] ;
+			$productk = explode('_',post('product'));
+			$ids = explode('|',$productk[1]);
+			$productk = $productk[0];		
+			
+			$product = $this->m_ppob->get_products($ids[0],$ids[1],$productk);
+			$product = array_shift($product);
+			
+			$nta = $product['harga_asli'] + $product['penambahanDariIndsiti'];
+			$base_price = $nta +  $product['penambahanDariCompany'];
+			
+			$price = $base_price;
+			$return = [];
+			$msg=''; $msgt='';
+			
+			$nomer = post('nomer');
+			$contact = post('contact');
+			$harga_tagihan = post('harga_tagihan');
+			$msisdn = "$nomer.$harga_tagihan.$contact";
+			
+			if(saldo() > $price){
+				if($price > 1){
+					$my_trxid = now().'_'.RandomString(3);
+					$id = $this->m_ppob->insert_pulsa($my_trxid,$nomer,$productk);				
+					$return = ppobxml($msisdn,$product['kode'],'charge',$my_trxid);
+					//pr($return);
+					if($return['resultcode']!=0){
+						$msg = explode(".",$return['message']);
+						$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
+								'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode'],
+								'base_price'=>0, 'net_price'=>0, 'price'=>0));
+						$return = array('message'=>$login_message.'Transaksi gagal '."<br> Telah terjadi kesalahan sistem, 
+									silakan hubungi customer service kami untuk informasi lebih lanjut",
+								'code'=>1);
+						
+					}else{
+						//Pembayaran Tagihan TELKOM a/n PT.ASTEL 0213863333 sebesar 63360. BERHASIL.Kode Ref: RRYAgQ110686. Saldo: Rp 1113204. No: 0213863333.Tgl 13092011 Jam 10:00 WIB, Transaksi Lancar
+						$msg = explode("Saldo:",$return['message']);	
+						//$msgt = explode(" ",$msg[0]);
+						
+						$harga_server = $harga_tagihan+2000;
+						$base_price = $harga_server+$product['penambahanDariIndsiti'];
+						$price = $base_price +$product['penambahanDariCompany'];					
+						
+						$this->m_ppob->update_pulsa(array('message'=>$msg[0],
+										'trxid'=>$return['trxid'], 'ref_trxid'=>$my_trxid, 'status'=>2222,
+										"base_price"=>$base_price,'price'=>$price, 'net_price'=>$price));
+						
+						$this->m_ppob->issued($id,$base_price);
+						$return = array('message'=>$login_message.'Transaksi Berhasil'."<br>",
+										'code'=>0,
+										'login'=>$login['data'],
+										'id' => $id,
+								        );
+					}
+				}else{
+					$return = array('message'=>$login_message.'Operator tidak terdaftar',
+								'code'=>1);	
+				}
+			}else{
+				$return = array('message'=>$login_message.'saldo anda tidak cukup',
+								'code'=>1,
+								'login'=>$login['data'],);	
+			}
+		}else{
+			$return = array('message'=>$login['message'],
+							'code'=>1,
+							'login'=>$login['data'],);
+		}
+		
+		
+		return $this->output
+	            ->set_content_type('application/json')
+	            ->set_status_header(200)
+	            ->set_output(json_encode($return));
+	}
+	//CEK TAGIHAN
+	private function _cek_products($string){
+		$data = array('telkom'=>'CEK.TELKOM',
+				'pln' => 'CEK.PLN'
+		);
+		$r = $data[strtolower($string)];	
+		return $r;
+	}
+	/* END BAYAR TAGIHAN */
+	
+	/*======================================================*/
 	
 	function no_prefix(){
 		$str = file_get_contents(base_url().'assets/ajax/no_prefix.json');
@@ -186,137 +380,7 @@ class Ppob extends CI_Controller {
 	
 	function cek_saldo_indsiti(){
 		pr(cekSaldoPpob());
-	}
-	
-	function markupFindsiti(){
-		$data = $this->m_ppob->markupFindsiti();
-		//pr($data,TRUE);
-	}
-	
-	function cek_tagihan(){
-		$return = []; $data=[];
-		$my_trxid = now().'_'.RandomString(3);
-		$idpelanggan = post('idpelanggan');	
-		$productk = explode('_',post('product'));
-		$ids = explode('|',$productk[1]);
-		$productk = $productk[0];		
-		
-		$product = $this->m_ppob->get_products($ids[0],$ids[1],$productk);
-		$product = array_shift($product);
-				
-		$data = ppobxml($idpelanggan,'CEK.TELKOM','charge',$my_trxid);
-		
-		if( preg_match("/gagal|sudah ada|tidak cukup/",strtolower($data['message']))){
-			$return['message'] = $data['message'];
-		}else{
-			$harga = GetBetween($idpelanggan.'.','.',$data['message']);
-			$return['harga_tagihan'] = $harga;
-			  $harga = 2000+$harga; //markup 2000 dari datasel		
-			$return['harga_server'] = $harga;
-			$return['harga'] = $harga+$product['penambahanDariIndsiti']; //harga dari indsisti
-			$return['harga_konsumen'] = $return['harga']+$product['penambahanDariCompany'];	//harga ke buyer
-			$return['nama'] = GetBetween('a/n ',' '.$idpelanggan,$data['message']);
-			$return['jenis'] = GetBetween('Tagihan ',' a/n',$data['message']);
-			$return['message'] = "Tagihan $return[jenis] a/n $return[nama] <br>
-			  					 sebesar Rp ".number_format($return['harga'])."<br>
-			  					 Harga ke konsumen Rp ".number_format($return['harga_konsumen']);	
-		}
-		
-		return $this->output
-            ->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode($return));
-    }
-
-    function telkom(){
-		$data = array('content'=>'ppob/telkom',
-						  );
-		$this->load->view("index",$data);		
-	}
-	function bayarTelkom(){
-		$productk = explode('_',post('product'));
-		$ids = explode('|',$productk[1]);
-		$productk = $productk[0];		
-		
-		$product = $this->m_ppob->get_products($ids[0],$ids[1],$productk);
-		$product = array_shift($product);
-		//pr($product,TRUE);
-		$nta = $product['harga_asli'] + $product['penambahanDariIndsiti'];
-		$base_price = $nta +  $product['penambahanDariCompany'];
-		
-		$price = $base_price;
-		$return = [];
-		$msg=''; $msgt='';
-		
-		$nomer = post('nomer');
-		$contact = post('contact');
-		$harga_tagihan = post('harga_tagihan');
-		$msisdn = "$nomer.$harga_tagihan.$contact";
-		
-		if(saldo() > $price){
-			if($price > 1){
-				$my_trxid = now().'_'.RandomString(3);
-				$id = $this->m_ppob->insert_pulsa($my_trxid,$nomer,$productk);				
-				$return = ppobxml($msisdn,$product['kode'],'charge',$my_trxid);
-				//pr($return);
-				if($return['resultcode']!=0){
-					$msg = explode(".",$return['message']);
-					$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
-							'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode'],
-							'base_price'=>0, 'net_price'=>0, 'price'=>0));
-					$return = array('message'=>'Transaksi gagal '."<br> message_sementara:$return[message]",
-							'code'=>1);
-					
-				}else{
-					//Pembayaran Tagihan TELKOM a/n PT.ASTEL 0213863333 sebesar 63360. BERHASIL.Kode Ref: RRYAgQ110686. Saldo: Rp 1113204. No: 0213863333.Tgl 13092011 Jam 10:00 WIB, Transaksi Lancar
-					$msg = explode("Saldo:",$return['message']);	
-					//$msgt = explode(" ",$msg[0]);
-					
-					$harga_server = $harga_tagihan+2000;
-					$base_price = $harga_server+$product['penambahanDariIndsiti'];
-					$price = $base_price +$product['penambahanDariCompany'];					
-					
-					$this->m_ppob->update_pulsa(array('message'=>$msg[0],
-									'trxid'=>$return['trxid'], 'ref_trxid'=>$my_trxid, 'status'=>2222,
-									"base_price"=>$base_price,'price'=>$price, 'net_price'=>$price));
-					
-					$this->m_ppob->issued($id,$base_price);
-				}
-			}else{
-				$return = array('message'=>'Operator tidak terdaftar',
-							'code'=>1);	
-			}
-		}else{
-			$return = array('message'=>'saldo anda tidak cukup',
-							'code'=>1);	
-		}
-		return $this->output
-	            ->set_content_type('application/json')
-	            ->set_status_header(200)
-	            ->set_output(json_encode($return));
-	}
-	
-	function confirm(){
-		$productk = explode('_',post('nominal'));
-		$ids = explode('|',$productk[1]);
-		$productk = $productk[0];		
-		
-		$product = $this->m_ppob->get_products($ids[0],$ids[1],$productk);
-		$product = array_shift($product);
-		//pr($product,TRUE);
-		$nta = $product['harga_asli'] + $product['penambahanDariIndsiti'];
-		$base_price = $nta +  $product['penambahanDariCompany'];
-		
-		$price = $base_price;
-		
-		$data = array('content'=>'ppob/confirm/pulsa',
-					  'price' => $base_price,
-					  'nominal' => post('nominal'),
-					  'nomer' => post('nomer'),
-					  'kode' => $product['kode'],
-						  );
-		$this->load->view("index",$data);
-	}
+	}	
 	
 	function finance($id=0){
 		$d = $this->m_ppob->finance($id);
@@ -328,7 +392,8 @@ class Ppob extends CI_Controller {
 					  );
 		$this->load->view("index",$data);
 	}
-
+	
+	//LOGIN
 	private function _login(){
 		//validate form input
 		$this->load->library('form_validation');
@@ -336,7 +401,6 @@ class Ppob extends CI_Controller {
 		$this->form_validation->set_rules('identity', str_replace(':', '', $this->lang->line('login_identity_label')), 'required');
 		$this->form_validation->set_rules('password', str_replace(':', '', $this->lang->line('login_password_label')), 'required');
 		
-		$code = 400;
 		$hasil['data']=0;
 		$hasil['message']='error';
 		if ($this->form_validation->run() == true)
@@ -348,7 +412,6 @@ class Ppob extends CI_Controller {
 			if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember))
 			{
 				//if the login is successful
-				$code = 200;
 				$hasil['message'] = $this->ion_auth->messages();
 				$hasil['data']=1;
 			}
@@ -359,8 +422,74 @@ class Ppob extends CI_Controller {
 				$hasil['data']=0;
 				$hasil['message'] .= "Email atau Password salah !";
 			}
+		}else{
+			$hasil['message'] = validation_errors();
+			$hasil['data']=0;			
 		}
 		return $hasil;
+	}
+	
+	//REGISTER
+	private function _register(){
+		$this->load->library('form_validation');
+		$this->load->helper('language');
+		$data_post = NULL;
+		$message = '';
+		$hasil['data']=0;
+		$hasil['message']='error';
+		if($this->input->post()){
+			$data_post = $this->input->post();
+			$tables = $this->config->item('tables','ion_auth');
+	        $identity_column = $this->config->item('identity','ion_auth');
+	        $this->data['identity_column'] = $identity_column;
+	        
+	        // validate form input
+		    $this->form_validation->set_rules('full_name', $this->lang->line('create_user_validation_fname_label'), 'required');
+		    if($identity_column!=='email')
+		    {
+		        $this->form_validation->set_rules('identity',$this->lang->line('create_user_validation_identity_label'),'required|is_unique['.$tables['users'].'.'.$identity_column.']');
+		        $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email');
+		    }
+		    else
+		    {
+		        $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique[' . $tables['users'] . '.email]');
+		    }
+		    $this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'trim|numeric');
+		    $this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'trim|required');
+		    $this->form_validation->set_rules('password_register', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+		    $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+
+		    if ($this->form_validation->run() == true)
+		    {
+		        $email    = strtolower($this->input->post('email'));
+		        $identity = ($identity_column==='email') ? $email : $this->input->post('identity');
+		        $password = $this->input->post('password_register');
+
+		        $additional_data = array(
+		            'full name' => $this->input->post('full_name'),
+		            'phone'      => $this->input->post('phone'),
+		        );
+		    }
+		    if ($this->form_validation->run() == true && 
+		    	$this->ion_auth->register($identity, $password, $email, $additional_data))
+		    {
+		        $message =  $this->ion_auth->messages();
+		        $this->ion_auth->login($identity, $password,FALSE);        
+		    	$hasil['message'] = $message;
+				$hasil['data']=1;
+		    }
+		    else
+		    {
+		        // display the create user form
+		        // set the flash data error message if there is one
+		        $message = (validation_errors() ? validation_errors() : 
+		        						  ($this->ion_auth->errors() ? $this->ion_auth->errors() : 
+		        						  $this->session->flashdata('message')));
+		    	$hasil['message'] = $message;
+				$hasil['data']=0;
+		    }
+		}
+		return $hasil;		
 	}
 		
 }

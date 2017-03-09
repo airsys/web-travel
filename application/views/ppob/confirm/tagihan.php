@@ -13,30 +13,62 @@
 <!-- Horizontal Form -->
   <div class="box box-info">
     <div class="box-header with-border">
-      <h3 class="box-title">Konfirmasi Pembelian Pulsa</h3>
+      <h3 class="box-title">Konfirmasi Pembayaran <?= $costumer['jenis'] ?></h3>
     </div>
     <!-- /.box-header -->
+    <?php 
+    	if(preg_match("/^[a-zA-Z]+$/",$costumer['harga_tagihan'])||!empty($costumer['harga_tagihan'])||$costumer['harga_tagihan'] > 1000){ ?>
     <!-- form start -->
     	<form id="form" class="form-horizontal" action="confirm" method="post" novalidate>
 	      <div class="box-body" id="beli">
 	    	<div class="col-md-12">
 	    		<div class="form-group">
-		          <label for="first_name" class="col-sm-2 control-label">Nomor HP</label>
+		          <label for="first_name" class="col-sm-2 control-label">Nomor Pelanggan</label>
 		          <div class="col-sm-4">
-			        <h4 class=""><?= wordwrap($nomer , 3 , ' ' , true ) ?></h4>
+			        <h4 class=""><?= wordwrap($idpelanggan , 3 , ' ' , true ) ?></h4>
+		          </div>
+		        </div>
+		        <div class="form-group">
+		          <label for="first_name" class="col-sm-2 control-label">Atas Nama</label>
+		          <div class="col-sm-4">
+			        <h4 class=""><?= $costumer['nama'] ?></h4>
 		          </div>
 		        </div>
 		        <div class="form-group">
 		          <label for="first_name" class="col-sm-2 control-label">Produk</label>
 		          <div class="col-sm-4">
-			        <h4 class=""><strong><?= $kode.'000' ?></strong></h4>
+			        <h4 class=""><strong><?= $kode ?></strong></h4>
 		          </div>
 		        </div>
 		        <div class="form-group">
-		          <label for="first_name" class="col-sm-2 control-label">Total Bayar</label>
+		          <label for="first_name" class="col-sm-2 control-label">Tagihan</label>
 		          <div class="col-sm-4">
-			        <h4 class="">Rp <strong id='harga'><?= number_format($price) ?></strong></h4>
+			        <h4 class="">Rp <strong id='harga'><?= number_format($costumer['harga_tagihan']) ?></strong></h4>
 		          </div>
+		        </div>
+		        <div class="form-group">
+		          <label for="first_name" class="col-sm-2 control-label">Biaya Admin</label>
+		          <div class="col-sm-4">
+			        <h4 class="">Rp <strong id='harga'><?= number_format($costumer['harga_konsumen'] - $costumer['harga_tagihan']) ?></strong></h4>
+		          </div>
+		        </div>
+		        <div class="form-group">
+		          <label for="first_name" class="col-sm-2 control-label">Total Pembayaran</label>
+		          <div class="col-sm-4">
+			        <h4 class="">Rp <strong id='harga'><?= number_format($costumer['harga_konsumen']) ?></strong></h4>
+		          </div>
+		        </div>
+		        <div class="form-group">
+		        	<label for="contact" class="col-sm-2 control-label">No. Hp Pelanggan</label>
+		            <div class="col-sm-4">
+		              <input type="text" required class="form-control" value="" name="contact" id="contact" placeholder=""  >
+		            </div>
+		        </div>
+		        <div class="form-group">
+		            <label for="email" class="col-sm-2 control-label">Email Pelanggan (optional)</label>
+		            <div class="col-sm-4">
+		              <input type="text"  class="form-control" value="" name="email_pelanggan" id="email_pelanggan" placeholder=""  >
+		            </div>
 		        </div>
 		        <div class="form-group">
 		          <label for="first_name" class="col-sm-1 control-label"></label>
@@ -147,8 +179,10 @@
 			</div>
 		 </div>
 	      <div class="box-footer">
-	      	<input type="hidden" name="nominal" value="<?= $nominal ?>" />
-	      	<input type="hidden" name="nomer" value="<?= $nomer ?>" />
+	      	<input type="hidden" name="harga_tagihan" value="<?= $costumer['harga_tagihan'] ?>" />
+	      	<input type="hidden" name="nama" value="<?= $costumer['nama'] ?>" />
+	      	<input type="hidden" name="nomer" value="<?= $idpelanggan ?>" />
+	      	<input type="hidden" name="product" value="<?= $product ?>" />
 	        <div class="col-md-6">
 	          <button id="btn-submit" type="submit" class="btn btn-success pull-right"><i class="fa fa-money"></i> BAYAR</button>
 	          <a href="javascript: window.history.go(-1)" id="btn-back" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> BACK</a>
@@ -156,6 +190,19 @@
 	        </div>
 	      </div>
      	</form>
+     	<?php } else{ ?>
+     		<div class="box-body">
+     			<div id="warn">
+		          <div id="alertdiv" class="col-md-6 alert alert-danger">
+		              <p>Terdapat kesalahan server</p><p>coba beberapa saat lagi !</p>
+		              <?= $costumer['message'] ?>
+		          </div>
+		        </div>
+     		</div>
+     		<div class="box-footer">
+	           <a href="javascript: window.history.go(-1)" id="btn-back" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> BACK</a>
+ 			</div>
+     	<?php } ?>
    </div>
   <!-- /.box -->
   <script>
@@ -195,7 +242,7 @@
 		        $("#btn-submit").children("i").removeClass('fa-money');
 		        $("#btn-submit").children("i").addClass('fa-refresh fa-spin');
 		        $.ajax({
-		            url:  base_url+"ppob/bayar",
+		            url:  base_url+"ppob/bayar_tagihan",
 		            type: "post",
 		            data: $(this).serialize(),
 		            success: function(d, textStatus, xhr) {

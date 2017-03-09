@@ -21,7 +21,7 @@ class M_ppob extends CI_Model
 		if(! empty(post('contact'))){
 			$nama = post('nama'); 
 			$contact = post('contact'); 
-			$email = post('email');
+			$email = post('email_pelanggan');
 		}
 		$data = array(
 			'product'=>$productk,
