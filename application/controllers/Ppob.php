@@ -132,11 +132,14 @@ class Ppob extends CI_Controller {
 					//pr($return);
 					if($return['resultcode']!=0){
 						$msg = explode(".",$return['message']);
+						
+						if(preg_match("/tidak cukup/",$msg[0])) $msg[0] = "Kesalahan server";
+						
 						$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
 								'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode'],
 								'base_price'=>0, 'net_price'=>0, 'price'=>0));
-						$return = array('message'=>$login_message.'Gagal Pembayaran'."<br> Telah terjadi kesalahan sistem, 
-									silakan hubungi customer service kami untuk informasi lebih lanjut",
+						$return = array('message'=>$login_message.$msg[0].'<p>Gagal Pembayaran'."<br> Telah terjadi kesalahan sistem, 
+									silakan hubungi customer service kami untuk informasi lebih lanjut</p>",
 								'code'=>1,
 								'login'=>$login['data'],);
 					}else{
@@ -296,6 +299,8 @@ class Ppob extends CI_Controller {
 					//pr($return);
 					if($return['resultcode']!=0){
 						$msg = explode(".",$return['message']);
+						if(preg_match("/tidak cukup/",$msg[0])) $msg[0] = "Kesalahan server";
+												
 						$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
 								'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode'],
 								'base_price'=>0, 'net_price'=>0, 'price'=>0));
