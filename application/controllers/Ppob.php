@@ -106,7 +106,7 @@ class Ppob extends CI_Controller {
 		if(! $this->ion_auth->logged_in() && post('position')=='re'){
 			$login = $this->_register();
 		}
-		if($login['data']==1){
+		if($login['data']==1 || $this->ion_auth->logged_in()){
 			$login_message = $login['message'] ;
 			$productk = explode('_',post('nominal'));
 			$ids = explode('|',$productk[1]);
@@ -267,7 +267,7 @@ class Ppob extends CI_Controller {
 			$login = $this->_register();
 		}
 		
-		if($login['data']==1){
+		if($login['data']==1 || $this->ion_auth->logged_in()){
 			$login_message = $login['message'] ;
 			$productk = explode('_',post('product'));
 			$ids = explode('|',$productk[1]);
@@ -299,8 +299,8 @@ class Ppob extends CI_Controller {
 						$this->m_ppob->update_pulsa(array('message'=>$msg[0], 'trxid'=>$return['trxid'], 
 								'ref_trxid'=>$my_trxid, 'status'=>$return['resultcode'],
 								'base_price'=>0, 'net_price'=>0, 'price'=>0));
-						$return = array('message'=>$login_message.'Transaksi gagal '."<br> Telah terjadi kesalahan sistem, 
-									silakan hubungi customer service kami untuk informasi lebih lanjut",
+						$return = array('message'=>$login_message.$msg[0].'<p>Transaksi gagal '."<br> Telah terjadi kesalahan sistem, 
+									silakan hubungi customer service kami untuk informasi lebih lanjut</p>",
 								'code'=>1);
 						
 					}else{
