@@ -173,8 +173,7 @@
 			<div class="col-md-6">
 				<div class="alert alert-info alert-dismissible">
 			        <h4><i class="icon fa fa-info"></i> Pembayaran Success</h4>
-			        Pembelian pulsa <strong><?= $kode.'000' ?></strong><br>
-			        ke nomor <strong><?= $nomer ?></strong>
+			        <?= $costumer['message'] ?>
 			    </div>
 			</div>
 		 </div>

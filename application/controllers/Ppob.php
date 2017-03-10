@@ -246,7 +246,8 @@ class Ppob extends CI_Controller {
 			$return['jenis'] = $sProduct[1];
 			$return['message'] = "Tagihan $return[jenis] a/n $return[nama] <br>
 			  					 sebesar Rp ".number_format($return['harga'])."<br>
-			  					 Harga ke konsumen Rp ".number_format($return['harga_konsumen']);	
+			  					 biaya admin Rp ".number_format($return['harga_konsumen']-$return['harga'])."<br>
+			  					 Harga Total Rp ".number_format($return['harga_konsumen']);	
 		}
 		$data = array('content'=>'ppob/confirm/tagihan',
 					  'product' => post('oprcode'),
