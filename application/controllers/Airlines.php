@@ -140,6 +140,9 @@ class Airlines extends CI_Controller {
 		$data = $this->input->post();
 		$key = '';
 		//$this->form_validation->set_rules('key[]', 'KEY[]', 'required');
+				
+		$totalPenambahan = $this->_totalMarkup($data['tipe']);
+		
 		for($i = 1; $i <= count($data['key'])-1; $i++){
 			$key .= '|'.$data['key'][$i];
 		}
@@ -163,9 +166,9 @@ class Airlines extends CI_Controller {
 					$code = 404;
 				}
 			} else{
-				$hasil = array('fare'=>$array->results->fare, 
+				$hasil = array('fare'=>$array->results->fare+$totalPenambahan, 
 								'tax'=>$array->results->tax, 
-								'total_price'=>$array->results->total_price,
+								'total_price'=>$array->results->total_price+$totalPenambahan,
 								'flight_key'=>$key,);
 				$hasil = json_encode($hasil);
 			}
@@ -390,11 +393,19 @@ class Airlines extends CI_Controller {
 		if(!$this->ion_auth->logged_in()){
 			redirect('airlines','refresh');
 		}
+		
+		
 		$bandara = $this->_bandara();
 		$array = NULL;
 		$data_table = NULL;
 		if($code != '00' && !$this->input->get()){
 			$array = $this->_boking_detail($code);
+			
+			$totalPenambahan = $this->_totalMarkup($array->airline);
+			
+			$array->NTA += $totalPenambahan;
+			$array->base_fare += $totalPenambahan;
+			
 			/* update booking */
 			if($array != NULL && $this->ion_auth->logged_in()){
 				$data_update = array(
@@ -482,6 +493,12 @@ class Airlines extends CI_Controller {
 			redirect('airlines','refresh');
 		}
 		$array = $this->_boking_detail($code);
+		
+		$totalPenambahan = $this->_totalMarkup($array->airline);
+			
+		$array->NTA += $totalPenambahan;
+		$array->base_fare += $totalPenambahan;
+		
 		$data = array('data_detail'=>$array,
 				  'status'=>$this->m_booking->get_status_booking($code),
 				  'data_table'=>NULL,
@@ -584,6 +601,82 @@ class Airlines extends CI_Controller {
 			}
 		}
 		
+	}
+	
+	/* Markup From Indsiti to All Companies */
+	private function markupFindsiti($to_company=NULL,$id=0){
+		$this->db->select("*")
+			->from('markup')
+			->order_by("`company`");
+		
+		$to_companyS = "OR `company` = $to_company";
+		if($to_company == NULL){
+			$to_companyS = '';
+		}
+		
+		if($id==0){
+			$this->db->where("(`company`=0 $to_companyS) 
+					 AND `markup for` = 'internal' ");
+		}else{
+			$this->db->where("id",$id);
+		}
+		$this->db->where("active",'1');
+		$data = $this->db->get()->result();
+		$r = [];
+		foreach($data as $val){
+			$r[$val->product] = array(
+					"value"=>$val->value,
+					"tipe_data"=>$val->{'type'},
+					"idFindsiti"=>$val->id,
+			);
+		}
+		return $r;		
+	}
+	
+	/* Markup From Company to All Buyers */
+	private function markupTbuyer($to_buyer=NULL, $id=0){
+		$this->db->select("*")
+			->from('markup')
+			->order_by("`company`");
+		
+		$to_buyerS = "OR `company` = $to_buyer";
+		if($to_buyer == NULL){
+			$to_buyerS = '';
+		}
+				
+		if($id==0){
+			$this->db->where("(`company` =0 $to_buyerS) 
+					 AND `markup for` = 'member' ");
+		}else{
+			$this->db->where("id",$id);
+		}
+		$this->db->where("active",'1');
+		$data = $this->db->get()->result();
+		$r = [];
+		foreach($data as $val){
+			$r[$val->product] = array(
+					"value"=>$val->value,
+					"tipe_data"=>$val->{'type'},
+					"idTbuyer"=>$val->id,
+			);
+		}
+		return $r;
+	}
+	
+	private function _totalMarkup($airline='XX'){
+		$this->db->select('id')
+			 ->from('product')
+			 ->where("product LIKE '$airline%'");
+		$id_product = $this->db->get()->row();
+		
+		$penambahanIndsiti =0; $penambahanCompany=0; $totalPenambahan = 0;
+		if(! empty(session('company'))){
+			$company = session('company');
+			$penambahanIndsiti = $this->markupFindsiti($company);
+			$penambahanCompany = $this->markupTbuyer($company);
+		}
+		$totalPenambahan = $penambahanIndsiti[$id_product->id]['value']+$penambahanCompany[$id_product->id]['value'];
+		return $totalPenambahan;	
 	}
 	
 }

@@ -26,11 +26,17 @@ function get($name=''){
 	return $CI->input->get($name);
 }
 
+function session($name=''){
+	$CI =& get_instance();
+	return $CI->session->userdata($name);
+}
+
 function now(){
 	$time =new DateTime();
 	$time = $time->getTimestamp();
 	return $time;
 }
+
 
 function RandomString($length = 10) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
