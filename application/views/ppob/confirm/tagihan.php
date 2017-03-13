@@ -77,8 +77,8 @@
 		          </div>
 		        </div>
 		        <?php if(!$this->ion_auth->logged_in()){ ?>
-		        <div id="login">
-			        <div class="form-group"  style="background-color:#f3f3f3">
+		        <div id="login"  style="background-color:#f3f3f3">
+			        <div class="form-group">
 			          <label for="first_name" class="col-md-2 control-label"></label>
 			          <div class="col-md-4">
 			          	 <p class="text-danger">Sign in to continue</p>
