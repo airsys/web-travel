@@ -78,7 +78,7 @@
 		        </div>
 		        <?php if(!$this->ion_auth->logged_in()){ ?>
 		        <div id="login">
-			        <div class="form-group">
+			        <div class="form-group"  style="background-color:#f3f3f3">
 			          <label for="first_name" class="col-md-2 control-label"></label>
 			          <div class="col-md-4">
 			          	 <p class="text-danger">Sign in to continue</p>
@@ -104,7 +104,7 @@
 			        </div>			        
 		        </div>
 				
-				<div id="register">
+				<div id="register"  style="background-color:#f3f3f3">
 					<div class="form-group">
 			          <label for="first_name" class="col-md-2 control-label"></label>
 			          <div class="col-md-4">
@@ -140,12 +140,14 @@
 			          <div class="col-sm-4">
 			            <input type="password"  required class="form-control" name="password_register" id="password_register" placeholder="Password">
 			          </div>
-			        </div><div class="form-group">
+			        </div>
+			        <div class="form-group">
 			          <label for="password_confirm" class="col-sm-2 control-label">Password Confirm</label>
 			          <div class="col-sm-4">
 			            <input type="password" required  class="form-control" name="password_confirm" id="password_confirm" placeholder="password confirm">
 			          </div>
 			        </div>
+			        <div class="form-group"></div>
 				</div>
 				
 				<div class="form-group">
