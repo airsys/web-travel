@@ -83,7 +83,10 @@ class Airlines extends CI_Controller {
             ->set_output($hasil);
 	}
 	
-	function get_bestprice(){
+	function get_bestprice($tipe=''){
+		$plorp  = substr(strrchr($this->url,'/'), 1);
+		$this->url = substr($this->url, 0, - strlen($plorp));
+		
 		$data = $this->input->post();
 		$this->form_validation->set_rules('from', 'Asal Keberangkatan', 'required');
 		$this->form_validation->set_rules('to', 'Tujuan', 'required');
@@ -95,10 +98,8 @@ class Airlines extends CI_Controller {
 			$hasil =  validation_errors();
 			$code = 400;
 		}else{
-			$json = $this->curl->simple_get("$this->url/search/best_price?from=$data[from]&to=$data[to]&date=$data[date]&adult=$data[adult]&child=$data[child]&infant=$data[infant]");
-			//$json = $this->jsonbestprice();		
+			$json = $this->curl->simple_get("$this->url/$tipe/search/best_price?from=$data[from]&to=$data[to]&date=$data[date]&adult=$data[adult]&child=$data[child]&infant=$data[infant]");			
 			$array = json_decode ($json);
-			//print_r("$this->url/search/best_price?from=$data[from]&to=$data[to]&date=$data[date]&adult=$data[adult]&child=$data[child]&infant=$data[infant]");die();
 			
 			if( ( empty($array) || $array->code==404 || $array->code==204) ){
 				if(empty($array)){
@@ -393,8 +394,7 @@ class Airlines extends CI_Controller {
 		if(!$this->ion_auth->logged_in()){
 			redirect('airlines','refresh');
 		}
-		
-		
+				
 		$bandara = $this->_bandara();
 		$array = NULL;
 		$data_table = NULL;

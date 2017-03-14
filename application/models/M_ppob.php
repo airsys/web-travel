@@ -270,7 +270,7 @@ class M_ppob extends CI_Model
 		$markupFindsiti = $this->markupFindsiti($company, $idFindsiti);
 		$markupTbuyer = $this->markupTbuyer($company, $idTbuyer);
 		
-		$this->db->select('id,kode, harga as nilai')
+		$this->db->select('id,kode, harga as nilai,product')
 				 ->from('`product`')
 				 ->where('`group`','ppob')
 				 ->order_by('harga');
@@ -294,6 +294,7 @@ class M_ppob extends CI_Model
 			$r[] = array(
 				"id" => $val->id,
 				"kode" => $val->kode,
+				"name" => $val->product,
 				"price" =>$price,
 				"base_price" =>$base_price,
 				"FT" => $markupFindsiti[$val->id]['idFindsiti']."|".$markupTbuyer[$val->id]['idTbuyer'],

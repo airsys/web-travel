@@ -275,11 +275,13 @@ $(document).ready(function(){
 		}	   
 	});
     
-    function coba(){
+    function coba(tipe2=''){
 		var tipe = $("#tipe").val();
-		var mylink = "airlines/search";
-		if(tipe == 'all'){
-			 mylink = "airlines/get_bestprice";
+		//tipe2 = 'lion';
+		var mylink = "airlines/get_bestprice/"+tipe2;
+		if(tipe != 'all'){
+			mylink = "airlines/search";
+			$(".list").empty();
 		}
         $("#h_from").val($("#from").val());
         $("#h_to").val($("#to").val());
@@ -294,11 +296,11 @@ $(document).ready(function(){
         $("#btn-search").children("i").addClass('fa-refresh fa-spin');
         
         $(over).appendTo("#cari");
-        $(".list").empty();
         $.ajax({
             url:  base_url+mylink,
             type: "post",
             data: $('#form').serialize(),
+            async: false,
             success: function(d) {
                 $('#overlay').remove();
                 if(tipe != 'all'){
@@ -325,14 +327,16 @@ $(document).ready(function(){
             },
              complete: function() {
         		$("#result-content").show();
+        		//setTimeout(coba('sriwijaya'), 3000)
              }
         });
 	}
     
 	$("#form").on('submit',function(event) {
         event.preventDefault();
-		if($("#form").valid()){			
-    		coba(); 
+		if($("#form").valid()){		
+    		coba('lion');
+    		coba('sriwijaya');
 		}      
   	});
     

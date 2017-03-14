@@ -45,87 +45,87 @@
 "number":"0851"
 },
 {
-"kode":"IR", "operator":"INDOSAT",
+"kode":"IR", "kode_data":"ID", "operator":"INDOSAT",
 "note":" (Matrix 10 digit)",
 "number":"0855"
 },
 {
-"kode":"IR", "operator":"INDOSAT",
+"kode":"IR", "kode_data":"ID", "operator":"INDOSAT",
 "note":" (IM3 (10 digit limited edition), 11, dan 12 digit)",
 "number":"0856"
 },
 {
-"kode":"IR", "operator":"INDOSAT",
+"kode":"IR", "kode_data":"ID", "operator":"INDOSAT",
 "note":" (IM3 12 digit)",
 "number":"0857"
 },
 {
-"kode":"IR", "operator":"INDOSAT",
+"kode":"IR", "kode_data":"ID", "operator":"INDOSAT",
 "note":" (Mentari 12 digit)",
 "number":"0858"
 },
 {
-"kode":"IR", "operator":"INDOSAT",
+"kode":"IR", "kode_data":"ID", "operator":"INDOSAT",
 "note":" (Broadband Indosat M2 12 digit)",
 "number":"0814"
 },
 {
-"kode":"IR", "operator":"INDOSAT",
+"kode":"IR", "kode_data":"ID", "operator":"INDOSAT",
 "note":" (Matrix, Mentari 11, 12 digit)",
 "number":"0815"
 },
 {
-"kode":"IR", "operator":"INDOSAT",
+"kode":"IR", "kode_data":"ID", "operator":"INDOSAT",
 "note":" (Matrix, Mentari 10, 11, dan 12 digit)",
 "number":"0816"
 },
 {
-"kode":"XL", "operator":"XL AXIS",
+"kode":"XL", "kode_data":"XLC", "operator":"XL AXIS",
 "note":" (Pra bayar dan Explor 10, 11, 12 digit)",
 "number":"0817"
 },
 {
-"kode":"XL", "operator":"XL AXIS",
+"kode":"XL", "kode_data":"XLC", "operator":"XL AXIS",
 "note":" (Pra bayar dan Explor 10, 11, 12 digit)",
 "number":"0818"
 },
 {
-"kode":"XL", "operator":"XL AXIS",
+"kode":"XL", "kode_data":"XLC", "operator":"XL AXIS",
 "note":" (Pra bayar dan Explor 10, 11, 12 digit)",
 "number":"0819"
 },
 {
-"kode":"XL", "operator":"XL AXIS",
+"kode":"XL", "kode_data":"XLC", "operator":"XL AXIS",
 "note":" (Pra bayar dan Explor 12 digit)",
 "number":"0859"
 },
 {
-"kode":"XL", "operator":"XL AXIS",
+"kode":"XL", "kode_data":"XLC", "operator":"XL AXIS",
 "note":" (Pra bayar dan Explor 12 digit)",
 "number":"0877"
 },
 {
-"kode":"XL", "operator":"XL AXIS",
+"kode":"XL", "kode_data":"XLC", "operator":"XL AXIS",
 "note":" (Pra bayar dan Explor 12 digit)",
 "number":"0878"
 },
 {
-"kode":"TRI", "operator":"TRI",
+"kode":"TRI", "kode_data":"TD", "operator":"TRI",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0896"
 },
 {
-"kode":"TRI", "operator":"TRI",
+"kode":"TRI", "kode_data":"TD", "operator":"TRI",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0897"
 },
 {
-"kode":"TRI", "operator":"TRI",
+"kode":"TRI", "kode_data":"TD", "operator":"TRI",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0898"
 },
 {
-"kode":"TRI", "operator":"TRI",
+"kode":"TRI", "kode_data":"TD", "operator":"TRI",
 "note":" (Pra bayar dan Pasca bayar 11, 12 digit)",
 "number":"0899"
 },
@@ -165,22 +165,22 @@
 "number":"0887"
 },
 {
-"kode":"XL", "operator":"XL AXIS",
+"kode":"XL", "kode_data":"XLC", "operator":"XL AXIS",
 "note":"nomor axis",
 "number":"0838"
 },
 {
-"kode":"XL", "operator":"XL AXIS",
+"kode":"XL", "kode_data":"XLC", "operator":"XL AXIS",
 "note":"nomor untuk axis",
 "number":"0831"
 },
 {
-"kode":"XL", "operator":"XL AXIS",
+"kode":"XL", "kode_data":"XLC", "operator":"XL AXIS",
 "note":"nomor untuk axis",
 "number":"0832"
 },
 {
-"kode":"XL", "operator":"XL AXIS",
+"kode":"XL", "kode_data":"XLC", "operator":"XL AXIS",
 "note":"nomor untuk axis",
 "number":"0833"
 }

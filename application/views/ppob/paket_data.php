@@ -15,11 +15,11 @@
 <!-- Horizontal Form -->
   <div class="box box-info">
     <div class="box-header with-border">
-      <h3 class="box-title">Pembelian Pulsa</h3>
+      <h3 class="box-title">Pembelian Paket Data</h3>
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    	<form id="form" class="form-horizontal" action="<?= base_url() ?>ppob/confirm" method="post">
+    	<form id="form" class="form-horizontal" action="<?= base_url() ?>ppob/confirm/data" method="post">
 	      <div class="box-body">
 	    	<div class="col-md-12">
 	    		<div class="form-group">
@@ -120,8 +120,8 @@
 		          	$("#nominal").html("");
 	                $.each(products, function(i, item) {
 	                  	var v = item.kode.split(".");
-	                	if(v[0]==no_prefix[key].kode){
-	                		$("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: no_prefix[key].operator.toUpperCase() +' - '+ v[1] +'000 /'+' - Rp '+item.price}));
+	                	if(v[0]==no_prefix[key].kode_data){
+	                		$("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: item.name +' / Rp '+item.price}));
 	                	}
 	                });          
 
@@ -129,37 +129,6 @@
 		        }
 		      }
 			} 
-			
-  		/*
-  		$("#form").on("submit", function(event) {
-  			if($("#form").valid()){		
-	    	$("#btn-submit").removeClass('btn-success');
-	        $("#btn-submit").addClass('btn-warning');
-	        $("#btn-submit").attr('disabled',true);
-	        $("#btn-submit").children("i").removeClass('fa-paper-plane');
-	        $("#btn-submit").children("i").addClass('fa-refresh fa-spin');
-	        event.preventDefault(); 
-	        $.ajax({
-	            url:  base_url+"ppob/bayar",
-	            type: "post",
-	            data: $(this).serialize(),
-	            success: function(d, textStatus, xhr) {
-	            	 	
-	            	showalert(d.message,'success','#warn',60000000);
-	            	get_products();
-	            	$("#btn-submit").addClass('btn-success');
-			        $("#btn-submit").removeClass('btn-warning');
-			        $("#btn-submit").attr('disabled',false);
-			        $("#btn-submit").children("i").addClass('fa-paper-plane');
-			        $("#btn-submit").children("i").removeClass('fa-refresh fa-spin');
-	            },
-	             error: function (request, status, error) {
-	                
-	            }
-	        });
-	   		} //form validation
-	        
-	  });*/
 		
 		$("#pra_login").on("click", function(event) {
 		event.preventDefault();

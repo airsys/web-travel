@@ -69,13 +69,18 @@ class Ppob extends CI_Controller {
 	* BAYAR PULSA
 	*/
 	//VIEW
-	function pulsa(){	
-		$data = array('content'=>'ppob/pulsa',
+	function pulsa($page=''){
+		$content = 'ppob/pulsa';
+		if($page != '') $content = 'ppob/paket_data';		
+		$data = array('content'=>$content,
 					  );
 		$this->load->view("index",$data);		
 	}
 	//KONFIRMASI
-	function confirm(){
+	function confirm($page=''){
+		$content = 'ppob/confirm/pulsa';
+		if($page != '') $content = 'ppob/confirm/paket_data';
+		
 		$productk = explode('_',post('nominal'));
 		$ids = explode('|',$productk[1]);
 		$productk = $productk[0];		
@@ -88,11 +93,12 @@ class Ppob extends CI_Controller {
 		
 		$price = $base_price;
 		
-		$data = array('content'=>'ppob/confirm/pulsa',
+		$data = array('content'=>$content,
 					  'price' => $base_price,
 					  'nominal' => post('nominal'),
 					  'nomer' => post('nomer'),
 					  'kode' => $product['kode'],
+					  'name_product' => $product['name'],
 						  );
 		$this->load->view("index",$data);
 	}
@@ -192,6 +198,7 @@ class Ppob extends CI_Controller {
 	/* END BAYAR PULSA */
 	
 	/*======================================================*/
+		
 	
 	/**
 	* 
@@ -361,6 +368,8 @@ class Ppob extends CI_Controller {
 	/* END BAYAR TAGIHAN */
 	
 	/*======================================================*/
+	
+	
 	
 	function no_prefix(){
 		$str = file_get_contents(base_url().'assets/ajax/no_prefix.json');
