@@ -29,7 +29,7 @@
 		          </div>
 		        </div>
 				<div class="form-group">
-		          <label for="nominal" class="col-sm-2 control-label">Nominal</label>
+		          <label for="nominal" class="col-sm-2 control-label">Paket Data</label>
 		          <div class="col-sm-4">
 		            <select name="nominal" required id="nominal" class="form-control" >
 		            	<option value="">Isi Nomor terlebih dahulu</option>
@@ -123,6 +123,11 @@
 	                	if(v[0]==no_prefix[key].kode_data){
 	                		$("#nominal").append($('<option>', {value: item.id+'_'+item.FT, text: item.name +' / Rp '+item.price}));
 	                	}
+	                	else if(v[0]==no_prefix[key].kode && no_prefix[key].kode_data==null){
+	                		$("#nominal").html("");
+							$("#nominal").append($('<option>', {value: "", text: "Paket data operator "+item.name+" belum tersedia"}));
+							//return false;
+						}
 	                });          
 
 		          } 
