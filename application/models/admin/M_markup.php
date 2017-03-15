@@ -49,6 +49,11 @@ function __construct(){
 		$this->db->where(array("id"=>$id));
 		$this->db->update("markup",array($modul=>$value));
 	}
+	function updatetes($id,$value,$type){
+		$this->db->where(array("id"=>$id));
+		$this->db->update("markup",array('value'=>$value,
+										 'type'=>$type));
+	}
 	function updatemember($id,$value,$modul,$company){
 		$this->db->where(array("id"=>$id));
 		$this->db->where(array("company"=>$company));

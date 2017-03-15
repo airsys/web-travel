@@ -40,7 +40,7 @@ td {
 					<th>Kode</th>
 					<th>Value</th>
 					<th>Type</th>
-					<th>Hapus</th>
+					<th>Action</th>
 					</tr>
 					</thead>
 
@@ -49,23 +49,35 @@ td {
 
 					foreach ($markup as $member) {
 						echo "<tr data-id='$member[id]'>
-								<td><span class='span-product ' data-id='$member[id]'>$member[product]</span> </td>
-								<td><span class='span-kode ' data-id='$member[id]'>$member[kode]</span> </td>
-								<td><span class='span-value caption' data-id='$member[id]'>$member[value]</span> <input type='text' class='field-value form-control editor' value='$member[value]' data-id='$member[id]' /></td>
+								<td><span class='span-product caption' data-id='$member[id]'>$member[product]</span> 
+									<input type='text' class='field-product form-control editor' id='product' value='$member[product]' data-id='$member[id]' readonly />
+								</td>
+								<td><span class='span-kode caption' data-id='$member[id]'>$member[kode]</span> 
+								<input type='text' class='field-kode form-control editor' id='kode' value='$member[kode]' data-id='$member[id]' readonly />
+								</td>
+								<td><span class='span-value caption' data-id='$member[id]'>$member[value]</span> 
+									<input type='text' class='field-value form-control editor' id='value' value='$member[value]' data-id='$member[id]' />
+									
+								</td>
 								<td><div class='col-sm-5'>
 									<span class='span-type caption' data-id='$member[id]'>$member[type]</span> 
 									<input type='text' id='typetxt' class='field-type form-control editor typetxt' value='$member[type]' data-id='$member[id]'/>
 									</div>
 									<div>
-									<select class='field-type form-control typecmb' id='typecmb' style='width:5%;'>
-										<option></option>
+									<select class='field-type form-control typecmb' id='typecmb' >
+										<option >---</option>
 										<option value='persen'>persen</option>
 										<option value='decimal'>decimal</option>	
 									</select>
 									</div>
 								</td>
 
-								<td><button class='btn btn-xs btn-danger hapus-member' data-id='$member[id]'><i class='glyphicon glyphicon-remove'></i> Hapus</button></td>
+								<td>
+								<button class='btn btn-xs btn-info edit' data-id='$member[id]'><i class='glyphicon glyphicon-edit'> Edit</i></button>
+								<button class='btn btn-xs btn-primary save' data-id='$member[id]'> Save</button>
+								<button class='btn btn-xs btn-danger cancel' data-id='$member[id]'> Cancel</button>
+								<button class='btn btn-xs btn-danger hapus-member' data-id='$member[id]'><i class='glyphicon glyphicon-remove'></i> Hapus</button>
+								</td>
 								</tr>";
 					}
 
@@ -154,32 +166,19 @@ $(function(){
 		})
 		
         $(this).find("select[id~='typecmb']").hide();
+		$(this).find("button[class~='save']").hide();
+		$(this).find("button[class~='cancel']").hide();
+		$(this).find("input[id~='typetxt']").hide();
+/*
 		$(document).on("click","td",function(){
 			$(this).find("span[class~='caption']").hide();
-			$(this).find("input[class~='editor']").fadeIn().focus();
+			$(this).find("input[class~='editor']").fadeIn();
 			$(this).find("select[id~='typecmb']").show();
-		});
-		
-
-/*
-		$("#tambah-data").click(function(){
-			$.ajax({
-				url:"<?php echo base_url('index.php/crud/create'); ?>",
-				success: function(a){
-				var ele="";
-				ele+="<tr data-id='"+a.id+"'>";
-				ele+="<td><span class='span-nama caption' data-id='"+a.id+"'></span> <input type='text' class='field-nama form-control editor'  data-id='"+a.id+"' /></td>";
-				ele+="<td><span class='span-email caption' data-id='"+a.id+"'></span> <input type='text' class='field-email form-control editor' data-id='"+a.id+"' /></td>";
-				ele+="<td><span class='span-phone caption' data-id='"+a.id+"'></span> <input type='text' class='field-phone form-control editor'  data-id='"+a.id+"' /></td>";
-				ele+="<td><button class='btn btn-xs btn-danger hapus-member' data-id='"+a.id+"'><i class='glyphicon glyphicon-remove'></i> Hapus</button></td>";
-				ele+="</tr>";
-
-				var element=$(ele);
-				element.hide();
-				element.prependTo("#table-body").fadeIn(1500);
-
-				}
-			});
+			$(this).find("button[class~='save']").show();
+			$(this).find("button[class~='cancel']").show();
+			$(this).find("button[class~='edit']").hide();
+			$(this).find("button[class~='hapus-member']").hide();
+			$(this).find("input[id~='typetxt']").hide();
 		});
 */
 		$(document).on("keydown",".editor",function(e){
@@ -210,9 +209,56 @@ $(function(){
 			}	
 
 		});
+		$(document).on("click",".save",function(e){
+			
+				var id= $(this).closest('tr').find('.field-value').attr("data-id"); 
+				var value =$(this).closest('tr').find('.field-value').val(); 
+				var type = $(this).closest('tr').find('.field-type').val(); 
+					$(this).closest('tr').find('.editor').hide();
+					$(this).closest('tr').find('.caption').show();
+					$(this).closest('tr').find('.span-value').html(value).show();
+					$(this).closest('tr').find('.span-type').html(type).show();
+					$(this).closest('tr').find('.save').hide();
+					$(this).closest('tr').find('.cancel').hide();
+					$(this).closest('tr').find('.edit').show();
+					$(this).closest('tr').find('.hapus-member').show();
+					$(this).closest('tr').find('.typecmb').hide();
+				//console.log(value+'-'+type);
+				var data={id:id,value:value,type:type};
+				
+				$.ajax({
+					type: "POST",
+					data:data,
+					url:"<?php echo base_url('admin/markup/update'); ?>",
+					success: function(a){
+					//$("#table-body[data-id='"+id+"']").append('<tr><td></td><td></td><td></td><td></td><td>saved</td></tr>');
+
+					}
+
+				})
+
+		});
 		
-
-
+		$(document).on("click",".cancel",function(){
+		
+			$(this).closest('tr').find('.editor').hide();
+			$(this).closest('tr').find('.caption').show();
+			$(this).closest('tr').find('.save').hide();
+			$(this).closest('tr').find('.cancel').hide();
+			$(this).closest('tr').find('.edit').show();
+			$(this).closest('tr').find('.hapus-member').show();
+		
+   		});
+   		$(document).on("click",".edit",function(){
+   			$(this).closest('tr').find('.editor').show();
+			$(this).closest('tr').find('.caption').hide();
+			$(this).closest('tr').find('.save').show();
+			$(this).closest('tr').find('.cancel').show();
+			$(this).closest('tr').find('.edit').hide();
+			$(this).closest('tr').find('.hapus-member').hide();
+			$(this).closest('tr').find('.typecmb').show();
+			$(this).closest('tr').find('.typetxt').hide();
+   		});
 		$('.typecmb').click(function(event){
     		 event.stopPropagation();
  		});

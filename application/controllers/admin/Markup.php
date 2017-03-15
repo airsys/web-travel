@@ -31,11 +31,18 @@ function listMarkup(){
 	}
 
 
-	function update(){
+	function updatetes(){
 		$id= $this->input->post("id");
 		$value= $this->input->post("value");
 		$modul= $this->input->post("modul");
 		$this->m_markup->update($id,$value,$modul);
+		echo "{}";
+	}
+	function update(){
+		$id= $this->input->post("id");
+		$value= $this->input->post("value");
+		$type=$this->input->post("type");
+		$this->m_markup->updatetes($id,$value,$type);
 		echo "{}";
 	}
 	function updatemember(){
