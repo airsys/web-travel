@@ -30,7 +30,7 @@ function listMarkup(){
 		
 	}
 
-
+/*
 	function updatetes(){
 		$id= $this->input->post("id");
 		$value= $this->input->post("value");
@@ -38,6 +38,7 @@ function listMarkup(){
 		$this->m_markup->update($id,$value,$modul);
 		echo "{}";
 	}
+*/
 	function update(){
 		$id= $this->input->post("id");
 		$value= $this->input->post("value");
@@ -48,11 +49,12 @@ function listMarkup(){
 	function updatemember(){
 		$id= $this->input->post("id");
 		$value= $this->input->post("value");
-		$modul= $this->input->post("modul");
+		//$modul= $this->input->post("modul");
+		$type=$this->input->post("type");
 		$company= $this->session->userdata('company');
 		$product= $this->input->post('product');  //bisa nol tapi tidak boleh kosong??
 		
-			$this->m_markup->insertmember($id,$value,$modul,$company,$product);
+			$this->m_markup->insertmember($id,$value,$type,$company,$product);
 			
 		echo "{}";
 	}

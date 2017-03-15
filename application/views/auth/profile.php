@@ -157,6 +157,7 @@ td {
 					<th>Kode</th>
 					<th>Value</th>
 					<th>Type</th>
+					<th>Action</th>
 					</tr>
 					</thead>
 					
@@ -168,10 +169,12 @@ td {
 						echo "<tr data-id='$member[id]' >
 
 								<td>
-									<span class='span-product ' data-id='$member[id]' >$member[product]</span> 
+									<span class='span-product caption' data-id='$member[id]' >$member[product]</span> 
+									<input type='text' class='field-product form-control editor' value='$member[product]' data-id='$member[id]' data-product='$member[product]' readonly/>
 								</td>
 								<td>
-									<span class='span-kode ' data-id='$member[id]' data-product='$member[product]'>$member[kode]</span> 
+									<span class='span-kode caption' data-id='$member[id]' data-product='$member[product]'>$member[kode]</span> 
+									<input type='text' class='field-kode form-control editor' value='$member[kode]' data-id='$member[id]' data-product='$member[product]' readonly/>
 								</td>
 								<td>
 									<span class='span-value caption' data-id='$member[id]' data-product='$member[product]'>$member[value]</span> 
@@ -182,12 +185,18 @@ td {
 									<input type='text' id='typetxt' class='field-type form-control editor typetxt' value='$member[type]' data-id='$member[id]'  data-product='$member[product]' />
 									</div>
 									<div>
-									<select class='field-type form-control typecmb' id='typecmb' style='width:5%;'>
-										<option></option>
+									<select class='field-type form-control typecmb' id='typecmb'>
+										<option>---</option>
 										<option value='persen'>persen</option>
 										<option value='decimal'>decimal</option>	
 									</select>
 									</div>
+								</td>
+								<td>
+									<button class='btn btn-xs btn-info edit' data-id='$member[id]'><i class='glyphicon glyphicon-edit'> Edit</i></button>
+									<button class='btn btn-xs btn-primary save' data-id='$member[id]'> Save</button>
+									<button class='btn btn-xs btn-danger cancel' data-id='$member[id]'> Cancel</button>
+									
 								</td>
 
 								</tr>";
@@ -220,7 +229,7 @@ td {
 					<th>Kode</th>
 					<th>Value</th>
 					<th>Type</th>
-					<th>Hapus</th>
+					<th>Action</th>
 					</tr>
 					</thead>
 					
@@ -246,15 +255,18 @@ td {
 									<input type='text' id='typetxt' class='field-type form-control editor typetxt' value='$member[type]' data-id='$member[id]'  data-product='$member[product]' />
 									</div>
 									<div>
-									<select class='field-type form-control typecmb' id='typecmb' style='width:5%;'>
-										<option></option>
+									<select class='field-type form-control typecmb' id='typecmb' >
+										<option>---</option>
 										<option value='persen'>persen</option>
 										<option value='decimal'>decimal</option>	
 									</select>
 									</div>
 								</td>
 
-								<td><button class='btn btn-xs btn-danger hapus-member' data-id='$member[id]'><i class='glyphicon glyphicon-remove'></i> Hapus</button></td>
+								<td><button class='btn btn-xs btn-info edit' data-id='$member[id]'><i class='glyphicon glyphicon-edit'> Edit</i></button>
+									<button class='btn btn-xs btn-primary save' data-id='$member[id]'> Save</button>
+									<button class='btn btn-xs btn-danger cancel' data-id='$member[id]'> Cancel</button>
+									<button class='btn btn-xs btn-danger hapus-member' data-id='$member[id]'><i class='glyphicon glyphicon-remove'></i> Hapus</button></td>
 								</tr>";
 				
 					}
@@ -310,13 +322,18 @@ td {
 			dataType: "json"
 		})
 
+        $(this).find("select[id~='typecmb']").hide();
+		$(this).find("button[class~='save']").hide();
+		$(this).find("button[class~='cancel']").hide();
+		$(this).find("input[id~='typetxt']").hide();
+/*
 		$(this).find("select[id~='typecmb']").hide();
 		$(document).on("click","td",function(){
 			$(this).find("span[class~='caption']").hide();
 			$(this).find("input[class~='editor']").fadeIn().focus();
 			$(this).find("select[id~='typecmb']").show();
 		});
-
+*/
 
 
 		$(document).on("keydown",".editor",function(e){
@@ -349,6 +366,58 @@ td {
 		}
 
 		});
+		$(document).on("click",".save",function(e){
+			
+				var id= $(this).closest('tr').find('.field-value').attr("data-id"); 
+				var value =$(this).closest('tr').find('.field-value').val(); 
+				var type = $(this).closest('tr').find('.field-type').val(); 
+				var product = $(this).closest('tr').find('.field-product').val(); 
+
+					$(this).closest('tr').find('.editor').hide();
+					$(this).closest('tr').find('.caption').show();
+					$(this).closest('tr').find('.span-value').html(value).show();
+					$(this).closest('tr').find('.span-type').html(type).show();
+					$(this).closest('tr').find('.save').hide();
+					$(this).closest('tr').find('.cancel').hide();
+					$(this).closest('tr').find('.edit').show();
+					$(this).closest('tr').find('.hapus-member').show();
+					$(this).closest('tr').find('.typecmb').hide();
+				//console.log(value+'-'+type);
+				var data={id:id,value:value,type:type,product:product};
+				
+				$.ajax({
+					type: "POST",
+					data:data,
+					url:"<?php echo base_url('admin/markup/updatemember'); ?>",
+					success: function(a){
+					//$("#table-body[data-id='"+id+"']").append('<tr><td></td><td></td><td></td><td></td><td>saved</td></tr>');
+
+					}
+
+				})
+
+		});
+		$(document).on("click",".cancel",function(){
+		
+			$(this).closest('tr').find('.editor').hide();
+			$(this).closest('tr').find('.caption').show();
+			$(this).closest('tr').find('.save').hide();
+			$(this).closest('tr').find('.cancel').hide();
+			$(this).closest('tr').find('.edit').show();
+			$(this).closest('tr').find('.hapus-member').show();
+			$(this).closest('tr').find('.typecmb').hide();
+		
+   		});
+   		$(document).on("click",".edit",function(){
+   			$(this).closest('tr').find('.editor').show();
+			$(this).closest('tr').find('.caption').hide();
+			$(this).closest('tr').find('.save').show();
+			$(this).closest('tr').find('.cancel').show();
+			$(this).closest('tr').find('.edit').hide();
+			$(this).closest('tr').find('.hapus-member').hide();
+			$(this).closest('tr').find('.typecmb').show();
+			$(this).closest('tr').find('.typetxt').hide();
+   		});
 		$('.typecmb').click(function(event){
     		 event.stopPropagation();
  		});

@@ -60,6 +60,7 @@ function __construct(){
 		$this->db->update("markup",array($modul=>$value,
 										'company'=>$company));
 	}
+	/*
 	function insertmember($id,$value,$modul,$company,$product){
 			$this->db->select('product')
 			 		 ->from('`markup`')
@@ -83,8 +84,33 @@ function __construct(){
 											'company'=>$company));
 		}
 	
-	}
+	}*/
+	function insertmember($id,$value,$type,$company,$product){
+			$this->db->select('product')
+			 		 ->from('`markup`')
+				 	 ->where('`product`',$product)
+				 	 ->where('`company`',$company); 
+			$product_row = $this->db->get()->row();
+			$product_row = $product_row->product;
 
+		if ($product_row !=$product ) {
+			$this->db->insert("markup",array('value'=>$value,
+										 'type'=>$type,
+										'company'=>$company,
+										'`markup for`'=>'member',
+										'product'=>$product));
+			//$this->db->where(array("id"=>$id));
+			//$this->db->where(array("company"=>'0'));
+			//$this->db->update("markup",array('active'=>'0'));
+		}else{
+			$this->db->where(array("id"=>$id));
+			$this->db->where(array("company"=>$company));
+			$this->db->update("markup",array('value'=>$value,
+										 	'type'=>$type,
+											'company'=>$company));
+		}
+	
+	}
 
 	function delete($id){
 		$this->db->where("id",$id);
