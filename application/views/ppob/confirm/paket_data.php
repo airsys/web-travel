@@ -9,6 +9,10 @@
 		padding-bottom: 0px;
 		padding-top: 20px;
 	}
+	.form-horizontal .form-group {
+	     margin-right: -5px; 
+	     margin-left: -5px; 
+	}
 </style>
 <!-- Horizontal Form -->
   <div class="box box-info">
