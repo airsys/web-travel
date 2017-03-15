@@ -29,29 +29,36 @@ class Ppob extends CI_Controller {
 	
 	
 	function sn(){
+		$strRequest = "";		
+		$change_status = FALSE;
+		
 		if(file_get_contents('php://input')=='')
 		{
 		    // THROW EXCEPTION
-		    echo "No data";die();
+		    echo "No data";
 		}
 		else
 		{   
 		    // get read-only stream for read raw data from the request body
 		    $strRequest = file_get_contents('php://input');
-		    //$strRequest .= ;      
+		    $data = xml2array($strRequest);
+			$sn = explode(":",$data['msg']);
+			$sn = filter_var($sn[2], FILTER_SANITIZE_NUMBER_INT);
+			//echo $sn;die();
+			
+			$change_status = $this->m_ppob->change_status($data['ref_trxid'],'success',$data['msg']);
+			if($change_status){
+				$data_update = array('sn operator'=>$sn);
+				$this->db->where('trxid', $data['trxid']);
+				$this->db->update('`ppob trx`', $data_update);
+			} else{
+				echo "<strong>ref_trxid</strong> tidak ditemukan - change status fail !<br>";
+			}			
+			echo "SN:".$sn;
+		        
 		}
+		
 		$this->db->insert("`system log`", array('code'=>'coba','log'=>$strRequest."|-IP:".$this->input->ip_address()));
-		$data = xml2array($strRequest);
-		$sn = explode(":",$data['msg']);
-		$sn = filter_var($sn[2], FILTER_SANITIZE_NUMBER_INT);
-		//echo $sn;die();
-		$data_update = array('sn operator'=>$sn);
-		$this->db->where('trxid', $data['trxid']);
-		$this->db->update('`ppob trx`', $data_update);
-		
-		$this->m_ppob->change_status($data['ref_trxid'],'success',$data['msg']);
-		
-		echo $sn;
 		
 	}
 	

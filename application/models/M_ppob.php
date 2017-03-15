@@ -76,6 +76,9 @@ class M_ppob extends CI_Model
 			 ->from('`ppob trx`')
 			 ->where('`ref trxid`',$ref_trxid); 
 		$id = $this->db->get()->row();
+		if(empty($id)){
+			return FALSE;
+		}
 		$id = $id->id;
 		$user = 0;
 		if($this->session->userdata('user_id')!=NULL){
