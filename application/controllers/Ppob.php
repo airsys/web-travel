@@ -405,6 +405,7 @@ class Ppob extends CI_Controller {
 	}	
 	
 	function finance($id=0){
+		if(!$this->ion_auth->logged_in()) redirect(base_url().'ppob#login', 'refresh');
 		$d = $this->m_ppob->finance($id);
 		$this->load->helper('dropdown');
 		$data = array('content'=>'ppob/finance',

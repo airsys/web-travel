@@ -14,6 +14,7 @@
       <a id="telkom" class="btn btn-app bg-red">
         <i class="fa fa-phone"></i> TELKOM
       </a><br>
+      <!--
       <a class="btn btn-app ">
         <i class="fa fa-bolt"></i> PLN Pascabayar
       </a>
@@ -22,7 +23,7 @@
       </a>
       <a class="btn btn-app ">
         <i class="fa fa-medkit"></i> BPJS
-      </a>
+      </a> -->
     </div>
 </div>
  <!-- /.box -->
@@ -35,6 +36,14 @@
  	});
  	$("#telkom").on("click", function(event) { 
  		window.open(base_url+"ppob/telkom","_self");
+ 	});
+ 	
+ 	var path = window.location.hash.split('#')[1];
+ 	
+ 	$(document).ready(function(){
+ 		if(path=='login'){
+			$('#modal-content').modal('show');
+		}
  	});
  	
  </script>
