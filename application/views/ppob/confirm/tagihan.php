@@ -29,37 +29,37 @@
 	    		<div class="form-group">
 		          <label for="first_name" class="col-sm-2 control-label">Nomor Pelanggan</label>
 		          <div class="col-sm-4">
-			        <h4 class=""><?= wordwrap($idpelanggan , 3 , ' ' , true ) ?></h4>
+			        <span class="form-control" style="border: 0"><?= wordwrap($idpelanggan , 3 , ' ' , true ) ?></span>
 		          </div>
 		        </div>
 		        <div class="form-group">
 		          <label for="first_name" class="col-sm-2 control-label">Atas Nama</label>
 		          <div class="col-sm-4">
-			        <h4 class=""><?= $costumer['nama'] ?></h4>
+			        <span class="form-control" style="border: 0"><?= $costumer['nama'] ?></span>
 		          </div>
 		        </div>
 		        <div class="form-group">
 		          <label for="first_name" class="col-sm-2 control-label">Produk</label>
 		          <div class="col-sm-4">
-			        <h4 class=""><strong><?= $kode ?></strong></h4>
+			        <span class="form-control" style="border: 0"><strong><?= $kode ?></strong></span>
 		          </div>
 		        </div>
 		        <div class="form-group">
 		          <label for="first_name" class="col-sm-2 control-label">Tagihan</label>
 		          <div class="col-sm-4">
-			        <h4 class="">Rp <strong id='harga'><?= number_format($costumer['harga_tagihan']) ?></strong></h4>
+			        <span class="form-control" style="border: 0">Rp <strong id='harga'><?= number_format($costumer['harga_tagihan']) ?></strong></span>
 		          </div>
 		        </div>
 		        <div class="form-group">
 		          <label for="first_name" class="col-sm-2 control-label">Biaya Admin</label>
 		          <div class="col-sm-4">
-			        <h4 class="">Rp <strong id='harga'><?= number_format($costumer['harga_konsumen'] - $costumer['harga_tagihan']) ?></strong></h4>
+			        <span class="form-control" style="border: 0">Rp <strong id='harga'><?= number_format($costumer['harga_konsumen'] - $costumer['harga_tagihan']) ?></strong></span>
 		          </div>
 		        </div>
 		        <div class="form-group">
 		          <label for="first_name" class="col-sm-2 control-label">Total Pembayaran</label>
 		          <div class="col-sm-4">
-			        <h4 class="">Rp <strong id='harga'><?= number_format($costumer['harga_konsumen']) ?></strong></h4>
+			        <span class="form-control" style="border: 0">Rp <strong id='harga'><?= number_format($costumer['harga_konsumen']) ?></strong></span>
 		          </div>
 		        </div>
 		        <div class="form-group">

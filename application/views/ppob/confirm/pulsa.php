@@ -27,19 +27,19 @@
 	    		<div class="form-group">
 		          <label for="first_name" class="col-sm-2 control-label">Nomor HP</label>
 		          <div class="col-sm-4">
-			        <h4 class=""><?= wordwrap($nomer , 3 , ' ' , true ) ?></h4>
+			        <span class="form-control" style="border: 0"><?= wordwrap($nomer , 3 , ' ' , true ) ?></span>
 		          </div>
 		        </div>
 		        <div class="form-group">
 		          <label for="first_name" class="col-sm-2 control-label">Produk</label>
 		          <div class="col-sm-4">
-			        <h4 class=""><strong><?= $kode.'000' ?></strong></h4>
+			        <span class="form-control" style="border: 0" class=""><strong><?= $kode.'000' ?></strong></span>
 		          </div>
 		        </div>
 		        <div class="form-group">
 		          <label for="first_name" class="col-sm-2 control-label">Total Bayar</label>
 		          <div class="col-sm-4">
-			        <h4 class="">Rp <strong id='harga'><?= number_format($price) ?></strong></h4>
+			        <span class="form-control" style="border: 0">Rp <strong id='harga'><?= number_format($price) ?></strong></span>
 		          </div>
 		        </div>
 		        <div class="form-group">
