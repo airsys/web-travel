@@ -16,7 +16,7 @@
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    <form id="form" class="form-horizontal" action="confirm_tagihan" method="post">
+    <form id="form" class="form-horizontal" action="<?= base_url() ?>ppob/confirm_tagihan" method="post">
       <div class="box-body">
       <div class="col-md-12">
       	<div class="form-group">

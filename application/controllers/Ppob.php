@@ -88,7 +88,19 @@ class Ppob extends CI_Controller {
 		$content = 'ppob/confirm/pulsa';
 		if($page != '') $content = 'ppob/confirm/paket_data';
 		
-		$productk = explode('_',post('nominal'));
+		if($this->input->post()){
+			$nominal = post('nominal');
+			$nomer = post('nomer');
+			$data_pulsa = NULL;
+		}elseif($this->session->flashdata('data_pulsa')){
+			$data_pulsa = $this->session->flashdata('data_pulsa');
+			$nominal = $data_pulsa['nominal'];
+			$nomer = $data_pulsa['nomer'];
+		}else{
+			redirect('ppob/pulsa','refersh');
+		}
+		
+		$productk = explode('_',$nominal);
 		$ids = explode('|',$productk[1]);
 		$productk = $productk[0];		
 		
@@ -102,15 +114,19 @@ class Ppob extends CI_Controller {
 		
 		$data = array('content'=>$content,
 					  'price' => $base_price,
-					  'nominal' => post('nominal'),
-					  'nomer' => post('nomer'),
+					  'nominal' => $nominal,
+					  'nomer' => $nomer,
 					  'kode' => $product['kode'],
 					  'name_product' => $product['name'],
+					  'data_pulsa' => $data_pulsa,
 						  );
 		$this->load->view("index",$data);
 	}
 	//BAYAR
-	function bayar(){
+	function bayar($page=''){
+		$content = 'ppob/confirm/';
+		if($page != '') $content = 'ppob/confirm/paket_data';
+		
 		$login['data'] = 0; 
 		$login['message'] = '';
 		if(! $this->ion_auth->logged_in() && post('position')=='lo'){
@@ -154,7 +170,9 @@ class Ppob extends CI_Controller {
 						$return = array('message'=>$login_message.$msg[0].'<p>Gagal Pembayaran'."<br> Telah terjadi kesalahan sistem, 
 									silakan hubungi customer service kami untuk informasi lebih lanjut</p>",
 								'code'=>1,
-								'login'=>$login['data'],);
+								'login'=>$login['data'],
+								'nomer'=>post('nomer'),
+								'nominal'=>post('nominal'));
 					}else{
 						$msg = explode(".",$return['message']);	
 						$nilai_now = preg_replace("/[^0-9,.]/", "", $msg[2]);
@@ -179,28 +197,39 @@ class Ppob extends CI_Controller {
 										'code'=>0,
 										'login'=>$login['data'],
 										'id' => $id,
+										'nomer'=>post('nomer'),
+										'nominal'=>post('nominal')
 								        );
 					}
 				}else{
 					$return = array('message'=>$login_message.'Operator tidak terdaftar',
 								'code'=>1,
-								'login'=>$login['data'],);	
+								'login'=>$login['data'],
+								'nomer'=>post('nomer'),
+								'nominal'=>post('nominal'),);	
 				}
 			}else{
 				$return = array('message'=>$login_message.'saldo anda tidak cukup',
 								'code'=>1,
-								'login'=>$login['data'],);	
+								'login'=>$login['data'],
+								'nomer'=>post('nomer'),
+								'nominal'=>post('nominal'));	
 			}
 		}else{
 			$return = array('message'=>$login['message'],
 							'code'=>1,
-							'login'=>$login['data'],);	
+							'login'=>$login['data'],
+							'nomer'=>post('nomer'),
+							'nominal'=>post('nominal'));	
 		}
+			
+		$this->session->set_flashdata('data_pulsa', $return);
+		redirect($content, 'refresh');
 		
-		return $this->output
+		/*return $this->output
 	            ->set_content_type('application/json')
 	            ->set_status_header(200)
-	            ->set_output(json_encode($return));
+	            ->set_output(json_encode($return));*/
 	}	
 	/* END BAYAR PULSA */
 	
@@ -228,11 +257,23 @@ class Ppob extends CI_Controller {
 		$this->load->view("index",$data);		
 	}
 	//KONFIRMASI
-	function confirm_tagihan(){
+	function confirm_tagihan(){		
+		if($this->input->post()){
+			$oprcode = post('oprcode');
+			$nomer = post('nomer');
+			$data_pulsa = NULL;
+		}elseif($this->session->flashdata('data_pulsa')){
+			$data_pulsa = $this->session->flashdata('data_pulsa');
+			$oprcode = $data_pulsa['oprcode'];
+			$nomer = $data_pulsa['nomer'];
+		}else{
+			redirect('ppob/tagihan','refersh');
+		}
+		
 		$return = []; $data=[];
 		$my_trxid = now().'_'.RandomString(3);
-		$idpelanggan = post('nomer');
-		$productk = explode('_',post('oprcode'));
+		$idpelanggan = $nomer;
+		$productk = explode('_',$oprcode);
 		$ids = explode('|',$productk[1]);
 		$productk = $productk[0];		
 		
@@ -264,10 +305,11 @@ class Ppob extends CI_Controller {
 			  					 Harga Total Rp ".number_format($return['harga_konsumen']);	
 		}
 		$data = array('content'=>'ppob/confirm/tagihan',
-					  'product' => post('oprcode'),
+					  'product' => $oprcode,
 					  'kode' => $product['kode'],
 					  'idpelanggan' => $idpelanggan,
 					  'costumer'=>$return,
+					  'data_pulsa'=>$data_pulsa,
 					  //'kode' => $product['kode'],
 				);
 		$this->load->view("index",$data);
@@ -321,7 +363,9 @@ class Ppob extends CI_Controller {
 								'base_price'=>0, 'net_price'=>0, 'price'=>0));
 						$return = array('message'=>$login_message.$msg[0].'<p>Transaksi gagal '."<br> Telah terjadi kesalahan sistem, 
 									silakan hubungi customer service kami untuk informasi lebih lanjut</p>",
-								'code'=>1);
+								'code'=>1,
+								'nomer'=>post('nomer'),
+							    'oprcode'=>post('product'),);
 						
 					}else{
 						//Pembayaran Tagihan TELKOM a/n PT.ASTEL 0213863333 sebesar 63360. BERHASIL.Kode Ref: RRYAgQ110686. Saldo: Rp 1113204. No: 0213863333.Tgl 13092011 Jam 10:00 WIB, Transaksi Lancar
@@ -341,28 +385,38 @@ class Ppob extends CI_Controller {
 										'code'=>0,
 										'login'=>$login['data'],
 										'id' => $id,
+										'nomer'=>post('nomer'),
+										'oprcode'=>post('product'),
 								        );
 					}
 				}else{
 					$return = array('message'=>$login_message.'Operator tidak terdaftar',
-								'code'=>1);	
+								'code'=>1,
+								'nomer'=>post('nomer'),
+							    'oprcode'=>post('product'),);	
 				}
 			}else{
 				$return = array('message'=>$login_message.'saldo anda tidak cukup',
 								'code'=>1,
-								'login'=>$login['data'],);	
+								'login'=>$login['data'],
+								'nomer'=>post('nomer'),
+							    'oprcode'=>post('product'),);	
 			}
 		}else{
 			$return = array('message'=>$login['message'],
 							'code'=>1,
-							'login'=>$login['data'],);
+							'login'=>$login['data'],
+							'nomer'=>post('nomer'),
+							'oprcode'=>post('product'),);
 		}
 		
+		$this->session->set_flashdata('data_pulsa', $return);
+		redirect('ppob/confirm_tagihan', 'refresh');
 		
-		return $this->output
+		/*return $this->output
 	            ->set_content_type('application/json')
 	            ->set_status_header(200)
-	            ->set_output(json_encode($return));
+	            ->set_output(json_encode($return)); */
 	}
 	//CEK TAGIHAN
 	private function _cek_products($string){

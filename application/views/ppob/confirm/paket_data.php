@@ -20,8 +20,10 @@
       <h3 class="box-title">Konfirmasi Pembelian Paket Data</h3>
     </div>
     <!-- /.box-header -->
+    
+    <?php if($data_pulsa['code'] == 1 || $data_pulsa==NULL){ ?>
     <!-- form start -->
-    	<form id="form" class="form-horizontal" action="confirm" method="post" novalidate>
+    	<form id="form" class="form-horizontal" action="<?= base_url() ?>ppob/bayar/paket_data" method="post" novalidate>
 	      <div class="box-body" id="beli">
 	    	<div class="col-md-12">
 	    		<div class="form-group">
@@ -45,7 +47,11 @@
 		        <div class="form-group">
 		          <label for="first_name" class="col-sm-1 control-label"></label>
 		          <div class="col-sm-5">
-			        <div id="warn"></div>
+			        <?php if($data_pulsa != NULL){
+		          		if($data_pulsa['code']==1){
+							echo "<div id='alertdiv' class='alert alert-danger'><i class='close' data-dismiss='alert'>X</i><span>$data_pulsa[message]</span></div>";	
+						}
+					} ?>
 		          </div>
 		        </div>
 		        <?php if(!$this->ion_auth->logged_in()){ ?>
@@ -141,9 +147,23 @@
 	        </div>
 	        <!-- /.col -->
 	      </div>
-	      <!-- /.box-body -->  
+	      <!-- /.box-body -->
 	      
-	      <div id="sukses" class="box-body hide">
+	      <div class="box-footer">
+		      	<input type="hidden" name="nominal" value="<?= $nominal ?>" />
+		      	<input type="hidden" name="nomer" value="<?= $nomer ?>" />
+		        <div class="col-md-6">
+		          <button id="btn-submit" type="button" class="btn btn-success pull-right"><i class="fa fa-money"></i> BAYAR</button>
+		          <a href="<?= base_url() ?>ppob/pulsa" id="btn-back" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> BACK</a>
+		        </div>
+		      </div>
+	      </form>	      
+	      <?php } ?>
+	      
+	      <?php 
+	      	if($data_pulsa != NULL){
+	      		if($data_pulsa['code']==0){ ?>	      
+	      <div id="sukses" class="box-body">
 			<div class="col-md-6">
 				<div class="alert alert-info alert-dismissible">
 			        <h4><i class="icon fa fa-info"></i> Pembayaran Success</h4>
@@ -152,16 +172,14 @@
 			    </div>
 			</div>
 		 </div>
+		 
 	      <div class="box-footer">
-	      	<input type="hidden" name="nominal" value="<?= $nominal ?>" />
-	      	<input type="hidden" name="nomer" value="<?= $nomer ?>" />
 	        <div class="col-md-6">
-	          <button id="btn-submit" type="submit" class="btn btn-success pull-right"><i class="fa fa-money"></i> BAYAR</button>
-	          <a href="javascript: window.history.go(-1)" id="btn-back" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> BACK</a>
-	          <a href="" id="btn-detail" class="btn btn-primary pull-right hide"><i class="fa fa-eye"></i> DETAIL</a>
+	          <a href="<?= base_url().'ppob/pulsa/paket_data'; ?>" id="btn-back" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> BACK</a>
+	          <a href="<?= base_url().'ppob/finance/'.$data_pulsa['id']; ?>"" id="btn-detail" class="btn btn-primary pull-right"><i class="fa fa-eye"></i> DETAIL</a>
 	        </div>
 	      </div>
-     	</form>
+	      <?php } } ?>
    </div>
   <!-- /.box -->
   <script>
@@ -188,59 +206,19 @@
 			}
 		});
 		
-  	    var s=false;
-  		$("#form").on("submit", function(event) {
+		$("#btn-submit").on("click", function(event) {
   			event.preventDefault(); 
-  			if(s){
-				alert();
-			}else{
-				if($("#form").valid()){
+				if($("#form").valid()){					
 		    	$("#btn-submit").removeClass('btn-success');
 		        $("#btn-submit").addClass('btn-warning');
 		        $("#btn-submit").attr('disabled',true);
 		        $("#btn-submit").children("i").removeClass('fa-money');
 		        $("#btn-submit").children("i").addClass('fa-refresh fa-spin');
-		        $.ajax({
-		            url:  base_url+"ppob/bayar",
-		            type: "post",
-		            data: $(this).serialize(),
-		            success: function(d, textStatus, xhr) {
-		            	if(d.code == 0){
-							//showalert(d.message,'success','#warn',60000000);
-							$("#beli").fadeOut();
-							$("#sukses").fadeIn();
-							$("#sukses").removeClass("hide");
-							s = true;
-							$("#btn-submit").hide();
-							$("#btn-detail").removeClass('hide');
-							$("#btn-detail").prop("href", base_url+"ppob/finance/"+d.id+'/confirm')
-							
-						}else{
-							showalert(d.message,'danger','#warn',60000000);
-							$("#btn-submit").addClass('btn-success');
-					        $("#btn-submit").removeClass('btn-warning');
-					        $("#btn-submit").attr('disabled',false);
-					        $("#btn-submit").children("i").addClass('fa-money');
-					        $("#btn-submit").children("i").removeClass('fa-refresh fa-spin');
-						}
-						if(d.login==1){
-							$("#login").html('');
-							$("#login").hide();
-						}
-		            },
-		             error: function (request, status, error) {
-		             	showalert(request.message,'danger','#warn',60000000);
-		                $("#btn-submit").addClass('btn-success');
-				        $("#btn-submit").removeClass('btn-warning');
-				        $("#btn-submit").attr('disabled',false);
-				        $("#btn-submit").children("i").addClass('fa-money');
-				        $("#btn-submit").children("i").removeClass('fa-refresh fa-spin');
-		            }
-		        });
-		   		} //form validation
-			}
+		        
+		        $("#form").submit();
+		   	} //form validation
   			
 	  });
-	  
+		
 	});
   </script>
