@@ -27,7 +27,7 @@ function __construct(){
 		$this->db->order_by("id","desc");
 		$this->db->where("`company`",'0');
 		//$this->db->where("markup.active","1");
-		$this->db->where("`markup.markup for`","internal");
+		$this->db->where("`markup.markup for`","member");
 		$this->db->from("markup");
 		$this->db->join("product","markup.product=product.id", 'left');
 		$query=$this->db->get();
@@ -123,6 +123,10 @@ function __construct(){
 	}
 	function tambah($data){
        $this->db->insert('markup', $data);
+       return TRUE;
+    }
+    function tambahmember($datamember){
+       $this->db->insert('markup', $datamember);
        return TRUE;
     }
     function dd_product()

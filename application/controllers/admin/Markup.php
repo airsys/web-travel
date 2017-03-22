@@ -79,6 +79,17 @@ function listMarkup(){
             'active' => '1',
         );
         $this->m_markup->tambah($data);
+
+
+           $datamember = array(
+            'product' => $this->input->post('product'),
+            '`markup for`' => 'member',
+            'value' => $this->input->post('value'),
+            'type' => $this->input->post('type'),
+            'active' => '1',
+        );
+        $this->m_markup->tambahmember($datamember);
+        
         $this->session->set_flashdata('notif','<div class="alert alert-success" role="alert"> Markup Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
         redirect('admin/markup/listMarkup');
     }
