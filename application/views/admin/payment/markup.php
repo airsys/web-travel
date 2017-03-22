@@ -17,7 +17,7 @@ td {
 
 <div class="box box-primary" style="width: 100%">
     <div class="box-header with-border">
-      <h3 class="box-title">Markup</h3>
+      <h3 class="box-title">  Markup Setting</h3>
     </div>
     <!-- /.box-header -->
 
@@ -25,73 +25,139 @@ td {
 
 			<div class="row">
 				<div class="col-md-12">
+				  <div class="nav-tabs-custom">
+		            <ul class="nav nav-tabs">
+		              <li class="active"><a href="#tab_1" data-toggle="tab">Internal</a></li>
+		              <li><a href="#tab_2" data-toggle="tab">Member</a></li>
+		            </ul>
+				        <div class="tab-content">
+				        <a data-toggle="modal" data-target="#tambah-data" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Add Markup</a>
+				            <div class="tab-pane active" id="tab_1">
+								<!--<button class="btn btn-info" id="tambah-data"><i class="glyphicon glyphicon-plus-sign"></i> Tambah </button>-->
+								<br>
+								<label><h4><strong>Setting Markup For Internal</strong></h4></label>
+								<br>
+								<table id="table-data" class="table table-striped">
+
+									<thead>
+									<tr>
+										<th>Product</th>
+										<th>Kode</th>
+										<th>Value</th>
+										<th>Type</th>
+										<th>Action</th>
+									</tr>
+									</thead>
+
+								<tbody id="table-body">
+									<?php 
+
+									foreach ($markup as $member) {
+										echo "<tr data-id='$member[id]'>
+												<td><span class='span-product caption' data-id='$member[id]'>$member[product]</span> 
+													<input type='text' class='field-product form-control editor' id='product' value='$member[product]' data-id='$member[id]' readonly />
+												</td>
+												<td><span class='span-kode caption' data-id='$member[id]'>$member[kode]</span> 
+												<input type='text' class='field-kode form-control editor' id='kode' value='$member[kode]' data-id='$member[id]' readonly />
+												</td>
+												<td><span class='span-value caption' data-id='$member[id]'>$member[value]</span> 
+													<input type='text' class='field-value form-control editor' id='value' value='$member[value]' data-id='$member[id]' />
+													
+												</td>
+												<td><div class='col-sm-5'>
+													<span class='span-type caption' data-id='$member[id]'>$member[type]</span> 
+													<input type='text' id='typetxt' class='field-type form-control editor typetxt' value='$member[type]' data-id='$member[id]'/>
+													</div>
+													<div>
+													<select class='field-type form-control typecmb' id='typecmb' >
+														<option id='typevalue'>$member[type]</option>
+														<option value='persen'>persen</option>
+														<option value='decimal'>decimal</option>	
+													</select>
+													</div>
+												</td>
+
+												<td>
+												<button class='btn btn-xs btn-info edit' data-id='$member[id]'><i class='glyphicon glyphicon-edit'> Edit</i></button>
+												<button class='btn btn-xs btn-primary save' data-id='$member[id]'> Save</button>
+												<button class='btn btn-xs btn-danger cancel' data-id='$member[id]'> Cancel</button>
+												<button class='btn btn-xs btn-danger hapus-member' data-id='$member[id]'><i class='glyphicon glyphicon-remove'></i> Hapus</button>
+												</td>
+												</tr>";
+									}
 
 
-				<!--<button class="btn btn-info" id="tambah-data"><i class="glyphicon glyphicon-plus-sign"></i> Tambah </button>-->
-					<a data-toggle="modal" data-target="#tambah-data" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Tambah</a>
-					<br>
-					<br>
-					<br>
-					<table id="table-data" class="table table-striped">
+									 ?>
+								</tbody>
 
-					<thead>
-					<tr>
-					<th>Product</th>
-					<th>Kode</th>
-					<th>Value</th>
-					<th>Type</th>
-					<th>Action</th>
-					</tr>
-					</thead>
+								</table>
+							 </div>
+							 <div class="tab-pane" id="tab_2">
+							
+							 	<br>
+							 	<label><h4><strong>Setting Markup For Member</strong></h4></label>
+								<br>
+								<table id="table-data" class="table table-striped">
 
-					<tbody id="table-body">
-					<?php 
+									<thead>
+									<tr>
+										<th>Product</th>
+										<th>Kode</th>
+										<th>Value</th>
+										<th>Type</th>
+										<th>Action</th>
+									</tr>
+									</thead>
 
-					foreach ($markup as $member) {
-						echo "<tr data-id='$member[id]'>
-								<td><span class='span-product caption' data-id='$member[id]'>$member[product]</span> 
-									<input type='text' class='field-product form-control editor' id='product' value='$member[product]' data-id='$member[id]' readonly />
-								</td>
-								<td><span class='span-kode caption' data-id='$member[id]'>$member[kode]</span> 
-								<input type='text' class='field-kode form-control editor' id='kode' value='$member[kode]' data-id='$member[id]' readonly />
-								</td>
-								<td><span class='span-value caption' data-id='$member[id]'>$member[value]</span> 
-									<input type='text' class='field-value form-control editor' id='value' value='$member[value]' data-id='$member[id]' />
-									
-								</td>
-								<td><div class='col-sm-5'>
-									<span class='span-type caption' data-id='$member[id]'>$member[type]</span> 
-									<input type='text' id='typetxt' class='field-type form-control editor typetxt' value='$member[type]' data-id='$member[id]'/>
-									</div>
-									<div>
-									<select class='field-type form-control typecmb' id='typecmb' >
-										<option >---</option>
-										<option value='persen'>persen</option>
-										<option value='decimal'>decimal</option>	
-									</select>
-									</div>
-								</td>
+								<tbody id="table-body">
+									<?php 
 
-								<td>
-								<button class='btn btn-xs btn-info edit' data-id='$member[id]'><i class='glyphicon glyphicon-edit'> Edit</i></button>
-								<button class='btn btn-xs btn-primary save' data-id='$member[id]'> Save</button>
-								<button class='btn btn-xs btn-danger cancel' data-id='$member[id]'> Cancel</button>
-								<button class='btn btn-xs btn-danger hapus-member' data-id='$member[id]'><i class='glyphicon glyphicon-remove'></i> Hapus</button>
-								</td>
-								</tr>";
-					}
+									foreach ($defaultmember as $member) {
+										echo "<tr data-id='$member[id]'>
+												<td><span class='span-product caption' data-id='$member[id]'>$member[product]</span> 
+													<input type='text' class='field-product form-control editor' id='product' value='$member[product]' data-id='$member[id]' readonly />
+												</td>
+												<td><span class='span-kode caption' data-id='$member[id]'>$member[kode]</span> 
+												<input type='text' class='field-kode form-control editor' id='kode' value='$member[kode]' data-id='$member[id]' readonly />
+												</td>
+												<td><span class='span-value caption' data-id='$member[id]'>$member[value]</span> 
+													<input type='text' class='field-value form-control editor' id='value' value='$member[value]' data-id='$member[id]' />
+													
+												</td>
+												<td><div class='col-sm-5'>
+													<span class='span-type caption' data-id='$member[id]'>$member[type]</span> 
+													<input type='text' id='typetxt' class='field-type form-control editor typetxt' value='$member[type]' data-id='$member[id]'/>
+													</div>
+													<div>
+													<select class='field-type form-control typecmb' id='typecmb' >
+														<option id='typevalue'>$member[type]</option>
+														<option value='persen'>persen</option>
+														<option value='decimal'>decimal</option>	
+													</select>
+													</div>
+												</td>
+
+												<td>
+												<button class='btn btn-xs btn-info edit' data-id='$member[id]'><i class='glyphicon glyphicon-edit'> Edit</i></button>
+												<button class='btn btn-xs btn-primary save' data-id='$member[id]'> Save</button>
+												<button class='btn btn-xs btn-danger cancel' data-id='$member[id]'> Cancel</button>
+												<button class='btn btn-xs btn-danger hapus-member' data-id='$member[id]'><i class='glyphicon glyphicon-remove'></i> Hapus</button>
+												</td>
+												</tr>";
+									}
 
 
-					 ?>
-					</tbody>
+									 ?>
+								</tbody>
 
-					</table>
-
-					</div>
-				</div>
-
+								</table>
+							 </div>
+					 		
+					 	</div> 
+					</div> 
+				</div> 
+			</div>
 		</div>
-
 </div>
 
  <!-- Modal Tambah -->
@@ -247,6 +313,7 @@ $(function(){
 			$(this).closest('tr').find('.cancel').hide();
 			$(this).closest('tr').find('.edit').show();
 			$(this).closest('tr').find('.hapus-member').show();
+			$(this).closest('tr').find('.typecmb').hide();
 		
    		});
    		$(document).on("click",".edit",function(){
@@ -260,6 +327,7 @@ $(function(){
 			$(this).closest('tr').find('.typetxt').hide();
    		});
 		$('.typecmb').click(function(event){
+			 $(this).closest('tr').find('#typevalue').hide();
     		 event.stopPropagation();
  		});
 

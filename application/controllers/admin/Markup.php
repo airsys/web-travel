@@ -19,8 +19,10 @@ function listMarkup(){
 		//$data["people"]=$this->m_markup->read();
 		//$this->load->view("admin/payment/markup",$data);
 			$data_select = $data_select = $this->m_markup->read();
+			$data_default_member = $this->m_markup->readMarkupMember();
 		 	$data = array('content'=>'payment/markup',
 		 		 		'markup'=>$data_select,
+		 		 		'defaultmember'=>$data_default_member,
 		 		 		//'markup'=> listDataCustom('markup','id','product,value,type',"where `markup for` like 'internal'"),
 		 				'dd_product' => $this->m_markup->dd_product(),
             			'product_selected' => $this->input->post('product') ? $this->input->post('product') : '', // untuk edit ganti '' menjadi data dari database misalnya $row->provinsi
@@ -89,7 +91,7 @@ function listMarkup(){
             'active' => '1',
         );
         $this->m_markup->tambahmember($datamember);
-        
+
         $this->session->set_flashdata('notif','<div class="alert alert-success" role="alert"> Markup Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
         redirect('admin/markup/listMarkup');
     }
