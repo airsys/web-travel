@@ -8,13 +8,16 @@
       <a id="pulsa" class="btn btn-app bg-black">
         <i class="fa fa-mobile"></i> PULSA HP
       </a>
-      <a id="plnpra" class="btn btn-app bg-yellow">
-        <i class="fa fa-bolt"></i> PLN Prabayar
+      <a id="data" class="btn btn-app bg-blue">
+        <i class="fa fa-cloud"></i> PAKET DATA
       </a>
       <a id="telkom" class="btn btn-app bg-red">
         <i class="fa fa-phone"></i> TELKOM
       </a><br>
       <!--
+      <a id="plnpra" class="btn btn-app bg-yellow">
+        <i class="fa fa-bolt"></i> PLN Prabayar
+      </a>
       <a class="btn btn-app ">
         <i class="fa fa-bolt"></i> PLN Pascabayar
       </a>
@@ -31,11 +34,14 @@
  	$("#pulsa").on("click", function(event) { 
  		window.open(base_url+"ppob/pulsa","_self");
  	});
+ 	$("#data").on("click", function(event) { 
+ 		window.open(base_url+"ppob/pulsa/data","_self");
+ 	});
  	$("#plnpra").on("click", function(event) { 
  		window.open(base_url+"ppob/pln","_self");
  	});
  	$("#telkom").on("click", function(event) { 
- 		window.open(base_url+"ppob/telkom","_self");
+ 		window.open(base_url+"ppob/tagihan","_self");
  	});
  	
  	var path = window.location.hash.split('#')[1];
