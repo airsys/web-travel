@@ -303,7 +303,7 @@ $(document).ready(function(){
             url:  base_url+mylink,
             type: "post",
             data: $('#form').serialize(),
-            async: false,
+            async: true,
             success: function(d) {
                 $('#overlay').remove();
                 if(tipe != 'all'){
