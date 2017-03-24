@@ -106,9 +106,9 @@
 			<div class="col-search2">
 				 <input type="hidden" name="tipe" id="tipe" value="all"/>
 				 <div class="btn-group" style="margin-top: 25px;">
-                 <!--smentara sriwijaya di tutup, search diarahkan ke lion-->
-                 <!-- <button type="submit" id='btn-search' class="btn btn-success btn-flat btn-lg" style="height: 34px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-search"></i> | SEARCH</button>-->
-                 <a href="#" class="btn  btn-success btn-flat tipe" type="submit" data-type='lion' id='search-lion' ><i class="fa fa-search"></i> | SEARCH</a>
+                 
+                  <button type="submit" id='btn-search' class="btn btn-success btn-flat btn-lg" style="height: 34px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-search"></i> | SEARCH</button>
+                 <!--<a href="#" class="btn  btn-success btn-flat tipe" type="submit" data-type='lion' id='search-lion' ><i class="fa fa-search"></i> | SEARCH</a>-->
                   <button type="button" class="btn btn-success btn-flat dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
@@ -116,11 +116,13 @@
                   
                   <ul class="dropdown-menu" role="menu">
                     <li style="text-align: center" ><a href="#" class="btn btn-flat tipe" type="submit" data-type='lion' id='search-lion' >Lion Air</a></li>
-                    <!--<li style="text-align: center" ><a href="#" class="btn btn-flat tipe" type="submit" data-type='sriwijaya' id='search-sriwijaya' >Sriwijaya Air</a></li>-->
+                    <li style="text-align: center" ><a href="#" class="btn btn-flat tipe" type="submit" data-type='sriwijaya' id='search-sriwijaya' >Sriwijaya Air</a></li>
                   </ul>
                 </div>
 			</div>
 		</div><!-- /.box-body -->
+    <div id="getting_data" hidden>Geeting data....</div>
+    <div id="done" hidden>Done.</div>
 	</form>
 	<form id="booking" action="<?php echo base_url()?>airlines/booking" method="post">
 		<input id='h_from' name='from' type="hidden" value=''> 
@@ -297,6 +299,7 @@ $(document).ready(function(){
         $("#btn-search").addClass('btn-warning');
         $("#btn-search").children("i").removeClass('fa-search');
         $("#btn-search").children("i").addClass('fa-refresh fa-spin');
+        $("#getting_data").show();
         
         $(over).appendTo("#cari");
         $.ajax({
@@ -331,6 +334,8 @@ $(document).ready(function(){
              complete: function() {
         		$("#result-content").show();
         		//setTimeout(coba('sriwijaya'), 3000)
+             $("#getting_data").hide();
+            $("#done").show();
              }
         });
 	}
@@ -516,19 +521,24 @@ $(document).ready(function(){
             var transit = 'Langsung';
             var display = '';
             if(data.flight_count > 1) transit = "Transit " + (parseInt(data.flight_count)-1);
-            var tampilan = '<div data-time="'+data.time_depart+'" data-total="'+(data.fare+data.tax)+'" id="group-panel'+j+'" class="panel-group">'+
+           var tampilan = '<div data-time="'+data.time_depart+'" data-total="'+(data.fare+data.tax)+'" id="group-panel'+j+'" class="panel-group">'+
                                 '<div class="panel panel-info ">'+
                                     '<div class="col-md-8 col-xs-8">'+
-                                    	'<div id="group'+j+'">'+
-                                    		'<div id="image_'+j+'" class="col-md-2 col-xs-6"><\/div>'+
-                                    		'<div class="col-md-4 col-xs-6"><label data-count="'+data.flight_count+'_'+j+'" class="tooltips label bg-green" >'+transit+'</label></div>'+
-                                    	'</div>'+
+                                      '<div id="group'+j+'">'+
+                                          '<div class="col-md-6 col-xs-12">'+
+                                          //  '<div id="image_'+j+'" class="col-md-2 col-xs-6"><\/div>'+
+                                            '<label><img id="image_'+j+'" src="'+data.airline_icon+'" height="50" alt="" />&nbsp;<span class="'+flightid+'" id="flightid_'+j+'"><\/span><\/label>'+
+                                            '<\/div>'+
+                                              '<h5 style=""><span>'+data.area_depart+'<\/span> | <span>'+data.time_depart+'<\/span> - <span>'+data.area_arrive+'<\/span> | <span>'+data.time_arrive+'<\/span><\/h5>'+
+
+                                        '<div class="col-md-4 col-xs-6"><label data-count="'+data.flight_count+'_'+j+'" class="tooltips label bg-green" >'+transit+'</label></div>'+
+                                      '<\/div>'+
                                     '<\/div>'+
-                                	
-									'<div class="col-md-4 col-xs-4"> '+
-									  '<div class="text-center container-fare_'+j+'"><label>Rp <span class="tooltips-harga" title="Rp '+addCommas(data.fare)+'(fare) + Rp '+addCommas(data.tax)+'(tax)" id="total_'+j+'">'+addCommas(data.fare+data.tax)+'<\/span><\/label><\/div>'+
-									  '<button flight_number="" flight_key="'+data.flight_key+'" type="button" class="center-block btn-booking button-booking_'+j+' btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>' +
-									'<\/div>'+
+                                  
+                  '<div class="col-md-4 col-xs-4"> '+
+                    '<div class="text-center container-fare_'+j+'"><label>Rp <span class="tooltips-harga" title="Rp '+addCommas(data.fare)+'(fare) + Rp '+addCommas(data.tax)+'(tax)" id="total_'+j+'">'+addCommas(data.fare+data.tax)+'<\/span><\/label><\/div>'+
+                    '<button flight_number="" flight_key="'+data.flight_key+'" type="button" class="center-block btn-booking button-booking_'+j+' btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>' +
+                  '<\/div>'+
                                     '<div class="row">'+
                                     '<\/div>'+
                                 '<\/div>'+                           
@@ -551,8 +561,8 @@ $(document).ready(function(){
                 if(i != 0) { display='display:none;';}
                 tampilan2 = '<div class="col-md-6 col-xs-12" style="'+display+'">'+
                                 '<div class="">'+
-                                    '<h5 style="display:none"><span id="depart_'+j+'_'+i+'"><\/span> | <span class="'+time_depart+'" id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h5>'+
-                                    '<h5 style=""><span>'+data.area_depart+'<\/span> | <span>'+data.time_depart+'<\/span> - <span>'+data.area_arrive+'<\/span> | <span>'+data.time_arrive+'<\/span><\/h5>'+
+                                   '<h5 style="display:none"><span id="depart_'+j+'_'+i+'"><\/span> | <span class="'+time_depart+'" id="timedepart_'+j+'_'+i+'"><\/span> - <span id="arrive_'+j+'_'+i+'"><\/span> | <span id="timearrive_'+j+'_'+i+'"><\/span><\/h5>'+
+                                  //  '<h5 style=""><span>'+data.area_depart+'<\/span> | <span>'+data.time_depart+'<\/span> - <span>'+data.area_arrive+'<\/span> | <span>'+data.time_arrive+'<\/span><\/h5>'+
                                 '<\/div>'+
                            '<\/div>';
                 flights = flights + '<label><img id="image_'+j+'_'+i+'" src="'+data.airline_icon+'" height="25" alt="" />&nbsp;<span class="'+flightid+'" id="flightid_'+j+'_'+i+'"><\/span><\/label>';
