@@ -257,7 +257,7 @@ class Ppob extends CI_Controller {
 		$this->load->view("index",$data);		
 	}
 	//KONFIRMASI
-	function confirm_tagihan(){		
+	function confirm_tagihan(){
 		if($this->input->post()){
 			$oprcode = post('oprcode');
 			$nomer = post('nomer');
@@ -284,7 +284,16 @@ class Ppob extends CI_Controller {
 		$kode_cek = $this->_cek_products($sProduct[1]);
 		
 		$data = ppobxml($idpelanggan,$kode_cek,'charge',$my_trxid);
+		//pr($data,TRUE);
 		//$data['message'] = 'Tagihan TELKOM a/n PT.ASTEL 0213863333 adalah sebesar 63360.Untuk Bayar ketik: BAYAR.TELKOM.WEB.Pin.0218672720.63360.NoHpPlg atau Email';
+				
+		if($data['resultcode']==999){
+			//echo "dari database";
+			$data = json_decode("".$this->_get_cache($idpelanggan)."",TRUE);
+		}else{
+			//echo "dari server";
+			$this->_store_cache($nomer,$data);
+		}
 		
 		if( preg_match("/gagal|sudah ada|tidak cukup/",strtolower($data['message']))){
 			$return['message'] = $data['message'];
@@ -426,6 +435,19 @@ class Ppob extends CI_Controller {
 		$r = $data[strtolower($string)];	
 		return $r;
 	}
+	// GET CACHE
+	private function _get_cache($nomor=0){
+		$this->db->select("data")
+			     ->where("msisdn",$nomor)
+			     ->from("ppob cache");
+		$data = $this->db->get()->row_array();
+		return $data['data'];
+	}
+	// STORE CACHE
+	private function _store_cache($nomor=0,$data=''){
+		$this->m_ppob->store_cache($nomor,$data);
+	}
+	
 	/* END BAYAR TAGIHAN */
 	
 	/*======================================================*/

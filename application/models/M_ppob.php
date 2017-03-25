@@ -310,4 +310,21 @@ class M_ppob extends CI_Model
 		return $r;		
 	}
 	
+	function store_cache($nomor=0, $data_array = ''){
+		//detect
+		$num = 0;
+		$this->db->where('msisdn',$nomor);
+		$num = $this->db->count_all_results('ppob cache');
+		
+		$data_array = json_encode($data_array);
+		$data_update = array('msisdn'=>$nomor, 'data'=>$data_array, 'time'=>now());
+		
+		if($num > 0){			
+			$this->db->where('msisdn',$nomor);
+			$this->db->update('ppob cache', $data_update); 
+		}else{
+			$this->db->insert('ppob cache', $data_update); 
+		}
+	}
+	
 }
