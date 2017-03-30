@@ -121,8 +121,11 @@
                 </div>
 			</div>
 		</div><!-- /.box-body -->
-    <div id="getting_data" hidden>Geeting data....</div>
+    <div id="getting_data" hidden>Getting data....</div>
     <div id="done" hidden>Done.</div>
+     <div class="progress progress-striped active progress-xxs" style="width: 100%;">
+        <div class="progress-bar progress-bar-danger" style="width: 0%;"></div>
+    </div>
 	</form>
 	<form id="booking" action="<?php echo base_url()?>airlines/booking" method="post">
 		<input id='h_from' name='from' type="hidden" value=''> 
@@ -300,6 +303,7 @@ $(document).ready(function(){
         $("#btn-search").children("i").removeClass('fa-search');
         $("#btn-search").children("i").addClass('fa-refresh fa-spin');
         $("#getting_data").show();
+        $('.progress-bar').css({width: "10%"});
         
         $(over).appendTo("#cari");
         $.ajax({
@@ -316,12 +320,14 @@ $(document).ready(function(){
 					$(".box-title").show();
 					$('.fa').removeClass('fa-caret-down');
 					$('.fa').removeClass('fa-caret-up');
+          $('.progress-bar').width($('.progress-bar').width()+200);
+          $("#getting_data").show();
 				}
                 
-                $("#btn-search").removeClass('btn-warning');
-		        $("#btn-search").addClass('btn-success');
-		        $("#btn-search").children("i").addClass('fa-search');
-		        $("#btn-search").children("i").removeClass('fa-refresh fa-spin');
+            //    $("#btn-search").removeClass('btn-warning');
+		        //$("#btn-search").addClass('btn-success');
+		        //$("#btn-search").children("i").addClass('fa-search');
+		        //$("#btn-search").children("i").removeClass('fa-refresh fa-spin');
             },
              error: function (request, status, error) {
                 $('#overlay').remove();
@@ -330,13 +336,22 @@ $(document).ready(function(){
 		        $("#btn-search").children("i").addClass('fa-search');
 		        $("#btn-search").children("i").removeClass('fa-refresh fa-spin');
                 showalert(request.responseText,'warning');
+            $('.progress-bar').css({width: "0%"});
             },
              complete: function() {
         		$("#result-content").show();
         		//setTimeout(coba('sriwijaya'), 3000)
-             $("#getting_data").hide();
-            $("#done").show();
+             //$("#getting_data").hide();
+           
              }
+        });
+        $(document).ajaxStop(function(){
+            $("#btn-search").removeClass('btn-warning');
+            $("#btn-search").addClass('btn-success');
+            $("#btn-search").children("i").addClass('fa-search');
+            $("#btn-search").children("i").removeClass('fa-refresh fa-spin');
+            $('.progress-bar').css({width: "100%"});
+            $("#getting_data").hide();
         });
 	}
     
