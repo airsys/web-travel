@@ -91,6 +91,7 @@ class Report extends CI_Controller {
 		}
 		return $return;
 	}
+
 	 private function _boking_detail($code){
 	 	$this->load->library('curl');
     	$this->config->load('api');
@@ -154,7 +155,6 @@ class Report extends CI_Controller {
 					);
 		$this->load->view("admin/index",$data);
 	 }
-
 	 
 	 function topup_detail($id_topup='00'){
 			$data_select = $this->m_report->topup_detail($id_topup);
@@ -174,4 +174,5 @@ class Report extends CI_Controller {
 				);
 		$this->load->view("admin/report/invoice",$data);
 	 }
+
 }
