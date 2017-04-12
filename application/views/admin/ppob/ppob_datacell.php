@@ -25,7 +25,9 @@
   </div>
   <!-- /.box -->
   
-  <?php if($data_table != NULL){?>
+  <?php
+  /*
+   if($data_table != NULL){?>
   	<div id="result-content" class="box box-primary center-block" style="width: 100%">
 		<div class="box-header with-border">
 			<h3 class="box-title">Saldo List</h3>
@@ -56,4 +58,5 @@
 			</div>
 		</div>
 	</div><!-- /.box-body -->  
-  <?php } ?>
+  <?php } */
+?>
