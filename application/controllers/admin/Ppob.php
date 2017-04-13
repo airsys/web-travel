@@ -50,4 +50,33 @@ class Ppob extends CI_Controller {
 	            ->set_output(json_encode($data_r));
 		}
 	}
+	
+	function cek_saldo_ppob(){		
+		$saldo = NULL;
+		$message = NULL;
+		//$this->db->order_by('date','desc');
+		//$data_table = $this->db->get("`ppob saldo`",50,0)->result();
+		
+		if(! $this->input->post('saldo')){
+			$saldo = NULL;
+		}else{
+			$this->load->helper('ppob');
+			$saldo = cekSaldoPpob();
+			if($saldo !=NULL){
+				//$this->db->insert("`ppob saldo`",array('saldo'=>$saldo,'date'=>now()));
+				$message = "Saldo sekarang sebesar <strong>Rp ".number_format($saldo)."</strong>";
+			}else{
+				/*$message = "Belum mendapat respon dari server<br>
+			    Saldo terakhir sebesar Rp ".number_format($data_table[0]->saldo);*/
+			    $message = "Pengecekan saldo gagal ! <br> silahkan coba 5-10 menit lagi.";
+			}
+		}
+		
+	 	$data = array('content'=>'ppob/ppob_datacell',
+	 				  'saldo' => $saldo,
+	 				  //'data_table' => $data_table,
+	 				  'message' => $message,
+					);
+	 	$this->load->view("admin/index",$data);
+	 }
 }
