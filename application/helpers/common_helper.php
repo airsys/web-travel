@@ -10,6 +10,9 @@ function airline(){
 		case 'sriwijaya':
 			return 'sriwijaya';
 			break;
+		case 'citilink':
+			return 'citilink';
+			break;
 		default:
 			return 'lion';
 			break;

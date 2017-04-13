@@ -108,7 +108,7 @@
 				 <div class="btn-group" style="margin-top: 25px;">
                  
                   <button type="submit" id='btn-search' class="btn btn-success btn-flat btn-lg" style="height: 34px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-search"></i> | SEARCH</button>
-                 <!--<a href="#" class="btn  btn-success btn-flat tipe" type="submit" data-type='lion' id='search-lion' ><i class="fa fa-search"></i> | SEARCH</a>-->
+                 
                   <button type="button" class="btn btn-success btn-flat dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
@@ -117,6 +117,7 @@
                   <ul class="dropdown-menu" role="menu">
                     <li style="text-align: center" ><a href="#" class="btn btn-flat tipe" type="submit" data-type='lion' id='search-lion' >Lion Air</a></li>
                     <li style="text-align: center" ><a href="#" class="btn btn-flat tipe" type="submit" data-type='sriwijaya' id='search-sriwijaya' >Sriwijaya Air</a></li>
+                     <li style="text-align: center" ><a href="#" class="btn btn-flat tipe" type="submit" data-type='citilink' id='search-citilink' >Citilink Air</a></li>
                   </ul>
                 </div>
 			</div>
@@ -360,6 +361,7 @@ $(document).ready(function(){
 		if($("#form").valid()){		
     		coba('lion');
     		coba('sriwijaya');
+        coba('citilink');
 		}      
   	});
     
