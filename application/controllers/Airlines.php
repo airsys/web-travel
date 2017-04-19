@@ -679,6 +679,19 @@ class Airlines extends CI_Controller {
 		return $totalPenambahan;	
 	}
 	
+	function route(){
+		$this->db->select("id as no, iata as code_route,name as name_airport,
+						city,country")
+			 ->from('airport')
+			 ->where("country",'Indonesia');
+		$data = $this->db->get()->result();
+		
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($data));
+	}
+	
 }
 
 
