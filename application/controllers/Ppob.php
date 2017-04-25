@@ -438,8 +438,8 @@ class Ppob extends CI_Controller {
 	// GET CACHE
 	private function _get_cache($nomor=0){
 		$this->db->select("data")
-			     ->where("msisdn",$nomor)
-			     ->from("ppob cache");
+			     ->where("code",$nomor)
+			     ->from("cache");
 		$data = $this->db->get()->row_array();
 		return $data['data'];
 	}

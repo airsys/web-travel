@@ -51,7 +51,7 @@ class Ppob extends CI_Controller {
 		}
 	}
 	
-	function cek_saldo_ppob(){		
+	function cek_saldo_ppob(){	
 		$saldo = NULL;
 		$message = NULL;
 		//$this->db->order_by('date','desc');
