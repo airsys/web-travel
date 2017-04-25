@@ -538,6 +538,7 @@ $(document).ready(function(){
             var transit = 'Langsung';
             var display = '';
             if(data.flight_count > 1) transit = "Transit " + (parseInt(data.flight_count)-1);
+            var airline = data.id_perjalanan.replace(/[0-9\_]/g, '');
            var tampilan = '<div data-time="'+data.time_depart+'" data-total="'+(data.fare+data.tax)+'" id="group-panel'+j+'" class="panel-group">'+
                                 '<div class="panel panel-info ">'+
                                     '<div class="col-md-8 col-xs-8">'+
@@ -554,7 +555,7 @@ $(document).ready(function(){
                                   
                   '<div class="col-md-4 col-xs-4"> '+
                     '<div class="text-center container-fare_'+j+'"><label>Rp <span class="tooltips-harga" title="Rp '+addCommas(data.fare)+'(fare) + Rp '+addCommas(data.tax)+'(tax)" id="total_'+j+'">'+addCommas(data.fare+data.tax)+'<\/span><\/label><\/div>'+
-                    '<button flight_number="" flight_key="'+data.flight_key+'" type="button" class="center-block btn-booking button-booking_'+j+' btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>' +
+                    '<button flight_number="" flight_key="'+data.flight_key+'" airlines="'+airline+'" type="button" class="center-block btn-booking button-booking_'+j+' btn btn-flat btn-success btn-sm"><i class="fa fa-book"><\/i> | BOOKING<\/button>' +
                   '<\/div>'+
                                     '<div class="row">'+
                                     '<\/div>'+
@@ -598,6 +599,7 @@ $(document).ready(function(){
         $('.btn-booking').on('click', function(){
             $("#h_flight_key").val($(this).attr('flight_key'));
             $("#h_flight_number").val($(this).attr('flight_number'));
+            $("#h_airline").val($(this).attr('airlines'));
 			booking();
         });
         
