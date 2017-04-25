@@ -231,7 +231,7 @@ $(document).ready(function(){
 
     $(".bandara").select2();
     var bandara = [] ;
-    $.get('route', function(data) {
+    $.get('airlines/route', function(data) {
         $.each(data, function(i, item) {
             bandara [item.code_route]= item.city + ' ' + item.name_airport ;
             $(".bandara").append($('<option>', {value: item.code_route, text: item.code_route +' - '+ item.city + ' ' + item.name_airport}));
